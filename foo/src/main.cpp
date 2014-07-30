@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 
-#include "std_msgs/dds_impl/Int32_.h"
+#include "std_msgs/dds_idl/Int32_.h"
 #ifndef ndds_cpp_h
   #include <ccpp_dds_dcps.h>
-  #include "std_msgs/dds_impl/ccpp_Int32_.h"
+  #include "std_msgs/dds_idl/ccpp_Int32_.h"
 #endif
 
 #include "std_msgs/Int32.h"
@@ -113,7 +113,7 @@ main(int argc, char** argv)
     status = participant_->get_default_topic_qos(default_topic_qos);
     default_topic_qos.reliability.kind = DDS::RELIABLE_RELIABILITY_QOS;
 
-    std_msgs::dds_impl::Int32_TypeSupport_var ros_message_ts = new std_msgs::dds_impl::Int32_TypeSupport();
+    std_msgs::dds_idl::Int32_TypeSupport_var ros_message_ts = new std_msgs::dds_idl::Int32_TypeSupport();
     char * ros_message_type_name = ros_message_ts->get_type_name();
     status = ros_message_ts->register_type(
         participant_.in(), ros_message_type_name);
@@ -135,7 +135,7 @@ main(int argc, char** argv)
         ros_message_topic.in(), DATAWRITER_QOS_USE_TOPIC_QOS,
         NULL, DDS::STATUS_MASK_NONE);
 
-    std_msgs::dds_impl::Int32_DataWriter_var data_writer = std_msgs::dds_impl::Int32_DataWriter::_narrow(topic_writer.in());
+    std_msgs::dds_idl::Int32_DataWriter_var data_writer = std_msgs::dds_idl::Int32_DataWriter::_narrow(topic_writer.in());
 #endif
 
     // ---

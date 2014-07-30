@@ -1,8 +1,8 @@
 #include <ccpp_dds_dcps.h>
 #include <string>
 
-#include "std_msgs/dds_impl/ccpp_Int32_.h"
-#include "std_msgs/dds_impl/Int32__conversion.h"
+#include "std_msgs/dds_idl/ccpp_Int32_.h"
+#include "std_msgs/dds_idl/Int32__conversion.h"
 
 
 /*
@@ -10,7 +10,7 @@ template<typename ROSmsg, typename DDSmsg>
 void func(const ROSmsg& ros_msg)
 {
     DDSmsg dds_msg;
-    dds_impl::convert_ros_message_to_dds(ros_msg, dds_msg);
+    dds_idl::convert_ros_message_to_dds(ros_msg, dds_msg);
 */
 
 
@@ -34,9 +34,9 @@ struct Resolver
 template<>
 struct Resolver<std_msgs::Int32>
 {
-  typedef std_msgs::dds_impl::Int32_ DDSMsgType;
-  typedef std_msgs::dds_impl::Int32_TypeSupport DDSMsgTypeSupportType;
-  typedef std_msgs::dds_impl::Int32_DataWriter DDSMsgDataWriterType;
+  typedef std_msgs::dds_idl::Int32_ DDSMsgType;
+  typedef std_msgs::dds_idl::Int32_TypeSupport DDSMsgTypeSupportType;
+  typedef std_msgs::dds_idl::Int32_DataWriter DDSMsgDataWriterType;
 };
 
 template<typename ROSmsg>
@@ -47,7 +47,7 @@ void func(const ROSmsg& ros_msg)
     typedef typename Resolver<ROSmsg>::DDSMsgDataWriterType DDSMsgDataWriter_t;
 
     DDSMsg_t dds_msg;
-    dds_impl::DDSTypeResolver<ROSmsg>::convert_ros_message_to_dds(ros_msg, dds_msg);
+    dds_idl::DDSTypeResolver<ROSmsg>::convert_ros_message_to_dds(ros_msg, dds_msg);
 
     DDS::DomainParticipantFactory_var dpf_ = DDS::DomainParticipantFactory::get_instance();
     DDS::DomainId_t domain = DDS::DOMAIN_ID_DEFAULT;
@@ -64,7 +64,7 @@ void func(const ROSmsg& ros_msg)
     status = participant_->get_default_topic_qos(default_topic_qos);
     default_topic_qos.reliability.kind = DDS::RELIABLE_RELIABILITY_QOS;
 
-    std_msgs::dds_impl::Int32_TypeSupport_var ros_message_ts = new DDSMsgTypeSupport_t();
+    std_msgs::dds_idl::Int32_TypeSupport_var ros_message_ts = new DDSMsgTypeSupport_t();
     char * ros_message_type_name = ros_message_ts->get_type_name();
     status = ros_message_ts->register_type(
         participant_.in(), ros_message_type_name);
@@ -86,5 +86,5 @@ void func(const ROSmsg& ros_msg)
         ros_message_topic.in(), DATAWRITER_QOS_USE_TOPIC_QOS,
         NULL, DDS::STATUS_MASK_NONE);
 
-    std_msgs::dds_impl::Int32_DataWriter_var data_writer = DDSMsgDataWriter_t::_narrow(topic_writer.in());
+    std_msgs::dds_idl::Int32_DataWriter_var data_writer = DDSMsgDataWriter_t::_narrow(topic_writer.in());
 }
