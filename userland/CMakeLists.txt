@@ -5,7 +5,6 @@ project(userland)
 set(CMAKE_CXX_FLAGS "-std=c++0x -Wall")
 
 find_package(ros_middleware_interface REQUIRED)
-find_package(ros_dds_connext_dynamic REQUIRED)
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
