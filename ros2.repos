@@ -14,7 +14,11 @@ repositories:
   ament/ament_tools:
     type: git
     url: https://github.com/ament/ament_tools.git
-    version: simple
+    version: master
+  osrf_pycommon:
+    type: git
+    url: https://github.com/osrf/osrf_pycommon.git
+    version: master
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
