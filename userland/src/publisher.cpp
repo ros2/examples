@@ -1,5 +1,7 @@
 #include <iostream>
 #include <sys/time.h>
+#include <chrono>
+#include <thread>
 
 #include "rclcpp/Node.h"
 #include "rclcpp/Publisher.h"
@@ -14,21 +16,19 @@ int main(int argc, char** argv)
 
   int number_of_msgs = 1000000;
 
-  timespec start;
-  clock_gettime(CLOCK_REALTIME, &start);
-
+  auto start = std::chrono::steady_clock::now();
   for (int i = 1; i < number_of_msgs; ++i) {
     ros_msg.data = i;
     p->publish(ros_msg);
-    if (i % 100000 == 0) {
+    // if (i % 100000 == 0) {
       std::cout << "published ros msg #" << i << std::endl;
-    }
+    // }
+    std::chrono::milliseconds dura(2000);
+    std::this_thread::sleep_for(dura);
   }
+  auto end = std::chrono::steady_clock::now();
 
-  timespec end;
-  clock_gettime(CLOCK_REALTIME, &end);
-
-  std::cout << (end.tv_sec - start.tv_sec) << "." << (end.tv_nsec - start.tv_nsec) << std::endl;
+  std::cout << (end - start).count() << std::endl;
 
   return 0;
 }
