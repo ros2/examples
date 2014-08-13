@@ -23,8 +23,7 @@ int main(int argc, char** argv)
     // if (i % 100000 == 0) {
       std::cout << "published ros msg #" << i << std::endl;
     // }
-    std::chrono::milliseconds dura(2000);
-    std::this_thread::sleep_for(dura);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   }
   auto end = std::chrono::steady_clock::now();
 
