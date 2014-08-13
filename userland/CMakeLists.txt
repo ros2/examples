@@ -14,10 +14,14 @@ ament_package()
 
 include_directories(${rclcpp_INCLUDE_DIRS} ${simple_msgs_INCLUDE_DIRS})
 add_definitions(${rclcpp_DEFINITIONS})
-add_executable(userland src/publisher.cpp)
-target_link_libraries(userland ${rclcpp_LIBRARIES} ${simple_msgs_LIBRARIES})
+
+add_executable(publisher src/publisher.cpp)
+target_link_libraries(publisher ${rclcpp_LIBRARIES} ${simple_msgs_LIBRARIES})
+
+add_executable(subscriber src/subscriber.cpp)
+target_link_libraries(subscriber ${rclcpp_LIBRARIES} ${simple_msgs_LIBRARIES})
 
 install(
-  TARGETS userland
+  TARGETS publisher subscriber
   DESTINATION bin
 )

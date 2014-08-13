@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv)
 {
-  rclcpp::Node* n = create_node();
+  rclcpp::Node* n = rclcpp::create_node();
   rclcpp::Publisher<simple_msgs::Int32>* p = n->create_publisher<simple_msgs::Int32>("topic_name");
   simple_msgs::Int32 ros_msg;
 
