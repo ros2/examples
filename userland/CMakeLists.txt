@@ -14,7 +14,7 @@ ament_package()
 
 include_directories(${rclcpp_INCLUDE_DIRS} ${simple_msgs_INCLUDE_DIRS})
 add_definitions(${rclcpp_DEFINITIONS})
-add_executable(userland src/main.cpp)
+add_executable(userland src/publisher.cpp)
 target_link_libraries(userland ${rclcpp_LIBRARIES} ${simple_msgs_LIBRARIES})
 
 install(
