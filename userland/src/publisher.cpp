@@ -3,14 +3,14 @@
 
 #include "rclcpp/Node.h"
 #include "rclcpp/Publisher.h"
-#include "std_msgs/Int32.h"
+#include "simple_msgs/Int32.h"
 
 
 int main(int argc, char** argv)
 {
   rclcpp::Node* n = create_node();
-  rclcpp::Publisher<std_msgs::Int32>* p = n->create_publisher<std_msgs::Int32>("topic_name");
-  std_msgs::Int32 ros_msg;
+  rclcpp::Publisher<simple_msgs::Int32>* p = n->create_publisher<simple_msgs::Int32>("topic_name");
+  simple_msgs::Int32 ros_msg;
 
   int number_of_msgs = 1000000;
 
