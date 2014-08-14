@@ -21,7 +21,10 @@ target_link_libraries(publisher ${rclcpp_LIBRARIES} ${simple_msgs_LIBRARIES})
 add_executable(subscriber src/subscriber.cpp)
 target_link_libraries(subscriber ${rclcpp_LIBRARIES} ${simple_msgs_LIBRARIES})
 
+add_executable(prototype_intraprocess src/prototype_intraprocesses.cpp)
+target_link_libraries(prototype_intraprocess ${rclcpp_LIBRARIES} ${simple_msgs_LIBRARIES})
+
 install(
-  TARGETS publisher subscriber
+  TARGETS publisher subscriber prototype_intraprocess
   DESTINATION bin
 )

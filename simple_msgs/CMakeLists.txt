@@ -8,6 +8,7 @@ find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/AllPrimitiveTypes.msg"
   "msg/Int32.msg"
+  "msg/Intraprocess.msg"  
   "msg/Uint32.msg"
 )
 
