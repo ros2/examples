@@ -25,7 +25,8 @@ target_include_directories(subscriber PUBLIC ${ros_middleware_implementation_INC
 target_link_libraries(subscriber ${rclcpp_LIBRARIES} ${ros_middleware_implementation_LIBRARIES} ${simple_msgs_LIBRARIES})
 
 add_executable(prototype_intraprocess src/prototype_intraprocesses.cpp)
-target_link_libraries(prototype_intraprocess ${rclcpp_LIBRARIES} ${simple_msgs_LIBRARIES})
+target_include_directories(prototype_interprocess PUBLIC ${ros_middleware_implementation_INCLUDE_DIRS})
+target_link_libraries(prototype_intraprocess ${rclcpp_LIBRARIES} ${ros_middleware_implementation_LIBRARIES} ${simple_msgs_LIBRARIES})
 
 install(
   TARGETS publisher subscriber prototype_intraprocess
