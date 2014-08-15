@@ -13,7 +13,7 @@ find_package(simple_msgs REQUIRED)
 
 ament_package()
 
-include_directories(${rclcpp_INCLUDE_DIRS} ${simple_msgs_INCLUDE_DIRS})
+include_directories(include ${rclcpp_INCLUDE_DIRS} ${simple_msgs_INCLUDE_DIRS})
 add_definitions(${rclcpp_DEFINITIONS})
 
 add_executable(publisher src/publisher.cpp)
