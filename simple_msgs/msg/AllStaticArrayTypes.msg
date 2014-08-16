@@ -1,0 +1,14 @@
+bool[6] my_bool
+byte[6] my_byte
+char[6] my_char
+float32[6] my_float32
+float64[6] my_float64
+int8[6] my_int8
+uint8[6] my_uint8
+int16[6] my_int16
+uint16[6] my_uint16
+int32[6] my_int32
+uint32[6] my_uint32
+int64[6] my_int64
+uint64[6] my_uint64
+string[6] my_string
