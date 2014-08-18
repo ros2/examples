@@ -9,7 +9,7 @@
 #include "rclcpp/executor/SingleThreadExecutor.h"
 
 struct Intraprocess_t{
-  std::string* data; // data 
+  std::string* data;
   int count; // # of receivers
 };
 
@@ -19,7 +19,7 @@ void decrement(Intraprocess_t* meta)
   if (meta->count == 0) {
     std::cout << "------ remove the object!"  << std::endl;
     delete meta->data;
-  }   
+  }
 }
 
 void callback(const simple_msgs::Intraprocess *msg)
@@ -33,7 +33,7 @@ void monitor(std::string* s)
 {
   while (1) {
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
-    std::cout << "------ monitor string:" << *s << std::endl;  
+    std::cout << "------ monitor string:" << *s << std::endl;
   }
 }
 
@@ -60,7 +60,7 @@ void launch_publisher(Intraprocess_t* s)
 
   int number_of_msgs = 1;
   auto start = std::chrono::steady_clock::now();
-  for (int i = 0; i < number_of_msgs; ++i) {    
+  for (int i = 0; i < number_of_msgs; ++i) {
     ros_msg.ptr = (uint64_t)s;
     p->publish(ros_msg);
     // if (i % 100000 == 0) {
@@ -70,12 +70,12 @@ void launch_publisher(Intraprocess_t* s)
   }
   auto end = std::chrono::steady_clock::now();
 
-  //std::cout << (end - start).count() << std::endl;  
+  std::cout << (end - start).count() << std::endl;
 }
 
 int main(int argc, char** argv)
 {
-  std::string* s = new std::string("Message sent through ROS"); 
+  std::string* s = new std::string("Message sent through ROS");
   Intraprocess_t meta;
   meta.data = s;
   meta.count = 1;
