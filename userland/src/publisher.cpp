@@ -11,6 +11,7 @@
 #include "simple_msgs/AllDynamicArrayTypes.h"
 #include "simple_msgs/AllPrimitiveTypes.h"
 #include "simple_msgs/AllStaticArrayTypes.h"
+#include "simple_msgs/Nested.h"
 #include "simple_msgs/Uint32.h"
 
 #include "userland/command_line_arguments.h"
@@ -125,6 +126,11 @@ void set_all_dynamic_array(simple_msgs::AllDynamicArrayTypes& ros_msg, uint32_t 
   }
 }
 
+void set_nested(simple_msgs::Nested& ros_msg, uint32_t i)
+{
+  ros_msg.submsg.data = i;
+}
+
 int main(int argc, char** argv)
 {
   if (has_argument(argv, argv + argc, "--help")) {
@@ -144,6 +150,8 @@ int main(int argc, char** argv)
     return publish<simple_msgs::AllStaticArrayTypes>(node, &set_all_static_array);
   } else if (msg_arg == valid_message_args[3]) {
     return publish<simple_msgs::AllDynamicArrayTypes>(node, &set_all_dynamic_array);
+  } else if (msg_arg == valid_message_args[4]) {
+    return publish<simple_msgs::Nested>(node, &set_nested);
   }
 
 
