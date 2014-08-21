@@ -12,6 +12,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Int32.msg"
   "msg/Intraprocess.msg"
   "msg/Nested.msg"
+  "msg/String.msg"
   "msg/Uint32.msg"
 )
 
