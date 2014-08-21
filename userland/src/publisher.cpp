@@ -140,6 +140,10 @@ void set_string(simple_msgs::String& ros_msg, uint32_t i)
   }
 }
 
+template<typename T>
+void set_empty(T& ros_msg, uint32_t i)
+{}
+
 int main(int argc, char** argv)
 {
   if (has_argument(argv, argv + argc, "--help")) {
@@ -163,6 +167,8 @@ int main(int argc, char** argv)
     return publish<simple_msgs::Nested>(node, &set_nested);
   } else if (msg_arg == valid_message_args[5]) {
     return publish<simple_msgs::String>(node, &set_string);
+  } else if (msg_arg == valid_message_args[6]) {
+    return publish<simple_msgs::AllPrimitiveTypes>(node, &set_empty<simple_msgs::AllPrimitiveTypes>);
   }
 
 
