@@ -6,6 +6,7 @@
 #include "simple_msgs/AllPrimitiveTypes.h"
 #include "simple_msgs/AllStaticArrayTypes.h"
 #include "simple_msgs/Nested.h"
+#include "simple_msgs/String.h"
 #include "simple_msgs/Uint32.h"
 
 #include "userland/command_line_arguments.h"
@@ -98,6 +99,11 @@ void print_nested(const simple_msgs::Nested *msg)
   std::cout << "Got message #" << msg->submsg.data << std::endl;
 }
 
+void print_string(const simple_msgs::String *msg)
+{
+  std::cout << "Got message: " << msg->data << std::endl;
+}
+
 int main(int argc, char** argv)
 {
   if (has_argument(argv, argv + argc, "--help")) {
@@ -119,6 +125,8 @@ int main(int argc, char** argv)
     subscribe<simple_msgs::AllDynamicArrayTypes>(node, &print_all_dynamic_array);
   } else if (msg_arg == valid_message_args[4]) {
     subscribe<simple_msgs::Nested>(node, &print_nested);
+  } else if (msg_arg == valid_message_args[5]) {
+    subscribe<simple_msgs::String>(node, &print_string);
   } else {
     std::cerr << "unsupported '--msg' argument '" << msg_arg << "'" << std::endl;
     return 1;

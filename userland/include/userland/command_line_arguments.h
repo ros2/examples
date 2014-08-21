@@ -4,7 +4,7 @@
 #include <string>
 
 
-const char * valid_message_args[] = {"counter", "all_primitive", "all_static_array", "all_dynamic_array", "nested"};
+const char * valid_message_args[] = {"counter", "all_primitive", "all_static_array", "all_dynamic_array", "nested", "string"};
 
 void print_message_usage()
 {
