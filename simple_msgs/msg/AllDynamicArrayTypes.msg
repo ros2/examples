@@ -1,14 +1,14 @@
-bool[] my_bool
-byte[] my_byte
-char[] my_char
-float32[] my_float32
-float64[] my_float64
-int8[] my_int8
-uint8[] my_uint8
-int16[] my_int16
-uint16[] my_uint16
-int32[] my_int32
-uint32[] my_uint32
-int64[] my_int64
-uint64[] my_uint64
+bool[] my_bool [1, 0, 1]
+byte[] my_byte [23, 42]
+char[] my_char [-2, 3]
+float32[] my_float32 []
+float64[] my_float64 [-3.14, 23.42]
+int8[] my_int8 [-5]
+uint8[] my_uint8 [5]
+int16[] my_int16 [1, 2, 3]
+uint16[] my_uint16 [2, 3, 4]
+int32[] my_int32 [3, 4, 5]
+uint32[] my_uint32 [4, 5, 6]
+int64[] my_int64 [5, 6, 7]
+uint64[] my_uint64 [6, 7, 8]
 string[] my_string
