@@ -9,6 +9,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/AllDynamicArrayTypes.msg"
+  "msg/AllPrimitiveConstants.msg"
   "msg/AllPrimitiveTypes.msg"
   "msg/AllStaticArrayTypes.msg"
   "msg/Int32.msg"

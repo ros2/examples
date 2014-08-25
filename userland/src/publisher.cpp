@@ -35,7 +35,7 @@ int publish(rclcpp::Node* node, void (*set_data_func)(T&, uint32_t))
       std::cout << "published ros msg #" << i << std::endl;
     // }
     ++i;
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
   auto end = std::chrono::steady_clock::now();
 
@@ -134,6 +134,7 @@ void set_nested(simple_msgs::Nested& ros_msg, uint32_t i)
 
 void set_string(simple_msgs::String& ros_msg, uint32_t i)
 {
+  i = pow(2, i) - 1;
   ros_msg.data = "";
   for (uint64_t j = i; j < 2 * i; ++j) {
     ros_msg.data += std::to_string(j % 10);
