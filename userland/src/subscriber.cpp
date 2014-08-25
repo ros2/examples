@@ -2,6 +2,7 @@
 #include "rclcpp/Publisher.h"
 #include "rclcpp/executor/SingleThreadExecutor.h"
 
+#include "simple_msgs/AllBuiltinTypes.h"
 #include "simple_msgs/AllDynamicArrayTypes.h"
 #include "simple_msgs/AllPrimitiveTypes.h"
 #include "simple_msgs/AllStaticArrayTypes.h"
@@ -104,6 +105,11 @@ void print_string(const simple_msgs::String *msg)
   std::cout << "Got message: " << msg->data << std::endl;
 }
 
+void print_builtin(const simple_msgs::String *msg)
+{
+  std::cout << "Got message: " << msg->my_duration.sec << ":" << msg->my_duration.nanosec << ", " << msg->my_time.sec << ":" << msg->my_time.nanosec << std::endl;
+}
+
 int main(int argc, char** argv)
 {
   if (has_argument(argv, argv + argc, "--help")) {
@@ -127,6 +133,8 @@ int main(int argc, char** argv)
     subscribe<simple_msgs::Nested>(node, &print_nested);
   } else if (msg_arg == valid_message_args[5]) {
     subscribe<simple_msgs::String>(node, &print_string);
+  } else if (msg_arg == valid_message_args[7]) {
+    subscribe<simple_msgs::AllBuiltinTypes>(node, &print_builtin);
   } else {
     std::cerr << "unsupported '--msg' argument '" << msg_arg << "'" << std::endl;
     return 1;

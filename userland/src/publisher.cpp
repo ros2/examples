@@ -8,6 +8,7 @@
 #include "rclcpp/Node.h"
 #include "rclcpp/Publisher.h"
 
+#include "simple_msgs/AllBuiltinTypes.h"
 #include "simple_msgs/AllDynamicArrayTypes.h"
 #include "simple_msgs/AllPrimitiveTypes.h"
 #include "simple_msgs/AllStaticArrayTypes.h"
@@ -145,6 +146,14 @@ template<typename T>
 void set_empty(T& ros_msg, uint32_t i)
 {}
 
+void set_builtin(simple_msgs::AllBuiltinTypes& ros_msg, uint32_t i)
+{
+  ros_msg.m_duration.sec = -i;
+  ros_msg.m_duration.nanosec = i;
+  ros_msg.m_time.sec = - 2 * i;
+  ros_msg.m_time.nanosec = 2 * i;
+}
+
 int main(int argc, char** argv)
 {
   if (has_argument(argv, argv + argc, "--help")) {
@@ -170,6 +179,8 @@ int main(int argc, char** argv)
     return publish<simple_msgs::String>(node, &set_string);
   } else if (msg_arg == valid_message_args[6]) {
     return publish<simple_msgs::AllPrimitiveTypes>(node, &set_empty<simple_msgs::AllPrimitiveTypes>);
+  } else if (msg_arg == valid_message_args[7]) {
+    return publish<simple_msgs::AllBuiltinTypes>(node, &set_builtin);
   }
 
 

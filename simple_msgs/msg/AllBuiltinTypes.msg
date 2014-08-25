@@ -1,0 +1,2 @@
+builtin_msgs/Duration my_time
+builtin_msgs/Time my_duration
