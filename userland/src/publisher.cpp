@@ -148,10 +148,10 @@ void set_empty(T& ros_msg, uint32_t i)
 
 void set_builtin(simple_msgs::AllBuiltinTypes& ros_msg, uint32_t i)
 {
-  ros_msg.m_duration.sec = -i;
-  ros_msg.m_duration.nanosec = i;
-  ros_msg.m_time.sec = - 2 * i;
-  ros_msg.m_time.nanosec = 2 * i;
+  ros_msg.my_duration.sec = -i;
+  ros_msg.my_duration.nanosec = i;
+  ros_msg.my_time.sec = - 2 * i;
+  ros_msg.my_time.nanosec = 2 * i;
 }
 
 int main(int argc, char** argv)

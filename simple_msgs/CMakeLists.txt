@@ -5,6 +5,7 @@ project(simple_msgs)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 find_package(ament_cmake REQUIRED)
+find_package(builtin_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -18,6 +19,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Nested.msg"
   "msg/String.msg"
   "msg/Uint32.msg"
+  DEPENDENCIES builtin_msgs
 )
 
 ament_package()
