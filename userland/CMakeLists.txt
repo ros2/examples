@@ -44,12 +44,20 @@ function(build_executable executable)
 
 endfunction()
 
-build_executable(talker src/ros1_like/talker.cpp)
-
-build_executable(listener src/ros1_like/listener.cpp)
-
+# Build pub/sub command line programs
 build_executable(publisher src/publisher.cpp)
 
 build_executable(subscriber src/subscriber.cpp)
 
 build_executable(prototype_intraprocess src/prototype_intraprocesses.cpp)
+
+# Build ros1 like examples
+build_executable(talker src/ros1_like/talker.cpp)
+
+build_executable(listener src/ros1_like/listener.cpp)
+
+# Build more sofisticated examples
+build_executable(different_groups src/explicit/different_groups.cpp)
+build_executable(groups_no_node src/explicit/groups_no_node.cpp)
+build_executable(two_nodes src/explicit/two_nodes.cpp)
+build_executable(two_nodes_no_intra src/explicit/two_nodes_no_intra.cpp)
