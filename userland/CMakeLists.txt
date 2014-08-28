@@ -13,20 +13,25 @@ find_package(simple_msgs REQUIRED)
 
 ament_package()
 
-include_directories(include ${rclcpp_INCLUDE_DIRS} ${simple_msgs_INCLUDE_DIRS})
-add_definitions(${rclcpp_DEFINITIONS})
+include_directories(include)
 
 add_executable(publisher src/publisher.cpp)
-target_include_directories(publisher PUBLIC ${ros_middleware_implementation_INCLUDE_DIRS})
-target_link_libraries(publisher ${rclcpp_LIBRARIES} ${ros_middleware_implementation_LIBRARIES} ${simple_msgs_LIBRARIES})
+ament_target_dependencies(publisher
+  "rclcpp"
+  "ros_middleware_implementation"
+  "simple_msgs")
 
 add_executable(subscriber src/subscriber.cpp)
-target_include_directories(subscriber PUBLIC ${ros_middleware_implementation_INCLUDE_DIRS})
-target_link_libraries(subscriber ${rclcpp_LIBRARIES} ${ros_middleware_implementation_LIBRARIES} ${simple_msgs_LIBRARIES})
+ament_target_dependencies(subscriber
+  "rclcpp"
+  "ros_middleware_implementation"
+  "simple_msgs")
 
 add_executable(prototype_intraprocess src/prototype_intraprocesses.cpp)
-target_include_directories(prototype_intraprocess PUBLIC ${ros_middleware_implementation_INCLUDE_DIRS})
-target_link_libraries(prototype_intraprocess ${rclcpp_LIBRARIES} ${ros_middleware_implementation_LIBRARIES} ${simple_msgs_LIBRARIES})
+ament_target_dependencies(prototype_intraprocess
+  "rclcpp"
+  "ros_middleware_implementation"
+  "simple_msgs")
 
 install(
   TARGETS publisher subscriber prototype_intraprocess
@@ -40,12 +45,16 @@ foreach(middleware_implementation ${middleware_implementations})
   find_package("${middleware_implementation}" REQUIRED)
 
   add_executable(publisher__${middleware_implementation} src/publisher.cpp)
-  target_include_directories(publisher__${middleware_implementation} PUBLIC ${${middleware_implementation}_INCLUDE_DIRS})
-  target_link_libraries(publisher__${middleware_implementation} ${rclcpp_LIBRARIES} ${${middleware_implementation}_LIBRARIES} ${simple_msgs_LIBRARIES})
+  ament_target_dependencies(publisher__${middleware_implementation}
+    "rclcpp"
+    "${middleware_implementation}"
+    "simple_msgs")
 
   add_executable(subscriber__${middleware_implementation} src/subscriber.cpp)
-  target_include_directories(subscriber__${middleware_implementation} PUBLIC ${${middleware_implementation}_INCLUDE_DIRS})
-  target_link_libraries(subscriber__${middleware_implementation} ${rclcpp_LIBRARIES} ${${middleware_implementation}_LIBRARIES} ${simple_msgs_LIBRARIES})
+  ament_target_dependencies(subscriber__${middleware_implementation}
+    "rclcpp"
+    "${middleware_implementation}"
+    "simple_msgs")
 
   install(
     TARGETS publisher__${middleware_implementation} subscriber__${middleware_implementation}
