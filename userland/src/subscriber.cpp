@@ -106,9 +106,13 @@ void print_string(const simple_msgs::String::ConstPtr &msg)
   std::cout << "Got message: " << msg->data << std::endl;
 }
 
-void print_builtin(const simple_msgs::AllBuiltinTypes *msg)
+void print_builtin(const simple_msgs::AllBuiltinTypes::ConstPtr &msg)
 {
-  std::cout << "Got message: " << msg->my_duration.sec << ":" << msg->my_duration.nanosec << ", " << msg->my_time.sec << ":" << msg->my_time.nanosec << std::endl;
+  std::cout << "Got message: " << msg->my_duration.sec
+            << ":" << msg->my_duration.nanosec
+            << ", " << msg->my_time.sec
+            << ":" << msg->my_time.nanosec
+            << std::endl;
 }
 
 int main(int argc, char** argv)
