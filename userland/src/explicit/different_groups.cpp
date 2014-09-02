@@ -52,7 +52,5 @@ int main(int argc, char *argv[])
 
   executor.spin();
 
-  rclcpp::utilities::sleep_for(std::chrono::seconds(1));
-
   return 0;
 }
