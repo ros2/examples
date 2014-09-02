@@ -13,10 +13,10 @@ int main(int argc, char *argv[])
   rclcpp::init(argc, argv);
 
   // ros::NodeHandle n;
-  rclcpp::Node node("talker");
+  auto node = rclcpp::node::Node::make_shared("talker");
 
   // ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 7);
-  auto chatter_pub = node.create_publisher<simple_msgs::String>("chatter", 7);
+  auto chatter_pub = node->create_publisher<simple_msgs::String>("chatter", 7);
 
   // ros::Rate loop_rate(10);
   rclcpp::WallRate loop_rate(2);
