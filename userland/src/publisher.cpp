@@ -27,7 +27,7 @@ int publish(rclcpp::Node::SharedPtr node, void (*set_data_func)(typename T::Ptr&
 
   auto start = std::chrono::steady_clock::now();
   size_t i = 1;
-  while (true) {
+  while (rclcpp::ok()) {
     set_data_func(ros_msg, i);
     p->publish(ros_msg);
     // if (i % 100000 == 0) {
