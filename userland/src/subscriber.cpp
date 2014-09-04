@@ -117,6 +117,8 @@ void print_builtin(const simple_msgs::AllBuiltinTypes::ConstPtr &msg)
 
 int main(int argc, char** argv)
 {
+  rclcpp::init(argc, argv);
+
   if (has_argument(argv, argv + argc, "--help")) {
     std::cout << "usage:" << argv[0] << std::endl;
     print_message_usage();

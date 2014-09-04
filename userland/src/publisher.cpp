@@ -156,6 +156,8 @@ void set_builtin(simple_msgs::AllBuiltinTypes::Ptr &ros_msg, size_t i)
 
 int main(int argc, char** argv)
 {
+  rclcpp::init(argc, argv);
+
   if (has_argument(argv, argv + argc, "--help")) {
     std::cout << "usage: " << argv[0] << std::endl;
     print_message_usage();
