@@ -26,19 +26,19 @@ int publish(rclcpp::Node::SharedPtr node, void (*set_data_func)(typename T::Ptr&
   typename T::Ptr ros_msg(new T());
 
   auto start = std::chrono::steady_clock::now();
+  rclcpp::WallRate rate(10);
   size_t i = 1;
   while (rclcpp::ok()) {
     set_data_func(ros_msg, i);
     p->publish(ros_msg);
-    // if (i % 100000 == 0) {
       std::cout << "published ros msg #" << i << std::endl;
-    // }
     ++i;
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    rate.sleep();
   }
   auto end = std::chrono::steady_clock::now();
 
-  std::cout << (end - start).count() << std::endl;
+  std::chrono::duration<float> diff = (end - start);
+  std::cout << "Runtime: " << diff.count() << " seconds" << std::endl;
 
   return 0;
 }
