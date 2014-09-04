@@ -35,9 +35,9 @@ function(build_executable executable)
   foreach(middleware_implementation ${middleware_implementations})
     add_executable(${executable}__${middleware_implementation} ${ARGN})
     ament_target_dependencies(${executable}__${middleware_implementation}
-    "rclcpp"
-    "${middleware_implementation}"
-    "simple_msgs")
+      "rclcpp"
+      "${middleware_implementation}"
+      "simple_msgs")
 
     install(TARGETS ${executable}__${middleware_implementation} DESTINATION bin)
   endforeach()
