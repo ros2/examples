@@ -1,6 +1,8 @@
 #ifndef __userland__command_line_arguments__h__
 #define __userland__command_line_arguments__h__
 
+#include <iostream>
+
 #include <string>
 
 

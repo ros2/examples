@@ -15,49 +15,48 @@ ament_package()
 
 include_directories(include)
 
-add_executable(publisher src/publisher.cpp)
-ament_target_dependencies(publisher
-  "rclcpp"
-  "ros_middleware_implementation"
-  "simple_msgs")
-
-add_executable(subscriber src/subscriber.cpp)
-ament_target_dependencies(subscriber
-  "rclcpp"
-  "ros_middleware_implementation"
-  "simple_msgs")
-
-add_executable(prototype_intraprocess src/prototype_intraprocesses.cpp)
-ament_target_dependencies(prototype_intraprocess
-  "rclcpp"
-  "ros_middleware_implementation"
-  "simple_msgs")
-
-install(
-  TARGETS publisher subscriber prototype_intraprocess
-  DESTINATION bin
-)
-
-
-# for testing generate binaries for each middleware implementation
+# Get the implementations ahead of time
 get_available_ros_middleware_implementations(middleware_implementations)
 foreach(middleware_implementation ${middleware_implementations})
   find_package("${middleware_implementation}" REQUIRED)
-
-  add_executable(publisher__${middleware_implementation} src/publisher.cpp)
-  ament_target_dependencies(publisher__${middleware_implementation}
-    "rclcpp"
-    "${middleware_implementation}"
-    "simple_msgs")
-
-  add_executable(subscriber__${middleware_implementation} src/subscriber.cpp)
-  ament_target_dependencies(subscriber__${middleware_implementation}
-    "rclcpp"
-    "${middleware_implementation}"
-    "simple_msgs")
-
-  install(
-    TARGETS publisher__${middleware_implementation} subscriber__${middleware_implementation}
-    DESTINATION bin
-  )
 endforeach()
+
+function(build_executable executable)
+  # Build the normal executable
+  add_executable(${executable} ${ARGN})
+  ament_target_dependencies(${executable}
+    "rclcpp"
+    "ros_middleware_implementation"
+    "simple_msgs")
+
+  install(TARGETS ${executable} DESTINATION bin)
+
+  # Build an executable for each ROS middleware implementation
+  foreach(middleware_implementation ${middleware_implementations})
+    add_executable(${executable}__${middleware_implementation} ${ARGN})
+    ament_target_dependencies(${executable}__${middleware_implementation}
+      "rclcpp"
+      "${middleware_implementation}"
+      "simple_msgs")
+
+    install(TARGETS ${executable}__${middleware_implementation} DESTINATION bin)
+  endforeach()
+
+endfunction()
+
+# Build pub/sub command line programs
+build_executable(publisher src/publisher.cpp)
+
+build_executable(subscriber src/subscriber.cpp)
+
+build_executable(prototype_intraprocess src/prototype_intraprocesses.cpp)
+
+# Build ros1 like examples
+build_executable(talker src/ros1_like/talker.cpp)
+
+build_executable(listener src/ros1_like/listener.cpp)
+
+# Build more sofisticated examples
+build_executable(different_groups src/explicit/different_groups.cpp)
+build_executable(two_nodes src/explicit/two_nodes.cpp)
+# build_executable(two_nodes_no_intra src/explicit/two_nodes_no_intra.cpp)

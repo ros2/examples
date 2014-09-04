@@ -3,12 +3,12 @@
 #include <chrono>
 #include <thread>
 
-#include "rclcpp/Node.h"
-#include "rclcpp/Publisher.h"
-#include "simple_msgs/Intraprocess.h"
-#include "rclcpp/executor/SingleThreadExecutor.h"
+#include <rclcpp/rclcpp.hpp>
 
-struct Intraprocess_t{
+#include <simple_msgs/Intraprocess.h>
+
+struct Intraprocess_t
+{
   std::string* data;
   int count; // # of receivers
 };
@@ -22,7 +22,7 @@ void decrement(Intraprocess_t* meta)
   }
 }
 
-void callback(const simple_msgs::Intraprocess *msg)
+void callback(const simple_msgs::Intraprocess::ConstPtr &msg)
 {
   Intraprocess_t* meta = (Intraprocess_t *) msg->ptr;
   std::cout << "------ Got message: " <<  *(meta->data) << std::endl;
@@ -40,28 +40,27 @@ void monitor(std::string* s)
 void launch_subscriber(void)
 {
   std::cout << "------ Creating subscriber:" << std::endl;
-  rclcpp::Node *node = rclcpp::create_node();
-  node->create_subscriber<simple_msgs::Intraprocess>("intraprocess", callback);
+  auto node = rclcpp::Node::make_shared("prototype_intraprocess_sub");
+  auto sub = node->create_subscription<simple_msgs::Intraprocess>("intraprocess", 1000, callback);
 
-  rclcpp::executor::SingleThreadExecutor *executor = new rclcpp::executor::SingleThreadExecutor();
-  executor->register_node(node);
   std::cout << "------ Launching subscriber:" << std::endl;
-  executor->exec();
+  rclcpp::spin(node);
 }
 
 void launch_publisher(Intraprocess_t* s)
 {
   std::cout << "------ Creating publisher:" << std::endl;
-  rclcpp::Node* n = rclcpp::create_node();
-  rclcpp::Publisher<simple_msgs::Intraprocess>* p = n->create_publisher<simple_msgs::Intraprocess>("intraprocess");
-  simple_msgs::Intraprocess ros_msg;
+  auto n = rclcpp::Node::make_shared("prototype_intraprocess_pub");
+  auto p = n->create_publisher<simple_msgs::Intraprocess>("intraprocess", 1000);
+  simple_msgs::Intraprocess::Ptr ros_msg;
 
-  std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // wait one second for the publisher to set up
+  // Wait one second for the publisher to set up.
+  std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
   int number_of_msgs = 1;
   auto start = std::chrono::steady_clock::now();
   for (int i = 0; i < number_of_msgs; ++i) {
-    ros_msg.ptr = (uint64_t)s;
+    ros_msg->ptr = (uint64_t)s;
     p->publish(ros_msg);
     // if (i % 100000 == 0) {
       std::cout << "------ published ros pointer to Intraprocess_t " << i << std::endl;
