@@ -17,8 +17,8 @@ include_directories(include)
 
 # Get the implementations ahead of time
 get_available_ros_middleware_implementations(middleware_implementations)
-foreach(middleware_implementation ${middleware_implementations})
-  find_package("${middleware_implementation}" REQUIRED)
+foreach(middleware_impl ${middleware_implementations})
+  find_package("${middleware_impl}" REQUIRED)
 endforeach()
 
 function(build_executable executable)
@@ -32,14 +32,14 @@ function(build_executable executable)
   install(TARGETS ${executable} DESTINATION bin)
 
   # Build an executable for each ROS middleware implementation
-  foreach(middleware_implementation ${middleware_implementations})
-    add_executable(${executable}__${middleware_implementation} ${ARGN})
-    ament_target_dependencies(${executable}__${middleware_implementation}
+  foreach(middleware_impl_tmp ${middleware_implementations})
+    add_executable(${executable}__${middleware_impl_tmp} ${ARGN})
+    ament_target_dependencies(${executable}__${middleware_impl_tmp}
       "rclcpp"
-      "${middleware_implementation}"
+      "${middleware_impl_tmp}"
       "simple_msgs")
 
-    install(TARGETS ${executable}__${middleware_implementation} DESTINATION bin)
+    install(TARGETS ${executable}__${middleware_impl_tmp} DESTINATION bin)
   endforeach()
 
 endfunction()
