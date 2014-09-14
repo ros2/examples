@@ -45,21 +45,21 @@ function(build_executable executable)
 endfunction()
 
 # Build library in the component style
-rclcpp_create_node(node_name
-  SOURCES
-    src/component/component_talker.cpp
-  DEPENDENCIES
-    "rclcpp"
-    "ros_middleware_implementation"
-    "simple_msgs"
-  # INCLUDE_DIRS
-  #   ${Boost_INCLUDE_DIRS}
-  # LINK_LIBRARIES
-  #   ${Boost_LIBRARIES}
-)
-# libnode_name.so
-# entry in the node plugin list
-# node_name_node executable
+# rclcpp_create_node(node_name
+#   SOURCES
+#     src/component/component_talker.cpp
+#   DEPENDENCIES
+#     "rclcpp"
+#     "ros_middleware_implementation"
+#     "simple_msgs"
+#   # INCLUDE_DIRS
+#   #   ${Boost_INCLUDE_DIRS}
+#   # LINK_LIBRARIES
+#   #   ${Boost_LIBRARIES}
+# )
+# # libnode_name.so
+# # entry in the node plugin list
+# # node_name_node executable
 add_library(component_talker SHARED src/component/component_talker.cpp)
 ament_target_dependencies(component_talker
   "rclcpp"
