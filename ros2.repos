@@ -15,7 +15,7 @@ repositories:
     type: git
     url: https://github.com/ament/ament_tools.git
     version: master
-  osrf_pycommon:
+  ament/osrf_pycommon:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
     version: master
