@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>api_review</name>
+  <version>0.0.0</version>
+  <description>Prototyping for API review</description>
+  <maintainer email="william@osrfoundation.org">William Woodall</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>rclcpp</build_depend>
+  <build_depend>ros_middleware_implementation</build_depend>
+  <build_depend>simple_msgs</build_depend>
+
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>ros_middleware_implementation</exec_depend>
+  <exec_depend>simple_msgs</exec_depend>
+</package>
