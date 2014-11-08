@@ -16,10 +16,44 @@
 #ifndef RCL_RCL_TYPES_H_
 #define RCL_RCL_TYPES_H_
 
-#include <ros_middleware_interface/handles.h>
+#include <api_review/rmw/types.h>
 
-typedef int rcl_ret_t;
-#define RCL_RET_OK 0
+typedef rmw_ret_t rcl_ret_t;
+#define RCL_RET_OK RMW_RET_OK
 
+typedef rmw_node_t rcl_node_t;
+typedef rmw_publisher_t rcl_publisher_t;
+typedef rmw_subscription_t rcl_subscription_t;
+typedef rmw_guard_condition_t rcl_guard_condition_t;
+typedef rmw_subscriptions_t rcl_subscriptions_t;
+typedef rmw_guard_conditions_t rcl_guard_conditions_t;
+
+typedef struct rcl_callback_group_t
+{
+  rcl_node_t * * node;
+} rcl_callback_group_t;
+
+typedef struct rcl_subscription_info_t
+{
+  rcl_subscription_t * * subscription;
+  rcl_callback_group_t * * callback_group;
+} rcl_subscription_info_t;
+
+typedef struct rcl_timer_info_t
+{
+  rcl_guard_condition_t * * guard_condition;
+  rcl_callback_group_t * * callback_group;
+} rcl_timer_info_t;
+
+typedef struct rcl_executor_helper_t
+{
+  // TODO: fill with something
+} rcl_executor_helper_t;
+
+typedef struct rcl_any_executable_t
+{
+  rcl_subscription_info_t * * subscription_info;
+  rcl_timer_info_t * * timer_info;
+} rcl_any_executable_t;
 
 #endif  /* RCL_RCL_TYPES_H_ */

@@ -19,40 +19,40 @@
 typedef int rmw_ret_t;
 #define RMW_RET_OK 0
 
-typedef struct rmw_node_handle_t
+typedef struct rmw_node_t
 {
   const char * implementation_identifier;
   void * data;
-} rmw_node_handle_t;
+} rmw_node_t;
 
-typedef struct rmw_publisher_handle_t
+typedef struct rmw_publisher_t
 {
   const char * implementation_identifier;
   void * data;
-} rmw_publisher_handle_t;
+} rmw_publisher_t;
 
-typedef struct rmw_subscription_handle_t
+typedef struct rmw_subscription_t
 {
   const char * implementation_identifier;
   void * data;
-} rmw_subscription_handle_t;
+} rmw_subscription_t;
 
-typedef struct rmw_guard_condition_handle_t
+typedef struct rmw_guard_condition_t
 {
   const char * implementation_identifier;
   void * data;
-} rmw_guard_condition_handle_t;
+} rmw_guard_condition_t;
 
-typedef struct rmw_subscription_handles_t
+typedef struct rmw_subscriptions_t
 {
   unsigned long subscriber_count;
   void * * subscribers;
-} rmw_subscription_handles_t;
+} rmw_subscriptions_t;
 
-typedef struct rmw_guard_condition_handles_t
+typedef struct rmw_guard_conditions_t
 {
   unsigned long guard_condition_count;
   void * * guard_conditions;
-} rmw_guard_condition_handles_t;
+} rmw_guard_conditions_t;
 
 #endif  /* RMW_RMW_TYPES_H_ */

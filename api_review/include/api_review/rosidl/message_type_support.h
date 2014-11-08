@@ -22,10 +22,10 @@ typedef struct rosidl_message_type_support_t
   const void * data;
 } rosidl_message_type_support_t;
 
-#define ROSIDL_CREATE_GET_TYPE_SUPPORT_HANDLE_FUNCTION(type_name) \
+#define ROSIDL_CREATE_GET_TYPE_SUPPORT_FUNCTION(type_name) \
 rosidl_message_type_support_t * \
-rosidl_get_type_support_handle_##type_name()
+rosidl_get_type_support_##type_name()
 
-ROSIDL_CREATE_GET_TYPE_SUPPORT_HANDLE_FUNCTION(foo) {return 0;}
+ROSIDL_CREATE_GET_TYPE_SUPPORT_FUNCTION(foo) {return 0;}
 
 #endif  /* ROSIDL_ROSIDL_MESSAGE_TYPE_SUPPORT_H_ */
