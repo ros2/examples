@@ -47,7 +47,8 @@ rcl_publish(const rcl_publisher_t * publisher, const void * ros_message);
 rcl_subscription_t *
 rcl_create_subscription(const rcl_node_t * node,
                         const rosidl_message_type_support_t * type_support,
-                        const char * topic_name);
+                        const char * topic_name,
+                        size_t queue_size);
 
 rcl_ret_t
 rcl_destroy_subscription(rcl_subscription_t * subscription);
