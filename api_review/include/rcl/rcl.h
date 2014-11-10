@@ -25,20 +25,46 @@
 rcl_ret_t
 rcl_init(int argc, char **argv);
 
-#define rcl_create_node rmw_create_node
-#define rcl_destroy_node rmw_destroy_node
+rcl_node_t *
+rcl_create_node(const char * name);
 
-#define rcl_create_publisher rmw_create_publisher
-#define rcl_destroy_publisher rmw_destroy_publisher
-#define rcl_publish rmw_publish
+rcl_ret_t
+rcl_destroy_node();
 
-#define rcl_create_subscription rmw_create_subscription
-#define rcl_destroy_subscription rmw_destroy_subscription
-#define rcl_take rmw_take
+rcl_publisher_t *
+rcl_create_publisher(const rcl_node_t * node,
+                     const rosidl_message_type_support_t * type_support,
+                     const char * topic_name);
 
-#define rcl_create_guard_condition rmw_create_guard_condition
-#define rcl_destroy_guard_condition rmw_destroy_guard_condition
-#define rcl_trigger_guard_condition rmw_trigger_guard_condition
+rcl_ret_t
+rcl_destroy_publisher(rcl_publisher_t * publisher);
+
+// TODO: How do we allow for void * to be cast to CPP type or C type
+//       depending on the user?
+rcl_ret_t
+rcl_publish(const rcl_publisher_t * publisher, const void * ros_message);
+
+rcl_subscription_t *
+rcl_create_subscription(const rcl_node_t * node,
+                        const rosidl_message_type_support_t * type_support,
+                        const char * topic_name);
+
+rcl_ret_t
+rcl_destroy_subscription(rcl_subscription_t * subscription);
+
+// TODO: How do we allow for void * to be cast to CPP type or C type
+//       depending on the user?
+rcl_ret_t
+rcl_take(const rcl_subscription_t * subscriber, void * ros_message);
+
+rcl_guard_condition_t *
+rcl_create_guard_condition();
+
+rcl_ret_t
+rcl_destroy_guard_condition(rcl_guard_condition_t * guard_condition);
+
+rcl_ret_t
+rcl_trigger_guard_condition(const rcl_guard_condition_t * guard_condition);
 
 rcl_callback_group_t *
 rcl_create_callback_group(rcl_node_t * node);
