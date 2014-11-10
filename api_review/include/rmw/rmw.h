@@ -47,7 +47,8 @@ rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
 rmw_subscription_t *
 rmw_create_subscription(const rmw_node_t * node,
                         const rosidl_message_type_support_t * type_support,
-                        const char * topic_name);
+                        const char * topic_name,
+                        size_t queue_size);
 
 rmw_ret_t
 rmw_destroy_subscription(rmw_subscription_t * subscription);
