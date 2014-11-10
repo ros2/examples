@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-#include <api_review/rmw/rmw.h>
+#include <rmw/rmw.h>
 
-#include <api_review/rcl/rcl.h>
+#include <rcl/rcl.h>
 
 rcl_ret_t
 rcl_init(int argc, char **argv)

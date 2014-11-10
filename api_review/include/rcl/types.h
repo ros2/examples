@@ -16,7 +16,7 @@
 #ifndef RCL_RCL_TYPES_H_
 #define RCL_RCL_TYPES_H_
 
-#include <api_review/rmw/types.h>
+#include <rmw/types.h>
 
 typedef rmw_ret_t rcl_ret_t;
 #define RCL_RET_OK RMW_RET_OK

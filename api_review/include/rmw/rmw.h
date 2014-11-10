@@ -18,7 +18,7 @@
 
 #include <stdbool.h>
 
-#include <api_review/rosidl/message_type_support.h>
+#include <rosidl/message_type_support.h>
 
 #include "types.h"
 
@@ -42,8 +42,7 @@ rmw_destroy_publisher(rmw_publisher_t * publisher);
 // TODO: How do we allow for void * to be cast to CPP type or C type
 //       depending on the user?
 rmw_ret_t
-rmw_publish(const rmw_publisher_t * publisher,
-            const void * ros_message);
+rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
 
 rmw_subscription_t *
 rmw_create_subscription(const rmw_node_t * node,
@@ -56,8 +55,7 @@ rmw_destroy_subscription(rmw_subscription_t * subscription);
 // TODO: How do we allow for void * to be cast to CPP type or C type
 //       depending on the user?
 rmw_ret_t
-rmw_take(const rmw_subscription_t * subscriber,
-         void * ros_message);
+rmw_take(const rmw_subscription_t * subscriber, void * ros_message);
 
 rmw_guard_condition_t *
 rmw_create_guard_condition();
@@ -66,8 +64,7 @@ rmw_ret_t
 rmw_destroy_guard_condition(rmw_guard_condition_t * guard_condition);
 
 rmw_ret_t
-rmw_trigger_guard_condition(
-  const rmw_guard_condition_t * guard_condition);
+rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
 
 // TODO: May need timeout rather than or in addition to the non_blocking
 rmw_ret_t

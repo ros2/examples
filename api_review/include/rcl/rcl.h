@@ -18,7 +18,7 @@
 
 #include <stdbool.h>
 
-#include <api_review/rmw/rmw.h>
+#include <rmw/rmw.h>
 
 #include "types.h"
 
