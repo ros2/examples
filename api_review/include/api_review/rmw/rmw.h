@@ -26,7 +26,7 @@ rmw_ret_t
 rmw_init();
 
 rmw_node_t *
-rmw_create_node();
+rmw_create_node(const char * name);
 
 rmw_ret_t
 rmw_destroy_node();
