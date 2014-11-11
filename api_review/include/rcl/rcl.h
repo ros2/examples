@@ -18,7 +18,7 @@
 
 #include <stdbool.h>
 
-#include <rmw/rmw.h>
+#include <rosidl/message_type_support.h>
 
 #include "types.h"
 
