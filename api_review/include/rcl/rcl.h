@@ -17,6 +17,7 @@
 #define RCL_RCL_RCL_H_
 
 #include <stdbool.h>
+#include <stddef.h>
 
 #include <rosidl/message_type_support.h>
 
