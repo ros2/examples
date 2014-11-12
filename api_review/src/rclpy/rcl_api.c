@@ -8,6 +8,7 @@ typedef struct {
   /* Type-specific fields go here. */
   PyObject * anyexecutable_handle;
   PyObject * subscription_handle;
+  PyObject * timer_handle;
 } rcl_api_AnyExecObject;
 
 static void
@@ -15,6 +16,7 @@ rcl_api_AnyExecObject_dealloc(rcl_api_AnyExecObject* self)
 {
   Py_XDECREF(self->anyexecutable_handle);
   Py_XDECREF(self->subscription_handle);
+  Py_XDECREF(self->timer_handle);
   Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
@@ -28,6 +30,7 @@ rcl_api_AnyExecObject_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     {
       self->anyexecutable_handle = Py_None;
       self->subscription_handle = Py_None;
+      self->timer_handle = Py_None;
     }
 
   return (PyObject*)self;
@@ -36,23 +39,29 @@ rcl_api_AnyExecObject_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 static int
 rcl_api_AnyExecObject_init(rcl_api_AnyExecObject *self, PyObject *args)
 {
-  PyObject *anyexecutable_handle = NULL, *subscription_handle = NULL, *tmp1, *tmp2;
+  PyObject *anyexecutable_handle = NULL, *subscription_handle = NULL,
+      *timer_handle = NULL, *tmp;
 
-  if (!PyArg_ParseTuple(args, "OO", &anyexecutable_handle,
-                        &subscription_handle))
+  if (!PyArg_ParseTuple(args, "OOO", &anyexecutable_handle,
+                        &subscription_handle, &timer_handle))
     {
       return -1;
     }
 
-  tmp1 = self->anyexecutable_handle;
+  tmp = self->anyexecutable_handle;
   Py_INCREF(anyexecutable_handle);
   self->anyexecutable_handle = anyexecutable_handle;
-  Py_XDECREF(tmp1);
+  Py_XDECREF(tmp);
 
-  tmp2 = self->subscription_handle;
+  tmp = self->subscription_handle;
   Py_INCREF(subscription_handle);
   self->subscription_handle = subscription_handle;
-  Py_XDECREF(tmp2);
+  Py_XDECREF(tmp);
+
+  tmp = self->timer_handle;
+  Py_INCREF(timer_handle);
+  self->timer_handle = timer_handle;
+  Py_XDECREF(tmp);
 
   return 0;
 }
@@ -64,6 +73,9 @@ static PyMemberDef rcl_api_AnyExecObject_members[] = {
   { "subscription_handle", T_OBJECT_EX,
     offsetof(rcl_api_AnyExecObject, subscription_handle),
     0, "subscription handle" },
+  { "timer_handle", T_OBJECT_EX,
+    offsetof(rcl_api_AnyExecObject, timer_handle),
+    0, "timer handle" },
   { NULL }  /* Sentinel */
 };
 
@@ -102,6 +114,23 @@ rcl_api_AnyExecObject_setsubscription_handle(rcl_api_AnyExecObject *self,
   return -1;
 }
 
+static PyObject *
+rcl_api_AnyExecObject_gettimer_handle(rcl_api_AnyExecObject *self,
+                                      void *closure)
+{
+  Py_INCREF(self->timer_handle);
+  return self->timer_handle;
+}
+
+static int
+rcl_api_AnyExecObject_settimer_handle(rcl_api_AnyExecObject *self,
+                                      PyObject *value, void *closure)
+{
+  PyErr_SetString(PyExc_TypeError,
+                  "Cannot set the timer_handle attribute");
+  return -1;
+}
+
 static PyGetSetDef rcl_api_AnyExecObject_accessors[] = {
   { "anyexecutable_handle",
     (getter)rcl_api_AnyExecObject_getanyexecutable_handle,
@@ -111,6 +140,10 @@ static PyGetSetDef rcl_api_AnyExecObject_accessors[] = {
     (getter)rcl_api_AnyExecObject_getsubscription_handle,
     (setter)rcl_api_AnyExecObject_setsubscription_handle,
     "subscription handle", NULL },
+  { "timer_handle",
+    (getter)rcl_api_AnyExecObject_gettimer_handle,
+    (setter)rcl_api_AnyExecObject_settimer_handle,
+    "timer handle", NULL },
   { NULL }  /* Sentinel */
 };
 
@@ -174,6 +207,8 @@ static PyObject * executor_get_next_executable(PyObject * self,
 {
   rcl_any_executable_t * rcl_any_executable =
     (rcl_any_executable_t*)malloc(sizeof(rcl_any_executable_t));
+  rcl_any_executable->subscription_info = NULL;
+  rcl_any_executable->timer_info = NULL;
 
   rcl_executor_helper_t * executor_helper = rcl_create_executor_helper();
 
@@ -184,21 +219,29 @@ static PyObject * executor_get_next_executable(PyObject * self,
 
   PyObject *pyrcl_any_executable = PyCapsule_New(
     (void*)rcl_any_executable, "rcl_any_executable_t_ptr", NULL);
+
   Py_INCREF(pyrcl_any_executable);
 
   PyObject *pyrcl_subscription = Py_None;
-
   if (rcl_any_executable->subscription_info != NULL &&
-      *(rcl_any_executable->subscription_info) != NULL)
-    {
+      *(rcl_any_executable->subscription_info) != NULL) {
       pyrcl_subscription = PyCapsule_New(
         (void*)*(rcl_any_executable->subscription_info),
         "rcl_subscription_t_ptr", NULL);
     }
+
+  PyObject *pyrcl_timer = Py_None;
+  if (rcl_any_executable->timer_info != NULL &&
+      *(rcl_any_executable->timer_info) != NULL) {
+      pyrcl_timer = PyCapsule_New(
+        (void*)*(rcl_any_executable->timer_info),
+        "rcl_timer_t_ptr", NULL);
+    }
+
   Py_INCREF(pyrcl_subscription);
 
-  PyObject *args_list = Py_BuildValue("OO", pyrcl_any_executable,
-                                      pyrcl_subscription);
+  PyObject *args_list = Py_BuildValue("OOO", pyrcl_any_executable,
+                                      pyrcl_subscription, pyrcl_timer);
   PyObject *obj = PyObject_CallObject((PyObject*)&rcl_api_AnyExecType,
                                       args_list);
   Py_DECREF(args_list);
@@ -256,11 +299,13 @@ static PyObject * subscription_create(PyObject * self, PyObject * args)
   rcl_node_t * cnode = (rcl_node_t*)PyCapsule_GetPointer(
     pynode, "rcl_node_t_ptr");
 
-  rosidl_message_type_support_t * ctype_support =
-    (rosidl_message_type_support_t*)PyCapsule_GetPointer(
-      pytype_support, "rosidl_message_type_support_t_ptr");
+// TODO: add mock for rosidl_message_type_support_t
+//  rosidl_message_type_support_t * ctype_support =
+//    (rosidl_message_type_support_t*)PyCapsule_GetPointer(
+//      pytype_support, "rosidl_message_type_support_t_ptr");
+
   rcl_subscription_t * csubscription = rcl_create_subscription(
-    cnode, ctype_support, topic_name, queue_size);
+    cnode, NULL, topic_name, queue_size);
   assert(csubscription != NULL);
   PyObject * ret = PyCapsule_New(
     (void*)csubscription, "rcl_subscription_t_ptr", NULL);

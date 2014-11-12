@@ -12,7 +12,6 @@ from rcl_api import subscription_take
 def ok():
     return True
 
-
 class Node():
     def __init__(self, name, context=None):
         if not isinstance(name, str):
