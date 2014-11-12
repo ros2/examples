@@ -36,7 +36,7 @@ rcl_api_AnyExecObject_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 static int
 rcl_api_AnyExecObject_init(rcl_api_AnyExecObject *self, PyObject *args)
 {
-  PyObject *anyexecutable_handle = NULL, *subscription_handle = NULL, *tmp;
+  PyObject *anyexecutable_handle = NULL, *subscription_handle = NULL, *tmp1, *tmp2;
 
   if (!PyArg_ParseTuple(args, "OO", &anyexecutable_handle,
                         &subscription_handle))
@@ -44,15 +44,15 @@ rcl_api_AnyExecObject_init(rcl_api_AnyExecObject *self, PyObject *args)
       return -1;
     }
 
-  tmp = self->anyexecutable_handle;
+  tmp1 = self->anyexecutable_handle;
   Py_INCREF(anyexecutable_handle);
   self->anyexecutable_handle = anyexecutable_handle;
-  Py_XDECREF(tmp);
+  Py_XDECREF(tmp1);
 
-  tmp = self->subscription_handle;
+  tmp2 = self->subscription_handle;
   Py_INCREF(subscription_handle);
   self->subscription_handle = subscription_handle;
-  Py_XDECREF(tmp);
+  Py_XDECREF(tmp2);
 
   return 0;
 }
@@ -184,6 +184,7 @@ static PyObject * executor_get_next_executable(PyObject * self,
 
   PyObject *pyrcl_any_executable = PyCapsule_New(
     (void*)rcl_any_executable, "rcl_any_executable_t_ptr", NULL);
+  Py_INCREF(pyrcl_any_executable);
 
   PyObject *pyrcl_subscription = Py_None;
 
@@ -194,6 +195,8 @@ static PyObject * executor_get_next_executable(PyObject * self,
         (void*)*(rcl_any_executable->subscription_info),
         "rcl_subscription_t_ptr", NULL);
     }
+  Py_INCREF(pyrcl_subscription);
+
   PyObject *args_list = Py_BuildValue("OO", pyrcl_any_executable,
                                       pyrcl_subscription);
   PyObject *obj = PyObject_CallObject((PyObject*)&rcl_api_AnyExecType,
