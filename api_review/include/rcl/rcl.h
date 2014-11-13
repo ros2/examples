@@ -35,7 +35,8 @@ rcl_destroy_node();
 rcl_publisher_t *
 rcl_create_publisher(const rcl_node_t * node,
                      const rosidl_message_type_support_t * type_support,
-                     const char * topic_name);
+                     const char * topic_name,
+                     size_t queue_size);
 
 rcl_ret_t
 rcl_destroy_publisher(rcl_publisher_t * publisher);

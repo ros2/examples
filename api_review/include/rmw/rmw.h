@@ -35,7 +35,8 @@ rmw_destroy_node();
 rmw_publisher_t *
 rmw_create_publisher(const rmw_node_t * node,
                      const rosidl_message_type_support_t * type_support,
-                     const char * topic_name);
+                     const char * topic_name,
+                     size_t queue_size);
 
 rmw_ret_t
 rmw_destroy_publisher(rmw_publisher_t * publisher);
