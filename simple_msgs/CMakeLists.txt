@@ -11,6 +11,7 @@ find_package(rosidl_default_generators REQUIRED)
 include_directories(${rosidl_default_generators_INCLUDE_DIRS})
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Vector3.msg"
   "msg/AllBuiltinTypes.msg"
   "msg/AllDynamicArrayTypes.msg"
   "msg/AllPrimitiveConstants.msg"
