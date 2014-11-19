@@ -76,6 +76,11 @@ build_executable(subscriber src/subscriber.cpp)
 
 build_executable(prototype_intraprocess src/prototype_intraprocesses.cpp)
 
+# Build imu command line programs
+build_executable(imu_publisher src/imu/publisher.cpp)
+
+build_executable(imu_subscriber src/imu/subscriber.cpp)
+
 # Build ros1 like examples
 build_executable(talker src/ros1_like/talker.cpp)
 
