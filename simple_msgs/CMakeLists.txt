@@ -12,6 +12,7 @@ include_directories(${rosidl_default_generators_INCLUDE_DIRS})
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Vector3.msg"
+  "msg/Vector3Int.msg"
   "msg/AllBuiltinTypes.msg"
   "msg/AllDynamicArrayTypes.msg"
   "msg/AllPrimitiveConstants.msg"
