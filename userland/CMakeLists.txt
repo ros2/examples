@@ -76,15 +76,20 @@ build_executable(subscriber src/subscriber.cpp)
 
 build_executable(prototype_intraprocess src/prototype_intraprocesses.cpp)
 
-# Build imu command line programs
-build_executable(imu_publisher src/imu/publisher.cpp)
+# Build imu_double command line programs
+build_executable(imu_publisher_double src/imu/imu_double/publisher.cpp)
 
-build_executable(imu_subscriber src/imu/subscriber.cpp)
+build_executable(imu_subscriber_double src/imu/imu_double/subscriber.cpp)
 
-# Build imu command line programs
-build_executable(imu_publisher_int src/imu_int/publisher.cpp)
+# Build imu_int command line programs
+build_executable(imu_publisher_int src/imu/imu_int/publisher.cpp)
 
-build_executable(imu_subscriber_int src/imu_int/subscriber.cpp)
+build_executable(imu_subscriber_int src/imu/imu_int/subscriber.cpp)
+
+# Build imu_float command line programs
+build_executable(imu_publisher_float src/imu/imu_float/publisher.cpp)
+
+build_executable(imu_subscriber_float src/imu/imu_float/subscriber.cpp)
 
 # Build ros1 like examples
 build_executable(talker src/ros1_like/talker.cpp)
