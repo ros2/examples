@@ -11,6 +11,10 @@ find_package(rosidl_default_generators REQUIRED)
 include_directories(${rosidl_default_generators_INCLUDE_DIRS})
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Time.msg"
+  "msg/Header.msg"
+  "msg/Quaternion32.msg"
+  "msg/Imu32.msg"
   "msg/Vector3.msg"
   "msg/Vector3Int.msg"
   "msg/Vector3Float.msg"

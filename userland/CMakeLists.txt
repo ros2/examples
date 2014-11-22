@@ -91,6 +91,11 @@ build_executable(imu_publisher_float src/imu/imu_float/publisher.cpp)
 
 build_executable(imu_subscriber_float src/imu/imu_float/subscriber.cpp)
 
+# Build imu32 command line programs
+build_executable(imu32_publisher src/imu/imu32/publisher.cpp)
+
+build_executable(imu32_subscriber src/imu/imu32/subscriber.cpp)
+
 # Build ros1 like examples
 build_executable(talker src/ros1_like/talker.cpp)
 
