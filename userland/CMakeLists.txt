@@ -96,6 +96,11 @@ build_executable(imu32_publisher src/imu/imu32/publisher.cpp)
 
 build_executable(imu32_subscriber src/imu/imu32/subscriber.cpp)
 
+# Build rosimu command line programs
+build_executable(rosimu_publisher src/imu/rosimu/publisher.cpp)
+
+build_executable(rosimu_subscriber src/imu/rosimu/subscriber.cpp)
+
 # Build ros1 like examples
 build_executable(talker src/ros1_like/talker.cpp)
 
