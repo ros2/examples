@@ -17,7 +17,8 @@ void print_accel_data(const simple_msgs::Imu::ConstPtr &msg)
   std::cout << "-------------------------"<< std::endl;
   std::cout << "Got Imu msg" << std::endl;
   std::cout << "-------------------------"<< std::endl;
-  
+
+#if 0  
   // Define the header
   std::cout << "ros_msg->header.seq= " << msg->header.seq << std::endl;  
   std::cout << "msg->header.stamp.sec= " << msg->header.stamp.sec  << std::endl;
@@ -44,15 +45,20 @@ void print_accel_data(const simple_msgs::Imu::ConstPtr &msg)
   for (int i = 0; i<9; i++){
     std::cout << "msg->angular_velocity_covariance[i]= " << msg->angular_velocity_covariance[i] << std::endl;
   }  
+#endif
   // Define the linear_acceleration
   std::cout << "msg->linear_acceleration.x= " << msg->linear_acceleration.x << std::endl;
   std::cout << "msg->linear_acceleration.y= " << msg->linear_acceleration.y << std::endl;
   std::cout << "msg->linear_acceleration.z= " << msg->linear_acceleration.z << std::endl;
+
+#if 0  
   
   // Define the linear_acceleration_covariance
   for (int i = 0; i<9; i++){
     std::cout << "msg->linear_acceleration_covariance[i]= " << msg->linear_acceleration_covariance[i] << std::endl;
   }
+
+#endif
   std::cout << "-------------------------"<< std::endl;
 }
 
