@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>userland_msgs</name>
+  <version>0.0.0</version>
+  <description>A package containing simple message definitions.</description>
+  <maintainer email="dthomas@osrfoundation.org">Dirk Thomas</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <build_depend>builtin_msgs</build_depend>
+
+  <exec_depend>builtin_msgs</exec_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+</package>
