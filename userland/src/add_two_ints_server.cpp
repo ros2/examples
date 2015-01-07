@@ -18,11 +18,12 @@
 
 #include <userland_msgs/AddTwoInts.h>
 
-void add(const std::shared_ptr<userland_msgs::AddTwoIntsRequest> req,
+void add(const std::shared_ptr<userland_msgs::AddTwoIntsRequestWithHeader> req,
          std::shared_ptr<userland_msgs::AddTwoIntsResponse> res)
 {
   std::cout << "Incoming request" << std::endl;
-  res->sum = req->a + req->b;
+  std::cout << "a: " << req->request.a << " b: " << req->request.b << std::endl;
+  res->sum = req->request.a + req->request.b;
 }
 
 int main(int argc, char** argv)
