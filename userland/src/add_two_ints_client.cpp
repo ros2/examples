@@ -18,7 +18,6 @@
 
 #include <userland_msgs/AddTwoInts.h>
 
-
 int main(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
@@ -26,21 +25,19 @@ int main(int argc, char** argv)
   auto node = rclcpp::Node::make_shared("add_two_ints_client");
 
   auto client = node->create_client<userland_msgs::AddTwoInts>("add_two_ints");
-  auto req = std::make_shared<userland_msgs::AddTwoInts::Request>();
-  req->a = 2;
-  req->b = 3;
+  auto request = std::make_shared<userland_msgs::AddTwoInts::Request>();
+  request->a = 2;
+  request->b = 3;
 
-  std::shared_ptr<userland_msgs::AddTwoInts::Response> response = client->send_request(req);
-  std::cout << "Sum: " << response->sum << std::endl;
-
-  response = client->send_request(req);
-  std::cout << "Sum: " << response->sum << std::endl;
-
-  response = client->send_request(req);
-  std::cout << "Sum: " << response->sum << std::endl;
-
-  response = client->send_request(req);
-  std::cout << "Sum: " << response->sum << std::endl;
+  try
+  {
+    auto response = client->send_request(request);
+    std::cout << "Sum: " << response->sum << std::endl;
+  } catch(const std::runtime_error &e)
+  {
+    std::cerr << "Timed out while waiting for a response" << std::endl;
+    return 1;
+  }
 
   return 0;
 }
