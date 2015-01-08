@@ -11,7 +11,10 @@
   <buildtool_depend>rosidl_default_generators</buildtool_depend>
 
   <build_depend>builtin_msgs</build_depend>
+  <build_depend>simple_msgs</build_depend>
 
   <exec_depend>builtin_msgs</exec_depend>
+  <exec_depend>simple_msgs</exec_depend>
+
   <exec_depend>rosidl_default_runtime</exec_depend>
 </package>

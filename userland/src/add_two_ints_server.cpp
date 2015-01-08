@@ -17,13 +17,15 @@
 #include <simple_msgs/Uint32.h>
 
 #include <userland_msgs/AddTwoInts.h>
+#include <userland_msgs/RequestId.h>
 
-void add(const std::shared_ptr<userland_msgs::AddTwoIntsRequestWithHeader> req,
+void add(const std::shared_ptr<userland_msgs::AddTwoIntsRequest> req,
+         const std::shared_ptr<userland_msgs::RequestId> req_id,
          std::shared_ptr<userland_msgs::AddTwoIntsResponse> res)
 {
   std::cout << "Incoming request" << std::endl;
-  std::cout << "a: " << req->request.a << " b: " << req->request.b << std::endl;
-  res->sum = req->request.a + req->request.b;
+  std::cout << "a: " << req->a << " b: " << req->b << std::endl;
+  res->sum = req->a + req->b;
 }
 
 int main(int argc, char** argv)
