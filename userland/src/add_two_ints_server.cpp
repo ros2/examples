@@ -17,10 +17,8 @@
 #include <simple_msgs/Uint32.h>
 
 #include <userland_msgs/AddTwoInts.h>
-#include <userland_msgs/RequestId.h>
 
 void add(const std::shared_ptr<userland_msgs::AddTwoInts::Request> req,
-         const std::shared_ptr<userland_msgs::RequestId> req_id,
          std::shared_ptr<userland_msgs::AddTwoInts::Response> res)
 {
   std::cout << "Incoming request" << std::endl;
