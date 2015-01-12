@@ -26,18 +26,19 @@ int main(int argc, char** argv)
 
   auto client = node->create_client<userland_msgs::AddTwoInts>("add_two_ints");
   auto request = std::make_shared<userland_msgs::AddTwoInts::Request>();
+  auto response = std::make_shared<userland_msgs::AddTwoInts::Response>();
   request->a = 2;
   request->b = 3;
 
-  try
+  auto rc = client->send_request(request, response);
+  if(rc == 0)
   {
-    auto response = client->send_request(request);
     std::cout << "Sum: " << response->sum << std::endl;
-  } catch(const std::runtime_error &e)
+    return 0;
+  } else
   {
-    std::cerr << "Timed out while waiting for a response" << std::endl;
-    return 1;
+    std::cerr << "Error receiving a response" << std::endl;
   }
 
-  return 0;
+  return rc;
 }
