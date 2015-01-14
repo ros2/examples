@@ -30,15 +30,20 @@ int main(int argc, char** argv)
   request->a = 2;
   request->b = 3;
 
-  auto rc = client->send_request(request, response);
-  if(rc == 0)
+  auto f = client->async_send_request(request, response);
+
+  std::future_status status;
+  do
   {
-    std::cout << "Sum: " << response->sum << std::endl;
-    return 0;
-  } else
+    rclcpp::spin_some(node);
+    status = f.wait_for(std::chrono::milliseconds(100));
+  } while(status != std::future_status::ready && rclcpp::ok());
+
+  if(std::future_status::ready == status)
   {
-    std::cerr << "Error receiving a response" << std::endl;
+    std::cout << "FUTURE READY" << std::endl;
+    std::cout << f.get()->sum << std::endl;
   }
 
-  return rc;
+  return 0;
 }
