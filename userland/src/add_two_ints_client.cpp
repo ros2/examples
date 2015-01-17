@@ -45,5 +45,12 @@ int main(int argc, char** argv)
     std::cout << f.get()->sum << std::endl;
   }
 
+  client->async_send_request(
+    request, response,
+    [] (rclcpp::client::Client<userland_msgs::AddTwoInts>::SharedFuture f) {
+      std::cout << "CALLBACK" << std::endl;
+  });
+  rclcpp::spin(node);
+
   return 0;
 }
