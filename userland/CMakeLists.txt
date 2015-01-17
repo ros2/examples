@@ -10,6 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(ros_middleware_implementation REQUIRED)
 find_package(simple_msgs REQUIRED)
+find_package(userland_msgs REQUIRED)
 
 ament_package()
 
@@ -27,7 +28,8 @@ function(build_executable executable)
   ament_target_dependencies(${executable}
     "rclcpp"
     "ros_middleware_implementation"
-    "simple_msgs")
+    "simple_msgs"
+    "userland_msgs")
 
   install(TARGETS ${executable} DESTINATION bin)
 
@@ -37,7 +39,8 @@ function(build_executable executable)
     ament_target_dependencies(${executable}__${middleware_impl_tmp}
       "rclcpp"
       "${middleware_impl_tmp}"
-      "simple_msgs")
+      "simple_msgs"
+      "userland_msgs")
 
     install(TARGETS ${executable}__${middleware_impl_tmp} DESTINATION bin)
   endforeach()
@@ -110,3 +113,7 @@ build_executable(listener src/ros1_like/listener.cpp)
 build_executable(different_groups src/explicit/different_groups.cpp)
 build_executable(two_nodes src/explicit/two_nodes.cpp)
 # build_executable(two_nodes_no_intra src/explicit/two_nodes_no_intra.cpp)
+
+# Build services examples
+build_executable(add_two_ints_client src/add_two_ints_client.cpp)
+build_executable(add_two_ints_server src/add_two_ints_server.cpp)
