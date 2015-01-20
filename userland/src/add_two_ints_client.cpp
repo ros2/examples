@@ -26,11 +26,10 @@ int main(int argc, char** argv)
 
   auto client = node->create_client<userland_msgs::AddTwoInts>("add_two_ints");
   auto request = std::make_shared<userland_msgs::AddTwoInts::Request>();
-  auto response = std::make_shared<userland_msgs::AddTwoInts::Response>();
   request->a = 2;
   request->b = 3;
 
-  auto f = client->async_send_request(request, response);
+  auto f = client->async_send_request(request);
 
   std::future_status status;
   do
@@ -46,9 +45,10 @@ int main(int argc, char** argv)
   }
 
   client->async_send_request(
-    request, response,
-    [] (rclcpp::client::Client<userland_msgs::AddTwoInts>::SharedFuture f) {
+    request,
+    [] (rclcpp::client::Client<userland_msgs::AddTwoInts>::SharedFuture cb_f) {
       std::cout << "CALLBACK" << std::endl;
+      std::cout << cb_f.get()->sum << std::endl;
   });
   rclcpp::spin(node);
 
