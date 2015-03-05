@@ -4,11 +4,11 @@ project(userland)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
-find_package(ros_middleware_interface REQUIRED)
+find_package(rmw REQUIRED)
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(ros_middleware_implementation REQUIRED)
+find_package(rmw_implementation REQUIRED)
 find_package(simple_msgs REQUIRED)
 find_package(userland_msgs REQUIRED)
 
@@ -17,7 +17,7 @@ ament_package()
 include_directories(include)
 
 # Get the implementations ahead of time
-get_available_ros_middleware_implementations(middleware_implementations)
+get_available_rmw_implementations(middleware_implementations)
 foreach(middleware_impl ${middleware_implementations})
   find_package("${middleware_impl}" REQUIRED)
 endforeach()
@@ -27,7 +27,7 @@ function(build_executable executable)
   add_executable(${executable} ${ARGN})
   ament_target_dependencies(${executable}
     "rclcpp"
-    "ros_middleware_implementation"
+    "rmw_implementation"
     "simple_msgs"
     "userland_msgs")
 
@@ -53,7 +53,7 @@ endfunction()
 #     src/component/component_talker.cpp
 #   DEPENDENCIES
 #     "rclcpp"
-#     "ros_middleware_implementation"
+#     "rmw_implementation"
 #     "simple_msgs"
 #   # INCLUDE_DIRS
 #   #   ${Boost_INCLUDE_DIRS}
@@ -66,7 +66,7 @@ endfunction()
 add_library(component_talker SHARED src/component/component_talker.cpp)
 ament_target_dependencies(component_talker
   "rclcpp"
-  "ros_middleware_implementation"
+  "rmw_implementation"
   "simple_msgs")
 install(TARGETS component_talker DESTINATION lib)
 # Create an executable for this component style node

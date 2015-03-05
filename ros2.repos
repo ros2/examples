@@ -27,17 +27,17 @@ repositories:
     type: git
     url: https://github.com/ros2/rclcpp.git
     version: master
-  ros2/ros_middleware_connext:
+  ros2/rmw_connext:
     type: git
-    url: https://github.com/ros2/ros_middleware_connext.git
+    url: https://github.com/ros2/rmw_connext.git
     version: master
-  ros2/ros_middleware_interface:
+  ros2/rmw:
     type: git
-    url: https://github.com/ros2/ros_middleware_interface.git
+    url: https://github.com/ros2/rmw.git
     version: master
-  ros2/ros_middleware_opensplice:
+  ros2/rmw_opensplice:
     type: git
-    url: https://github.com/ros2/ros_middleware_opensplice.git
+    url: https://github.com/ros2/rmw_opensplice.git
     version: master
   ros2/rosidl:
     type: git
