@@ -3,7 +3,6 @@
 #include <cmath>
 #include <iostream>
 #include <string>
-#include <sys/time.h>
 #include <thread>
 
 #include <rclcpp/rclcpp.hpp>
@@ -48,7 +47,7 @@ void set_imu_data(simple_msgs::Imu::Ptr &ros_msg, size_t i)
   ros_msg->orientation.y =0;
   ros_msg->orientation.z =0;
   ros_msg->orientation.w =0;
-  
+
 
   // Define the orientation_covariance
   for (int i = 0; i<9; i++){
@@ -57,17 +56,17 @@ void set_imu_data(simple_msgs::Imu::Ptr &ros_msg, size_t i)
   // Define the angular_velocity
   ros_msg->angular_velocity.x = 0;
   ros_msg->angular_velocity.y = 0;
-  ros_msg->angular_velocity.z = 0;  
+  ros_msg->angular_velocity.z = 0;
 
   // Define the angular_velocity_covariance
   for (int i = 0; i<9; i++){
     ros_msg->angular_velocity_covariance[i] = 0;
-  }  
+  }
   // Define the linear_acceleration
   ros_msg->linear_acceleration.x = 1 + i;
   ros_msg->linear_acceleration.y = 2 + i;
-  ros_msg->linear_acceleration.z = 3 + i;  
-  
+  ros_msg->linear_acceleration.z = 3 + i;
+
   // Define the linear_acceleration_covariance
   for (int i = 0; i<9; i++){
     ros_msg->linear_acceleration_covariance[i] = 0;

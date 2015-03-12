@@ -3,7 +3,6 @@
 #include <cmath>
 #include <iostream>
 #include <string>
-#include <sys/time.h>
 #include <thread>
 
 #include <rclcpp/rclcpp.hpp>
@@ -39,7 +38,7 @@ void set_accel_data(simple_msgs::Vector3::Ptr &ros_msg, size_t i)
 {
   ros_msg->x = 1;
   ros_msg->y = 2;
-  ros_msg->z = 3;  
+  ros_msg->z = 3;
 }
 
 template<typename T>
