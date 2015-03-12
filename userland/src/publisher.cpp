@@ -3,7 +3,6 @@
 #include <cmath>
 #include <iostream>
 #include <string>
-#include <sys/time.h>
 #include <thread>
 
 #include <rclcpp/rclcpp.hpp>
