@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 2.8.3)
 
 project(userland)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+if(NOT WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+endif()
 
 find_package(rmw REQUIRED)
 
