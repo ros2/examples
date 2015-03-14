@@ -70,7 +70,10 @@ ament_target_dependencies(component_talker
   "rclcpp"
   "rmw_implementation"
   "simple_msgs")
-install(TARGETS component_talker DESTINATION lib)
+install(TARGETS component_talker
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
 # Create an executable for this component style node
 rclcpp_create_node_main(component_talker)
 
