@@ -5,7 +5,7 @@
 #include <simple_msgs/String.h>
 
 namespace userland {
-class Talker : public Node
+class RMW_EXPORT Talker : public Node
 {
 public:
   Talker(rclcpp::ContextSharedPtr context) : Node("talker", context), count_(0)

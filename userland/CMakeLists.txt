@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 2.8.3)
 
 project(userland)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+if(NOT WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+endif()
 
 find_package(rmw REQUIRED)
 
@@ -68,7 +70,10 @@ ament_target_dependencies(component_talker
   "rclcpp"
   "rmw_implementation"
   "simple_msgs")
-install(TARGETS component_talker DESTINATION lib)
+install(TARGETS component_talker
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
 # Create an executable for this component style node
 rclcpp_create_node_main(component_talker)
 
