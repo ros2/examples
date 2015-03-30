@@ -19,7 +19,7 @@ int publish(
   auto start = std::chrono::steady_clock::now();
   rclcpp::WallRate rate(1);
   size_t i = 1;
-  while (rclcpp::ok() and i <= number_of_messages) {
+  while (rclcpp::ok() && i <= number_of_messages) {
     set_data_func(ros_msg, i);
     p->publish(ros_msg);
     std::cout << "published ros msg #" << i << std::endl;
