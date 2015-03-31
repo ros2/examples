@@ -43,6 +43,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rmw_connext.git
     version: master
+  ros2/rmw_implementation:
+    type: git
+    url: https://github.com/ros2/rmw_implementation.git
+    version: master
   ros2/rmw_opensplice:
     type: git
     url: https://github.com/ros2/rmw_opensplice.git
