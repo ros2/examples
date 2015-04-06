@@ -23,6 +23,10 @@ repositories:
     type: git
     url: https://github.com/ros2/examples.git
     version: master
+  ros2/launch:
+    type: git
+    url: https://github.com/ros2/launch.git
+    version: master
   ros2/rcl:
     type: git
     url: https://github.com/ros2/rcl.git
