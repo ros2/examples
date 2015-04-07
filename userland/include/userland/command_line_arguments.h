@@ -56,10 +56,12 @@ const char * get_named_argument(
   char ** begin, char ** end, const std::string & name, const char * default_value = nullptr)
 {
   while (begin != end) {
+    // *INDENT-OFF*
     if (name == *begin && (begin + 1) != end) {
       return *(begin + 1);
     }
     ++begin;
+    // *INDENT-ON*
   }
   return default_value;
 }

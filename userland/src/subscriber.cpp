@@ -148,7 +148,9 @@ int main(int argc, char ** argv)
   const std::string msg_arg = get_named_argument(argv, argv + argc, "--msg", valid_message_args[0]);
   if (msg_arg == valid_message_args[0]) {
     sub = subscribe<simple_msgs::Uint32>(node, print_counter_data);
+    // *INDENT-OFF*
   } else if (msg_arg == valid_message_args[1] || msg_arg == valid_message_args[6]) {
+    // *INDENT-ON*
     sub = subscribe<simple_msgs::AllPrimitiveTypes>(node, &print_all_primitive_data);
   } else if (msg_arg == valid_message_args[2]) {
     sub = subscribe<simple_msgs::AllStaticArrayTypes>(node, &print_all_static_array);
