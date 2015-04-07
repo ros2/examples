@@ -31,15 +31,16 @@
 
 #include <userland_msgs/AddTwoInts.h>
 
-void add(const std::shared_ptr<userland_msgs::AddTwoInts::Request> req,
-         std::shared_ptr<userland_msgs::AddTwoInts::Response> res)
+void add(
+  const std::shared_ptr<userland_msgs::AddTwoInts::Request> req,
+  std::shared_ptr<userland_msgs::AddTwoInts::Response> res)
 {
   std::cout << "Incoming request" << std::endl;
   std::cout << "a: " << req->a << " b: " << req->b << std::endl;
   res->sum = req->a + req->b;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 

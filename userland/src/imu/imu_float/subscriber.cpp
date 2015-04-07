@@ -19,22 +19,24 @@
 
 
 template<typename T>
-rclcpp::subscription::SubscriptionBase::SharedPtr subscribe(rclcpp::Node::SharedPtr node, typename rclcpp::subscription::Subscription<T>::CallbackType callback)
+rclcpp::subscription::SubscriptionBase::SharedPtr subscribe(
+  rclcpp::Node::SharedPtr node,
+  typename rclcpp::subscription::Subscription<T>::CallbackType callback)
 {
   auto sub = node->create_subscription<T>("imu", 1000, callback);
   return sub;
 }
 
-void print_accel_data(const simple_msgs::Vector3Float::ConstPtr &msg)
+void print_accel_data(const simple_msgs::Vector3Float::ConstPtr & msg)
 {
-  std::cout << "-------------------------"<< std::endl;
+  std::cout << "-------------------------" << std::endl;
   std::cout << "Got accel x=" << msg->x << std::endl;
   std::cout << "Got accel y=" << msg->y << std::endl;
   std::cout << "Got accel z=" << msg->z << std::endl;
-  std::cout << "-------------------------"<< std::endl;
+  std::cout << "-------------------------" << std::endl;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 

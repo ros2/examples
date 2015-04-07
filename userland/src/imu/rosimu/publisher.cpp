@@ -25,7 +25,7 @@
 
 
 template<typename T>
-int publish(rclcpp::Node::SharedPtr node, void (*set_data_func)(typename T::Ptr&, size_t))
+int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::Ptr &, size_t))
 {
   auto p = node->create_publisher<T>("imu", 1000);
   typename T::Ptr ros_msg(new T());
@@ -36,7 +36,7 @@ int publish(rclcpp::Node::SharedPtr node, void (*set_data_func)(typename T::Ptr&
   while (rclcpp::ok()) {
     set_data_func(ros_msg, i);
     p->publish(ros_msg);
-      std::cout << "published Imu ROS msg #" << i << std::endl;
+    std::cout << "published Imu ROS msg #" << i << std::endl;
     ++i;
     rate.sleep();
   }
@@ -48,7 +48,7 @@ int publish(rclcpp::Node::SharedPtr node, void (*set_data_func)(typename T::Ptr&
   return 0;
 }
 
-void set_imu_data(simple_msgs::Imu::Ptr &ros_msg, size_t i)
+void set_imu_data(simple_msgs::Imu::Ptr & ros_msg, size_t i)
 {
   // Define the header
   ros_msg->header.seq = i;
@@ -57,14 +57,14 @@ void set_imu_data(simple_msgs::Imu::Ptr &ros_msg, size_t i)
   ros_msg->header.frame_id = "";
 
   // Define the orientation
-  ros_msg->orientation.x =0;
-  ros_msg->orientation.y =0;
-  ros_msg->orientation.z =0;
-  ros_msg->orientation.w =0;
+  ros_msg->orientation.x = 0;
+  ros_msg->orientation.y = 0;
+  ros_msg->orientation.z = 0;
+  ros_msg->orientation.w = 0;
 
 
   // Define the orientation_covariance
-  for (int i = 0; i<9; i++){
+  for (int i = 0; i < 9; i++) {
     ros_msg->orientation_covariance[i] = 0;
   }
   // Define the angular_velocity
@@ -73,7 +73,7 @@ void set_imu_data(simple_msgs::Imu::Ptr &ros_msg, size_t i)
   ros_msg->angular_velocity.z = 0;
 
   // Define the angular_velocity_covariance
-  for (int i = 0; i<9; i++){
+  for (int i = 0; i < 9; i++) {
     ros_msg->angular_velocity_covariance[i] = 0;
   }
   // Define the linear_acceleration
@@ -82,19 +82,19 @@ void set_imu_data(simple_msgs::Imu::Ptr &ros_msg, size_t i)
   ros_msg->linear_acceleration.z = 3 + i;
 
   // Define the linear_acceleration_covariance
-  for (int i = 0; i<9; i++){
+  for (int i = 0; i < 9; i++) {
     ros_msg->linear_acceleration_covariance[i] = 0;
   }
 }
 
 template<typename T>
-void set_empty(typename T::Ptr &ros_msg, size_t i)
+void set_empty(typename T::Ptr & ros_msg, size_t i)
 {
   ros_msg.reset(new T());
 }
 
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 

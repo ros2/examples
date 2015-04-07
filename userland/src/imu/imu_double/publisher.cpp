@@ -25,7 +25,7 @@
 
 
 template<typename T>
-int publish(rclcpp::Node::SharedPtr node, void (*set_data_func)(typename T::Ptr&, size_t))
+int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::Ptr &, size_t))
 {
   auto p = node->create_publisher<T>("imu", 1000);
   typename T::Ptr ros_msg(new T());
@@ -36,7 +36,7 @@ int publish(rclcpp::Node::SharedPtr node, void (*set_data_func)(typename T::Ptr&
   while (rclcpp::ok()) {
     set_data_func(ros_msg, i);
     p->publish(ros_msg);
-      std::cout << "published Vector3 ROS msg #" << i << std::endl;
+    std::cout << "published Vector3 ROS msg #" << i << std::endl;
     ++i;
     rate.sleep();
   }
@@ -48,7 +48,7 @@ int publish(rclcpp::Node::SharedPtr node, void (*set_data_func)(typename T::Ptr&
   return 0;
 }
 
-void set_accel_data(simple_msgs::Vector3::Ptr &ros_msg, size_t i)
+void set_accel_data(simple_msgs::Vector3::Ptr & ros_msg, size_t i)
 {
   ros_msg->x = 1;
   ros_msg->y = 2;
@@ -56,13 +56,13 @@ void set_accel_data(simple_msgs::Vector3::Ptr &ros_msg, size_t i)
 }
 
 template<typename T>
-void set_empty(typename T::Ptr &ros_msg, size_t i)
+void set_empty(typename T::Ptr & ros_msg, size_t i)
 {
   ros_msg.reset(new T());
 }
 
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 

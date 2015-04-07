@@ -18,11 +18,13 @@
 
 #include <simple_msgs/String.h>
 
-namespace userland {
+namespace userland
+{
 class RMW_EXPORT Talker : public Node
 {
 public:
-  Talker(rclcpp::ContextSharedPtr context) : Node("talker", context), count_(0)
+  Talker(rclcpp::ContextSharedPtr context)
+  : Node("talker", context), count_(0)
   {
     chatter_pub_ = this->create_publisher<simple_msgs::String>("chatter", 7);
     publish_timer_ = this->create_wall_timer(0.5_s, std::bind(&Talker::on_timer, this));

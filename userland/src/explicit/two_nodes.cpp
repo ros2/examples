@@ -19,12 +19,12 @@
 
 #include <simple_msgs/String.h>
 
-void on_message(const simple_msgs::String::ConstPtr &msg)
+void on_message(const simple_msgs::String::ConstPtr & msg)
 {
   std::cout << "I heard [" << msg->data << "]" << std::endl;
 }
 
-void on_timer(rclcpp::Publisher::SharedPtr &publisher, int &i)
+void on_timer(rclcpp::Publisher::SharedPtr & publisher, int & i)
 {
   simple_msgs::String::Ptr msg(new simple_msgs::String());
   msg->data = "Hello World: " + std::to_string(i++);
@@ -36,7 +36,7 @@ void on_timer(rclcpp::Publisher::SharedPtr &publisher, int &i)
   }
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 

@@ -19,34 +19,36 @@
 
 
 template<typename T>
-rclcpp::subscription::SubscriptionBase::SharedPtr subscribe(rclcpp::Node::SharedPtr node, typename rclcpp::subscription::Subscription<T>::CallbackType callback)
+rclcpp::subscription::SubscriptionBase::SharedPtr subscribe(
+  rclcpp::Node::SharedPtr node,
+  typename rclcpp::subscription::Subscription<T>::CallbackType callback)
 {
   auto sub = node->create_subscription<T>("imu", 1000, callback);
   return sub;
 }
 
-void print_accel_data(const simple_msgs::Imu32::ConstPtr &msg)
+void print_accel_data(const simple_msgs::Imu32::ConstPtr & msg)
 {
 
-  std::cout << "-------------------------"<< std::endl;
+  std::cout << "-------------------------" << std::endl;
   std::cout << "Got Imu32 msg" << std::endl;
-  std::cout << "-------------------------"<< std::endl;
-  
+  std::cout << "-------------------------" << std::endl;
+
   // Define the header
-  std::cout << "ros_msg->header.seq= " << msg->header.seq << std::endl;  
-  std::cout << "msg->header.stamp.sec= " << msg->header.stamp.sec  << std::endl;
-  std::cout << "msg->header.stamp.nanosec= " << msg->header.stamp.nanosec  << std::endl;
-  std::cout << "msg->header.frame_id= " << msg->header.frame_id  << std::endl;
+  std::cout << "ros_msg->header.seq= " << msg->header.seq << std::endl;
+  std::cout << "msg->header.stamp.sec= " << msg->header.stamp.sec << std::endl;
+  std::cout << "msg->header.stamp.nanosec= " << msg->header.stamp.nanosec << std::endl;
+  std::cout << "msg->header.frame_id= " << msg->header.frame_id << std::endl;
 
   // Define the orientation
   std::cout << "msg->orientation.x= " << msg->orientation.x << std::endl;
   std::cout << "msg->orientation.y= " << msg->orientation.y << std::endl;
   std::cout << "msg->orientation.z= " << msg->orientation.z << std::endl;
   std::cout << "msg->orientation.w= " << msg->orientation.w << std::endl;
-  
+
 
   // Define the orientation_covariance
-  for (int i = 0; i<9; i++){
+  for (int i = 0; i < 9; i++) {
     std::cout << "msg->orientation_covariance[i]= " << msg->orientation_covariance[i] << std::endl;
   }
   // Define the angular_velocity
@@ -55,22 +57,24 @@ void print_accel_data(const simple_msgs::Imu32::ConstPtr &msg)
   std::cout << "msg->angular_velocity.z= " << msg->angular_velocity.z << std::endl;
 
   // Define the angular_velocity_covariance
-  for (int i = 0; i<9; i++){
-    std::cout << "msg->angular_velocity_covariance[i]= " << msg->angular_velocity_covariance[i] << std::endl;
-  }  
+  for (int i = 0; i < 9; i++) {
+    std::cout << "msg->angular_velocity_covariance[i]= " << msg->angular_velocity_covariance[i] <<
+      std::endl;
+  }
   // Define the linear_acceleration
   std::cout << "msg->linear_acceleration.x= " << msg->linear_acceleration.x << std::endl;
   std::cout << "msg->linear_acceleration.y= " << msg->linear_acceleration.y << std::endl;
   std::cout << "msg->linear_acceleration.z= " << msg->linear_acceleration.z << std::endl;
-  
+
   // Define the linear_acceleration_covariance
-  for (int i = 0; i<9; i++){
-    std::cout << "msg->linear_acceleration_covariance[i]= " << msg->linear_acceleration_covariance[i] << std::endl;
+  for (int i = 0; i < 9; i++) {
+    std::cout << "msg->linear_acceleration_covariance[i]= " <<
+      msg->linear_acceleration_covariance[i] << std::endl;
   }
-  std::cout << "-------------------------"<< std::endl;
+  std::cout << "-------------------------" << std::endl;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 
