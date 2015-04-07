@@ -21,7 +21,7 @@ def test_publish_subscribe():
     launcher.add_launch_descriptor(ld)
     rc = launcher.launch()
 
-    assert rc == 0, 'The subsciber did not receive any messages'
+    assert rc == 0, 'The subscriber did not receive any messages'
 
 
 if __name__ == '__main__':
