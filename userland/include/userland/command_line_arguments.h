@@ -20,7 +20,16 @@
 #include <string>
 
 
-const char * valid_message_args[] = {"counter", "all_primitive", "all_static_array", "all_dynamic_array", "nested", "string", "all_primitive_defaults", "all_builtin"};
+const char * valid_message_args[] = {
+  "counter",
+  "all_primitive",
+  "all_static_array",
+  "all_dynamic_array",
+  "nested",
+  "string",
+  "all_primitive_defaults",
+  "all_builtin"
+};
 
 void print_message_usage()
 {
@@ -32,20 +41,27 @@ void print_message_usage()
   std::cout << std::endl;
 }
 
-bool has_argument(char ** begin, char ** end, const std::string& name)
+bool has_argument(char ** begin, char ** end, const std::string & name)
 {
   while (begin != end) {
-    if (name == *begin) return true;
+    if (name == *begin) {
+      return true;
+    }
     ++begin;
   }
   return false;
 }
 
-const char * get_named_argument(char ** begin, char ** end, const std::string& name, const char * default_value = nullptr)
+const char * get_named_argument(
+  char ** begin, char ** end, const std::string & name, const char * default_value = nullptr)
 {
   while (begin != end) {
-    if (name == *begin && (begin + 1) != end) return *(begin + 1);
+    // *INDENT-OFF*
+    if (name == *begin && (begin + 1) != end) {
+      return *(begin + 1);
+    }
     ++begin;
+    // *INDENT-ON*
   }
   return default_value;
 }

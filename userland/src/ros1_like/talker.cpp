@@ -21,7 +21,7 @@
 // #include "std_msgs/String.h"
 #include <simple_msgs/String.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char * argv[])
 {
   // ros::init(argc, argv, "talker");
   rclcpp::init(argc, argv);

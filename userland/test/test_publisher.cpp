@@ -24,7 +24,7 @@
 template<typename T>
 int publish(
   rclcpp::Node::SharedPtr node,
-  std::function<void(typename T::Ptr&, size_t)> set_data_func,
+  std::function<void(typename T::Ptr &, size_t)> set_data_func,
   size_t number_of_messages)
 {
   auto p = node->create_publisher<T>("topic_name", 10);
@@ -48,12 +48,12 @@ int publish(
   return 0;
 }
 
-void set_counter_data(simple_msgs::Uint32::Ptr &ros_msg, size_t i)
+void set_counter_data(simple_msgs::Uint32::Ptr & ros_msg, size_t i)
 {
   ros_msg->data = i;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 

@@ -46,7 +46,7 @@ void on_timer_group2()
             << std::endl;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 

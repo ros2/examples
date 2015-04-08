@@ -22,27 +22,27 @@
 
 struct Intraprocess_t
 {
-  std::string* data;
+  std::string * data;
   int count; // # of receivers
 };
 
-void decrement(Intraprocess_t* meta)
+void decrement(Intraprocess_t * meta)
 {
   (meta->count)--;
   if (meta->count == 0) {
-    std::cout << "------ remove the object!"  << std::endl;
+    std::cout << "------ remove the object!" << std::endl;
     delete meta->data;
   }
 }
 
-void callback(const simple_msgs::Intraprocess::ConstPtr &msg)
+void callback(const simple_msgs::Intraprocess::ConstPtr & msg)
 {
-  Intraprocess_t* meta = (Intraprocess_t *) msg->ptr;
-  std::cout << "------ Got message: " <<  *(meta->data) << std::endl;
+  Intraprocess_t * meta = (Intraprocess_t *) msg->ptr;
+  std::cout << "------ Got message: " << *(meta->data) << std::endl;
   decrement(meta);
 }
 
-void monitor(std::string* s)
+void monitor(std::string * s)
 {
   while (1) {
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -60,7 +60,7 @@ void launch_subscriber(void)
   rclcpp::spin(node);
 }
 
-void launch_publisher(Intraprocess_t* s)
+void launch_publisher(Intraprocess_t * s)
 {
   std::cout << "------ Creating publisher:" << std::endl;
   auto n = rclcpp::Node::make_shared("prototype_intraprocess_pub");
@@ -76,7 +76,7 @@ void launch_publisher(Intraprocess_t* s)
     ros_msg->ptr = (uint64_t)s;
     p->publish(ros_msg);
     // if (i % 100000 == 0) {
-      std::cout << "------ published ros pointer to Intraprocess_t " << i << std::endl;
+    std::cout << "------ published ros pointer to Intraprocess_t " << i << std::endl;
     // }
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   }
@@ -85,17 +85,17 @@ void launch_publisher(Intraprocess_t* s)
   std::cout << (end - start).count() << std::endl;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
-  std::string* s = new std::string("Message sent through ROS");
+  std::string * s = new std::string("Message sent through ROS");
   Intraprocess_t meta;
   meta.data = s;
   meta.count = 1;
 
   // monitor
-  std::thread monitor_thread (monitor, s);
+  std::thread monitor_thread(monitor, s);
   // publisher
-  std::thread publisher_thread (launch_publisher, &meta);
+  std::thread publisher_thread(launch_publisher, &meta);
   // subscriber
   launch_subscriber();
   publisher_thread.join();

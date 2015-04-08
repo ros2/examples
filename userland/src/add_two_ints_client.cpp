@@ -31,7 +31,7 @@
 
 #include <userland_msgs/AddTwoInts.h>
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 
@@ -45,24 +45,24 @@ int main(int argc, char** argv)
   auto f = client->async_send_request(request);
 
   std::future_status status;
-  do
-  {
+  do {
     rclcpp::spin_some(node);
     status = f.wait_for(std::chrono::milliseconds(100));
-  } while(status != std::future_status::ready && rclcpp::ok());
+  } while (status != std::future_status::ready && rclcpp::ok());
 
-  if(std::future_status::ready == status)
-  {
+  if (std::future_status::ready == status) {
     std::cout << "FUTURE READY" << std::endl;
     std::cout << f.get()->sum << std::endl;
   }
 
+  // *INDENT-OFF*
   client->async_send_request(
     request,
-    [] (rclcpp::client::Client<userland_msgs::AddTwoInts>::SharedFuture cb_f) {
+    [](rclcpp::client::Client<userland_msgs::AddTwoInts>::SharedFuture cb_f) {
       std::cout << "CALLBACK" << std::endl;
       std::cout << cb_f.get()->sum << std::endl;
   });
+  // *INDENT-ON*
   rclcpp::spin(node);
 
   return 0;
