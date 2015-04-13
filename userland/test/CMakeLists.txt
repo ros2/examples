@@ -4,12 +4,14 @@ foreach(middleware_impl_tmp ${middleware_implementations})
 
   add_executable(test_publisher__${middleware_impl_tmp} "test_publisher.cpp")
   ament_target_dependencies(test_publisher__${middleware_impl_tmp}
+    "rcl_interfaces"
     "rclcpp"
     "${middleware_impl_tmp}"
     "simple_msgs")
 
   add_executable(test_subscriber__${middleware_impl_tmp} "test_subscriber.cpp")
   ament_target_dependencies(test_subscriber__${middleware_impl_tmp}
+    "rcl_interfaces"
     "rclcpp"
     "${middleware_impl_tmp}"
     "simple_msgs")

@@ -9,6 +9,7 @@ endif()
 find_package(rmw REQUIRED)
 
 find_package(ament_cmake REQUIRED)
+find_package(rcl_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rmw_implementation REQUIRED)
 find_package(simple_msgs REQUIRED)
@@ -28,6 +29,7 @@ function(build_executable executable)
   # Build the normal executable
   add_executable(${executable} ${ARGN})
   ament_target_dependencies(${executable}
+    "rcl_interfaces"
     "rclcpp"
     "rmw_implementation"
     "simple_msgs"
@@ -39,6 +41,7 @@ function(build_executable executable)
   foreach(middleware_impl_tmp ${middleware_implementations})
     add_executable(${executable}__${middleware_impl_tmp} ${ARGN})
     ament_target_dependencies(${executable}__${middleware_impl_tmp}
+      "rcl_interfaces"
       "rclcpp"
       "${middleware_impl_tmp}"
       "simple_msgs"
@@ -67,6 +70,7 @@ endfunction()
 # # node_name_node executable
 add_library(component_talker SHARED src/component/component_talker.cpp)
 ament_target_dependencies(component_talker
+  "rcl_interfaces"
   "rclcpp"
   "rmw_implementation"
   "simple_msgs")
@@ -122,6 +126,10 @@ build_executable(two_nodes src/explicit/two_nodes.cpp)
 # Build services examples
 build_executable(add_two_ints_client src/add_two_ints_client.cpp)
 build_executable(add_two_ints_server src/add_two_ints_server.cpp)
+
+# Build parameters examples
+build_executable(parameters src/parameters.cpp)
+
 
 if(AMENT_ENABLE_TESTING)
   add_subdirectory(test)
