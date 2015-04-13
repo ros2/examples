@@ -15,8 +15,11 @@
 # limitations under the License.
 
 import rclpy
+
+
 class String:
     TYPE_SUPPORT = 'string_type'
+
 
 def callback(msg):
     print("I heard: [{0}]".format(msg.data))

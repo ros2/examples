@@ -26,6 +26,7 @@ from rcl_api import subscription_take
 def ok():
     return True
 
+
 class Node():
     def __init__(self, name, context=None):
         if not isinstance(name, str):
@@ -128,6 +129,7 @@ class MultiThreadedExecutor(Executor):
                     return
                 any_exec = executor_get_next_executable()
                 executor_execute_any_executable(any_exec)
+
 
 def init():
     pass
