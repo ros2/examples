@@ -31,6 +31,10 @@ repositories:
     type: git
     url: https://github.com/ros2/rcl.git
     version: master
+  ros2/rcl_interfaces:
+    type: git
+    url: https://github.com/ros2/rcl_interfaces.git
+    version: master
   ros2/rclc:
     type: git
     url: https://github.com/ros2/rclc.git
