@@ -19,6 +19,10 @@ repositories:
     type: git
     url: https://github.com/osrf/osrf_pycommon.git
     version: master
+  ament/uncrustify:
+    type: git
+    url: https://github.com/ament/uncrustify.git
+    version: master
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
