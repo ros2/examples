@@ -34,7 +34,7 @@ int main(int argc, char ** argv)
 
   auto f1 = node->async_has_parameter(node_name, "foo");
   bool found = wait_for_future<bool>(node, f1);
-  std::cout << "Parameter (foo) found: " << found << std::endl;
+  std::cout << "Parameter (foo) found: " << (found ? "true" : "false") << std::endl;
 
   int64_t value1 = 1234;
   auto f2 = node->async_set_parameter(node_name, "foo", value1);
@@ -43,7 +43,7 @@ int main(int argc, char ** argv)
 
   auto f3 = node->async_has_parameter(node_name, "foo");
   found = wait_for_future<bool>(node, f3);
-  std::cout << "Parameter (foo) found: " << found << std::endl;
+  std::cout << "Parameter (foo) found: " << (found ? "true" : "false") << std::endl;
 
   const std::vector<rclcpp::parameter::ParameterContainer> kv = {
     rclcpp::parameter::ParameterContainer("foo", value1)
