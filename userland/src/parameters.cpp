@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
 
-  const std::string node_name("paramers_example");
+  const std::string node_name("parameters_example");
 
   rclcpp::node::Node::SharedPtr node = rclcpp::Node::make_shared(node_name);
 
