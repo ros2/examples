@@ -1,7 +1,18 @@
 find_package(ament_cmake_nose REQUIRED)
 
-foreach(middleware_impl_tmp ${middleware_implementations})
+if(NOT WIN32)
+  set(test_executable_extension "")
+  set(test_executable_subfolder "")
+else()
+  set(test_executable_extension ".exe")
+  set(test_executable_subfolder "/${CMAKE_BUILD_TYPE}")
+  if("${test_executable_subfolder}" STREQUAL "/")
+    set(test_executable_subfolder "/Debug")
+  endif()
+endif()
 
+foreach(middleware_impl_tmp ${middleware_implementations})
+  # test publish / subscribe
   add_executable(test_publisher__${middleware_impl_tmp} "test_publisher.cpp")
   ament_target_dependencies(test_publisher__${middleware_impl_tmp}
     "rclcpp"
@@ -14,13 +25,8 @@ foreach(middleware_impl_tmp ${middleware_implementations})
     "${middleware_impl_tmp}"
     "simple_msgs")
 
-  if(NOT WIN32)
-    set(test_executable_extension "")
-  else()
-    set(test_executable_extension ".exe")
-  endif()
-  set(TEST_PUBLISHER_EXECUTABLE "${CMAKE_CURRENT_BINARY_DIR}/test_publisher__${middleware_impl_tmp}${test_executable_extension}")
-  set(TEST_SUBSCRIBER_EXECUTABLE "${CMAKE_CURRENT_BINARY_DIR}/test_subscriber__${middleware_impl_tmp}${test_executable_extension}")
+  set(TEST_PUBLISHER_EXECUTABLE "${CMAKE_CURRENT_BINARY_DIR}${test_executable_subfolder}/test_publisher__${middleware_impl_tmp}${test_executable_extension}")
+  set(TEST_SUBSCRIBER_EXECUTABLE "${CMAKE_CURRENT_BINARY_DIR}${test_executable_subfolder}/test_subscriber__${middleware_impl_tmp}${test_executable_extension}")
   configure_file(
     test_publish_subscribe.py.in
     test_publish_subscribe__${middleware_impl_tmp}.py
