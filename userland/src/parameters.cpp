@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 
   const std::string node_name("parameters_example");
 
-  rclcpp::node::Node::SharedPtr node = rclcpp::Node::make_shared(node_name);
+  auto node = rclcpp::Node::make_shared(node_name);
 
   auto f1 = node->async_has_parameter(node_name, rclcpp::parameter::ParameterQuery("foo"));
   bool found = wait_for_future<bool>(node, f1);
