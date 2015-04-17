@@ -7,7 +7,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-template <typename ParameterTypeT>
+template<typename ParameterTypeT>
 ParameterTypeT
 wait_for_future(rclcpp::node::Node::SharedPtr & node, std::shared_future<ParameterTypeT> & future)
 {
@@ -24,7 +24,7 @@ wait_for_future(rclcpp::node::Node::SharedPtr & node, std::shared_future<Paramet
   throw std::runtime_error("Invalid future status");
 }
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 
@@ -46,7 +46,8 @@ int main(int argc, char** argv)
   std::cout << "Parameter (foo) found: " << found << std::endl;
 
   const std::vector<rclcpp::parameter::ParameterContainer> kv = {
-    rclcpp::parameter::ParameterContainer("foo", value1)};
+    rclcpp::parameter::ParameterContainer("foo", value1)
+  };
 
   auto f4 = node->async_set_parameters(node_name, kv);
   wait_for_future<bool>(node, f4);
@@ -55,18 +56,19 @@ int main(int argc, char** argv)
   int64_t value2 = wait_for_future<int64_t>(node, f5);
   std::cout << "Value for parameter (foo): " << value2 << std::endl;
 
-  const std::vector<std::string> pn = { "foo" };
+  const std::vector<std::string> pn = {"foo"};
   auto f6 = node->async_get_parameters(node_name, pn);
-  auto multi_value = wait_for_future< std::vector<rclcpp::parameter::ParameterContainer> >(node, f6);
+  auto multi_value = wait_for_future<std::vector<rclcpp::parameter::ParameterContainer>>(node, f6);
 
-  for(auto v : multi_value) {
+  for (auto v : multi_value) {
     std::cout << "Value for parameter (foo) (multi value): " << v.get_value<int64_t>() << std::endl;
   }
 
   auto f7 = node->async_get_parameter<int64_t>(
-    node_name, "foo", [] (std::shared_future<int64_t> f) {
-      std::cout << "Value for parameter (foo) (callback): " << f.get() << std::endl; }
-  );
+    node_name, "foo", [](std::shared_future<int64_t> f) {
+    std::cout << "Value for parameter (foo) (callback): " << f.get() << std::endl;
+  }
+    );
   wait_for_future<int64_t>(node, f7);
   rclcpp::spin(node);
 
