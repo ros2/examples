@@ -32,7 +32,7 @@ int main(int argc, char ** argv)
 
   auto node = rclcpp::Node::make_shared(node_name);
 
-  auto f1 = node->async_has_parameter(node_name, rclcpp::parameter::ParameterQuery("foo"));
+  auto f1 = node->async_has_parameter(node_name, "foo");
   bool found = wait_for_future<bool>(node, f1);
   std::cout << "Parameter (foo) found: " << found << std::endl;
 
@@ -41,7 +41,7 @@ int main(int argc, char ** argv)
   wait_for_future<bool>(node, f2);
   std::cout << "Setting value: " << value1 << " for parameter (foo)" << std::endl;
 
-  auto f3 = node->async_has_parameter(node_name, rclcpp::parameter::ParameterQuery("foo"));
+  auto f3 = node->async_has_parameter(node_name, "foo");
   found = wait_for_future<bool>(node, f3);
   std::cout << "Parameter (foo) found: " << found << std::endl;
 
