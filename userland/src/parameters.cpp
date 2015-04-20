@@ -41,7 +41,9 @@ int main(int argc, char ** argv)
 
   const std::vector<std::string> pn = {"foo"};
   auto f6 = node->async_get_parameters(node_name, pn);
-  auto multi_value = rclcpp::spin_until_future_complete<std::vector<rclcpp::parameter::ParameterContainer>>(node, f6).get();
+  auto multi_value =
+    rclcpp::spin_until_future_complete<std::vector<rclcpp::parameter::ParameterContainer>>(node,
+      f6).get();
 
   for (auto v : multi_value) {
     std::cout << "Value for parameter (foo) (multi value): " << v.get_value<int64_t>() << std::endl;
