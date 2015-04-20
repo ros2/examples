@@ -32,12 +32,13 @@
 #include <userland_msgs/AddTwoInts.h>
 
 void add(
-  const std::shared_ptr<userland_msgs::AddTwoInts::Request> req,
-  std::shared_ptr<userland_msgs::AddTwoInts::Response> res)
+  const std::shared_ptr<rmw_request_id_t> request_header,
+  const std::shared_ptr<userland_msgs::AddTwoInts::Request> request,
+  std::shared_ptr<userland_msgs::AddTwoInts::Response> response)
 {
   std::cout << "Incoming request" << std::endl;
-  std::cout << "a: " << req->a << " b: " << req->b << std::endl;
-  res->sum = req->a + req->b;
+  std::cout << "a: " << request->a << " b: " << request->b << std::endl;
+  response->sum = request->a + request->b;
 }
 
 int main(int argc, char ** argv)
