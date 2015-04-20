@@ -19,11 +19,12 @@
 #include <userland_msgs/AddTwoInts.h>
 
 void add(
-  const std::shared_ptr<userland_msgs::AddTwoInts::Request> req,
-  std::shared_ptr<userland_msgs::AddTwoInts::Response> res)
+  const std::shared_ptr<rmw_request_id_t> request_header,
+  const std::shared_ptr<userland_msgs::AddTwoInts::Request> request,
+  std::shared_ptr<userland_msgs::AddTwoInts::Response> response)
 {
-  std::cout << "Got request #" << req->a << std::endl;
-  res->sum = req->a + req->b;
+  std::cout << "Got request #" << request_header->sequence_number << std::endl;
+  response->sum = request->a + request->b;
 }
 
 int main(int argc, char ** argv)
