@@ -21,7 +21,7 @@ def test_request_response():
     launcher.add_launch_descriptor(ld)
     rc = launcher.launch()
 
-    assert rc == 0, 'The server did not receive any requests'
+    assert rc == 0, 'The client did not receive any responses'
 
 
 if __name__ == '__main__':
