@@ -8,7 +8,7 @@ uint32 seq
 # * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')
 # * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')
 # time-handling sugar is provided by the client library
-Time stamp
+builtin_msgs/Time stamp
 #Frame this data is associated with
 # 0: no frame
 # 1: global frame

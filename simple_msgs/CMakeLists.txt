@@ -11,7 +11,6 @@ find_package(builtin_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/Time.msg"
   "msg/Header.msg"
   "msg/Quaternion32.msg"
   "msg/Quaternion.msg"
