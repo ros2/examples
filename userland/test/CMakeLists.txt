@@ -39,8 +39,6 @@ foreach(middleware_impl_tmp ${middleware_implementations})
     PROPERTIES DEPENDS "test_publisher__${middleware_impl_tmp};test_subscriber__${middleware_impl_tmp}"
   )
 
-  # skip Connext XTypes for now
-  if(NOT "${middleware_impl_tmp} " STREQUAL "rmw_connext_xtypes_dynamic_cpp ")
   # test server / client
   add_executable(test_server__${middleware_impl_tmp} "test_server.cpp")
   ament_target_dependencies(test_server__${middleware_impl_tmp}
@@ -72,5 +70,4 @@ foreach(middleware_impl_tmp ${middleware_implementations})
     request_response__${middleware_impl_tmp}
     PROPERTIES DEPENDS "test_server__${middleware_impl_tmp};test_client__${middleware_impl_tmp}"
   )
-  endif()
 endforeach()
