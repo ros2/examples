@@ -47,7 +47,10 @@ int main(int argc, char ** argv)
 
   auto node = rclcpp::Node::make_shared("add_two_ints_server");
 
-  node->create_service<userland_msgs::AddTwoInts>("add_two_ints", add);
+  node->create_service<userland_msgs::AddTwoInts>("add_two_ints",
+    // TODO(wjwwood): find a more elegant way to avoid the "ambiguous overloaded function call"
+    // See: https://github.com/ros2/rmw_connext/issues/26
+    static_cast<rclcpp::service::Service<userland_msgs::AddTwoInts>::CallbackWithHeaderType>(add));
 
   rclcpp::spin(node);
 
