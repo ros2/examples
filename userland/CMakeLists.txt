@@ -123,8 +123,9 @@ build_executable(two_nodes src/explicit/two_nodes.cpp)
 build_executable(add_two_ints_client src/add_two_ints_client.cpp)
 build_executable(add_two_ints_server src/add_two_ints_server.cpp)
 
-# Build parameters example
-build_executable(parameters src/parameters.cpp)
+# Build parameters examples
+build_executable(async_parameters src/async_parameters.cpp)
+build_executable(sync_parameters src/sync_parameters.cpp)
 
 if(AMENT_ENABLE_TESTING)
   add_subdirectory(test)
