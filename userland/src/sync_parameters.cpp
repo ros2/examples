@@ -40,9 +40,9 @@ int main(int argc, char ** argv)
   auto sync_parameters_client = std::make_shared<rclcpp::parameter::SyncParametersClient>(node);
 
   auto parameter_variants = {
-    rclcpp::parameter::ParameterVariant("foo", int64_t(2)),
-    rclcpp::parameter::ParameterVariant("bar", std::string("hello")),
-    rclcpp::parameter::ParameterVariant("baz", double(1.45)),
+    rclcpp::parameter::ParameterVariant("foo", 2),
+    rclcpp::parameter::ParameterVariant("bar", "hello"),
+    rclcpp::parameter::ParameterVariant("baz", 1.45),
     rclcpp::parameter::ParameterVariant("foobar", true),
   };
 
