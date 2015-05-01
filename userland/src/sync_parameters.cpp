@@ -53,7 +53,7 @@ int main(int argc, char ** argv)
     }
   }
 
-  auto parameters = sync_parameters_client->get_parameters({{"foo", "baz"}});
+  auto parameters = sync_parameters_client->get_parameters({"foo", "baz"});
 
   for (auto & p : parameters) {
     std::cout << "Parameter name: " << p.get_name() << std::endl;
@@ -81,7 +81,7 @@ int main(int argc, char ** argv)
     std::cout << std::endl;
   }
 
-  auto parameters_and_prefixes = sync_parameters_client->list_parameters({{"foo", "bar"}}, 10);
+  auto parameters_and_prefixes = sync_parameters_client->list_parameters({"foo", "bar"}, 10);
 
   for (auto & parameter_name : parameters_and_prefixes.parameter_names) {
     std::cout << "Parameter name: " << parameter_name << std::endl;
