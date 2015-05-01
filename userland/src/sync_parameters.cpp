@@ -39,23 +39,23 @@ int main(int argc, char ** argv)
 
   auto sync_parameters_client = std::make_shared<rclcpp::parameter::SyncParametersClient>(node);
 
-  auto parameters = {
+  auto parameter_variants = {
     rclcpp::parameter::ParameterVariant("foo", int64_t(2)),
     rclcpp::parameter::ParameterVariant("bar", std::string("hello")),
     rclcpp::parameter::ParameterVariant("baz", double(1.45)),
     rclcpp::parameter::ParameterVariant("foobar", true),
   };
 
-  auto results1 = sync_parameters_client->set_parameters(parameters);
-  for (auto v : results1) {
-    if (!v.successful) {
-      std::cerr << v.reason << std::endl;
+  auto set_parameters_results = sync_parameters_client->set_parameters(parameter_variants);
+  for (auto result : set_parameters_results) {
+    if (!result.successful) {
+      std::cerr << result.reason << std::endl;
     }
   }
 
-  auto results2 = sync_parameters_client->get_parameters({{"foo", "baz"}});
+  auto parameters = sync_parameters_client->get_parameters({{"foo", "baz"}});
 
-  for (auto p : results2) {
+  for (auto p : parameters) {
     std::cout << "Parameter name: " << p.get_name() << std::endl;
     std::cout << "Parameter value: ";
     switch (p.get_type()) {
@@ -81,12 +81,12 @@ int main(int argc, char ** argv)
     std::cout << std::endl;
   }
 
-  auto results3 = sync_parameters_client->list_parameters({{"foo", "bar"}}, 10);
+  auto parameters_and_prefixes = sync_parameters_client->list_parameters({{"foo", "bar"}}, 10);
 
-  for (auto parameter_name : results3.parameter_names) {
+  for (auto parameter_name : parameters_and_prefixes.parameter_names) {
     std::cout << "Parameter name: " << parameter_name << std::endl;
   }
-  for (auto parameter_prefix : results3.parameter_prefixes) {
+  for (auto parameter_prefix : parameters_and_prefixes.parameter_prefixes) {
     std::cout << "Parameter prefix: " << parameter_prefix << std::endl;
   }
 
