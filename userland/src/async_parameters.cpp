@@ -12,24 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <algorithm>
-#include <chrono>
-#include <cmath>
-#include <iostream>
-#include <string>
-#include <thread>
-
 #include <rclcpp/rclcpp.hpp>
-
-#include <simple_msgs/AllBuiltinTypes.h>
-#include <simple_msgs/AllDynamicArrayTypes.h>
-#include <simple_msgs/AllPrimitiveTypes.h>
-#include <simple_msgs/AllStaticArrayTypes.h>
-#include <simple_msgs/Nested.h>
-#include <simple_msgs/String.h>
-#include <simple_msgs/Uint32.h>
-
-#include <userland_msgs/AddTwoInts.h>
 
 int main(int argc, char ** argv)
 {
@@ -40,9 +23,9 @@ int main(int argc, char ** argv)
   auto parameters_client = std::make_shared<rclcpp::parameter::AsyncParametersClient>(node);
 
   auto parameters = {
-    rclcpp::parameter::ParameterVariant("foo", int64_t(2)),
-    rclcpp::parameter::ParameterVariant("bar", std::string("hello")),
-    rclcpp::parameter::ParameterVariant("baz", double(1.45)),
+    rclcpp::parameter::ParameterVariant("foo", 2),
+    rclcpp::parameter::ParameterVariant("bar", "hello"),
+    rclcpp::parameter::ParameterVariant("baz", 1.45),
     rclcpp::parameter::ParameterVariant("foobar", true),
   };
 
