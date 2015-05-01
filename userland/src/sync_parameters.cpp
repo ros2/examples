@@ -47,7 +47,7 @@ int main(int argc, char ** argv)
   };
 
   auto set_parameters_results = sync_parameters_client->set_parameters(parameter_variants);
-  for (auto result : set_parameters_results) {
+  for (auto & result : set_parameters_results) {
     if (!result.successful) {
       std::cerr << result.reason << std::endl;
     }
@@ -55,7 +55,7 @@ int main(int argc, char ** argv)
 
   auto parameters = sync_parameters_client->get_parameters({{"foo", "baz"}});
 
-  for (auto p : parameters) {
+  for (auto & p : parameters) {
     std::cout << "Parameter name: " << p.get_name() << std::endl;
     std::cout << "Parameter value: ";
     switch (p.get_type()) {
@@ -83,10 +83,10 @@ int main(int argc, char ** argv)
 
   auto parameters_and_prefixes = sync_parameters_client->list_parameters({{"foo", "bar"}}, 10);
 
-  for (auto parameter_name : parameters_and_prefixes.parameter_names) {
+  for (auto & parameter_name : parameters_and_prefixes.parameter_names) {
     std::cout << "Parameter name: " << parameter_name << std::endl;
   }
-  for (auto parameter_prefix : parameters_and_prefixes.parameter_prefixes) {
+  for (auto & parameter_prefix : parameters_and_prefixes.parameter_prefixes) {
     std::cout << "Parameter prefix: " << parameter_prefix << std::endl;
   }
 
