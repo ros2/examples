@@ -49,16 +49,20 @@ int main(int argc, char ** argv)
     std::cout << "Parameter value: ";
     switch (p.get_type()) {
       case rclcpp::parameter::ParameterType::PARAMETER_BOOL:
-        std::cout << "(bool): " << p.get_value<bool>() ? "true" : "false";
+        std::cout << "(bool): " <<
+        (p.get_value<rclcpp::parameter::ParameterType::PARAMETER_BOOL>() ? "true" : "false");
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_INTEGER:
-        std::cout << "(integer): " << p.get_value<int64_t>();
+        std::cout << "(integer): " <<
+        p.get_value<rclcpp::parameter::ParameterType::PARAMETER_INTEGER>();
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_DOUBLE:
-        std::cout << "(double): " << p.get_value<double>();
+        std::cout << "(double): " <<
+        p.get_value<rclcpp::parameter::ParameterType::PARAMETER_DOUBLE>();
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_STRING:
-        std::cout << "(string): " << p.get_value<std::string>();
+        std::cout << "(string): " <<
+        p.get_value<rclcpp::parameter::ParameterType::PARAMETER_STRING>();
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_BYTES:
         std::cout << "(bytes)";
