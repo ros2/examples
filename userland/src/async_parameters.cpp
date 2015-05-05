@@ -12,24 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <algorithm>
-#include <chrono>
-#include <cmath>
-#include <iostream>
-#include <string>
-#include <thread>
-
 #include <rclcpp/rclcpp.hpp>
-
-#include <simple_msgs/AllBuiltinTypes.h>
-#include <simple_msgs/AllDynamicArrayTypes.h>
-#include <simple_msgs/AllPrimitiveTypes.h>
-#include <simple_msgs/AllStaticArrayTypes.h>
-#include <simple_msgs/Nested.h>
-#include <simple_msgs/String.h>
-#include <simple_msgs/Uint32.h>
-
-#include <userland_msgs/AddTwoInts.h>
 
 int main(int argc, char ** argv)
 {
@@ -40,16 +23,16 @@ int main(int argc, char ** argv)
   auto parameters_client = std::make_shared<rclcpp::parameter::AsyncParametersClient>(node);
 
   auto parameters = {
-    rclcpp::parameter::ParameterVariant("foo", int64_t(2)),
-    rclcpp::parameter::ParameterVariant("bar", std::string("hello")),
-    rclcpp::parameter::ParameterVariant("baz", double(1.45)),
+    rclcpp::parameter::ParameterVariant("foo", 2),
+    rclcpp::parameter::ParameterVariant("bar", "hello"),
+    rclcpp::parameter::ParameterVariant("baz", 1.45),
     rclcpp::parameter::ParameterVariant("foobar", true),
   };
 
   auto f1 = parameters_client->set_parameters(
-    parameters, [](std::shared_future<std::vector<rcl_interfaces::ParameterSetResult>> f) {
-    for(auto v : f.get()) {
-      if(!v.successful) {
+    parameters, [](std::shared_future<std::vector<rcl_interfaces::SetParametersResult>> f) {
+    for (auto v : f.get()) {
+      if (!v.successful) {
         std::cerr << v.reason << std::endl;
       }
     }
@@ -66,16 +49,20 @@ int main(int argc, char ** argv)
     std::cout << "Parameter value: ";
     switch (p.get_type()) {
       case rclcpp::parameter::ParameterType::PARAMETER_BOOL:
-        std::cout << "(bool): " << p.get_value<bool>() ? "true" : "false";
+        std::cout << "(bool): " <<
+        (p.get_value<rclcpp::parameter::ParameterType::PARAMETER_BOOL>() ? "true" : "false");
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_INTEGER:
-        std::cout << "(integer): " << p.get_value<int64_t>();
+        std::cout << "(integer): " <<
+        p.get_value<rclcpp::parameter::ParameterType::PARAMETER_INTEGER>();
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_DOUBLE:
-        std::cout << "(double): " << p.get_value<double>();
+        std::cout << "(double): " <<
+        p.get_value<rclcpp::parameter::ParameterType::PARAMETER_DOUBLE>();
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_STRING:
-        std::cout << "(string): " << p.get_value<std::string>();
+        std::cout << "(string): " <<
+        p.get_value<rclcpp::parameter::ParameterType::PARAMETER_STRING>();
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_BYTES:
         std::cout << "(bytes)";
@@ -90,10 +77,10 @@ int main(int argc, char ** argv)
   auto f3 = parameters_client->list_parameters({{"foo", "bar"}}, 10);
 
   auto result_f3 = rclcpp::spin_until_future_complete(node, f3).get();
-  for(auto parameter_name : result_f3.parameter_names) {
+  for (auto parameter_name : result_f3.parameter_names) {
     std::cout << "Parameter name: " << parameter_name << std::endl;
   }
-  for(auto parameter_prefix : result_f3.parameter_prefixes) {
+  for (auto parameter_prefix : result_f3.parameter_prefixes) {
     std::cout << "Parameter prefix: " << parameter_prefix << std::endl;
   }
 
