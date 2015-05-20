@@ -20,7 +20,7 @@ int main(int argc, char ** argv)
 
   auto node = rclcpp::Node::make_shared("parameters");
 
-  auto sync_parameters_client = std::make_shared<rclcpp::parameter::SyncParametersClient>(node);
+  auto sync_parameters_client = std::make_shared<rclcpp::parameter_client::SyncParametersClient>(node);
 
   auto parameter_variants = {
     rclcpp::parameter::ParameterVariant("foo", 2),
