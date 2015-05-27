@@ -126,7 +126,3 @@ build_executable(add_two_ints_server src/add_two_ints_server.cpp)
 # Build parameters examples
 build_executable(async_parameters src/async_parameters.cpp)
 build_executable(sync_parameters src/sync_parameters.cpp)
-
-if(AMENT_ENABLE_TESTING)
-  add_subdirectory(test)
-endif()
