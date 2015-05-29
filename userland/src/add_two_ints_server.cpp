@@ -21,20 +21,20 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <simple_msgs/AllBuiltinTypes.h>
-#include <simple_msgs/AllDynamicArrayTypes.h>
-#include <simple_msgs/AllPrimitiveTypes.h>
-#include <simple_msgs/AllStaticArrayTypes.h>
-#include <simple_msgs/Nested.h>
-#include <simple_msgs/String.h>
-#include <simple_msgs/Uint32.h>
+#include <simple_msgs/msg/all_builtin_types.hpp>
+#include <simple_msgs/msg/all_dynamic_array_types.hpp>
+#include <simple_msgs/msg/all_primitive_types.hpp>
+#include <simple_msgs/msg/all_static_array_types.hpp>
+#include <simple_msgs/msg/nested.hpp>
+#include <simple_msgs/msg/string.hpp>
+#include <simple_msgs/msg/uint32.hpp>
 
-#include <userland_msgs/AddTwoInts.h>
+#include <userland_msgs/srv/add_two_ints.hpp>
 
 void add(
   const std::shared_ptr<rmw_request_id_t> request_header,
-  const std::shared_ptr<userland_msgs::AddTwoInts::Request> request,
-  std::shared_ptr<userland_msgs::AddTwoInts::Response> response)
+  const std::shared_ptr<userland_msgs::srv::AddTwoInts::Request> request,
+  std::shared_ptr<userland_msgs::srv::AddTwoInts::Response> response)
 {
   std::cout << "Incoming request" << std::endl;
   std::cout << "a: " << request->a << " b: " << request->b << std::endl;
@@ -47,7 +47,7 @@ int main(int argc, char ** argv)
 
   auto node = rclcpp::Node::make_shared("add_two_ints_server");
 
-  node->create_service<userland_msgs::AddTwoInts>("add_two_ints", add);
+  node->create_service<userland_msgs::srv::AddTwoInts>("add_two_ints", add);
 
   rclcpp::spin(node);
 

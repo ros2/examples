@@ -14,7 +14,7 @@
 
 #include <rclc/rclc.h>
 
-#include <simple_msgs/Int32-c.h>
+#include <simple_msgs/msg/Int32-c.h>
 
 int main(int argc, char ** argv)
 {
@@ -23,7 +23,7 @@ int main(int argc, char ** argv)
   rclc_node_t * node = rclc_create_node("publisher");
 
   rclc_publisher_t * publisher = rclc_create_publisher(
-    node, ROSIDL_GET_TYPE_SUPPORT(simple_msgs, Int32), "chatter", 7);
+    node, ROSIDL_GET_MESSAGE_TYPE_SUPPORT(simple_msgs, Int32), "chatter", 7);
 
   size_t count = 0;
   while (rclc_ok()) {

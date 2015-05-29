@@ -30,7 +30,7 @@ int main(int argc, char ** argv)
   };
 
   auto f1 = parameters_client->set_parameters(
-    parameters, [](std::shared_future<std::vector<rcl_interfaces::SetParametersResult>> f) {
+    parameters, [](std::shared_future<std::vector<rcl_interfaces::msg::SetParametersResult>> f) {
     for (auto v : f.get()) {
       if (!v.successful) {
         std::cerr << v.reason << std::endl;

@@ -21,15 +21,15 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <simple_msgs/AllBuiltinTypes.h>
-#include <simple_msgs/AllDynamicArrayTypes.h>
-#include <simple_msgs/AllPrimitiveTypes.h>
-#include <simple_msgs/AllStaticArrayTypes.h>
-#include <simple_msgs/Nested.h>
-#include <simple_msgs/String.h>
-#include <simple_msgs/Uint32.h>
+#include <simple_msgs/msg/all_builtin_types.hpp>
+#include <simple_msgs/msg/all_dynamic_array_types.hpp>
+#include <simple_msgs/msg/all_primitive_types.hpp>
+#include <simple_msgs/msg/all_static_array_types.hpp>
+#include <simple_msgs/msg/nested.hpp>
+#include <simple_msgs/msg/string.hpp>
+#include <simple_msgs/msg/uint32.hpp>
 
-#include <userland_msgs/AddTwoInts.h>
+#include <userland_msgs/srv/add_two_ints.hpp>
 
 int main(int argc, char ** argv)
 {
@@ -37,8 +37,8 @@ int main(int argc, char ** argv)
 
   auto node = rclcpp::Node::make_shared("add_two_ints_client");
 
-  auto client = node->create_client<userland_msgs::AddTwoInts>("add_two_ints");
-  auto request = std::make_shared<userland_msgs::AddTwoInts::Request>();
+  auto client = node->create_client<userland_msgs::srv::AddTwoInts>("add_two_ints");
+  auto request = std::make_shared<userland_msgs::srv::AddTwoInts::Request>();
   request->a = 2;
   request->b = 3;
 
@@ -58,10 +58,11 @@ int main(int argc, char ** argv)
   // *INDENT-OFF*
   client->async_send_request(
     request,
-    [](rclcpp::client::Client<userland_msgs::AddTwoInts>::SharedFuture cb_f) {
+    [](rclcpp::client::Client<userland_msgs::srv::AddTwoInts>::SharedFuture cb_f) {
       std::cout << "CALLBACK" << std::endl;
       std::cout << cb_f.get()->sum << std::endl;
-  });
+    }
+  );
   // *INDENT-ON*
   rclcpp::spin(node);
 

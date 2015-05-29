@@ -21,13 +21,13 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <simple_msgs/AllBuiltinTypes.h>
-#include <simple_msgs/AllDynamicArrayTypes.h>
-#include <simple_msgs/AllPrimitiveTypes.h>
-#include <simple_msgs/AllStaticArrayTypes.h>
-#include <simple_msgs/Nested.h>
-#include <simple_msgs/String.h>
-#include <simple_msgs/Uint32.h>
+#include <simple_msgs/msg/all_builtin_types.hpp>
+#include <simple_msgs/msg/all_dynamic_array_types.hpp>
+#include <simple_msgs/msg/all_primitive_types.hpp>
+#include <simple_msgs/msg/all_static_array_types.hpp>
+#include <simple_msgs/msg/nested.hpp>
+#include <simple_msgs/msg/string.hpp>
+#include <simple_msgs/msg/uint32.hpp>
 
 #include "userland/command_line_arguments.h"
 
@@ -56,12 +56,12 @@ int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::Ptr
   return 0;
 }
 
-void set_counter_data(simple_msgs::Uint32::Ptr & ros_msg, size_t i)
+void set_counter_data(simple_msgs::msg::Uint32::Ptr & ros_msg, size_t i)
 {
   ros_msg->data = i;
 }
 
-void set_all_primitive_data(simple_msgs::AllPrimitiveTypes::Ptr & ros_msg, size_t i)
+void set_all_primitive_data(simple_msgs::msg::AllPrimitiveTypes::Ptr & ros_msg, size_t i)
 {
   ros_msg->my_bool = i % 2;
   ros_msg->my_byte = i % 256;
@@ -79,7 +79,7 @@ void set_all_primitive_data(simple_msgs::AllPrimitiveTypes::Ptr & ros_msg, size_
   ros_msg->my_string = "foo " + std::to_string(i);
 }
 
-void set_all_static_array(simple_msgs::AllStaticArrayTypes::Ptr & ros_msg, size_t i)
+void set_all_static_array(simple_msgs::msg::AllStaticArrayTypes::Ptr & ros_msg, size_t i)
 {
   int start = i - 1; // get the zero
   int end = i + 5; // assuming that the array size is 6
@@ -103,7 +103,7 @@ void set_all_static_array(simple_msgs::AllStaticArrayTypes::Ptr & ros_msg, size_
   }
 }
 
-void set_all_dynamic_array(simple_msgs::AllDynamicArrayTypes::Ptr & ros_msg, size_t i)
+void set_all_dynamic_array(simple_msgs::msg::AllDynamicArrayTypes::Ptr & ros_msg, size_t i)
 {
   int array_size = i - 1;
   ros_msg->my_bool.resize(array_size);
@@ -139,12 +139,12 @@ void set_all_dynamic_array(simple_msgs::AllDynamicArrayTypes::Ptr & ros_msg, siz
   }
 }
 
-void set_nested(simple_msgs::Nested::Ptr & ros_msg, size_t i)
+void set_nested(simple_msgs::msg::Nested::Ptr & ros_msg, size_t i)
 {
   ros_msg->submsg.data = i;
 }
 
-void set_string(simple_msgs::String::Ptr & ros_msg, size_t i)
+void set_string(simple_msgs::msg::String::Ptr & ros_msg, size_t i)
 {
   i = std::pow(2, i) - 1;
   ros_msg->data = "";
@@ -159,7 +159,7 @@ void set_empty(typename T::Ptr & ros_msg, size_t i)
   ros_msg.reset(new T());
 }
 
-void set_builtin(simple_msgs::AllBuiltinTypes::Ptr & ros_msg, size_t i)
+void set_builtin(simple_msgs::msg::AllBuiltinTypes::Ptr & ros_msg, size_t i)
 {
   ros_msg->my_duration.sec = -i;
   ros_msg->my_duration.nanosec = i;
@@ -181,22 +181,22 @@ int main(int argc, char ** argv)
 
   const std::string msg_arg = get_named_argument(argv, argv + argc, "--msg", valid_message_args[0]);
   if (msg_arg == valid_message_args[0]) {
-    return publish<simple_msgs::Uint32>(node, &set_counter_data);
+    return publish<simple_msgs::msg::Uint32>(node, &set_counter_data);
   } else if (msg_arg == valid_message_args[1]) {
-    return publish<simple_msgs::AllPrimitiveTypes>(node, &set_all_primitive_data);
+    return publish<simple_msgs::msg::AllPrimitiveTypes>(node, &set_all_primitive_data);
   } else if (msg_arg == valid_message_args[2]) {
-    return publish<simple_msgs::AllStaticArrayTypes>(node, &set_all_static_array);
+    return publish<simple_msgs::msg::AllStaticArrayTypes>(node, &set_all_static_array);
   } else if (msg_arg == valid_message_args[3]) {
-    return publish<simple_msgs::AllDynamicArrayTypes>(node, &set_all_dynamic_array);
+    return publish<simple_msgs::msg::AllDynamicArrayTypes>(node, &set_all_dynamic_array);
   } else if (msg_arg == valid_message_args[4]) {
-    return publish<simple_msgs::Nested>(node, &set_nested);
+    return publish<simple_msgs::msg::Nested>(node, &set_nested);
   } else if (msg_arg == valid_message_args[5]) {
-    return publish<simple_msgs::String>(node, &set_string);
+    return publish<simple_msgs::msg::String>(node, &set_string);
   } else if (msg_arg == valid_message_args[6]) {
-    return publish<simple_msgs::AllPrimitiveTypes>(
-      node, &set_empty<simple_msgs::AllPrimitiveTypes>);
+    return publish<simple_msgs::msg::AllPrimitiveTypes>(
+      node, &set_empty<simple_msgs::msg::AllPrimitiveTypes>);
   } else if (msg_arg == valid_message_args[7]) {
-    return publish<simple_msgs::AllBuiltinTypes>(node, &set_builtin);
+    return publish<simple_msgs::msg::AllBuiltinTypes>(node, &set_builtin);
   }
 
 
