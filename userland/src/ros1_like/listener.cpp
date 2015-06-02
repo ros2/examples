@@ -19,10 +19,10 @@
 #include <rclcpp/rclcpp.hpp>
 
 // #include "std_msgs/String.h"
-#include <simple_msgs/String.h>
+#include <simple_msgs/msg/string.hpp>
 
 // void chatterCallback(const std_msgs::String::ConstPtr& msg)
-void chatterCallback(const simple_msgs::String::ConstPtr & msg)
+void chatterCallback(const simple_msgs::msg::String::ConstPtr & msg)
 {
   // ROS_INFO("I heard: [%s]", msg->data.c_str());
   std::cout << "I heard: [" << msg->data << "]" << std::endl;
@@ -37,7 +37,7 @@ int main(int argc, char * argv[])
   auto node = rclcpp::Node::make_shared("listener");
 
   // ros::Subscriber sub = n.subscribe("chatter", 7, chatterCallback);
-  auto sub = node->create_subscription<simple_msgs::String>("chatter", 7, chatterCallback);
+  auto sub = node->create_subscription<simple_msgs::msg::String>("chatter", 7, chatterCallback);
 
   // ros::spin();
   rclcpp::spin(node);

@@ -20,7 +20,7 @@
 #include <thread>
 
 #include <rclcpp/rclcpp.hpp>
-#include <simple_msgs/Vector3Int.h>
+#include <simple_msgs/msg/vector3_int.hpp>
 #include "userland/command_line_arguments.h"
 
 
@@ -48,7 +48,7 @@ int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::Ptr
   return 0;
 }
 
-void set_accel_data(simple_msgs::Vector3Int::Ptr & ros_msg, size_t i)
+void set_accel_data(simple_msgs::msg::Vector3Int::Ptr & ros_msg, size_t i)
 {
   ros_msg->x = 1;
   ros_msg->y = 2;
@@ -73,5 +73,5 @@ int main(int argc, char ** argv)
   }
 
   auto node = rclcpp::Node::make_shared("publisher");
-  return publish<simple_msgs::Vector3Int>(node, &set_accel_data);
+  return publish<simple_msgs::msg::Vector3Int>(node, &set_accel_data);
 }

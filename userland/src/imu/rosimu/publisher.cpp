@@ -20,7 +20,7 @@
 #include <thread>
 
 #include <rclcpp/rclcpp.hpp>
-#include <simple_msgs/Imu.h>
+#include <simple_msgs/msg/imu.hpp>
 #include "userland/command_line_arguments.h"
 
 
@@ -48,7 +48,7 @@ int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::Ptr
   return 0;
 }
 
-void set_imu_data(simple_msgs::Imu::Ptr & ros_msg, size_t i)
+void set_imu_data(simple_msgs::msg::Imu::Ptr & ros_msg, size_t i)
 {
   // Define the header
   ros_msg->header.seq = i;
@@ -105,5 +105,5 @@ int main(int argc, char ** argv)
   }
 
   auto node = rclcpp::Node::make_shared("publisher");
-  return publish<simple_msgs::Imu>(node, &set_imu_data);
+  return publish<simple_msgs::msg::Imu>(node, &set_imu_data);
 }

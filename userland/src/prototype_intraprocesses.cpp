@@ -18,7 +18,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <simple_msgs/Intraprocess.h>
+#include <simple_msgs/msg/intraprocess.hpp>
 
 struct Intraprocess_t
 {
@@ -35,7 +35,7 @@ void decrement(Intraprocess_t * meta)
   }
 }
 
-void callback(const simple_msgs::Intraprocess::ConstPtr & msg)
+void callback(const simple_msgs::msg::Intraprocess::ConstPtr & msg)
 {
   Intraprocess_t * meta = (Intraprocess_t *) msg->ptr;
   std::cout << "------ Got message: " << *(meta->data) << std::endl;
@@ -54,7 +54,7 @@ void launch_subscriber(void)
 {
   std::cout << "------ Creating subscriber:" << std::endl;
   auto node = rclcpp::Node::make_shared("prototype_intraprocess_sub");
-  auto sub = node->create_subscription<simple_msgs::Intraprocess>("intraprocess", 1000, callback);
+  auto sub = node->create_subscription<simple_msgs::msg::Intraprocess>("intraprocess", 1000, callback);
 
   std::cout << "------ Launching subscriber:" << std::endl;
   rclcpp::spin(node);
@@ -64,8 +64,8 @@ void launch_publisher(Intraprocess_t * s)
 {
   std::cout << "------ Creating publisher:" << std::endl;
   auto n = rclcpp::Node::make_shared("prototype_intraprocess_pub");
-  auto p = n->create_publisher<simple_msgs::Intraprocess>("intraprocess", 1000);
-  simple_msgs::Intraprocess::Ptr ros_msg;
+  auto p = n->create_publisher<simple_msgs::msg::Intraprocess>("intraprocess", 1000);
+  simple_msgs::msg::Intraprocess::Ptr ros_msg;
 
   // Wait one second for the publisher to set up.
   std::this_thread::sleep_for(std::chrono::milliseconds(1000));

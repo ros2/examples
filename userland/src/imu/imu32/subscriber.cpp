@@ -14,7 +14,7 @@
 
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
-#include <simple_msgs/Imu32.h>
+#include <simple_msgs/msg/imu32.hpp>
 #include "userland/command_line_arguments.h"
 
 
@@ -27,7 +27,7 @@ rclcpp::subscription::SubscriptionBase::SharedPtr subscribe(
   return sub;
 }
 
-void print_accel_data(const simple_msgs::Imu32::ConstPtr & msg)
+void print_accel_data(const simple_msgs::msg::Imu32::ConstPtr & msg)
 {
 
   std::cout << "-------------------------" << std::endl;
@@ -87,7 +87,7 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("subscriber");
   rclcpp::subscription::SubscriptionBase::SharedPtr sub;
 
-  sub = subscribe<simple_msgs::Imu32>(node, print_accel_data);
+  sub = subscribe<simple_msgs::msg::Imu32>(node, print_accel_data);
   rclcpp::spin(node);
 
   return 0;

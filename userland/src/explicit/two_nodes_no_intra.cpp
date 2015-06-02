@@ -17,9 +17,9 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <simple_msgs/String.h>
+#include <simple_msgs/msg/string.hpp>
 
-void on_message(const simple_msgs::String::SharedPtr & msg)
+void on_message(const simple_msgs::msg::String::SharedPtr & msg)
 {
   std::cout << *msg << std::endl;
 }
@@ -28,7 +28,7 @@ void on_timer(const rclcpp::TimerEvent & event,
   rclcpp::Publisher::UniquePtr & publisher,
   int & i)
 {
-  simple_msgs::String::UniquePtr msg;
+  simple_msgs::msg::String::UniquePtr msg;
   msg->data = "Hello World: " + std::to_string(i++);
   if (publisher) {
     publisher->publish(msg);
@@ -48,9 +48,9 @@ int main(int argc, char * argv[])
   auto node1 = rclcpp::Node::create_shared_node("node1", context1);
   auto node2 = rclcpp::Node::create_shared_node("node2", context2);
 
-  auto publisher = node1->create_publisher<simple_msgs::String>("/chatter", 7);
+  auto publisher = node1->create_publisher<simple_msgs::msg::String>("/chatter", 7);
   auto subscription = \
-    node2->create_subscription<simple_msgs::String>("/chatter", 7, on_message);
+    node2->create_subscription<simple_msgs::msg::String>("/chatter", 7, on_message);
 
   int i = 0;
   auto timer_bound = std::bind(on_timer, _1, std::ref(publisher), std::ref(i));
