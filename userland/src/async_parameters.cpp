@@ -54,15 +54,15 @@ int main(int argc, char ** argv)
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_INTEGER:
         std::cout << "(integer): " <<
-        p.get_value<rclcpp::parameter::ParameterType::PARAMETER_INTEGER>();
+          p.get_value<rclcpp::parameter::ParameterType::PARAMETER_INTEGER>();
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_DOUBLE:
         std::cout << "(double): " <<
-        p.get_value<rclcpp::parameter::ParameterType::PARAMETER_DOUBLE>();
+          p.get_value<rclcpp::parameter::ParameterType::PARAMETER_DOUBLE>();
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_STRING:
         std::cout << "(string): " <<
-        p.get_value<rclcpp::parameter::ParameterType::PARAMETER_STRING>();
+          p.get_value<rclcpp::parameter::ParameterType::PARAMETER_STRING>();
         break;
       case rclcpp::parameter::ParameterType::PARAMETER_BYTES:
         std::cout << "(bytes)";
@@ -84,6 +84,25 @@ int main(int argc, char ** argv)
     std::cout << "Parameter prefix: " << prefix << std::endl;
   }
 
+  auto callback = [](const std::shared_ptr<rcl_interfaces::msg::ParameterEvent> & event) -> void {
+    std::cout << "Parameter event" << std::endl <<
+      "new parameters:" << std::endl;
+    for (auto & p : event->new_parameters) {
+      std::cout << "  " << p.name << std::endl;
+    }
+
+    std::cout << "changed parameters" << std::endl;
+    for (auto & p : event->changed_parameters) {
+      std::cout << "  " << p.name << std::endl;
+    }
+
+    std::cout << "deleted parameters" << std::endl;
+    for (auto & pd : event->deleted_parameters) {
+      std::cout << "  " << pd.name << std::endl;
+    }
+  };
+
+  auto sub = parameters_client->on_parameter_event(callback);
 
   rclcpp::spin(node);
 
