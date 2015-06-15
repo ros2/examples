@@ -70,11 +70,11 @@ int main(int argc, char ** argv)
 
   auto parameters_and_prefixes = sync_parameters_client->list_parameters({"foo", "bar"}, 10);
 
-  for (auto & parameter_name : parameters_and_prefixes.parameter_names) {
-    std::cout << "Parameter name: " << parameter_name << std::endl;
+  for (auto & name : parameters_and_prefixes.names) {
+    std::cout << "Parameter name: " << name << std::endl;
   }
-  for (auto & parameter_prefix : parameters_and_prefixes.parameter_prefixes) {
-    std::cout << "Parameter prefix: " << parameter_prefix << std::endl;
+  for (auto & prefix : parameters_and_prefixes.prefixes) {
+    std::cout << "Parameter prefix: " << prefix << std::endl;
   }
 
   rclcpp::spin(node);
