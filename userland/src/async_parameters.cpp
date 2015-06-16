@@ -77,11 +77,11 @@ int main(int argc, char ** argv)
   auto f3 = parameters_client->list_parameters({{"foo", "bar"}}, 10);
 
   auto result_f3 = rclcpp::spin_until_future_complete(node, f3).get();
-  for (auto parameter_name : result_f3.parameter_names) {
-    std::cout << "Parameter name: " << parameter_name << std::endl;
+  for (auto name : result_f3.names) {
+    std::cout << "Parameter name: " << name << std::endl;
   }
-  for (auto parameter_prefix : result_f3.parameter_prefixes) {
-    std::cout << "Parameter prefix: " << parameter_prefix << std::endl;
+  for (auto prefix : result_f3.prefixes) {
+    std::cout << "Parameter prefix: " << prefix << std::endl;
   }
 
 
