@@ -19,14 +19,14 @@
 
 #include <simple_msgs/msg/string.hpp>
 
-void on_message(const simple_msgs::msg::String::ConstPtr & msg)
+void on_message(const simple_msgs::msg::String::ConstSharedPtr & msg)
 {
   std::cout << "I heard [" << msg->data << "]" << std::endl;
 }
 
 void on_timer(rclcpp::Publisher::SharedPtr & publisher, int & i)
 {
-  simple_msgs::msg::String::Ptr msg(new simple_msgs::msg::String());
+  simple_msgs::msg::String::SharedPtr msg(new simple_msgs::msg::String());
   msg->data = "Hello World: " + std::to_string(i++);
   if (publisher) {
     std::cout << "Publishing: '" << msg->data << "'" << std::endl;

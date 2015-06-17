@@ -21,8 +21,8 @@
 // #include "std_msgs/String.h"
 #include <simple_msgs/msg/string.hpp>
 
-// void chatterCallback(const std_msgs::String::ConstPtr& msg)
-void chatterCallback(const simple_msgs::msg::String::ConstPtr & msg)
+// void chatterCallback(const std_msgs::String::ConstSharedPtr& msg)
+void chatterCallback(const simple_msgs::msg::String::ConstSharedPtr & msg)
 {
   // ROS_INFO("I heard: [%s]", msg->data.c_str());
   std::cout << "I heard: [" << msg->data << "]" << std::endl;

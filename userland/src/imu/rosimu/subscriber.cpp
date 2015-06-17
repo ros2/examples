@@ -27,7 +27,7 @@ rclcpp::subscription::SubscriptionBase::SharedPtr subscribe(
   return sub;
 }
 
-void print_accel_data(const simple_msgs::msg::Imu::ConstPtr & msg)
+void print_accel_data(const simple_msgs::msg::Imu::ConstSharedPtr & msg)
 {
 
   std::cout << "-------------------------" << std::endl;

@@ -36,12 +36,12 @@ rclcpp::subscription::SubscriptionBase::SharedPtr subscribe(
   return sub;
 }
 
-void print_counter_data(const simple_msgs::msg::Uint32::ConstPtr & msg)
+void print_counter_data(const simple_msgs::msg::Uint32::ConstSharedPtr & msg)
 {
   std::cout << "Got message #" << msg->data << std::endl;
 }
 
-void print_all_primitive_data(const simple_msgs::msg::AllPrimitiveTypes::ConstPtr & msg)
+void print_all_primitive_data(const simple_msgs::msg::AllPrimitiveTypes::ConstSharedPtr & msg)
 {
   std::cout << "Got message:" << std::endl;
   std::cout << "  my_bool: " << msg->my_bool << std::endl;
@@ -67,7 +67,7 @@ void print_all_primitive_data(const simple_msgs::msg::AllPrimitiveTypes::ConstPt
   } \
   std::cout << std::endl;
 
-void print_all_static_array(const simple_msgs::msg::AllStaticArrayTypes::ConstPtr & msg)
+void print_all_static_array(const simple_msgs::msg::AllStaticArrayTypes::ConstSharedPtr & msg)
 {
   std::cout << "Got message:" << std::endl;
   PRINT_STATIC_ARRAY_FIELD(my_bool, 6)
@@ -93,7 +93,7 @@ void print_all_static_array(const simple_msgs::msg::AllStaticArrayTypes::ConstPt
   } \
   std::cout << std::endl;
 
-void print_all_dynamic_array(const simple_msgs::msg::AllDynamicArrayTypes::ConstPtr & msg)
+void print_all_dynamic_array(const simple_msgs::msg::AllDynamicArrayTypes::ConstSharedPtr & msg)
 {
   std::cout << "Got message:" << std::endl;
   PRINT_DYNAMIC_ARRAY_FIELD(my_bool)
@@ -112,17 +112,17 @@ void print_all_dynamic_array(const simple_msgs::msg::AllDynamicArrayTypes::Const
   PRINT_DYNAMIC_ARRAY_FIELD(my_string)
 }
 
-void print_nested(const simple_msgs::msg::Nested::ConstPtr & msg)
+void print_nested(const simple_msgs::msg::Nested::ConstSharedPtr & msg)
 {
   std::cout << "Got message #" << msg->submsg.data << std::endl;
 }
 
-void print_string(const simple_msgs::msg::String::ConstPtr & msg)
+void print_string(const simple_msgs::msg::String::ConstSharedPtr & msg)
 {
   std::cout << "Got message: " << msg->data << std::endl;
 }
 
-void print_builtin(const simple_msgs::msg::AllBuiltinTypes::ConstPtr & msg)
+void print_builtin(const simple_msgs::msg::AllBuiltinTypes::ConstSharedPtr & msg)
 {
   std::cout << "Got message: " << msg->my_duration.sec
             << ":" << msg->my_duration.nanosec
