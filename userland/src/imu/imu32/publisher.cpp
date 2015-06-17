@@ -25,10 +25,10 @@
 
 
 template<typename T>
-int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::Ptr &, size_t))
+int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::SharedPtr &, size_t))
 {
   auto p = node->create_publisher<T>("imu", 1000);
-  typename T::Ptr ros_msg(new T());
+  typename T::SharedPtr ros_msg(new T());
 
   auto start = std::chrono::steady_clock::now();
   rclcpp::WallRate rate(10);
@@ -48,7 +48,7 @@ int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::Ptr
   return 0;
 }
 
-void set_imu_data(simple_msgs::msg::Imu32::Ptr & ros_msg, size_t i)
+void set_imu_data(simple_msgs::msg::Imu32::SharedPtr & ros_msg, size_t i)
 {
   // Define the header
   ros_msg->header.seq = i;
@@ -88,7 +88,7 @@ void set_imu_data(simple_msgs::msg::Imu32::Ptr & ros_msg, size_t i)
 }
 
 template<typename T>
-void set_empty(typename T::Ptr & ros_msg, size_t i)
+void set_empty(typename T::SharedPtr & ros_msg, size_t i)
 {
   ros_msg.reset(new T());
 }

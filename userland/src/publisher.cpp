@@ -33,10 +33,10 @@
 
 
 template<typename T>
-int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::Ptr &, size_t))
+int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::SharedPtr &, size_t))
 {
   auto p = node->create_publisher<T>("topic_name", 1000);
-  typename T::Ptr ros_msg(new T());
+  typename T::SharedPtr ros_msg(new T());
 
   auto start = std::chrono::steady_clock::now();
   rclcpp::WallRate rate(10);
@@ -56,12 +56,12 @@ int publish(rclcpp::Node::SharedPtr node, void (* set_data_func)(typename T::Ptr
   return 0;
 }
 
-void set_counter_data(simple_msgs::msg::Uint32::Ptr & ros_msg, size_t i)
+void set_counter_data(simple_msgs::msg::Uint32::SharedPtr & ros_msg, size_t i)
 {
   ros_msg->data = i;
 }
 
-void set_all_primitive_data(simple_msgs::msg::AllPrimitiveTypes::Ptr & ros_msg, size_t i)
+void set_all_primitive_data(simple_msgs::msg::AllPrimitiveTypes::SharedPtr & ros_msg, size_t i)
 {
   ros_msg->my_bool = i % 2;
   ros_msg->my_byte = i % 256;
@@ -79,7 +79,7 @@ void set_all_primitive_data(simple_msgs::msg::AllPrimitiveTypes::Ptr & ros_msg, 
   ros_msg->my_string = "foo " + std::to_string(i);
 }
 
-void set_all_static_array(simple_msgs::msg::AllStaticArrayTypes::Ptr & ros_msg, size_t i)
+void set_all_static_array(simple_msgs::msg::AllStaticArrayTypes::SharedPtr & ros_msg, size_t i)
 {
   int start = i - 1; // get the zero
   int end = i + 5; // assuming that the array size is 6
@@ -103,7 +103,7 @@ void set_all_static_array(simple_msgs::msg::AllStaticArrayTypes::Ptr & ros_msg, 
   }
 }
 
-void set_all_dynamic_array(simple_msgs::msg::AllDynamicArrayTypes::Ptr & ros_msg, size_t i)
+void set_all_dynamic_array(simple_msgs::msg::AllDynamicArrayTypes::SharedPtr & ros_msg, size_t i)
 {
   int array_size = i - 1;
   ros_msg->my_bool.resize(array_size);
@@ -139,12 +139,12 @@ void set_all_dynamic_array(simple_msgs::msg::AllDynamicArrayTypes::Ptr & ros_msg
   }
 }
 
-void set_nested(simple_msgs::msg::Nested::Ptr & ros_msg, size_t i)
+void set_nested(simple_msgs::msg::Nested::SharedPtr & ros_msg, size_t i)
 {
   ros_msg->submsg.data = i;
 }
 
-void set_string(simple_msgs::msg::String::Ptr & ros_msg, size_t i)
+void set_string(simple_msgs::msg::String::SharedPtr & ros_msg, size_t i)
 {
   i = std::pow(2, i) - 1;
   ros_msg->data = "";
@@ -154,12 +154,12 @@ void set_string(simple_msgs::msg::String::Ptr & ros_msg, size_t i)
 }
 
 template<typename T>
-void set_empty(typename T::Ptr & ros_msg, size_t i)
+void set_empty(typename T::SharedPtr & ros_msg, size_t i)
 {
   ros_msg.reset(new T());
 }
 
-void set_builtin(simple_msgs::msg::AllBuiltinTypes::Ptr & ros_msg, size_t i)
+void set_builtin(simple_msgs::msg::AllBuiltinTypes::SharedPtr & ros_msg, size_t i)
 {
   ros_msg->my_duration.sec = -i;
   ros_msg->my_duration.nanosec = i;

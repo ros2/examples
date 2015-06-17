@@ -27,7 +27,7 @@ rclcpp::subscription::SubscriptionBase::SharedPtr subscribe(
   return sub;
 }
 
-void print_accel_data(const simple_msgs::msg::Vector3Int::ConstPtr & msg)
+void print_accel_data(const simple_msgs::msg::Vector3Int::ConstSharedPtr & msg)
 {
   std::cout << "-------------------------" << std::endl;
   std::cout << "Got accel x=" << msg->x << std::endl;
