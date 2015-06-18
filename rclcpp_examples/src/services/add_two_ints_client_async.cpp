@@ -18,16 +18,6 @@
 
 #include <example_interfaces/srv/add_two_ints.hpp>
 
-// TODO(wjwwood): make this into a method of rclcpp::client::Client.
-example_interfaces::srv::AddTwoInts_Response::SharedPtr send_request(
-  rclcpp::Node::SharedPtr & node,
-  rclcpp::client::Client<example_interfaces::srv::AddTwoInts>::SharedPtr & client,
-  example_interfaces::srv::AddTwoInts_Request::SharedPtr & request)
-{
-  auto result = client->async_send_request(request);
-  return rclcpp::spin_until_future_complete(node, result).get();
-}
-
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
@@ -39,9 +29,11 @@ int main(int argc, char ** argv)
   request->a = 2;
   request->b = 3;
 
-  // TODO(wjwwood): make it like `client->send_request(node, request)->sum`
-  // TODO(wjwwood): consider error condition
-  std::cout << "Result of add_two_ints: " << send_request(node, client, request)->sum << std::endl;
+  auto result = client->async_send_request(request);
+
+  rclcpp::spin_until_future_complete(node, result);  // Wait for the result.
+
+  std::cout << "Result of add_two_ints: " << result.get()->sum << std::endl;
 
   return 0;
 }
