@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rclcpp_examples</name>
+  <version>0.0.0</version>
+  <description>Package containing examples of how to use the rclcpp API.</description>
+  <maintainer email="william@osrfoundation.org">William Woodall</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <build_depend>example_interfaces</build_depend>
+  <build_depend>rclcpp</build_depend>
+  <build_depend>rmw_implementation</build_depend>
+  <build_depend>std_interfaces</build_depend>
+
+  <exec_depend>example_interfaces</exec_depend>
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>rmw_implementation</exec_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <exec_depend>std_interfaces</exec_depend>
+
+</package>
