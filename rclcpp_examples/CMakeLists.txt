@@ -36,5 +36,9 @@ add_executable_for_each_rmw_impl(add_two_ints_server src/services/add_two_ints_s
 ## Examples of Parameters with Asynchronous and Synchronous
 ##
 
-add_executable_for_each_rmw_impl(async_parameters src/parameters/async_parameters.cpp)
-add_executable_for_each_rmw_impl(sync_parameters src/parameters/sync_parameters.cpp)
+add_executable_for_each_rmw_impl(list_parameters src/parameters/list_parameters.cpp)
+add_executable_for_each_rmw_impl(list_parameters_async src/parameters/list_parameters_async.cpp)
+add_executable_for_each_rmw_impl(parameter_events src/parameters/parameter_events.cpp)
+add_executable_for_each_rmw_impl(set_and_get_parameters src/parameters/set_and_get_parameters.cpp)
+add_executable_for_each_rmw_impl(set_and_get_parameters_async
+  src/parameters/set_and_get_parameters_async.cpp)

@@ -20,7 +20,7 @@ int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
 
-  auto node = rclcpp::Node::make_shared("parameters");
+  auto node = rclcpp::Node::make_shared("set_and_get_parameters_async");
 
   auto parameters_client = std::make_shared<rclcpp::parameter_client::AsyncParametersClient>(node);
 
@@ -31,9 +31,7 @@ int main(int argc, char ** argv)
     rclcpp::parameter::ParameterVariant("baz", 1.45),
     rclcpp::parameter::ParameterVariant("foobar", true),
   });
-
   rclcpp::spin_until_future_complete(node, results);  // Wait for the results.
-
   // Check to see if they were set.
   for (auto & result : results.get()) {
     if (!result.successful)
@@ -44,25 +42,11 @@ int main(int argc, char ** argv)
 
   // Get a few of the parameters just set.
   auto parameters = parameters_client->get_parameters({{"foo", "baz"}});
-
   rclcpp::spin_until_future_complete(node, parameters);
-
   for (auto & parameter : parameters.get()) {
     std::cout << "Parameter name: " << parameter.get_name() << std::endl;
     std::cout << "Parameter value (" << parameter.get_type_name() << "): "
               << parameter.to_string() << std::endl;
-  }
-
-  // List the details of a few parameters up to a namespace depth of 10.
-  auto parameter_list_future = parameters_client->list_parameters({{"foo", "bar"}}, 10);
-
-  auto parameter_list = rclcpp::spin_until_future_complete(node, parameter_list_future).get();
-
-  for (auto & name : parameter_list.names) {
-    std::cout << "Parameter name: " << name << std::endl;
-  }
-  for (auto & prefix : parameter_list.prefixes) {
-    std::cout << "Parameter prefix: " << prefix << std::endl;
   }
 
   return 0;
