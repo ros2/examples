@@ -16,11 +16,13 @@
 
 #include <rclc/rclc.h>
 
-#include <std_interfaces/msg/Int32-c.h>
+#include <std_interfaces/msg/Int32.h>
+
+typedef std_interfaces__msg__Int32 Int32;
 
 void callback(const void * void_message)
 {
-  const std_interfaces__Int32 * message = (const std_interfaces__Int32 *)void_message;
+  const Int32 * message = (const Int32 *)void_message;
   printf("Got number: %d\n", message->data);
 }
 

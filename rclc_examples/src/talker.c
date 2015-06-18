@@ -27,7 +27,7 @@ int main(int argc, char ** argv)
 
   size_t count = 0;
   while (rclc_ok()) {
-    std_interfaces__Int32 msg;
+    std_interfaces__msg__Int32 msg;
     msg.data = count++;
     rclc_publish(publisher, &msg);
     rclc_sleep_ms(1000);
