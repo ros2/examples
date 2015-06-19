@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>example_interfaces</name>
+  <version>0.0.0</version>
+  <description>Contains message and service definitions used by the examples.</description>
+  <maintainer email="dthomas@osrfoundation.org">Dirk Thomas</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <build_depend>builtin_interfaces</build_depend>
+
+  <exec_depend>builtin_interfaces</exec_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+</package>

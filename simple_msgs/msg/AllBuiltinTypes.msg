@@ -1,2 +1,0 @@
-builtin_msgs/Duration my_duration
-builtin_msgs/Time my_time
