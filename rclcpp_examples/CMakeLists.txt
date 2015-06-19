@@ -30,6 +30,8 @@ add_executable_for_each_rmw_impl(listener src/topics/listener.cpp)
 ##
 
 add_executable_for_each_rmw_impl(add_two_ints_client src/services/add_two_ints_client.cpp)
+add_executable_for_each_rmw_impl(add_two_ints_client_async
+  src/services/add_two_ints_client_async.cpp)
 add_executable_for_each_rmw_impl(add_two_ints_server src/services/add_two_ints_server.cpp)
 
 ##
