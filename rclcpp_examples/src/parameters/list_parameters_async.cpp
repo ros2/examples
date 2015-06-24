@@ -27,7 +27,6 @@ int main(int argc, char ** argv)
 
   auto parameters_client = std::make_shared<rclcpp::parameter_client::AsyncParametersClient>(node);
 
-  // TODO(wjwwood): set more interesting parameters once the namespacing is figured out.
   // Set several differnet types of parameters.
   auto results = parameters_client->set_parameters({
     rclcpp::parameter::ParameterVariant("foo", 2),
