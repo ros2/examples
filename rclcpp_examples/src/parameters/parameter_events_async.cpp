@@ -42,7 +42,7 @@ int main(int argc, char ** argv)
   // TODO(esteve): Make the parameter service automatically start with the node.
   auto parameter_service = std::make_shared<rclcpp::parameter_service::ParameterService>(node);
 
-  auto parameters_client = std::make_shared<rclcpp::parameter_client::SyncParametersClient>(node);
+  auto parameters_client = std::make_shared<rclcpp::parameter_client::AsyncParametersClient>(node);
 
   // Setup callback for changes to parameters.
   auto sub = parameters_client->on_parameter_event(on_parameter_event);
@@ -54,14 +54,18 @@ int main(int argc, char ** argv)
     rclcpp::parameter::ParameterVariant("baz", 1.45),
     rclcpp::parameter::ParameterVariant("foobar", true),
   });
+  rclcpp::spin_until_future_complete(node, set_parameters_results);
 
   // Change the value of some of them.
   set_parameters_results = parameters_client->set_parameters({
     rclcpp::parameter::ParameterVariant("foo", 3),
     rclcpp::parameter::ParameterVariant("bar", "world"),
   });
+  rclcpp::spin_until_future_complete(node, set_parameters_results);
 
   // TODO(wjwwood): Create and use delete_parameter
+
+  rclcpp::spin(node);
 
   return 0;
 }
