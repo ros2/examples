@@ -25,6 +25,9 @@ include(cmake/add_executable_for_each_rmw_impl.cmake)
 add_executable_for_each_rmw_impl(talker src/topics/talker.cpp)
 add_executable_for_each_rmw_impl(listener src/topics/listener.cpp)
 
+## Example of subscribe with topics and customized executor
+add_executable_for_each_rmw_impl(listener_exec src/topics/listener_exec.cpp)
+
 ##
 ## Examples of Request/Response with Services
 ##
