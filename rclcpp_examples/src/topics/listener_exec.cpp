@@ -31,7 +31,7 @@ void chatterCallback(const std_interfaces::msg::String::ConstSharedPtr & msg)
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::memory_strategy::MemoryStrategySharedPtr memory_strategy =
+  rclcpp::memory_strategy::MemoryStrategy::SharedPtr memory_strategy =
       rclcpp::memory_strategy::create_default_strategy();
   if (argc > 1)
   {
