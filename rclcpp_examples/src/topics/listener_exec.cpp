@@ -22,7 +22,6 @@
 #include <std_interfaces/msg/string.hpp>
 
 using rclcpp::memory_strategies::static_memory_strategy::StaticMemoryStrategy;
-using rclcpp::memory_strategies::dynamic_memory_strategy::DynamicMemoryStrategy;
 
 void chatterCallback(const std_interfaces::msg::String::ConstSharedPtr & msg)
 {
@@ -32,8 +31,8 @@ void chatterCallback(const std_interfaces::msg::String::ConstSharedPtr & msg)
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::memory_strategies::MemoryStrategySharedPtr memory_strategy =
-      std::make_shared<DynamicMemoryStrategy>(DynamicMemoryStrategy());
+  rclcpp::memory_strategy::MemoryStrategySharedPtr memory_strategy =
+      rclcpp::memory_strategy::create_default_strategy();
   if (argc > 1)
   {
     std::string argument(argv[1]);
