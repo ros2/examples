@@ -27,6 +27,10 @@ repositories:
     type: git
     url: https://github.com/ros2/common_interfaces.git
     version: master
+  ros2/demos:
+    type: git
+    url: https://github.com/ros2/demos.git
+    version: master
   ros2/examples:
     type: git
     url: https://github.com/ros2/examples.git
