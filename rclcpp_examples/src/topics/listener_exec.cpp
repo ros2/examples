@@ -1,4 +1,4 @@
-// Copyright 2014 Open Source Robotics Foundation, Inc.
+// Copyright 2015 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,36 +25,29 @@ using rclcpp::memory_strategies::static_memory_strategy::StaticMemoryStrategy;
 
 void chatterCallback(const std_interfaces::msg::String::ConstSharedPtr & msg)
 {
-  std::cout << "I heard: [" << msg->data << "]" << std::endl;
+  std::cout << "I heard: [" << msg->data << "]" << std::endl << std::flush;
 }
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::memory_strategy::MemoryStrategy::SharedPtr memory_strategy =
-      rclcpp::memory_strategy::create_default_strategy();
-  if (argc > 1)
-  {
+    rclcpp::memory_strategy::create_default_strategy();
+  if (argc > 1) {
     std::string argument(argv[1]);
-    if (argument == "static")
-    {
+    if (argument == "static") {
       std::cout << "Setting memory allocation strategy to 'static'." << std::endl;
       memory_strategy = std::make_shared<StaticMemoryStrategy>(StaticMemoryStrategy());
-    }
-    else if (argument == "dynamic")
-    {
+    } else if (argument == "dynamic") {
       std::cout << "Setting memory allocation strategy to 'dynamic'." << std::endl;
-    }
-    else
-    {
+    } else {
       std::cout << "Warning: unknown argument. " << std::endl;
       std::cout << "Setting memory allocation strategy to default (dynamic)." << std::endl;
     }
   }
 
-  auto node = rclcpp::Node::make_shared("listener");
-  rclcpp::executors::SingleThreadedExecutor executor;
-  executor.set_memory_strategy(memory_strategy);
+  auto node = rclcpp::Node::make_shared("listener_exec");
+  rclcpp::executors::SingleThreadedExecutor executor(memory_strategy);
   executor.add_node(node);
 
   auto sub = node->create_subscription<std_interfaces::msg::String>("chatter", 7, chatterCallback);
