@@ -23,6 +23,7 @@ void handle_add_two_ints(
   const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request> request,
   std::shared_ptr<example_interfaces::srv::AddTwoInts::Response> response)
 {
+  (void)request_header;
   std::cout << "Incoming request" << std::endl;
   std::cout << "a: " << request->a << " b: " << request->b << std::endl;
   response->sum = request->a + request->b;
