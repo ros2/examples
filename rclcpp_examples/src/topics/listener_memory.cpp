@@ -35,20 +35,20 @@ int main(int argc, char * argv[])
   if (argc > 1) {
     std::string argument(argv[1]);
     if (argument == "static") {
-      std::cout << "Setting memory allocation strategy to 'static'." << std::endl;
+      printf("Setting memory allocation strategy to 'static'.\n");
       memory_strategy = std::make_shared<StaticMemoryStrategy>(StaticMemoryStrategy());
     } else if (argument == "dynamic") {
-      std::cout << "Setting memory allocation strategy to 'dynamic'." << std::endl;
+      printf("Setting memory allocation strategy to 'dynamic'.\n");
     } else {
-      std::cout << "Warning: unknown argument. " << std::endl;
-      std::cout << "Setting memory allocation strategy to default (dynamic)." << std::endl;
+      fprintf(stderr, "Warning: unknown argument.\n");
+      printf("Setting memory allocation strategy to default (dynamic).\n");
     }
   }
-  if (memory_strategy == nullptr) {
+  if (!memory_strategy) {
     memory_strategy = rclcpp::memory_strategy::create_default_strategy();
   }
 
-  auto node = rclcpp::Node::make_shared("listener_exec");
+  auto node = rclcpp::Node::make_shared("listener_memory");
   rclcpp::executors::SingleThreadedExecutor executor(memory_strategy);
   executor.add_node(node);
 
