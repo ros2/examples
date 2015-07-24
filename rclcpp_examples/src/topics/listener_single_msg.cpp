@@ -1,4 +1,4 @@
-// Copyright 2015 Open Source Robotics Foundation, Inc.
+// Copyright 2014 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,9 +18,11 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/executors.hpp>
 #include <rclcpp/memory_strategies.hpp>
+#include <rclcpp/strategies/message_pool_memory_strategy.hpp>
 
 #include <example_interfaces/msg/large_fixed.hpp>
 
+using namespace rclcpp::strategies::message_pool_memory_strategy;
 using rclcpp::memory_strategies::static_memory_strategy::StaticMemoryStrategy;
 
 size_t messages_received = 0;
@@ -51,12 +53,18 @@ int main(int argc, char * argv[])
     memory_strategy = rclcpp::memory_strategy::create_default_strategy();
   }
 
-  auto node = rclcpp::Node::make_shared("listener_memory");
   rclcpp::executors::SingleThreadedExecutor executor(memory_strategy);
+  auto node = rclcpp::Node::make_shared("listener_single_msg");
+
   executor.add_node(node);
 
+  auto msg_strategy_ptr =
+    std::make_shared<MessagePoolMemoryStrategy<example_interfaces::msg::LargeFixed, 1>>();
+
   auto sub = node->create_subscription<example_interfaces::msg::LargeFixed>("chatter", 7,
-      chatterCallback);
+      chatterCallback,
+      nullptr, false,
+      msg_strategy_ptr);
 
   executor.spin();
 

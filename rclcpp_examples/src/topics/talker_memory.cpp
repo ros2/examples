@@ -1,4 +1,4 @@
-// Copyright 2015 Open Source Robotics Foundation, Inc.
+// Copyright 2014 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,27 +13,19 @@
 // limitations under the License.
 
 #include <iostream>
-#include <memory>
+#include <stdlib.h>
 
 #include <rclcpp/rclcpp.hpp>
-#include <rclcpp/executors.hpp>
 #include <rclcpp/memory_strategies.hpp>
 
 #include <example_interfaces/msg/large_fixed.hpp>
 
 using rclcpp::memory_strategies::static_memory_strategy::StaticMemoryStrategy;
 
-size_t messages_received = 0;
-
-void chatterCallback(const example_interfaces::msg::LargeFixed::ConstSharedPtr & msg)
-{
-  printf("Address of received message: %p\n", msg.get());
-  ++messages_received;
-}
-
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
+
   rclcpp::memory_strategy::MemoryStrategy::SharedPtr memory_strategy = nullptr;
   if (argc > 1) {
     std::string argument(argv[1]);
@@ -47,20 +39,36 @@ int main(int argc, char * argv[])
       printf("Setting memory allocation strategy to default (dynamic).\n");
     }
   }
+
   if (!memory_strategy) {
     memory_strategy = rclcpp::memory_strategy::create_default_strategy();
   }
 
-  auto node = rclcpp::Node::make_shared("listener_memory");
+  auto node = rclcpp::node::Node::make_shared("talker");
+
   rclcpp::executors::SingleThreadedExecutor executor(memory_strategy);
-  executor.add_node(node);
 
-  auto sub = node->create_subscription<example_interfaces::msg::LargeFixed>("chatter", 7,
-      chatterCallback);
+  auto chatter_pub = node->create_publisher<example_interfaces::msg::LargeFixed>("chatter", 7);
 
-  executor.spin();
+  rclcpp::WallRate loop_rate(10);
 
-  printf("Received %lu messages.\n", messages_received);
+  auto msg = std::make_shared<example_interfaces::msg::LargeFixed>();
+  auto i = 1;
+  for (size_t j = 0; j < 255; ++j) {
+    msg->data[j] = i + '0';
+  }
+  ++i;
+
+
+  while (rclcpp::ok()) {
+    chatter_pub->publish(msg);
+    executor.spin_node_some(node);
+    loop_rate.sleep();
+    for (size_t j = 0; j < 255; ++j) {
+      msg->data[j] = i;
+    }
+    ++i;
+  }
 
   return 0;
 }
