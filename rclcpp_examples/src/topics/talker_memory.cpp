@@ -31,7 +31,7 @@ int main(int argc, char * argv[])
     std::string argument(argv[1]);
     if (argument == "static") {
       printf("Setting memory allocation strategy to 'static'.\n");
-      memory_strategy = std::make_shared<StaticMemoryStrategy>(StaticMemoryStrategy());
+      memory_strategy = std::make_shared<StaticMemoryStrategy<>>(StaticMemoryStrategy<>());
     } else if (argument == "dynamic") {
       printf("Setting memory allocation strategy to 'dynamic'.\n");
     } else {
