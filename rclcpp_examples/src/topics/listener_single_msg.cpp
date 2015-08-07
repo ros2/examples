@@ -61,10 +61,12 @@ int main(int argc, char * argv[])
   auto msg_strategy_ptr =
     std::make_shared<MessagePoolMemoryStrategy<example_interfaces::msg::LargeFixed, 1>>();
 
-  auto sub = node->create_subscription<example_interfaces::msg::LargeFixed>("chatter", 7,
-      chatterCallback,
-      nullptr, false,
-      msg_strategy_ptr);
+  rmw_qos_profile_t custom_qos_profile = rmw_qos_profile_default;
+  custom_qos_profile.depth = 7;
+
+  auto sub = node->create_subscription<example_interfaces::msg::LargeFixed>(
+    "chatter", custom_qos_profile, chatterCallback, nullptr, false,
+    msg_strategy_ptr);
 
   executor.spin();
 

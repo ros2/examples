@@ -55,8 +55,11 @@ int main(int argc, char * argv[])
   rclcpp::executors::SingleThreadedExecutor executor(memory_strategy);
   executor.add_node(node);
 
-  auto sub = node->create_subscription<example_interfaces::msg::LargeFixed>("chatter", 7,
-      chatterCallback);
+  rmw_qos_profile_t custom_qos_profile = rmw_qos_profile_default;
+  custom_qos_profile.depth = 7;
+
+  auto sub = node->create_subscription<example_interfaces::msg::LargeFixed>(
+    "chatter", custom_qos_profile, chatterCallback, nullptr);
 
   executor.spin();
 

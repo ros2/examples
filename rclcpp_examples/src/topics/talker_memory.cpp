@@ -48,7 +48,10 @@ int main(int argc, char * argv[])
 
   rclcpp::executors::SingleThreadedExecutor executor(memory_strategy);
 
-  auto chatter_pub = node->create_publisher<example_interfaces::msg::LargeFixed>("chatter", 7);
+  rmw_qos_profile_t custom_qos_profile = rmw_qos_profile_default;
+  custom_qos_profile.depth = 7;
+
+  auto chatter_pub = node->create_publisher<example_interfaces::msg::LargeFixed>("chatter", custom_qos_profile);
 
   rclcpp::WallRate loop_rate(10);
 
