@@ -70,7 +70,7 @@ int main(int argc, char * argv[])
 
   executor.spin();
 
-  printf("Received %lu messages.\n", messages_received);
+  printf("Received %zu messages.\n", messages_received);
 
   return 0;
 }
