@@ -31,7 +31,7 @@ int main(int argc, char * argv[])
     std::string argument(argv[1]);
     if (argument == "static") {
       printf("Setting memory allocation strategy to 'static'.\n");
-      memory_strategy = std::make_shared<StaticMemoryStrategy>(StaticMemoryStrategy());
+      memory_strategy = std::make_shared<StaticMemoryStrategy<>>(StaticMemoryStrategy<>());
     } else if (argument == "dynamic") {
       printf("Setting memory allocation strategy to 'dynamic'.\n");
     } else {
@@ -51,7 +51,8 @@ int main(int argc, char * argv[])
   rmw_qos_profile_t custom_qos_profile = rmw_qos_profile_default;
   custom_qos_profile.depth = 7;
 
-  auto chatter_pub = node->create_publisher<example_interfaces::msg::LargeFixed>("chatter", custom_qos_profile);
+  auto chatter_pub = node->create_publisher<example_interfaces::msg::LargeFixed>("chatter",
+      custom_qos_profile);
 
   rclcpp::WallRate loop_rate(10);
 

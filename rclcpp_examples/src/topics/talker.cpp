@@ -27,7 +27,8 @@ int main(int argc, char * argv[])
   rmw_qos_profile_t custom_qos_profile = rmw_qos_profile_default;
   custom_qos_profile.depth = 7;
 
-  auto chatter_pub = node->create_publisher<std_interfaces::msg::String>("chatter", custom_qos_profile);
+  auto chatter_pub = node->create_publisher<std_interfaces::msg::String>("chatter",
+      custom_qos_profile);
 
   rclcpp::WallRate loop_rate(2);
 
