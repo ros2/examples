@@ -11,7 +11,7 @@ find_package(example_interfaces REQUIRED)
 find_package(rclc REQUIRED)
 find_package(rmw REQUIRED)
 find_package(rmw_implementation REQUIRED)
-find_package(std_interfaces REQUIRED)
+find_package(std_msgs REQUIRED)
 
 ament_package()
 
@@ -23,14 +23,14 @@ add_executable(talker src/talker.c)
 ament_target_dependencies(talker
   "rclc"
   "rmw_implementation"
-  "std_interfaces"
+  "std_msgs"
 )
 
 add_executable(listener src/listener.c)
 ament_target_dependencies(listener
   "rclc"
   "rmw_implementation"
-  "std_interfaces"
+  "std_msgs"
 )
 
 install(TARGETS talker listener DESTINATION bin)

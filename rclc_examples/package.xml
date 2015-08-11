@@ -13,13 +13,13 @@
   <build_depend>example_interfaces</build_depend>
   <build_depend>rclc</build_depend>
   <build_depend>rmw_implementation</build_depend>
-  <build_depend>std_interfaces</build_depend>
+  <build_depend>std_msgs</build_depend>
 
   <exec_depend>example_interfaces</exec_depend>
   <exec_depend>rclc</exec_depend>
   <exec_depend>rmw_implementation</exec_depend>
   <exec_depend>rosidl_default_runtime</exec_depend>
-  <exec_depend>std_interfaces</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

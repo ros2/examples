@@ -18,7 +18,7 @@ function(add_executable_for_each_rmw_impl executable)
   ament_target_dependencies(${executable}
     "rclcpp"
     "rmw_implementation"
-    "std_interfaces"
+    "std_msgs"
     "example_interfaces"
   )
 
@@ -30,7 +30,7 @@ function(add_executable_for_each_rmw_impl executable)
     ament_target_dependencies(${executable}__${middleware_impl_tmp}
       "rclcpp"
       "${middleware_impl_tmp}"
-      "std_interfaces"
+      "std_msgs"
       "example_interfaces"
     )
 

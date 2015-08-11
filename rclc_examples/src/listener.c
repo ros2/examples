@@ -16,9 +16,9 @@
 
 #include <rclc/rclc.h>
 
-#include <std_interfaces/msg/Int32.h>
+#include <std_msgs/msg/Int32.h>
 
-typedef std_interfaces__msg__Int32 Int32;
+typedef std_msgs__msg__Int32 Int32;
 
 void callback(const void * void_message)
 {
@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
   rclc_node_t * node = rclc_create_node("listener");
 
   rclc_subscription_t * subscription = rclc_create_subscription(
-    node, ROSIDL_GET_MESSAGE_TYPE_SUPPORT(std_interfaces, Int32), "chatter", callback, 7);
+    node, ROSIDL_GET_MESSAGE_TYPE_SUPPORT(std_msgs, Int32), "chatter", callback, 7);
 
   rclc_spin_node(node);
 

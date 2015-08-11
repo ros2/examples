@@ -17,9 +17,9 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <std_interfaces/msg/string.hpp>
+#include <std_msgs/msg/string.hpp>
 
-void chatterCallback(const std_interfaces::msg::String::ConstSharedPtr & msg)
+void chatterCallback(const std_msgs::msg::String::ConstSharedPtr & msg)
 {
   std::cout << "I heard: [" << msg->data << "]" << std::endl;
 }
@@ -29,7 +29,7 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("listener");
 
-  auto sub = node->create_subscription<std_interfaces::msg::String>(
+  auto sub = node->create_subscription<std_msgs::msg::String>(
     "chatter", rmw_qos_profile_default, chatterCallback);
 
   rclcpp::spin(node);
