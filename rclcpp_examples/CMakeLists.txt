@@ -11,7 +11,7 @@ find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rmw REQUIRED)
 find_package(rmw_implementation REQUIRED)
-find_package(std_interfaces REQUIRED)
+find_package(std_msgs REQUIRED)
 
 ament_package()
 

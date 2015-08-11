@@ -14,7 +14,7 @@
 
 #include <rclc/rclc.h>
 
-#include <std_interfaces/msg/Int32.h>
+#include <std_msgs/msg/Int32.h>
 
 int main(int argc, char ** argv)
 {
@@ -23,11 +23,11 @@ int main(int argc, char ** argv)
   rclc_node_t * node = rclc_create_node("talker");
 
   rclc_publisher_t * publisher = rclc_create_publisher(
-    node, ROSIDL_GET_MESSAGE_TYPE_SUPPORT(std_interfaces, Int32), "chatter", 7);
+    node, ROSIDL_GET_MESSAGE_TYPE_SUPPORT(std_msgs, Int32), "chatter", 7);
 
   size_t count = 0;
   while (rclc_ok()) {
-    std_interfaces__msg__Int32 msg;
+    std_msgs__msg__Int32 msg;
     msg.data = count++;
     rclc_publish(publisher, &msg);
     rclc_sleep_ms(1000);

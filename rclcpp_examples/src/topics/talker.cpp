@@ -16,7 +16,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <std_interfaces/msg/string.hpp>
+#include <std_msgs/msg/string.hpp>
 
 int main(int argc, char * argv[])
 {
@@ -27,11 +27,11 @@ int main(int argc, char * argv[])
   rmw_qos_profile_t custom_qos_profile = rmw_qos_profile_default;
   custom_qos_profile.depth = 7;
 
-  auto chatter_pub = node->create_publisher<std_interfaces::msg::String>("chatter", custom_qos_profile);
+  auto chatter_pub = node->create_publisher<std_msgs::msg::String>("chatter", custom_qos_profile);
 
   rclcpp::WallRate loop_rate(2);
 
-  auto msg = std::make_shared<std_interfaces::msg::String>();
+  auto msg = std::make_shared<std_msgs::msg::String>();
   auto i = 1;
 
   while (rclcpp::ok()) {
