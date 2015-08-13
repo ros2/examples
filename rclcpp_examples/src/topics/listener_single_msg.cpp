@@ -23,7 +23,7 @@
 #include <example_interfaces/msg/large_fixed.hpp>
 
 using namespace rclcpp::strategies::message_pool_memory_strategy;
-using rclcpp::memory_strategies::static_memory_strategy::StaticMemoryStrategy;
+using namespace rclcpp::memory_strategies::static_memory_strategy;
 
 size_t messages_received = 0;
 
@@ -41,7 +41,10 @@ int main(int argc, char * argv[])
     std::string argument(argv[1]);
     if (argument == "static") {
       printf("Setting memory allocation strategy to 'static'.\n");
-      memory_strategy = std::make_shared<StaticMemoryStrategy>(StaticMemoryStrategy());
+      ObjectPoolBounds bounds;
+      bounds.set_max_subscriptions(1).set_max_services(1).set_max_clients(1);
+      bounds.set_max_executables(1).set_memory_pool_size(0);
+      memory_strategy = std::make_shared<StaticMemoryStrategy>(bounds);
     } else if (argument == "dynamic") {
       printf("Setting memory allocation strategy to 'dynamic'.\n");
     } else {
