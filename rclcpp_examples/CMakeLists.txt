@@ -15,38 +15,66 @@ find_package(std_msgs REQUIRED)
 
 ament_package()
 
-# This file provides the add_executable_for_each_rmw_impl function.
-include(cmake/add_executable_for_each_rmw_impl.cmake)
+set(target_dependencies
+  "rclcpp"
+  "std_msgs"
+  "example_interfaces")
 
 ##
 ## Examples of Publish/Subscribe with Topics
 ##
 
-add_executable_for_each_rmw_impl(talker src/topics/talker.cpp)
-add_executable_for_each_rmw_impl(listener src/topics/listener.cpp)
+add_executable_for_each_rmw_implementations(talker
+  src/topics/talker.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(listener
+  src/topics/listener.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
 
 ## Example of publish/subscribe with topics and custom memory strategies for executor, subscriber
-add_executable_for_each_rmw_impl(listener_single_msg src/topics/listener_single_msg.cpp)
-add_executable_for_each_rmw_impl(listener_memory src/topics/listener_memory.cpp)
-add_executable_for_each_rmw_impl(talker_memory src/topics/talker_memory.cpp)
+add_executable_for_each_rmw_implementations(listener_single_msg
+  src/topics/listener_single_msg.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(listener_memory
+  src/topics/listener_memory.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(talker_memory
+  src/topics/talker_memory.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
 
 ##
 ## Examples of Request/Response with Services
 ##
 
-add_executable_for_each_rmw_impl(add_two_ints_client src/services/add_two_ints_client.cpp)
-add_executable_for_each_rmw_impl(add_two_ints_client_async
-  src/services/add_two_ints_client_async.cpp)
-add_executable_for_each_rmw_impl(add_two_ints_server src/services/add_two_ints_server.cpp)
+add_executable_for_each_rmw_implementations(add_two_ints_client
+  src/services/add_two_ints_client.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(add_two_ints_client_async
+  src/services/add_two_ints_client_async.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(add_two_ints_server
+  src/services/add_two_ints_server.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
 
 ##
 ## Examples of Parameters with Asynchronous and Synchronous
 ##
 
-add_executable_for_each_rmw_impl(list_parameters src/parameters/list_parameters.cpp)
-add_executable_for_each_rmw_impl(list_parameters_async src/parameters/list_parameters_async.cpp)
-add_executable_for_each_rmw_impl(parameter_events src/parameters/parameter_events.cpp)
-add_executable_for_each_rmw_impl(parameter_events_async src/parameters/parameter_events_async.cpp)
-add_executable_for_each_rmw_impl(set_and_get_parameters src/parameters/set_and_get_parameters.cpp)
-add_executable_for_each_rmw_impl(set_and_get_parameters_async
-  src/parameters/set_and_get_parameters_async.cpp)
+add_executable_for_each_rmw_implementations(list_parameters
+  src/parameters/list_parameters.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(list_parameters_async
+  src/parameters/list_parameters_async.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(parameter_events
+  src/parameters/parameter_events.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(parameter_events_async
+  src/parameters/parameter_events_async.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(set_and_get_parameters
+  src/parameters/set_and_get_parameters.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+add_executable_for_each_rmw_implementations(set_and_get_parameters_async
+  src/parameters/set_and_get_parameters_async.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
