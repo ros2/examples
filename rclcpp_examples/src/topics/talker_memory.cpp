@@ -20,7 +20,7 @@
 
 #include <example_interfaces/msg/large_fixed.hpp>
 
-using namespace rclcpp::memory_strategies::static_memory_strategy;
+using namespace rclcpp::memory_strategies::stack_pool_memory_strategy;
 
 int main(int argc, char * argv[])
 {
@@ -29,12 +29,9 @@ int main(int argc, char * argv[])
   rclcpp::memory_strategy::MemoryStrategy::SharedPtr memory_strategy = nullptr;
   if (argc > 1) {
     std::string argument(argv[1]);
-    if (argument == "static") {
-      printf("Setting memory allocation strategy to 'static'.\n");
-      ObjectPoolBounds bounds;
-      bounds.set_max_subscriptions(1).set_max_services(1).set_max_clients(1);
-      bounds.set_max_executables(1).set_memory_pool_size(0);
-      memory_strategy = std::make_shared<StaticMemoryStrategy>(bounds);
+    if (argument == "stack_pool") {
+      printf("Setting memory allocation strategy to 'stack_pool'.\n");
+      memory_strategy = std::make_shared<StackPoolMemoryStrategy<>>();
     } else if (argument == "dynamic") {
       printf("Setting memory allocation strategy to 'dynamic'.\n");
     } else {
@@ -54,10 +51,10 @@ int main(int argc, char * argv[])
   rmw_qos_profile_t custom_qos_profile = rmw_qos_profile_default;
   custom_qos_profile.depth = 7;
 
+  executor.add_node(node);
+
   auto chatter_pub = node->create_publisher<example_interfaces::msg::LargeFixed>("chatter",
       custom_qos_profile);
-
-  rclcpp::WallRate loop_rate(10);
 
   auto msg = std::make_shared<example_interfaces::msg::LargeFixed>();
   auto i = 1;
@@ -66,16 +63,20 @@ int main(int argc, char * argv[])
   }
   ++i;
 
+  auto publish_callback =
+    [&chatter_pub, &msg, &i]()
+    {
+      std::cout << "publishing" << std::endl;
+      chatter_pub->publish(msg);
+      for (size_t j = 0; j < 255; ++j) {
+        msg->data[j] = i;
+      }
+      ++i;
+    };
 
-  while (rclcpp::ok()) {
-    chatter_pub->publish(msg);
-    executor.spin_node_some(node);
-    loop_rate.sleep();
-    for (size_t j = 0; j < 255; ++j) {
-      msg->data[j] = i;
-    }
-    ++i;
-  }
+  auto timer = node->create_wall_timer(std::chrono::nanoseconds(1000000000), publish_callback);
+
+  executor.spin();
 
   return 0;
 }

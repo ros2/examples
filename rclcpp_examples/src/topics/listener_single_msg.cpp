@@ -23,7 +23,7 @@
 #include <example_interfaces/msg/large_fixed.hpp>
 
 using namespace rclcpp::strategies::message_pool_memory_strategy;
-using namespace rclcpp::memory_strategies::static_memory_strategy;
+using namespace rclcpp::memory_strategies;
 
 size_t messages_received = 0;
 
@@ -39,12 +39,16 @@ int main(int argc, char * argv[])
   rclcpp::memory_strategy::MemoryStrategy::SharedPtr memory_strategy = nullptr;
   if (argc > 1) {
     std::string argument(argv[1]);
-    if (argument == "static") {
-      printf("Setting memory allocation strategy to 'static'.\n");
-      ObjectPoolBounds bounds;
+
+    if (argument == "stack_pool") {
+      printf("Setting memory allocation strategy to 'stack_pool'.\n");
+      memory_strategy = std::make_shared<StackPoolMemoryStrategy<1, 1, 1, 1, 2, 0>>();
+    } else if (argument == "realtime") {
+      printf("Setting memory allocation strategy to 'heap_pool'.\n");
+      rclcpp::memory_strategies::heap_pool_memory_strategy::ObjectPoolBounds bounds;
       bounds.set_max_subscriptions(1).set_max_services(1).set_max_clients(1);
       bounds.set_max_executables(1).set_memory_pool_size(0);
-      memory_strategy = std::make_shared<StaticMemoryStrategy>(bounds);
+      memory_strategy = std::make_shared<HeapPoolMemoryStrategy>(bounds);
     } else if (argument == "dynamic") {
       printf("Setting memory allocation strategy to 'dynamic'.\n");
     } else {
