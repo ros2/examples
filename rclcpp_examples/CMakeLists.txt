@@ -11,6 +11,7 @@ find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rmw REQUIRED)
 find_package(rmw_implementation REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
 ament_package()
@@ -41,6 +42,11 @@ add_executable_for_each_rmw_implementations(listener_memory
 add_executable_for_each_rmw_implementations(talker_memory
   src/topics/talker_memory.cpp
   TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+
+add_executable_for_each_rmw_implementations(imu_listener
+  src/topics/imu_listener.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} sensor_msgs INSTALL)
+
 
 ##
 ## Examples of Request/Response with Services
