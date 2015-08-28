@@ -16,10 +16,10 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-void on_parameter_event(const std::shared_ptr<rcl_interfaces::msg::ParameterEvent> & event) {
+void on_parameter_event(const std::shared_ptr<rcl_interfaces::msg::ParameterEvent> & event)
+{
   // TODO(wjwwood): The message should have an operator<<, which would replace all of this.
-  std::cout << "Parameter event:" << std::endl
-            << " new parameters:" << std::endl;
+  std::cout << "Parameter event:" << std::endl << " new parameters:" << std::endl;
   for (auto & new_parameter : event->new_parameters) {
     std::cout << "  " << new_parameter.name << std::endl;
   }

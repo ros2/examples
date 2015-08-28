@@ -37,8 +37,7 @@ int main(int argc, char ** argv)
   rclcpp::spin_until_future_complete(node, results);  // Wait for the results.
   // Check to see if they were set.
   for (auto & result : results.get()) {
-    if (!result.successful)
-    {
+    if (!result.successful) {
       std::cerr << "Failed to set parameter: " << result.reason << std::endl;
     }
   }
@@ -48,8 +47,8 @@ int main(int argc, char ** argv)
   rclcpp::spin_until_future_complete(node, parameters);
   for (auto & parameter : parameters.get()) {
     std::cout << "Parameter name: " << parameter.get_name() << std::endl;
-    std::cout << "Parameter value (" << parameter.get_type_name() << "): "
-              << parameter.to_string() << std::endl;
+    std::cout << "Parameter value (" << parameter.get_type_name() << "): " <<
+      parameter.to_string() << std::endl;
   }
 
   return 0;
