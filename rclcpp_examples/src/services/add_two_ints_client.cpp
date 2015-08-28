@@ -20,9 +20,9 @@
 
 // TODO(wjwwood): make this into a method of rclcpp::client::Client.
 example_interfaces::srv::AddTwoInts_Response::SharedPtr send_request(
-  rclcpp::Node::SharedPtr & node,
-  rclcpp::client::Client<example_interfaces::srv::AddTwoInts>::SharedPtr & client,
-  example_interfaces::srv::AddTwoInts_Request::SharedPtr & request)
+  rclcpp::Node::SharedPtr node,
+  rclcpp::client::Client<example_interfaces::srv::AddTwoInts>::SharedPtr client,
+  example_interfaces::srv::AddTwoInts_Request::SharedPtr request)
 {
   auto result = client->async_send_request(request);
   return rclcpp::spin_until_future_complete(node, result).get();
