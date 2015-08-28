@@ -19,7 +19,7 @@
 
 #include <std_msgs/msg/string.hpp>
 
-void chatterCallback(const std_msgs::msg::String::ConstSharedPtr & msg)
+void chatterCallback(const std_msgs::msg::String::SharedPtr msg)
 {
   std::cout << "I heard: [" << msg->data << "]" << std::endl;
 }

@@ -25,7 +25,7 @@ using rclcpp::memory_strategies::static_memory_strategy::StaticMemoryStrategy;
 
 size_t messages_received = 0;
 
-void chatterCallback(const example_interfaces::msg::LargeFixed::ConstSharedPtr & msg)
+void chatterCallback(const example_interfaces::msg::LargeFixed::SharedPtr msg)
 {
   printf("Address of received message: %p\n", msg.get());
   ++messages_received;

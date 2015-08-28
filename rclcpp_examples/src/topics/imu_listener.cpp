@@ -16,7 +16,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 
-void imu_cb(const sensor_msgs::msg::Imu::ConstSharedPtr msg)
+void imu_cb(const sensor_msgs::msg::Imu::SharedPtr msg)
 {
   printf(" accel: [%+6.3f %+6.3f %+6.3f]\n",
     msg->linear_acceleration.x,

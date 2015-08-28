@@ -16,7 +16,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-void on_parameter_event(const std::shared_ptr<rcl_interfaces::msg::ParameterEvent> & event)
+void on_parameter_event(const rcl_interfaces::msg::ParameterEvent::SharedPtr event)
 {
   // TODO(wjwwood): The message should have an operator<<, which would replace all of this.
   std::cout << "Parameter event:" << std::endl << " new parameters:" << std::endl;
