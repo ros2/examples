@@ -25,7 +25,11 @@ example_interfaces::srv::AddTwoInts_Response::SharedPtr send_request(
   example_interfaces::srv::AddTwoInts_Request::SharedPtr request)
 {
   auto result = client->async_send_request(request);
-  return rclcpp::spin_until_future_complete(node, result).get();
+  rclcpp::spin_until_future_complete(node, result);
+  if (result.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+    return result.get();
+  }
+  return NULL;
 }
 
 int main(int argc, char ** argv)
@@ -41,7 +45,12 @@ int main(int argc, char ** argv)
 
   // TODO(wjwwood): make it like `client->send_request(node, request)->sum`
   // TODO(wjwwood): consider error condition
-  std::cout << "Result of add_two_ints: " << send_request(node, client, request)->sum << std::endl;
+  auto result = send_request(node, client, request);
+  if (result) {
+    printf("Result of add_two_ints: %d\n", result->sum);
+  } else {
+    printf("add_two_ints_client was interrupted. Exiting.\n");
+  }
 
   return 0;
 }
