@@ -34,7 +34,7 @@ int main(int argc, char ** argv)
   rclcpp::spin_until_future_complete(node, result);  // Wait for the result.
 
   if (result.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
-    printf("Result of add_two_ints: %li\n", result.get()->sum);
+    printf("Result of add_two_ints: %zd\n", result.get()->sum);
   } else {
     printf("add_two_ints_client_async was interrupted. Exiting.\n");
   }
