@@ -47,7 +47,7 @@ int main(int argc, char ** argv)
   // TODO(wjwwood): consider error condition
   auto result = send_request(node, client, request);
   if (result) {
-    printf("Result of add_two_ints: %zu\n", result->sum);
+    printf("Result of add_two_ints: %li\n", result->sum);
   } else {
     printf("add_two_ints_client was interrupted. Exiting.\n");
   }
