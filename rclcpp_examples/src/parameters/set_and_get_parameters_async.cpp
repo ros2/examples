@@ -34,7 +34,13 @@ int main(int argc, char ** argv)
     rclcpp::parameter::ParameterVariant("baz", 1.45),
     rclcpp::parameter::ParameterVariant("foobar", true),
   });
-  rclcpp::spin_until_future_complete(node, results);  // Wait for the results.
+  // Wait for the results.
+  if (rclcpp::spin_until_future_complete(node, results) !=
+    rclcpp::executors::FutureReturnCode::SUCCESS)
+  {
+    printf("set_parameters service call failed. Exiting example.\n");
+    return -1;
+  }
   // Check to see if they were set.
   for (auto & result : results.get()) {
     if (!result.successful) {
@@ -44,7 +50,12 @@ int main(int argc, char ** argv)
 
   // Get a few of the parameters just set.
   auto parameters = parameters_client->get_parameters({{"foo", "baz"}});
-  rclcpp::spin_until_future_complete(node, parameters);
+  if (rclcpp::spin_until_future_complete(node, results) !=
+    rclcpp::executors::FutureReturnCode::SUCCESS)
+  {
+    printf("get_parameters service call failed. Exiting example.\n");
+    return -1;
+  }
   for (auto & parameter : parameters.get()) {
     std::cout << "Parameter name: " << parameter.get_name() << std::endl;
     std::cout << "Parameter value (" << parameter.get_type_name() << "): " <<

@@ -29,12 +29,13 @@ int main(int argc, char ** argv)
   request->a = 2;
   request->b = 3;
 
-  auto result = client->async_send_request(request);
+  auto future_result = client->async_send_request(request);
 
-  rclcpp::spin_until_future_complete(node, result);  // Wait for the result.
-
-  if (result.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
-    printf("Result of add_two_ints: %zd\n", result.get()->sum);
+  // Wait for the result.
+  if (rclcpp::spin_until_future_complete(node, future_result) ==
+    rclcpp::executors::FutureReturnCode::SUCCESS)
+  {
+    printf("Result of add_two_ints: %zd\n", future_result.get()->sum);
   } else {
     printf("add_two_ints_client_async was interrupted. Exiting.\n");
   }

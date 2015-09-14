@@ -24,12 +24,16 @@ example_interfaces::srv::AddTwoInts_Response::SharedPtr send_request(
   rclcpp::client::Client<example_interfaces::srv::AddTwoInts>::SharedPtr client,
   example_interfaces::srv::AddTwoInts_Request::SharedPtr request)
 {
+
   auto result = client->async_send_request(request);
-  rclcpp::spin_until_future_complete(node, result);
-  if (result.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+  // Wait for the result.
+  if (rclcpp::spin_until_future_complete(node, result) ==
+    rclcpp::executors::FutureReturnCode::SUCCESS)
+  {
     return result.get();
+  } else {
+    return NULL;
   }
-  return NULL;
 }
 
 int main(int argc, char ** argv)

@@ -41,7 +41,14 @@ int main(int argc, char ** argv)
 
   // List the details of a few parameters up to a namespace depth of 10.
   auto parameter_list_future = parameters_client->list_parameters({{"foo", "bar"}}, 10);
-  auto parameter_list = rclcpp::spin_until_future_complete(node, parameter_list_future).get();
+
+  if (rclcpp::spin_until_future_complete(node, parameter_list_future) !=
+    rclcpp::executors::FutureReturnCode::SUCCESS)
+  {
+    printf("list_parameters service call failed, exiting example.");
+    return -1;
+  }
+  auto parameter_list = parameter_list_future.get();
   for (auto & name : parameter_list.names) {
     std::cout << "Parameter name: " << name << std::endl;
   }
