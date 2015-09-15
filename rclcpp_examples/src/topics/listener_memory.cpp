@@ -21,7 +21,7 @@
 
 #include <example_interfaces/msg/large_fixed.hpp>
 
-using rclcpp::memory_strategies::static_memory_strategy::StaticMemoryStrategy;
+using rclcpp::memory_strategies::StackPoolMemoryStrategy;
 
 size_t messages_received = 0;
 
@@ -37,9 +37,9 @@ int main(int argc, char * argv[])
   rclcpp::memory_strategy::MemoryStrategy::SharedPtr memory_strategy = nullptr;
   if (argc > 1) {
     std::string argument(argv[1]);
-    if (argument == "static") {
-      printf("Setting memory allocation strategy to 'static'.\n");
-      memory_strategy = std::make_shared<StaticMemoryStrategy>(StaticMemoryStrategy());
+    if (argument == "stack_pool") {
+      printf("Setting memory allocation strategy to 'stack_pool'.\n");
+      memory_strategy = std::make_shared<StackPoolMemoryStrategy<>>();
     } else if (argument == "dynamic") {
       printf("Setting memory allocation strategy to 'dynamic'.\n");
     } else {
