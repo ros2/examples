@@ -40,7 +40,7 @@ int main(int argc, char ** argv)
   rclcpp::spin_until_future_complete(node, results);
 
   // List the details of a few parameters up to a namespace depth of 10.
-  auto parameter_list_future = parameters_client->list_parameters({{"foo", "bar"}}, 10);
+  auto parameter_list_future = parameters_client->list_parameters({"foo", "bar"}, 10);
 
   if (rclcpp::spin_until_future_complete(node, parameter_list_future) !=
     rclcpp::executors::FutureReturnCode::SUCCESS)
