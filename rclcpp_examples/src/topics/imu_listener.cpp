@@ -29,7 +29,7 @@ int main(int argc, char ** argv)
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("imu_listener");
   auto sub = node->create_subscription<sensor_msgs::msg::Imu>(
-    "imu", rmw_qos_profile_sensor_data, imu_cb);
+    "imu", imu_cb, rmw_qos_profile_sensor_data);
   rclcpp::spin(node);
   return 0;
 }
