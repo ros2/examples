@@ -23,10 +23,9 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("listener");
   auto sub = node->create_subscription<std_msgs::msg::String>(
-    "chatter", rmw_qos_profile_sensor_data,
-    [](const std_msgs::msg::String::SharedPtr msg) -> void {
+    "chatter", [](const std_msgs::msg::String::SharedPtr msg) -> void {
     printf("I heard: [%s]\n", msg->data.c_str());
-  });
+  }, rmw_qos_profile_sensor_data);
   rclcpp::spin(node);
   return 0;
 }

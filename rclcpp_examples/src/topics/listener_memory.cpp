@@ -59,7 +59,7 @@ int main(int argc, char * argv[])
   custom_qos_profile.depth = 7;
 
   auto sub = node->create_subscription<example_interfaces::msg::LargeFixed>(
-    "chatter", custom_qos_profile, chatterCallback, nullptr);
+    "chatter", chatterCallback, custom_qos_profile, nullptr);
 
   executor.spin();
 
