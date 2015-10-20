@@ -59,7 +59,7 @@ int main(int argc, char ** argv)
   for (auto & parameter : parameters.get()) {
     std::cout << "Parameter name: " << parameter.get_name() << std::endl;
     std::cout << "Parameter value (" << parameter.get_type_name() << "): " <<
-      parameter.to_string() << std::endl;
+      parameter.value_to_string() << std::endl;
   }
 
   return 0;
