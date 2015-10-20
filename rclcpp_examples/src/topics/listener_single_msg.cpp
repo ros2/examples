@@ -14,16 +14,18 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 
-#include <rclcpp/rclcpp.hpp>
-#include <rclcpp/executors.hpp>
-#include <rclcpp/memory_strategies.hpp>
-#include <rclcpp/strategies/message_pool_memory_strategy.hpp>
+#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/executors.hpp"
+#include "rclcpp/memory_strategies.hpp"
+#include "rclcpp/strategies/message_pool_memory_strategy.hpp"
 
-#include <example_interfaces/msg/large_fixed.hpp>
+#include "example_interfaces/msg/large_fixed.hpp"
 
-using namespace rclcpp::strategies::message_pool_memory_strategy;
-using namespace rclcpp::memory_strategies;
+using rclcpp::memory_strategies::HeapPoolMemoryStrategy;
+using rclcpp::memory_strategies::StackPoolMemoryStrategy;
+using rclcpp::strategies::message_pool_memory_strategy::MessagePoolMemoryStrategy;
 
 size_t messages_received = 0;
 

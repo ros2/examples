@@ -12,15 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <iostream>
 #include <stdlib.h>
 
-#include <rclcpp/rclcpp.hpp>
-#include <rclcpp/memory_strategies.hpp>
+#include <iostream>
+#include <string>
 
-#include <example_interfaces/msg/large_fixed.hpp>
+#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/memory_strategies.hpp"
 
-using namespace rclcpp::memory_strategies::stack_pool_memory_strategy;
+#include "example_interfaces/msg/large_fixed.hpp"
+
+using rclcpp::memory_strategies::stack_pool_memory_strategy::StackPoolMemoryStrategy;
 
 int main(int argc, char * argv[])
 {
