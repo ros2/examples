@@ -14,9 +14,9 @@
 
 #include <iostream>
 
-#include <rclcpp/rclcpp.hpp>
+#include "rclcpp/rclcpp.hpp"
 
-#include <example_interfaces/srv/add_two_ints.hpp>
+#include "example_interfaces/srv/add_two_ints.hpp"
 
 // TODO(wjwwood): make this into a method of rclcpp::client::Client.
 example_interfaces::srv::AddTwoInts_Response::SharedPtr send_request(
@@ -24,7 +24,6 @@ example_interfaces::srv::AddTwoInts_Response::SharedPtr send_request(
   rclcpp::client::Client<example_interfaces::srv::AddTwoInts>::SharedPtr client,
   example_interfaces::srv::AddTwoInts_Request::SharedPtr request)
 {
-
   auto result = client->async_send_request(request);
   // Wait for the result.
   if (rclcpp::spin_until_future_complete(node, result) ==
