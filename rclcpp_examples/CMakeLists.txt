@@ -41,17 +41,6 @@ add_executable_for_each_rmw_implementations(listener_best_effort
   TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
 
 
-## Example of publish/subscribe with topics and custom memory strategies for executor, subscriber
-add_executable_for_each_rmw_implementations(listener_single_msg
-  src/topics/listener_single_msg.cpp
-  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
-add_executable_for_each_rmw_implementations(listener_memory
-  src/topics/listener_memory.cpp
-  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
-add_executable_for_each_rmw_implementations(talker_memory
-  src/topics/talker_memory.cpp
-  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
-
 add_executable_for_each_rmw_implementations(imu_listener
   src/topics/imu_listener.cpp
   TARGET_DEPENDENCIES ${target_dependencies} sensor_msgs INSTALL)
