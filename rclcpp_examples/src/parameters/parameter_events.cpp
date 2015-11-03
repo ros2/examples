@@ -63,5 +63,9 @@ int main(int argc, char ** argv)
 
   // TODO(wjwwood): Create and use delete_parameter
 
+  rclcpp::sleep_for(100_ms);
+
+  rclcpp::spin_some(node);
+
   return 0;
 }
