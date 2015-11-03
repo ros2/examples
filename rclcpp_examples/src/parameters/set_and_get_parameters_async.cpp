@@ -49,8 +49,8 @@ int main(int argc, char ** argv)
   }
 
   // Get a few of the parameters just set.
-  auto parameters = parameters_client->get_parameters({{"foo", "baz"}});
-  if (rclcpp::spin_until_future_complete(node, results) !=
+  auto parameters = parameters_client->get_parameters({"foo", "baz"});
+  if (rclcpp::spin_until_future_complete(node, parameters) !=
     rclcpp::executors::FutureReturnCode::SUCCESS)
   {
     printf("get_parameters service call failed. Exiting example.\n");
