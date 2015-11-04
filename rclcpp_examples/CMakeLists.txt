@@ -45,6 +45,10 @@ add_executable_for_each_rmw_implementations(imu_listener
   src/topics/imu_listener.cpp
   TARGET_DEPENDENCIES ${target_dependencies} sensor_msgs INSTALL)
 
+add_executable_for_each_rmw_implementations(allocator_example
+  src/topics/allocator_example.cpp
+  TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+
 
 ##
 ## Examples of Request/Response with Services
