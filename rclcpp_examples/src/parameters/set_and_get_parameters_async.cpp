@@ -36,7 +36,7 @@ int main(int argc, char ** argv)
   });
   // Wait for the results.
   if (rclcpp::spin_until_future_complete(node, results) !=
-    rclcpp::executors::FutureReturnCode::SUCCESS)
+    rclcpp::executor::FutureReturnCode::SUCCESS)
   {
     printf("set_parameters service call failed. Exiting example.\n");
     return -1;
@@ -51,7 +51,7 @@ int main(int argc, char ** argv)
   // Get a few of the parameters just set.
   auto parameters = parameters_client->get_parameters({"foo", "baz"});
   if (rclcpp::spin_until_future_complete(node, parameters) !=
-    rclcpp::executors::FutureReturnCode::SUCCESS)
+    rclcpp::executor::FutureReturnCode::SUCCESS)
   {
     printf("get_parameters service call failed. Exiting example.\n");
     return -1;
