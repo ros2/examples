@@ -74,6 +74,21 @@ public:
     std::free(ptr);
   }
 
+  template<typename U, typename ... Args,
+  typename std::enable_if<!std::is_const<U>::value>::type * = nullptr>
+  void
+  construct(U * ptr, Args && ... args)
+  {
+    ::new(ptr)U(std::forward<Args>(args) ...);
+  }
+
+  template<typename U>
+  void
+  destroy(U * ptr)
+  {
+    ptr->~U();
+  }
+
   template<typename U>
   struct rebind
   {
@@ -138,16 +153,32 @@ int main(int argc, char ** argv)
   using rclcpp::memory_strategies::allocator_memory_strategy::AllocatorMemoryStrategy;
   rclcpp::init(argc, argv);
 
-  auto node = rclcpp::Node::make_shared("allocator_example", false);
-  // To use intra-process, comment out the above line and uncomment the following:
-  /*
-  auto context = rclcpp::contexts::default_context::get_global_default_context();
-  auto ipm_state =
-    std::make_shared<rclcpp::intra_process_manager::IntraProcessManagerState<MyAllocator<>>>();
-  // Constructs the intra-process manager with a custom allocator.
-  context->get_sub_context<rclcpp::intra_process_manager::IntraProcessManager>(ipm_state);
-  auto node = rclcpp::Node::make_shared("allocator_example", true);
-  */
+  rclcpp::Node::SharedPtr node;
+
+  std::list<std::string> keys = {"intra", "intraprocess", "intra-process", "intra_process"};
+  bool intra_process = false;
+
+  if (argc > 1) {
+    for (auto & key : keys) {
+      if (std::string(argv[1]) == key) {
+        intra_process = true;
+        break;
+      }
+    }
+  }
+
+  if (intra_process) {
+    printf("Intra-process pipeline is ON.\n");
+    auto context = rclcpp::contexts::default_context::get_global_default_context();
+    auto ipm_state =
+      std::make_shared<rclcpp::intra_process_manager::IntraProcessManagerState<MyAllocator<>>>();
+    // Constructs the intra-process manager with a custom allocator.
+    context->get_sub_context<rclcpp::intra_process_manager::IntraProcessManager>(ipm_state);
+    node = rclcpp::Node::make_shared("allocator_example", true);
+  } else {
+    printf("Intra-process pipeline is OFF.\n");
+    node = rclcpp::Node::make_shared("allocator_example", false);
+  }
 
   uint32_t counter = 0;
   auto callback = [&counter](std_msgs::msg::UInt32::SharedPtr msg) -> void
