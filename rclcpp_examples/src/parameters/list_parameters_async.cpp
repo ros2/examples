@@ -43,7 +43,7 @@ int main(int argc, char ** argv)
   auto parameter_list_future = parameters_client->list_parameters({"foo", "bar"}, 10);
 
   if (rclcpp::spin_until_future_complete(node, parameter_list_future) !=
-    rclcpp::executors::FutureReturnCode::SUCCESS)
+    rclcpp::executor::FutureReturnCode::SUCCESS)
   {
     printf("list_parameters service call failed, exiting example.");
     return -1;

@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
 
   // Wait for the result.
   if (rclcpp::spin_until_future_complete(node, future_result) ==
-    rclcpp::executors::FutureReturnCode::SUCCESS)
+    rclcpp::executor::FutureReturnCode::SUCCESS)
   {
     printf("Result of add_two_ints: %zd\n", future_result.get()->sum);
   } else {
