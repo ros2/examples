@@ -1,0 +1,72 @@
+import io
+import os
+from launch import LaunchDescriptor
+from launch.launcher import DefaultLauncher
+from launch.output_handler import LineOutput
+
+
+class InMemoryHandler(LineOutput):
+    def __init__(self):
+        super(LineOutput, self).__init__()
+        self.left_over_stdout = b''
+        self.left_over_stderr = b''
+        self.stdout_data = io.BytesIO()
+        self.stderr_data = io.BytesIO()
+
+    def on_stdout_lines(self, lines):
+        self.stdout_data.write(lines)
+
+    def on_stderr_lines(self, lines):
+        self.stderr_data.write(lines)
+
+    def get_description(self):
+        return 'InMemoryHandler'
+
+
+def setup():
+    os.environ['OSPL_VERBOSITY'] = '8'  # 8 = OS_NONE
+
+
+def test_executable():
+    output_handler = InMemoryHandler()
+
+    ld = LaunchDescriptor()
+
+    ld.add_process(
+        cmd=['@RCLCPP_EXAMPLES_EXECUTABLE@', 'test_executable'],
+        name='test_executable',
+        output_handlers=[output_handler],
+    )
+
+    launcher = DefaultLauncher()
+    launcher.add_launch_descriptor(ld)
+    rc = launcher.launch()
+
+    output_lines = []
+    expected_output_lines = None
+
+    with open('@RCLCPP_EXAMPLES_EXPECTED_OUTPUT@', 'rb') as f:
+        expected_output_lines = f.read().splitlines()
+
+    for line in output_handler.stdout_data.getvalue().splitlines():
+        if line.startswith(b'pid'):
+            continue
+        if line.startswith(b'rc'):
+            continue
+        if line.startswith(b'RTI Data Distribution Service Evaluation ' +
+                           b'License issued to'):
+            continue
+        if line.startswith(b'Expires on'):
+            continue
+        output_lines.append(line)
+
+    assert rc == 0, \
+        "The launch file failed with exit code '" + str(rc) + "'. " \
+        'Maybe the client did not receive any messages?'
+
+    assert output_lines == expected_output_lines, \
+        "Example output (%r) does not match expected output (%r)" % \
+        (output_lines, expected_output_lines)
+
+if __name__ == '__main__':
+    test_executable()

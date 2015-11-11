@@ -14,13 +14,6 @@ find_package(rmw_implementation REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
-if(AMENT_ENABLE_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  ament_lint_auto_find_test_dependencies()
-endif()
-
-ament_package()
-
 set(target_dependencies
   "rclcpp"
   "std_msgs"
@@ -86,3 +79,47 @@ add_executable_for_each_rmw_implementations(set_and_get_parameters
 add_executable_for_each_rmw_implementations(set_and_get_parameters_async
   src/parameters/set_and_get_parameters_async.cpp
   TARGET_DEPENDENCIES ${target_dependencies} INSTALL)
+
+if(AMENT_ENABLE_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+
+  if(NOT WIN32)
+    set(test_executable_extension "")
+    set(test_executable_subfolder "")
+  else()
+    set(test_executable_extension ".exe")
+    set(test_executable_subfolder "/${CMAKE_BUILD_TYPE}")
+    if("${test_executable_subfolder}" STREQUAL "/")
+      set(test_executable_subfolder "/Debug")
+    endif()
+  endif()
+
+  # get the rmw implementations ahead of time
+  get_available_rmw_implementations(middleware_implementations)
+  foreach(middleware_impl ${middleware_implementations})
+    find_package("${middleware_impl}" REQUIRED)
+  endforeach()
+
+  foreach(example_executable list_parameters_async list_parameters parameter_events_async parameter_events set_and_get_parameters_async set_and_get_parameters)
+    foreach(middleware_impl ${middleware_implementations})
+      # get typesupport of rmw implementation to include / link against the corresponding interfaces
+      get_rmw_typesupport(typesupport_impl "${middleware_impl}")
+
+      set(RCLCPP_EXAMPLES_EXECUTABLE "${CMAKE_CURRENT_BINARY_DIR}${test_executable_subfolder}/${example_executable}__${middleware_impl}${test_executable_extension}")
+
+      set(RCLCPP_EXAMPLES_EXPECTED_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/test/${example_executable}.txt")
+
+      configure_file(
+        test/test_single_executable_example.py.in
+        test_${example_executable}__${middleware_impl}.py
+        @ONLY
+      )
+
+      ament_add_nose_test(test_example_${example_executable}__${middleware_impl} "${CMAKE_CURRENT_BINARY_DIR}/test_${example_executable}__${middleware_impl}.py" TIMEOUT 30)
+      set_tests_properties(test_example_${example_executable}__${middleware_impl} PROPERTIES DEPENDS "test_example_${example_executable}__${middleware_impl} test_example_${example_executable}__${middleware_impl}")
+    endforeach()
+  endforeach()
+endif()
+
+ament_package()
