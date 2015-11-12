@@ -103,10 +103,21 @@ if(AMENT_ENABLE_TESTING)
 
   # Add each test case.  Multi-executable tests can be specified in
   # semicolon-separated strings, like  exe1;exe2.
-  foreach(example_executable list_parameters_async list_parameters parameter_events_async parameter_events set_and_get_parameters_async set_and_get_parameters "talker;listener")
+  set(example_tests
+    list_parameters_async
+    list_parameters
+    parameter_events_async
+    parameter_events
+    set_and_get_parameters_async
+    set_and_get_parameters
+    "talker:listener"
+    "add_two_ints_client:add_two_ints_server"
+    "add_two_ints_client_async:add_two_ints_server")
 
+  foreach(example_test ${example_tests})
+    string(REPLACE ":" ";" example_executables "${example_test}")
     set(RCLCPP_EXAMPLES_EXPECTED_OUTPUT "")
-    foreach(executable ${example_executable})
+    foreach(executable ${example_executables})
       list(APPEND RCLCPP_EXAMPLES_EXPECTED_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/test/${executable}")
     endforeach()
 
@@ -115,11 +126,11 @@ if(AMENT_ENABLE_TESTING)
       get_rmw_typesupport(typesupport_impl "${middleware_impl}")
 
       set(RCLCPP_EXAMPLES_EXECUTABLE "")
-      foreach(executable ${example_executable})
+      foreach(executable ${example_executables})
         list(APPEND RCLCPP_EXAMPLES_EXECUTABLE "${CMAKE_CURRENT_BINARY_DIR}${test_executable_subfolder}/${executable}__${middleware_impl}${test_executable_extension}")
       endforeach()
 
-      string(REPLACE ";" "_" exe_list_underscore "${example_executable}")
+      string(REPLACE ";" "_" exe_list_underscore "${example_executables}")
       configure_file(
         test/test_executables_example.py.in
         test_${exe_list_underscore}__${middleware_impl}.py
