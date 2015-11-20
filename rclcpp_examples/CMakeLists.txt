@@ -101,23 +101,36 @@ if(AMENT_ENABLE_TESTING)
     find_package("${middleware_impl}" REQUIRED)
   endforeach()
 
-  foreach(example_executable list_parameters_async list_parameters parameter_events_async parameter_events set_and_get_parameters_async set_and_get_parameters)
+  # Add each test case.  Multi-executable tests can be specified in
+  # semicolon-separated strings, like  exe1;exe2.
+  foreach(example_executable list_parameters_async list_parameters parameter_events_async parameter_events set_and_get_parameters_async set_and_get_parameters "talker;listener")
+
+    set(RCLCPP_EXAMPLES_EXPECTED_OUTPUT "")
+    foreach(executable ${example_executable})
+      list(APPEND RCLCPP_EXAMPLES_EXPECTED_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/test/${executable}")
+    endforeach()
+
     foreach(middleware_impl ${middleware_implementations})
       # get typesupport of rmw implementation to include / link against the corresponding interfaces
       get_rmw_typesupport(typesupport_impl "${middleware_impl}")
 
-      set(RCLCPP_EXAMPLES_EXECUTABLE "${CMAKE_CURRENT_BINARY_DIR}${test_executable_subfolder}/${example_executable}__${middleware_impl}${test_executable_extension}")
+      set(RCLCPP_EXAMPLES_EXECUTABLE "")
+      foreach(executable ${example_executable})
+        list(APPEND RCLCPP_EXAMPLES_EXECUTABLE "${CMAKE_CURRENT_BINARY_DIR}${test_executable_subfolder}/${executable}__${middleware_impl}${test_executable_extension}")
+      endforeach()
 
-      set(RCLCPP_EXAMPLES_EXPECTED_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/test/${example_executable}.txt")
-
+      string(REPLACE ";" "_" exe_list_underscore "${example_executable}")
       configure_file(
-        test/test_single_executable_example.py.in
-        test_${example_executable}__${middleware_impl}.py
+        test/test_executables_example.py.in
+        test_${exe_list_underscore}__${middleware_impl}.py
         @ONLY
       )
 
-      ament_add_nose_test(test_example_${example_executable}__${middleware_impl} "${CMAKE_CURRENT_BINARY_DIR}/test_${example_executable}__${middleware_impl}.py" TIMEOUT 30)
-      set_tests_properties(test_example_${example_executable}__${middleware_impl} PROPERTIES DEPENDS "test_example_${example_executable}__${middleware_impl} test_example_${example_executable}__${middleware_impl}")
+      ament_add_nose_test(test_example_${exe_list_underscore}__${middleware_impl}
+        "${CMAKE_CURRENT_BINARY_DIR}/test_${exe_list_underscore}__${middleware_impl}.py"
+        TIMEOUT 30)
+      set_tests_properties(test_example_${exe_list_underscore}__${middleware_impl}
+      PROPERTIES DEPENDS "test_example_${exe_list_underscore}__${middleware_impl} test_example_${exe_list_underscore}__${middleware_impl}")
     endforeach()
   endforeach()
 endif()

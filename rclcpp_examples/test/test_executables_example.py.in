@@ -1,0 +1,59 @@
+from importlib.machinery import SourceFileLoader
+import os
+from launch import LaunchDescriptor
+from launch.exit_handler import ignore_exit_handler
+from launch.launcher import DefaultLauncher
+from launch_testing import InMemoryHandler
+
+
+def setup():
+    os.environ['OSPL_VERBOSITY'] = '8'  # 8 = OS_NONE
+
+
+def test_executable():
+    output_handlers = []
+
+    ld = LaunchDescriptor()
+
+    executables = '@RCLCPP_EXAMPLES_EXECUTABLE@'.split(';')
+    output_files = '@RCLCPP_EXAMPLES_EXPECTED_OUTPUT@'.split(';')
+    for i, (exe, output_file) in enumerate(zip(executables, output_files)):
+        name = 'test_executable_' + str(i)
+        literal_file = output_file + '.txt'
+        regex_file = output_file + '.regex'
+        py_file = output_file + '.py'
+        if os.path.isfile(literal_file):
+            with open(literal_file, 'rb') as f:
+                expected_output = f.read().splitlines()
+            handler = InMemoryHandler(name, ld, expected_output, False)
+        elif os.path.isfile(regex_file):
+            with open(regex_file, 'rb') as f:
+                expected_output = f.read().splitlines()
+            handler = InMemoryHandler(name, ld, expected_output, True)
+        elif os.path.isfile(py_file):
+            checker_module = SourceFileLoader(
+                'checker_module', py_file).load_module()
+            handler = checker_module.CheckerHandler(name, ld)
+        else:
+            assert False, 'Cannot find appropriate handler for %s' % output_file
+        output_handlers.append(handler)
+        ld.add_process(
+            cmd=[exe, 'test_executable'],
+            name=name,
+            exit_handler=ignore_exit_handler,
+            output_handlers=[handler],
+        )
+
+    launcher = DefaultLauncher()
+    launcher.add_launch_descriptor(ld)
+    rc = launcher.launch()
+
+    assert rc == 0, \
+        "The launch file failed with exit code '" + str(rc) + "'. " \
+        'Maybe the client did not receive any messages?'
+
+    for handler in output_handlers:
+        handler.check()
+
+if __name__ == '__main__':
+    test_executable()
