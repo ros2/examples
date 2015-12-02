@@ -173,7 +173,7 @@ int main(int argc, char ** argv)
     printf("Intra-process pipeline is ON.\n");
     auto context = rclcpp::contexts::default_context::get_global_default_context();
     auto ipm_state =
-      std::make_shared<rclcpp::intra_process_manager::IntraProcessManagerState<MyAllocator<>>>();
+      std::make_shared<rclcpp::intra_process_manager::IntraProcessManagerImpl<MyAllocator<>>>();
     // Constructs the intra-process manager with a custom allocator.
     context->get_sub_context<rclcpp::intra_process_manager::IntraProcessManager>(ipm_state);
     node = rclcpp::Node::make_shared("allocator_example", true);
