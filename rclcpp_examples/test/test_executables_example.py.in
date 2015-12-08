@@ -1,3 +1,5 @@
+# generated from rclcpp_examples/test/test_executables_example.py.in
+
 import os
 from launch import LaunchDescriptor
 from launch.exit_handler import ignore_exit_handler
