@@ -1,7 +1,10 @@
+# generated from rclcpp_examples/test/test_executables_example.py.in
+
 import os
 from launch import LaunchDescriptor
 from launch.exit_handler import ignore_exit_handler
 from launch.launcher import DefaultLauncher
+from launch.output_handler import ConsoleOutput
 from launch_testing import create_handler
 
 
@@ -25,7 +28,7 @@ def test_executable():
             cmd=[exe, 'test_executable'],
             name=name,
             exit_handler=ignore_exit_handler,
-            output_handlers=[handler],
+            output_handlers=[ConsoleOutput(), handler],
         )
 
     launcher = DefaultLauncher()
