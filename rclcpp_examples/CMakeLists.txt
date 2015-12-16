@@ -34,6 +34,7 @@ macro(targets)
   custom_executable(topics talker)
   custom_executable(topics listener)
   custom_executable(topics listener_best_effort)
+  custom_executable(topics listener_class)
   custom_executable(topics imu_listener)
   ament_target_dependencies(imu_listener${target_suffix}
     "sensor_msgs")
@@ -80,6 +81,7 @@ if(AMENT_ENABLE_TESTING)
     set_and_get_parameters_async
     set_and_get_parameters
     "talker:listener"
+    "talker:listener_class"
     "add_two_ints_client:add_two_ints_server"
     "add_two_ints_client_async:add_two_ints_server")
 
