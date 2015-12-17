@@ -80,8 +80,8 @@ if(AMENT_ENABLE_TESTING)
     set_and_get_parameters_async
     set_and_get_parameters
     "talker:listener"
-    "add_two_ints_client:add_two_ints_server"
-    "add_two_ints_client_async:add_two_ints_server")
+    "add_two_ints_server:add_two_ints_client"
+    "add_two_ints_server:add_two_ints_client_async")
 
   macro(tests)
     foreach(example_test ${example_tests})

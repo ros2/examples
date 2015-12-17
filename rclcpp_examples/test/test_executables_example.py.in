@@ -3,6 +3,7 @@
 import os
 from launch import LaunchDescriptor
 from launch.exit_handler import ignore_exit_handler
+from launch.exit_handler import primary_ignore_returncode_exit_handler
 from launch.launcher import DefaultLauncher
 from launch.output_handler import ConsoleOutput
 from launch_testing import create_handler
@@ -21,13 +22,21 @@ def test_executable():
     output_files = '@RCLCPP_EXAMPLES_EXPECTED_OUTPUT@'.split(';')
     for i, (exe, output_file) in enumerate(zip(executables, output_files)):
         name = 'test_executable_' + str(i)
-        handler = create_handler(name, launch_descriptor, output_file)
+        # The last executable is taken to be the test program (the one whose
+        # output check can make the decision to shut everything down)
+        if i == (len(executables) - 1):
+            exit_handler = primary_ignore_returncode_exit_handler
+            exit_on_match = True
+        else:
+            exit_handler = ignore_exit_handler
+            exit_on_match = False
+        handler = create_handler(name, launch_descriptor, output_file, exit_on_match=exit_on_match)
         assert handler, 'Cannot find appropriate handler for %s' % output_file
         output_handlers.append(handler)
         launch_descriptor.add_process(
             cmd=[exe, 'test_executable'],
             name=name,
-            exit_handler=ignore_exit_handler,
+            exit_handler=exit_handler,
             output_handlers=[ConsoleOutput(), handler],
         )
 
