@@ -14,7 +14,7 @@
 
 #include <rclc/rclc.h>
 
-#include <std_msgs/msg/Int32.h>
+#include <std_msgs/msg/int32.h>
 
 int main(int argc, char ** argv)
 {
