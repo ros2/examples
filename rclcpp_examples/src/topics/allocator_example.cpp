@@ -202,7 +202,10 @@ int main(int argc, char ** argv)
   // execution path, and inject the MemoryStrategy into the Executor.
   std::shared_ptr<rclcpp::memory_strategy::MemoryStrategy> memory_strategy =
     std::make_shared<AllocatorMemoryStrategy<MyAllocator<>>>(alloc);
-  rclcpp::executors::SingleThreadedExecutor executor(memory_strategy);
+
+  rclcpp::executor::ExecutorArgs args;
+  args.memory_strategy = memory_strategy;
+  rclcpp::executors::SingleThreadedExecutor executor(args);
 
   // Add our node to the executor.
   executor.add_node(node);
