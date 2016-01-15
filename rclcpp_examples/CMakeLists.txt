@@ -66,7 +66,7 @@ if(AMENT_ENABLE_TESTING)
     set(test_executable_extension ".exe")
     set(test_executable_subfolder "/${CMAKE_BUILD_TYPE}")
     if("${test_executable_subfolder}" STREQUAL "/")
-      set(test_executable_subfolder "/Debug")
+      set(test_executable_subfolder "/Release")
     endif()
   endif()
 
