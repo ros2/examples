@@ -32,6 +32,7 @@ macro(targets)
 
   # Examples of Publish/Subscribe with Topics
   custom_executable(topics talker)
+  custom_executable(topics int32_talker)
   custom_executable(topics listener)
   custom_executable(topics listener_best_effort)
   custom_executable(topics imu_listener)

@@ -17,9 +17,9 @@
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
 
-#include <std_msgs/msg/string.h>
+#include <std_msgs/msg/int32.h>
 
-typedef std_msgs__msg__String String;
+typedef std_msgs__msg__Int32 Int32;
 
 void fail_if_not_ok(rcl_ret_t ret)
 {
@@ -31,8 +31,8 @@ void fail_if_not_ok(rcl_ret_t ret)
 
 void callback(const void * void_message)
 {
-  const String * message = (const String *)void_message;
-  printf("Got string: %s\n", message->data.data);
+  const Int32 * message = (const Int32 *)void_message;
+  printf("Got number: %d\n", message->data);
 }
 
 int main(int argc, char ** argv)
@@ -49,7 +49,7 @@ int main(int argc, char ** argv)
   rcl_subscription_options_t default_subscription_options = rcl_subscription_get_default_options();
   ret = rcl_subscription_init(
     &subscription, &node,
-    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, String), "chatter",
+    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, Int32), "chatter",
     &default_subscription_options);
   fail_if_not_ok(ret);
 
@@ -67,11 +67,7 @@ int main(int argc, char ** argv)
     }
     fail_if_not_ok(ret);
     bool taken = false;
-    String taken_msg;
-    if (!std_msgs__msg__String__init(&taken_msg)) {
-      fprintf(stderr, "Failed to initialize message.\n");
-      exit(1);
-    }
+    Int32 taken_msg;
     ret = rcl_take(&subscription, &taken_msg, &taken, NULL);
     fail_if_not_ok(ret);
     if (taken) {

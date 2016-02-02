@@ -18,8 +18,7 @@
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
 
-#include <std_msgs/msg/string.h>
-#include <rosidl_generator_c/string_functions.h>
+#include <std_msgs/msg/Int32.h>
 
 void fail_if_not_ok(rcl_ret_t ret)
 {
@@ -43,33 +42,20 @@ int main(int argc, char ** argv)
   rcl_publisher_options_t default_publisher_options = rcl_publisher_get_default_options();
   ret = rcl_publisher_init(
     &publisher, &node,
-    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, String), "chatter",
+    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, Int32), "chatter",
     &default_publisher_options);
   fail_if_not_ok(ret);
 
   size_t count = 0;
-  std_msgs__msg__String msg;
-  if (!std_msgs__msg__String__init(&msg)) {
-    fprintf(stderr, "Failed to initialize message.\n");
-    exit(1);
-  }
   while (rcl_ok()) {
-    char buffer[1024];
-    if (snprintf(buffer, sizeof(buffer), "Hello World: %zu", ++count) < 0) {
-      fprintf(stderr, "Failed to format string\n");
-      exit(1);
-    }
-    if (!rosidl_generator_c__String__assign(&msg.data, buffer)) {
-      fprintf(stderr, "Failed to assign string into message.\n");
-      exit(1);
-    }
-    printf("Publishing '%s'\n", msg.data.data);
+    std_msgs__msg__Int32 msg;
+    msg.data = count++;
+    printf("Publishing %d\n", msg.data);
     ret = rcl_publish(&publisher, &msg);
     fail_if_not_ok(ret);
     // TODO(wjwwood): make a portable sleep in rcl? Maybe it should only be in rclc?
     sleep(1);
   }
-  std_msgs__msg__String__fini(&msg);
 
   ret = rcl_publisher_fini(&publisher, &node);
   fail_if_not_ok(ret);
