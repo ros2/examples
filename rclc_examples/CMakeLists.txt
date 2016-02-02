@@ -22,32 +22,32 @@ ament_package()
 add_executable(int32_talker_c src/int32_talker.c)
 ament_target_dependencies(int32_talker_c
   "rcl"
-  # "rmw_implementation"
-  "rmw_opensplice_cpp"
+  "rmw_implementation"
+  # "rmw_opensplice_cpp"
   "std_msgs"
 )
 
 add_executable(int32_listener_c src/int32_listener.c)
 ament_target_dependencies(int32_listener_c
   "rcl"
-  # "rmw_implementation"
-  "rmw_opensplice_cpp"
+  "rmw_implementation"
+  # "rmw_opensplice_cpp"
   "std_msgs"
 )
 
 add_executable(talker_c src/talker.c)
 ament_target_dependencies(talker_c
   "rcl"
-  # "rmw_implementation"
-  "rmw_opensplice_cpp"
+  "rmw_implementation"
+  # "rmw_opensplice_cpp"
   "std_msgs"
 )
 
 add_executable(listener_c src/listener.c)
 ament_target_dependencies(listener_c
   "rcl"
-  # "rmw_implementation"
-  "rmw_opensplice_cpp"
+  "rmw_implementation"
+  # "rmw_opensplice_cpp"
   "std_msgs"
 )
 
