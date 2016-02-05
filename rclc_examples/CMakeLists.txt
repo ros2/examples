@@ -20,7 +20,6 @@ ament_package()
 ##
 
 macro(example_targets)
-
   add_executable(int32_talker_c__${rmw_implementation} src/int32_talker.c)
   ament_target_dependencies(int32_talker_c__${rmw_implementation}
     "rcl"
@@ -48,7 +47,15 @@ macro(example_targets)
     "${rmw_implementation}"
     "std_msgs"
   )
-install(TARGETS int32_talker_c__${rmw_implementation} int32_listener_c__${rmw_implementation} talker_c__${rmw_implementation} listener_c__${rmw_implementation} DESTINATION bin)
+
+  install(
+    TARGETS
+      int32_talker_c__${rmw_implementation}
+      int32_listener_c__${rmw_implementation}
+      talker_c__${rmw_implementation}
+      listener_c__${rmw_implementation}
+    DESTINATION bin
+  )
 endmacro()
 
 call_for_each_rmw_implementation(example_targets)
