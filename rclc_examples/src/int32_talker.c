@@ -18,7 +18,7 @@
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>
 
-#include <std_msgs/msg/Int32.h>
+#include <std_msgs/msg/int32.h>
 
 void fail_if_not_ok(rcl_ret_t ret)
 {
