@@ -18,7 +18,7 @@ function(custom_executable subfolder target)
   add_executable(${target}${target_suffix}
     src/${subfolder}/${target}.cpp)
   ament_target_dependencies(${target}${target_suffix}
-    "rclcpp"
+    "rclcpp${target_suffix}"
     "std_msgs"
     "example_interfaces")
   install(TARGETS ${target}${target_suffix}
