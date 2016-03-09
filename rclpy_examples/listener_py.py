@@ -14,7 +14,13 @@
 
 import sys
 
-import rclpy
+# TODO(jacquelinekay): Remove try block when rclpy supports multiple vendors!!
+try:
+    import rclpy
+except ImportError:
+    print("rclpy was not found. This could be because no valid typesupport was found.")
+    sys.exit()
+
 from rclpy.qos import qos_profile_default
 from std_msgs.msg import String
 
