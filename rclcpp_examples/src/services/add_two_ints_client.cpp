@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <iostream>
+#include <string>
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -35,6 +36,47 @@ example_interfaces::srv::AddTwoInts_Response::SharedPtr send_request(
   }
 }
 
+// This function could be considered a prototype of an API that should be
+// promoted into rclcpp. This version polls; doing it in an event-driven
+// manner would be better.
+bool wait_for_service(rclcpp::Node::SharedPtr node,
+  const std::string & topic,
+  const std::chrono::steady_clock::duration timeout)
+{
+  const std::chrono::milliseconds sleep_per_loop(1);
+  auto end = std::chrono::steady_clock::now() + timeout;
+  bool success = false;
+  bool printed = false;
+  while (std::chrono::steady_clock::now() < end) {
+    try {
+      if (node->count_subscribers(topic) == 0) {
+        success = true;
+        break;
+      }
+    } catch (std::runtime_error & e) {
+      // fastrtps doesn't yet implement rmw_count_subscribers(), but rather
+      // throws an exception instead. We'll just run out the clock and
+      // return true, hoping for the best.
+      if (!printed) {
+        fprintf(stderr, "count_subscribers() exception (this is expected for FastRTPS): %s\n",
+          e.what());
+        printed = true;
+      }
+      rmw_reset_error();
+      success = true;
+    }
+    auto remaining = end - std::chrono::steady_clock::now();
+    if (remaining < sleep_per_loop) {
+      if (remaining > std::chrono::steady_clock::duration::zero()) {
+        std::this_thread::sleep_for(remaining);
+      }
+    } else {
+      std::this_thread::sleep_for(sleep_per_loop);
+    }
+  }
+  return success;
+}
+
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
@@ -45,6 +87,11 @@ int main(int argc, char ** argv)
   auto request = std::make_shared<example_interfaces::srv::AddTwoInts::Request>();
   request->a = 2;
   request->b = 3;
+
+  if (!wait_for_service(node, "add_two_ints", std::chrono::seconds(2))) {
+    printf("add_two_ints service not available. Exiting.\n");
+    return 1;
+  }
 
   // TODO(wjwwood): make it like `client->send_request(node, request)->sum`
   // TODO(wjwwood): consider error condition
