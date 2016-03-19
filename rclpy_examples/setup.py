@@ -4,7 +4,7 @@ setup(
     name='rclpy_examples',
     version='0.0.0',
     packages=[],
-    py_modules=['listener_py', 'talker_py', 'rosnode'],
+    py_modules=['listener_py', 'talker_py', 'rosnode', 'rostopic'],
     install_requires=['setuptools'],
     author='Esteve Fernandez',
     author_email='esteve@osrfoundation.org',
@@ -25,6 +25,7 @@ setup(
             'listener_py = listener_py:main',
             'talker_py = talker_py:main',
             'rosnode = rosnode:main',
+            'rostopic = rostopic:main',
         ],
     },
 )
