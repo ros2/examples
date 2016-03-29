@@ -1,0 +1,27 @@
+# generated from rclcpp_examples/test/test_executable_linking.py.in
+
+import os
+import shlex
+import subprocess 
+
+def setup():
+    os.environ['OSPL_VERBOSITY'] = '8'  # 8 = OS_NONE
+
+
+def test_executable():
+
+    rmw_implementation = '@rmw_implementation@'
+    executables = '@RCLCPP_EXAMPLES_EXECUTABLE@'.split(';')
+    for exe in executables:
+        # Check that the executable is linked against the claimed rmw implementation
+        proc1 = subprocess.Popen(shlex.split('ldd %s'%exe), stdout=subprocess.PIPE)
+        proc2 = subprocess.Popen(shlex.split('grep -c %s'%rmw_implementation), stdin=proc1.stdout,
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc1.stdout.close()
+        out, err = proc2.communicate()
+        links = int(out.decode("ASCII").strip())
+        assert links > 0, 'Executable is not linked against %s RMW implementation. %i links found.' \
+            % (rmw_implementation, links)
+
+if __name__ == '__main__':
+    test_executable()
