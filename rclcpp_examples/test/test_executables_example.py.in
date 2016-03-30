@@ -35,16 +35,14 @@ def test_executable():
         filtered_prefixes = [
             b'pid', b'rc',
         ]
-
-        if rmw_implementation == 'rmw_connext_cpp' \
-            or rmw_implementation == 'rmw_connext_dynamic_cpp':
+        if rmw_implementation in ['rmw_connext_cpp', 'rmw_connext_dynamic_cpp']:
             filtered_prefixes.extend([
                 b'RTI Data Distribution Service',
                 b'Expires on',
             ])
             
-        handler = create_handler(name, launch_descriptor, output_file, \
-                                 exit_on_match=exit_on_match, filtered_prefixes=filtered_prefixes)
+        handler = create_handler(name, launch_descriptor, output_file, 
+            exit_on_match=exit_on_match, filtered_prefixes=filtered_prefixes)
         assert handler, 'Cannot find appropriate handler for %s' % output_file
         output_handlers.append(handler)
         launch_descriptor.add_process(
