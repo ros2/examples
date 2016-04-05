@@ -38,7 +38,8 @@ def main(args=None):
     sub = node.create_subscription(String, 'chatter', chatter_callback, qos_profile_default)
     assert sub  # prevent unused warning
 
-    rclpy.spin(node)
+    while rclpy.ok():
+        rclpy.spin_once(node)
 
 if __name__ == '__main__':
     main()

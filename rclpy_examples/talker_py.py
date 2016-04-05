@@ -42,6 +42,7 @@ def main(args=None):
         i += 1
         print('Publishing: "{0}"'.format(msg.data))
         chatter_pub.publish(msg)
+        # TODO(wjwwood): need to spin_some or spin_once with timeout
         sleep(1)
 
 if __name__ == '__main__':
