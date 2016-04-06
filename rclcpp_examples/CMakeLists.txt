@@ -80,9 +80,6 @@ if(AMENT_ENABLE_TESTING)
         list(APPEND RCLCPP_EXAMPLES_EXPECTED_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/test/${executable}")
       endforeach()
 
-      # get typesupport of rmw implementation to include / link against the corresponding interfaces
-      get_rmw_typesupport(typesupport_impl "${rmw_implementation}")
-
       set(RCLCPP_EXAMPLES_EXECUTABLE "")
       foreach(executable ${example_executables})
         list(APPEND RCLCPP_EXAMPLES_EXECUTABLE "$<TARGET_FILE:${executable}${target_suffix}>")
