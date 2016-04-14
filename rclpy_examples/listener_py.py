@@ -14,15 +14,9 @@
 
 import sys
 
-# TODO(jacquelinekay): Remove try block when rclpy supports multiple vendors!!
-try:
-    import rclpy
-except ImportError:
-    print("rclpy was not found. This could be because no valid typesupport was found.")
-    sys.exit()
+import rclpy
 
 from rclpy.qos import qos_profile_default
-from std_msgs.msg import String
 
 
 def chatter_callback(msg):
@@ -35,12 +29,17 @@ def main(args=None):
 
     rclpy.init(args)
 
+    # TODO(wjwwood): move this import back to the top of the file when
+    # it is possible to import the messages before rclpy.init().
+    from std_msgs.msg import String
+
     node = rclpy.create_node('listener')
 
     sub = node.create_subscription(String, 'chatter', chatter_callback, qos_profile_default)
     assert sub  # prevent unused warning
 
-    rclpy.spin(node)
+    while rclpy.ok():
+        rclpy.spin_once(node)
 
 if __name__ == '__main__':
     main()
