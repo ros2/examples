@@ -61,7 +61,7 @@ if(AMENT_ENABLE_TESTING)
 
   # Add each test case.  Multi-executable tests can be specified in
   # semicolon-separated strings, like  exe1;exe2.
-  set(example_tests
+  set(example_output_tests
     list_parameters_async
     list_parameters
     parameter_events_async
@@ -73,36 +73,36 @@ if(AMENT_ENABLE_TESTING)
     "add_two_ints_server:add_two_ints_client_async")
 
   macro(tests)
-    foreach(example_test ${example_tests})
-      string(REPLACE ":" ";" example_executables "${example_test}")
+    foreach(example_output_test ${example_output_tests})
+      string(REPLACE ":" ";" test_output_executables "${example_output_test}")
       set(RCLCPP_EXAMPLES_EXPECTED_OUTPUT "")
-      foreach(executable ${example_executables})
+      foreach(executable ${test_output_executables})
         list(APPEND RCLCPP_EXAMPLES_EXPECTED_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/test/${executable}")
       endforeach()
 
       # get typesupport of rmw implementation to include / link against the corresponding interfaces
       get_rmw_typesupport(typesupport_impl "${rmw_implementation}")
 
-      set(RCLCPP_EXAMPLES_EXECUTABLE "")
-      foreach(executable ${example_executables})
-        list(APPEND RCLCPP_EXAMPLES_EXECUTABLE "$<TARGET_FILE:${executable}${target_suffix}>")
+      set(RCLCPP_EXAMPLE_TEST_OUTPUT_EXECUTABLES "")
+      foreach(executable ${test_output_executables})
+        list(APPEND RCLCPP_EXAMPLE_TEST_OUTPUT_EXECUTABLES "$<TARGET_FILE:${executable}${target_suffix}>")
       endforeach()
 
-      string(REPLACE ";" "_" exe_list_underscore "${example_executables}")
+      string(REPLACE ";" "_" exe_list_underscore "${test_output_executables}")
       configure_file(
-        test/test_executables_example.py.in
-        test_${exe_list_underscore}${target_suffix}.py.configured
+        test/test_executable_output.py.in
+        test_output_${exe_list_underscore}${target_suffix}.py.configured
         @ONLY
       )
       file(GENERATE
-        OUTPUT "test_${exe_list_underscore}${target_suffix}_$<CONFIGURATION>.py"
-        INPUT "${CMAKE_CURRENT_BINARY_DIR}/test_${exe_list_underscore}${target_suffix}.py.configured"
+        OUTPUT "test_output_${exe_list_underscore}${target_suffix}_$<CONFIGURATION>.py"
+        INPUT "${CMAKE_CURRENT_BINARY_DIR}/test_output_${exe_list_underscore}${target_suffix}.py.configured"
       )
-      ament_add_nose_test(test_example_${exe_list_underscore}${target_suffix}
-        "${CMAKE_CURRENT_BINARY_DIR}/test_${exe_list_underscore}${target_suffix}_$<CONFIGURATION>.py"
+      ament_add_nose_test(test_example_output_${exe_list_underscore}${target_suffix}
+        "${CMAKE_CURRENT_BINARY_DIR}/test_output_${exe_list_underscore}${target_suffix}_$<CONFIGURATION>.py"
         TIMEOUT 30)
-      set_tests_properties(test_example_${exe_list_underscore}${target_suffix}
-        PROPERTIES DEPENDS "test_example_${exe_list_underscore}${target_suffix} test_example_${exe_list_underscore}${target_suffix}")
+      set_tests_properties(test_example_output_${exe_list_underscore}${target_suffix}
+        PROPERTIES DEPENDS "test_output_${exe_list_underscore}${target_suffix} test_output_${exe_list_underscore}${target_suffix}")
 
       configure_file(
         test/test_executable_linking.py.in

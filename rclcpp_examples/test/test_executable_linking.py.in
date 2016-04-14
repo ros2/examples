@@ -15,7 +15,7 @@ _is_windows = sys.platform.lower().startswith('win')
 def test_executable():
 
     rmw_implementation = '@rmw_implementation@'
-    executables = '@RCLCPP_EXAMPLES_EXECUTABLE@'.split(';')
+    executables = '@RCLCPP_EXAMPLE_TEST_OUTPUT_EXECUTABLES@'.split(';')
     for exe in executables:
         # Check that the executable is linked against the claimed rmw implementation
         if _is_linux:
@@ -25,7 +25,7 @@ def test_executable():
             cmd = ['otool', '-L', exe]
             search_string = 'lib%s.dylib' % rmw_implementation
         elif _is_windows:
-            cmd = ['dumpbin', '/dependents', exe + '.exe']
+            cmd = ['dumpbin', '/dependents', exe]
             search_string = '%s.dll' % rmw_implementation
         else:
             raise Exception('Unknown system platform')
