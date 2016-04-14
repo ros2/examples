@@ -59,20 +59,59 @@ if(AMENT_ENABLE_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
-  # Add each test case.  Multi-executable tests can be specified in
-  # semicolon-separated strings, like  exe1;exe2.
-  set(example_output_tests
-    list_parameters_async
-    list_parameters
-    parameter_events_async
-    parameter_events
-    set_and_get_parameters_async
-    set_and_get_parameters
-    "talker:listener"
-    "add_two_ints_server:add_two_ints_client"
-    "add_two_ints_server:add_two_ints_client_async")
+  # Test that the generated executables are linked against the specified rmw implementation
+  macro(test_linking)
+    set(executable_list
+      list_parameters_async
+      list_parameters
+      parameter_events_async
+      parameter_events
+      set_and_get_parameters_async
+      set_and_get_parameters
+      talker
+      listener
+      add_two_ints_server
+      add_two_ints_client
+      add_two_ints_client_async)
 
-  macro(tests)
+    foreach(executable ${executable_list})
+      set(RCLCPP_EXAMPLE_EXECUTABLE "$<TARGET_FILE:${executable}${target_suffix}>")
+
+      # get typesupport of rmw implementation to include / link against the corresponding interfaces
+      get_rmw_typesupport(typesupport_impl "${rmw_implementation}")
+
+      configure_file(
+        test/test_executable_linking.py.in
+        test_linking_${executable}${target_suffix}.py.configured
+        @ONLY
+      )
+      file(GENERATE
+        OUTPUT "test_linking_${executable}${target_suffix}_$<CONFIGURATION>.py"
+        INPUT "${CMAKE_CURRENT_BINARY_DIR}/test_linking_${executable}${target_suffix}.py.configured"
+      )
+      ament_add_nose_test(test_linking_${executable}${target_suffix}
+        "${CMAKE_CURRENT_BINARY_DIR}/test_linking_${executable}${target_suffix}_$<CONFIGURATION>.py"
+        TIMEOUT 30)
+      set_tests_properties(test_linking_${executable}${target_suffix}
+        PROPERTIES DEPENDS "test_linking_${executable}${target_suffix} test_linking_${executable}${target_suffix}")
+    endforeach()
+  endmacro()
+
+  # Test the output of specific (combinations of) executables against the expected output
+  macro(test_output)
+    # Add each test case.  Multi-executable tests can be specified in
+    # semicolon-separated strings, like  exe1;exe2.
+    set(example_output_tests
+      list_parameters_async
+      list_parameters
+      parameter_events_async
+      parameter_events
+      set_and_get_parameters_async
+      set_and_get_parameters
+      "talker:listener"
+      "add_two_ints_server:add_two_ints_client"
+      "add_two_ints_server:add_two_ints_client_async")
+
     foreach(example_output_test ${example_output_tests})
       string(REPLACE ":" ";" test_output_executables "${example_output_test}")
       set(RCLCPP_EXAMPLES_EXPECTED_OUTPUT "")
@@ -103,25 +142,11 @@ if(AMENT_ENABLE_TESTING)
         TIMEOUT 30)
       set_tests_properties(test_example_output_${exe_list_underscore}${target_suffix}
         PROPERTIES DEPENDS "test_output_${exe_list_underscore}${target_suffix} test_output_${exe_list_underscore}${target_suffix}")
-
-      configure_file(
-        test/test_executable_linking.py.in
-        test_linking_${exe_list_underscore}${target_suffix}.py.configured
-        @ONLY
-      )
-      file(GENERATE
-        OUTPUT "test_linking_${exe_list_underscore}${target_suffix}_$<CONFIGURATION>.py"
-        INPUT "${CMAKE_CURRENT_BINARY_DIR}/test_linking_${exe_list_underscore}${target_suffix}.py.configured"
-      )
-      ament_add_nose_test(test_linking_${exe_list_underscore}${target_suffix}
-        "${CMAKE_CURRENT_BINARY_DIR}/test_linking_${exe_list_underscore}${target_suffix}_$<CONFIGURATION>.py"
-        TIMEOUT 30)
-      set_tests_properties(test_linking_${exe_list_underscore}${target_suffix}
-        PROPERTIES DEPENDS "test_linking_${exe_list_underscore}${target_suffix} test_linking_${exe_list_underscore}${target_suffix}")
     endforeach()
   endmacro()
 
-  call_for_each_rmw_implementation(tests)
+  call_for_each_rmw_implementation(test_linking)
+  call_for_each_rmw_implementation(test_output)
 endif()
 
 ament_package()
