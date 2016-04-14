@@ -15,25 +15,24 @@ _is_windows = sys.platform.lower().startswith('win')
 def test_executable():
 
     rmw_implementation = '@rmw_implementation@'
-    executables = '@RCLCPP_EXAMPLE_TEST_OUTPUT_EXECUTABLES@'.split(';')
-    for exe in executables:
-        # Check that the executable is linked against the claimed rmw implementation
-        if _is_linux:
-            cmd = ['ldd', exe]
-            search_string = 'lib%s.so' % rmw_implementation
-        elif _is_darwin:
-            cmd = ['otool', '-L', exe]
-            search_string = 'lib%s.dylib' % rmw_implementation
-        elif _is_windows:
-            cmd = ['dumpbin', '/dependents', exe]
-            search_string = '%s.dll' % rmw_implementation
-        else:
-            raise Exception('Unknown system platform')
-        dependencies = subprocess.check_output(cmd)
-        pattern = re.compile(search_string.encode(), flags=re.IGNORECASE)
-        relevant_links = pattern.findall(dependencies)
-        assert len(relevant_links) > 0, \
-            "Executable is not linked against RMW implementation '%s'." % rmw_implementation
+    executable = '@RCLCPP_EXAMPLE_EXECUTABLE@'
+    # Check that the executable is linked against the claimed rmw implementation
+    if _is_linux:
+        cmd = ['ldd', executable]
+        search_string = 'lib%s.so' % rmw_implementation
+    elif _is_darwin:
+        cmd = ['otool', '-L', executable]
+        search_string = 'lib%s.dylib' % rmw_implementation
+    elif _is_windows:
+        cmd = ['dumpbin', '/dependents', executable]
+        search_string = '%s.dll' % rmw_implementation
+    else:
+        raise Exception('Unknown system platform')
+    dependencies = subprocess.check_output(cmd)
+    pattern = re.compile(search_string.encode(), flags=re.IGNORECASE)
+    relevant_links = pattern.findall(dependencies)
+    assert len(relevant_links) > 0, \
+        "Executable is not linked against RMW implementation '%s'." % rmw_implementation
 
 if __name__ == '__main__':
     test_executable()
