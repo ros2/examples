@@ -77,9 +77,6 @@ if(AMENT_ENABLE_TESTING)
     foreach(executable ${executable_list})
       set(RCLCPP_EXAMPLE_EXECUTABLE "$<TARGET_FILE:${executable}${target_suffix}>")
 
-      # get typesupport of rmw implementation to include / link against the corresponding interfaces
-      get_rmw_typesupport(typesupport_impl "${rmw_implementation}")
-
       configure_file(
         test/test_executable_linking.py.in
         test_linking_${executable}${target_suffix}.py.configured
