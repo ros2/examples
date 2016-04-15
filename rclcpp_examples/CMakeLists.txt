@@ -13,6 +13,7 @@ find_package(rmw REQUIRED)
 find_package(rmw_implementation_cmake REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 function(custom_executable subfolder target)
   add_executable(${target}${target_suffix}
@@ -20,6 +21,7 @@ function(custom_executable subfolder target)
   ament_target_dependencies(${target}${target_suffix}
     "rclcpp${target_suffix}"
     "std_msgs"
+    "sensor_msgs"
     "example_interfaces")
   install(TARGETS ${target}${target_suffix}
     DESTINATION bin)
@@ -33,6 +35,7 @@ macro(targets)
   # Examples of Publish/Subscribe with Topics
   custom_executable(topics talker)
   custom_executable(topics listener)
+  custom_executable(topics joystick_listener)
   custom_executable(topics listener_best_effort)
   custom_executable(topics imu_listener)
   ament_target_dependencies(imu_listener${target_suffix}
