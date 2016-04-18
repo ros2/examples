@@ -1,5 +1,7 @@
 # generated from rclcpp_examples/test/test_executable_linking.py.in
 
+from __future__ import print_function
+
 import os
 import re
 import subprocess 
@@ -28,6 +30,8 @@ def test_executable():
         search_string = '%s.dll' % rmw_implementation
     else:
         raise Exception('Unknown system platform')
+    print("Checking executable '%s' for linking against rmw implementation '%s'" % (executable,
+        rmw_implementation), file=sys.stderr)
     dependencies = subprocess.check_output(cmd)
     pattern = re.compile(search_string.encode(), flags=re.IGNORECASE)
     relevant_links = pattern.findall(dependencies)

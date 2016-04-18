@@ -77,6 +77,9 @@ if(AMENT_ENABLE_TESTING)
     foreach(executable ${executable_list})
       set(RCLCPP_EXAMPLE_EXECUTABLE "$<TARGET_FILE:${executable}${target_suffix}>")
 
+      if("${target_suffix} " STREQUAL " ")
+        get_default_rmw_implementation("${rmw_implementation}")
+      endif()
       configure_file(
         test/test_executable_linking.py.in
         test_linking_${executable}${target_suffix}.py.configured
@@ -139,7 +142,7 @@ if(AMENT_ENABLE_TESTING)
     endforeach()
   endmacro()
 
-  call_for_each_rmw_implementation(test_linking)
+  call_for_each_rmw_implementation(test_linking GENERATE_DEFAULT)
   call_for_each_rmw_implementation(test_output)
 endif()
 
