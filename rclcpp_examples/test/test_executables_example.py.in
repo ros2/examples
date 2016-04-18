@@ -7,7 +7,7 @@ from launch.exit_handler import primary_ignore_returncode_exit_handler
 from launch.launcher import DefaultLauncher
 from launch.output_handler import ConsoleOutput
 from launch_testing import create_handler
-
+import ament_index_python
 
 def setup():
     os.environ['OSPL_VERBOSITY'] = '8'  # 8 = OS_NONE
@@ -32,17 +32,15 @@ def test_executable():
             exit_handler = ignore_exit_handler
             exit_on_match = False
 
-        filtered_prefixes = [
-            b'pid', b'rc',
-        ]
-        if rmw_implementation in ['rmw_connext_cpp', 'rmw_connext_dynamic_cpp']:
-            filtered_prefixes.extend([
-                b'RTI Data Distribution Service',
-                b'Expires on',
-            ])
+        additional_filtered_prefixes = None
+        has_license_output = ament_index_python.has_resource('dds_license_output', rmw_implementation)
+        if has_license_output:
+            license_output = ament_index_python.get_resource('dds_license_output', rmw_implementation)
+            license_output_lines = license_output.strip().split('\n')
+            additional_filtered_prefixes = [ str.encode(line) for line in license_output_lines]
             
         handler = create_handler(name, launch_descriptor, output_file, 
-            exit_on_match=exit_on_match, filtered_prefixes=filtered_prefixes)
+            exit_on_match=exit_on_match, additional_filtered_prefixes=additional_filtered_prefixes)
         assert handler, 'Cannot find appropriate handler for %s' % output_file
         output_handlers.append(handler)
         launch_descriptor.add_process(
