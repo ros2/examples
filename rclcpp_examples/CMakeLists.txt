@@ -53,18 +53,6 @@ macro(targets)
   custom_executable(parameters set_and_get_parameters_async)
 endmacro()
 
-set(executable_list
-    list_parameters_async
-    list_parameters
-    parameter_events_async
-    parameter_events
-    set_and_get_parameters_async
-    set_and_get_parameters
-    talker
-    listener
-    add_two_ints_server
-    add_two_ints_client
-    add_two_ints_client_async)
 call_for_each_rmw_implementation(targets GENERATE_DEFAULT)
 
 if(AMENT_ENABLE_TESTING)
@@ -73,12 +61,25 @@ if(AMENT_ENABLE_TESTING)
 
   # Test that the generated executables are linked against the specified rmw implementation
   macro(test_linking)
+    set(executable_list
+      list_parameters_async
+      list_parameters
+      parameter_events_async
+      parameter_events
+      set_and_get_parameters_async
+      set_and_get_parameters
+      talker
+      listener
+      add_two_ints_server
+      add_two_ints_client
+      add_two_ints_client_async)
+
     foreach(executable ${executable_list})
       set(RCLCPP_EXAMPLE_EXECUTABLE "$<TARGET_FILE:${executable}${target_suffix}>")
 
-      # get typesupport of rmw implementation to include / link against the corresponding interfaces
-      get_rmw_typesupport(typesupport_impl "${rmw_implementation}")
-
+      if("${target_suffix} " STREQUAL " ")
+        get_default_rmw_implementation("${rmw_implementation}")
+      endif()
       configure_file(
         test/test_executable_linking.py.in
         test_linking_${executable}${target_suffix}.py.configured
@@ -118,9 +119,6 @@ if(AMENT_ENABLE_TESTING)
         list(APPEND RCLCPP_EXAMPLES_EXPECTED_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/test/${executable}")
       endforeach()
 
-      # get typesupport of rmw implementation to include / link against the corresponding interfaces
-      get_rmw_typesupport(typesupport_impl "${rmw_implementation}")
-
       set(RCLCPP_EXAMPLE_TEST_OUTPUT_EXECUTABLES "")
       foreach(executable ${test_output_executables})
         list(APPEND RCLCPP_EXAMPLE_TEST_OUTPUT_EXECUTABLES "$<TARGET_FILE:${executable}${target_suffix}>")
@@ -144,7 +142,7 @@ if(AMENT_ENABLE_TESTING)
     endforeach()
   endmacro()
 
-  call_for_each_rmw_implementation(test_linking)
+  call_for_each_rmw_implementation(test_linking GENERATE_DEFAULT)
   call_for_each_rmw_implementation(test_output)
 endif()
 

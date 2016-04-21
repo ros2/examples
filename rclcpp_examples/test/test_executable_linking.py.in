@@ -1,5 +1,7 @@
 # generated from rclcpp_examples/test/test_executable_linking.py.in
 
+from __future__ import print_function
+
 import os
 import re
 import shutil
