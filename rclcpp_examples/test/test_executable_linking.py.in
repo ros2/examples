@@ -2,8 +2,10 @@
 
 import os
 import re
+import shutil
 import subprocess 
 import sys
+import tempfile
 
 def setup():
     os.environ['OSPL_VERBOSITY'] = '8'  # 8 = OS_NONE
@@ -16,20 +18,33 @@ def test_executable():
 
     rmw_implementation = '@rmw_implementation@'
     executable = '@RCLCPP_EXAMPLE_EXECUTABLE@'
-    # Check that the executable is linked against the claimed rmw implementation
+    # Check that the executable is linked against the claimed rmw implementation by running the
+    # relevant program which will collect information on the dynamically loaded dependencies
     if _is_linux:
         cmd = ['ldd', executable]
-        search_string = 'lib%s.so' % rmw_implementation
+        dependencies = subprocess.check_output(cmd)
+        search_string = ('lib%s.so' % rmw_implementation).encode()
     elif _is_darwin:
         cmd = ['otool', '-L', executable]
-        search_string = 'lib%s.dylib' % rmw_implementation
+        dependencies = subprocess.check_output(cmd)
+        search_string = ('lib%s.dylib' % rmw_implementation).encode()
     elif _is_windows:
-        cmd = ['dumpbin', '/dependents', executable]
+        tempdir = tempfile.mkdtemp()
+        try:
+            # Call dependency walker to generate a csv file of its analysis
+            dependency_check_filename = os.path.join(tempdir, 'dependencies.csv')
+            cmd = ['depends', '-c', '-oc', dependency_check_filename, executable]
+
+            # subprocess.call and .check_call both return before the csv file has been created
+            subprocess.check_output(cmd)
+            with open(dependency_check_filename, 'r') as f:
+                dependencies = f.read()
+        finally:
+            shutil.rmtree(tempdir)
         search_string = '%s.dll' % rmw_implementation
     else:
         raise Exception('Unknown system platform')
-    dependencies = subprocess.check_output(cmd)
-    pattern = re.compile(search_string.encode(), flags=re.IGNORECASE)
+    pattern = re.compile(search_string, flags=re.IGNORECASE)
     relevant_links = pattern.findall(dependencies)
     assert len(relevant_links) > 0, \
         "Executable is not linked against RMW implementation '%s'." % rmw_implementation
