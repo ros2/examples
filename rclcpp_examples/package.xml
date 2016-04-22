@@ -35,6 +35,10 @@
   <test_depend>rosidl_default_generators</test_depend>
   <test_depend>rosidl_default_runtime</test_depend>
 
+  <!-- tests which check the linking of executables require Dependency Walker on Windows,
+    which can be installed through chocolatey: https://chocolatey.org/packages/dependencywalker -->
+  <test_depend>dependency_walker</test_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>
