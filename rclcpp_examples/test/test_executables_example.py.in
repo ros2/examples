@@ -33,7 +33,7 @@ def test_executable():
             exit_on_match = False
 
         handler = create_handler(name, launch_descriptor, output_file, 
-            exit_on_match=exit_on_match, filtered_rmw_implementations=[rmw_implementation])
+            exit_on_match=exit_on_match, filtered_rmw_implementation=rmw_implementation)
         assert handler, 'Cannot find appropriate handler for %s' % output_file
         output_handlers.append(handler)
         launch_descriptor.add_process(
