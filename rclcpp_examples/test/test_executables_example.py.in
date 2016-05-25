@@ -8,7 +8,6 @@ from launch.launcher import DefaultLauncher
 from launch.output_handler import ConsoleOutput
 from launch_testing import create_handler
 
-
 def setup():
     os.environ['OSPL_VERBOSITY'] = '8'  # 8 = OS_NONE
 
@@ -18,6 +17,7 @@ def test_executable():
 
     launch_descriptor = LaunchDescriptor()
 
+    rmw_implementation = '@rmw_implementation@'
     executables = '@RCLCPP_EXAMPLES_EXECUTABLE@'.split(';')
     output_files = '@RCLCPP_EXAMPLES_EXPECTED_OUTPUT@'.split(';')
     for i, (exe, output_file) in enumerate(zip(executables, output_files)):
@@ -30,7 +30,9 @@ def test_executable():
         else:
             exit_handler = ignore_exit_handler
             exit_on_match = False
-        handler = create_handler(name, launch_descriptor, output_file, exit_on_match=exit_on_match)
+
+        handler = create_handler(name, launch_descriptor, output_file, 
+            exit_on_match=exit_on_match, filtered_rmw_implementation=rmw_implementation)
         assert handler, 'Cannot find appropriate handler for %s' % output_file
         output_handlers.append(handler)
         launch_descriptor.add_process(
