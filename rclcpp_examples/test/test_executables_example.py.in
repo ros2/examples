@@ -1,4 +1,5 @@
 # generated from rclcpp_examples/test/test_executables_example.py.in
+# generated code does not contain a copyright notice
 
 import os
 from launch import LaunchDescriptor
