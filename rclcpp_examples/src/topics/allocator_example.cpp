@@ -138,18 +138,6 @@ void operator delete(void * ptr) noexcept
   }
 }
 
-void operator delete(void * ptr, size_t) noexcept
-{
-  if (ptr != nullptr) {
-    if (is_running) {
-      global_runtime_deallocs++;
-    }
-    std::free(ptr);
-    ptr = nullptr;
-  }
-}
-
-
 int main(int argc, char ** argv)
 {
   using rclcpp::memory_strategies::allocator_memory_strategy::AllocatorMemoryStrategy;
