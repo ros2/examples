@@ -25,6 +25,11 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("add_two_ints_client");
 
   auto client = node->create_client<example_interfaces::srv::AddTwoInts>("add_two_ints");
+
+  while (!client->wait_for_service(1_s)) {
+    printf("service not available, waiting again...\n");
+  }
+
   auto request = std::make_shared<example_interfaces::srv::AddTwoInts::Request>();
   request->a = 2;
   request->b = 3;

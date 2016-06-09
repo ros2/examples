@@ -46,6 +46,10 @@ int main(int argc, char ** argv)
   request->a = 2;
   request->b = 3;
 
+  while (!client->wait_for_service(1_s)) {
+    printf("service not available, waiting again...\n");
+  }
+
   // TODO(wjwwood): make it like `client->send_request(node, request)->sum`
   // TODO(wjwwood): consider error condition
   auto result = send_request(node, client, request);
