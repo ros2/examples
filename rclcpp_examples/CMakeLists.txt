@@ -109,8 +109,10 @@ if(BUILD_TESTING)
         "${CMAKE_CURRENT_BINARY_DIR}/test_${exe_list_underscore}${target_suffix}_$<CONFIGURATION>.py"
         TIMEOUT 30
         ENV RCL_ASSERT_RMW_ID_MATCHES=${rmw_implementation})
-      set_tests_properties(test_example_${exe_list_underscore}${target_suffix}
-        PROPERTIES DEPENDS "test_example_${exe_list_underscore}${target_suffix} test_example_${exe_list_underscore}${target_suffix}")
+      foreach(executable ${example_executables})
+        set_tests_properties(test_example_${exe_list_underscore}${target_suffix}
+          PROPERTIES DEPENDS ${executable}${target_suffix})
+      endforeach()
     endforeach()
   endmacro()
 
