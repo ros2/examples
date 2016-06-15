@@ -20,24 +20,13 @@
 #include "rclcpp/strategies/allocator_memory_strategy.hpp"
 #include "std_msgs/msg/u_int32.hpp"
 
-template<typename T>
-struct pointer_traits
-{
-  using reference = T &;
-  using const_reference = const T &;
-};
-
-template<>
-struct pointer_traits<void>
-{
-};
 
 // For demonstration purposes only, not necessary for allocator_traits
 static uint32_t num_allocs = 0;
 static uint32_t num_deallocs = 0;
 // A very simple custom allocator. Counts calls to allocate and deallocate.
 template<typename T = void>
-struct MyAllocator : public pointer_traits<T>
+struct MyAllocator
 {
 public:
   using value_type = T;
@@ -74,21 +63,6 @@ public:
     }
     num_deallocs++;
     std::free(ptr);
-  }
-
-  template<typename U, typename ... Args,
-  typename std::enable_if<!std::is_const<U>::value>::type * = nullptr>
-  void
-  construct(U * ptr, Args && ... args)
-  {
-    ::new(ptr)U(std::forward<Args>(args) ...);
-  }
-
-  template<typename U>
-  void
-  destroy(U * ptr)
-  {
-    ptr->~U();
   }
 
   template<typename U>
@@ -137,18 +111,6 @@ void operator delete(void * ptr) noexcept
     ptr = nullptr;
   }
 }
-
-void operator delete(void * ptr, size_t) noexcept
-{
-  if (ptr != nullptr) {
-    if (is_running) {
-      global_runtime_deallocs++;
-    }
-    std::free(ptr);
-    ptr = nullptr;
-  }
-}
-
 
 int main(int argc, char ** argv)
 {
