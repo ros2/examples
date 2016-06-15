@@ -85,10 +85,8 @@ if(BUILD_TESTING)
     foreach(example_test ${example_tests_to_test})
       string(REPLACE ":" ";" example_executables "${example_test}")
       set(RCLCPP_EXAMPLES_EXPECTED_OUTPUT "")
-      set(example_executable_targets "")
       foreach(executable ${example_executables})
         list(APPEND RCLCPP_EXAMPLES_EXPECTED_OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/test/${executable}")
-        list(APPEND example_executable_targets ${executable}${target_suffix})
       endforeach()
 
       set(RCLCPP_EXAMPLES_EXECUTABLE "")
@@ -111,8 +109,11 @@ if(BUILD_TESTING)
         "${CMAKE_CURRENT_BINARY_DIR}/test_${exe_list_underscore}${target_suffix}_$<CONFIGURATION>.py"
         TIMEOUT 30
         ENV RCL_ASSERT_RMW_ID_MATCHES=${rmw_implementation})
-      set_tests_properties(test_example_${exe_list_underscore}${target_suffix}
-        PROPERTIES DEPENDS ${example_executable_targets})
+      foreach(executable ${example_executables})
+        set_property(
+          TEST test_example_${exe_list_underscore}${target_suffix}
+          APPEND PROPERTY DEPENDS ${executable}${target_suffix})
+      endforeach()
     endforeach()
   endmacro()
 
