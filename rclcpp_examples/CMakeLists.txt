@@ -26,7 +26,7 @@ function(custom_executable subfolder target)
 endfunction()
 
 macro(targets)
-  if(NOT "${target_suffix} " STREQUAL " ")
+  if(NOT target_suffix STREQUAL "")
     get_rclcpp_information("${rmw_implementation}" "rclcpp${target_suffix}")
   endif()
 
