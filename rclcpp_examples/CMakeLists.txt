@@ -79,7 +79,7 @@ if(BUILD_TESTING)
     if(rmw_implementation STREQUAL "rmw_fastrtps_cpp")
       message(STATUS "Skipping some example tests for '${rmw_implementation}'")
     else()
-      set(example_tests_to_test ${example_tests} ${fastrtps_excluded_example_tests})
+      list(APPEND example_tests_to_test ${fastrtps_excluded_example_tests})
     endif()
 
     foreach(example_test ${example_tests_to_test})
