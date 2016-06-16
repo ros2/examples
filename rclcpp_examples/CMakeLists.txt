@@ -76,7 +76,7 @@ if(BUILD_TESTING)
   macro(tests)
     set(example_tests_to_test ${example_tests})
     # TODO(wjwwood): recombine with example_tests this when fastrtps supports wait_for_service.
-    if("${rmw_implementation} " STREQUAL "rmw_fastrtps_cpp ")
+    if(rmw_implementation STREQUAL "rmw_fastrtps_cpp")
       message(STATUS "Skipping some example tests for '${rmw_implementation}'")
     else()
       set(example_tests_to_test ${example_tests} ${fastrtps_excluded_example_tests})
