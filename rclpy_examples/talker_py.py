@@ -19,16 +19,14 @@ import rclpy
 
 from rclpy.qos import qos_profile_default
 
+from std_msgs.msg import String
+
 
 def main(args=None):
     if args is None:
         args = sys.argv
 
     rclpy.init(args)
-
-    # TODO(wjwwood): move this import back to the top of the file when
-    # it is possible to import the messages before rclpy.init().
-    from std_msgs.msg import String
 
     node = rclpy.create_node('talker')
 
