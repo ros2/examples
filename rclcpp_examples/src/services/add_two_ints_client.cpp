@@ -47,6 +47,10 @@ int main(int argc, char ** argv)
   request->b = 3;
 
   while (!client->wait_for_service(1_s)) {
+    if (!rclcpp::ok()) {
+      printf("add_two_ints_client was interrupted while waiting for the service. Exiting.\n");
+      return 0;
+    }
     printf("service not available, waiting again...\n");
   }
 
