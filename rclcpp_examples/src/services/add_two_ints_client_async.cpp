@@ -45,5 +45,6 @@ int main(int argc, char ** argv)
     printf("add_two_ints_client_async was interrupted. Exiting.\n");
   }
 
+  rclcpp::shutdown();
   return 0;
 }
