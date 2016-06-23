@@ -69,17 +69,17 @@ if(BUILD_TESTING)
     set_and_get_parameters_async
     set_and_get_parameters
     "talker:listener")
-  set(fastrtps_excluded_example_tests
+  set(opensplice_only_example_tests
     "add_two_ints_server:add_two_ints_client"
     "add_two_ints_server:add_two_ints_client_async")
 
   macro(tests)
     set(example_tests_to_test ${example_tests})
     # TODO(wjwwood): recombine with example_tests this when fastrtps supports wait_for_service.
-    if(rmw_implementation STREQUAL "rmw_fastrtps_cpp")
+    if(NOT rmw_implementation STREQUAL "rmw_opensplice")
       message(STATUS "Skipping some example tests for '${rmw_implementation}'")
     else()
-      list(APPEND example_tests_to_test ${fastrtps_excluded_example_tests})
+      list(APPEND example_tests_to_test ${opensplice_only_example_tests})
     endif()
 
     foreach(example_test ${example_tests_to_test})
