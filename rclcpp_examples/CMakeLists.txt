@@ -68,12 +68,21 @@ if(BUILD_TESTING)
     parameter_events
     set_and_get_parameters_async
     set_and_get_parameters
-    "talker:listener"
+    "talker:listener")
+  set(fastrtps_excluded_example_tests
     "add_two_ints_server:add_two_ints_client"
     "add_two_ints_server:add_two_ints_client_async")
 
   macro(tests)
-    foreach(example_test ${example_tests})
+    set(example_tests_to_test ${example_tests})
+    # TODO(wjwwood): recombine with example_tests this when fastrtps supports wait_for_service.
+    if(rmw_implementation STREQUAL "rmw_fastrtps_cpp")
+      message(STATUS "Skipping some example tests for '${rmw_implementation}'")
+    else()
+      list(APPEND example_tests_to_test ${fastrtps_excluded_example_tests})
+    endif()
+
+    foreach(example_test ${example_tests_to_test})
       string(REPLACE ":" ";" example_executables "${example_test}")
       set(RCLCPP_EXAMPLES_EXPECTED_OUTPUT "")
       foreach(executable ${example_executables})
@@ -100,8 +109,11 @@ if(BUILD_TESTING)
         "${CMAKE_CURRENT_BINARY_DIR}/test_${exe_list_underscore}${target_suffix}_$<CONFIGURATION>.py"
         TIMEOUT 30
         ENV RCL_ASSERT_RMW_ID_MATCHES=${rmw_implementation})
-      set_tests_properties(test_example_${exe_list_underscore}${target_suffix}
-        PROPERTIES DEPENDS "test_example_${exe_list_underscore}${target_suffix} test_example_${exe_list_underscore}${target_suffix}")
+      foreach(executable ${example_executables})
+        set_property(
+          TEST test_example_${exe_list_underscore}${target_suffix}
+          APPEND PROPERTY DEPENDS ${executable}${target_suffix})
+      endforeach()
     endforeach()
   endmacro()
 
