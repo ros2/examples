@@ -53,6 +53,7 @@ macro(targets)
   custom_executable(parameters parameter_events_async)
   custom_executable(parameters set_and_get_parameters)
   custom_executable(parameters set_and_get_parameters_async)
+  custom_executable(parameters ros2param)
 endmacro()
 
 call_for_each_rmw_implementation(targets GENERATE_DEFAULT)
