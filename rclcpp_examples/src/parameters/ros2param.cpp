@@ -123,6 +123,7 @@ int main(int argc, char ** argv)
       node, set_parameters_result, std::chrono::milliseconds(1000));
     if (set_result != rclcpp::executor::FutureReturnCode::SUCCESS) {
       fprintf(stderr, "Failed to set parameter\n");
+      return 1;
     }
   } else {
     fprintf(stderr, "%s\n", USAGE);
