@@ -48,31 +48,29 @@ parse_args(int argc, char ** argv, std::string & remote_node, param_operation_t 
   if ((verb == "get") && (argc == 3)) {
     op = PARAM_GET;
     return rclcpp::parameter::ParameterVariant(variable, 0);
-  } else if ((verb == "set") && (argc == 4)) {
+  }
+  if ((verb == "set") && (argc == 4)) {
     op = PARAM_SET;
     std::string value = argv[3];
     char * endptr;
     int l = strtol(value.c_str(), &endptr, 10);
     if ((errno == 0) && (*endptr == '\0')) {
       return rclcpp::parameter::ParameterVariant(variable, l);
-    } else {
-      errno = 0;
-      double d = strtod(value.c_str(), &endptr);
-      if ((errno == 0) && (*endptr == '\0')) {
-        return rclcpp::parameter::ParameterVariant(variable, d);
-      } else {
-        if ((value == "true") || (value == "True")) {
-          return rclcpp::parameter::ParameterVariant(variable, true);
-        } else if ((value == "false") || (value == "False")) {
-          return rclcpp::parameter::ParameterVariant(variable, false);
-        } else {
-          return rclcpp::parameter::ParameterVariant(variable, value);
-        }
-      }
     }
-  } else {
-    return rclcpp::parameter::ParameterVariant();
+    errno = 0;
+    double d = strtod(value.c_str(), &endptr);
+    if ((errno == 0) && (*endptr == '\0')) {
+      return rclcpp::parameter::ParameterVariant(variable, d);
+    }
+    if ((value == "true") || (value == "True")) {
+      return rclcpp::parameter::ParameterVariant(variable, true);
+    }
+    if ((value == "false") || (value == "False")) {
+      return rclcpp::parameter::ParameterVariant(variable, false);
+    }
+    return rclcpp::parameter::ParameterVariant(variable, value);
   }
+  return rclcpp::parameter::ParameterVariant();
 }
 
 int main(int argc, char ** argv)
