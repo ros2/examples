@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <inttypes.h>
 #include <iostream>
 #include <string>
 
@@ -83,7 +84,7 @@ int main(int argc, char ** argv)
   auto var = parse_args(argc, argv, remote_node, op);
 
   if (op == PARAM_NONE) {
-    std::cout << USAGE << std::endl;
+    fprintf(stderr, "%s\n", USAGE);
     return 1;
   }
 
@@ -99,20 +100,20 @@ int main(int argc, char ** argv)
       (get_parameters_result.get().size() != 1) ||
       (get_parameters_result.get()[0].get_type() == rclcpp::parameter::PARAMETER_NOT_SET))
     {
-      std::cout << "Failed to get parameter" << std::endl;
+      fprintf(stderr, "Failed to get parameter\n");
       return 1;
     } else {
       auto result = get_parameters_result.get()[0];
       if (result.get_type() == rclcpp::parameter::PARAMETER_BOOL) {
-        std::cout << result.get_value<bool>() << std::endl;
+        printf("%s\n", result.get_value<bool>() ? "true" : "false");
       } else if (result.get_type() == rclcpp::parameter::PARAMETER_INTEGER) {
-        std::cout << result.get_value<int>() << std::endl;
+        printf("%" PRId64 "\n", result.get_value<int64_t>());
       } else if (result.get_type() == rclcpp::parameter::PARAMETER_DOUBLE) {
-        std::cout << result.get_value<double>() << std::endl;
+        printf("%f\n", result.get_value<double>());
       } else if (result.get_type() == rclcpp::parameter::PARAMETER_STRING) {
-        std::cout << result.get_value<std::string>() << std::endl;
+        printf("%s\n", result.get_value<std::string>().c_str());
       } else if (result.get_type() == rclcpp::parameter::PARAMETER_BYTES) {
-        std::cout << "BYTES type not implemented" << std::endl;
+        fprintf(stderr, "BYTES type not implemented\n");
         return 1;
       }
     }
@@ -121,10 +122,10 @@ int main(int argc, char ** argv)
     auto set_result = rclcpp::spin_until_future_complete(
       node, set_parameters_result, std::chrono::milliseconds(1000));
     if (set_result != rclcpp::executor::FutureReturnCode::SUCCESS) {
-      std::cout << "Failed to set parameter" << std::endl;
+      fprintf(stderr, "Failed to set parameter\n");
     }
   } else {
-    std::cout << USAGE << std::endl;
+    fprintf(stderr, "%s\n", USAGE);
     return 1;
   }
   return 0;
