@@ -39,7 +39,6 @@ parse_args(int argc, char ** argv, std::string & remote_node, param_operation_t 
 
   std::string verb = argv[1];
   std::string name = argv[2];
-  std::string variable;
 
   if (verb == "list") {
     op = PARAM_LIST;
@@ -55,7 +54,7 @@ parse_args(int argc, char ** argv, std::string & remote_node, param_operation_t 
     return rclcpp::parameter::ParameterVariant();
   }
   remote_node = name.substr(0, slash);
-  variable = name.substr(slash + 1, name.size() - slash - 1);
+  std::string variable = name.substr(slash + 1, name.size() - slash - 1);
 
 
   if ((verb == "get") && (argc == 3)) {
