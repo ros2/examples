@@ -18,7 +18,9 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-#define USAGE "USAGE:\n  ros2param get <node/variable>\n  ros2param set <node/variable> <value>\n  ros2param list <node>"
+#define USAGE \
+  "USAGE:\n  ros2param get <node/variable>\n  ros2param set <node/variable> <value>\n" \
+  "  ros2param list <node>"
 
 typedef enum
 {
@@ -47,8 +49,8 @@ parse_args(int argc, char ** argv, std::string & remote_node, param_operation_t 
 
   size_t slash = name.find('/');
   if ((slash == std::string::npos) ||
-      (slash == 0) ||
-      (slash == (name.size() - 1)))
+    (slash == 0) ||
+    (slash == (name.size() - 1)))
   {
     return rclcpp::parameter::ParameterVariant();
   }
@@ -138,15 +140,16 @@ int main(int argc, char ** argv)
       return 1;
     }
   } else if (op == PARAM_LIST) {
-    auto list_parameters_result = parameters_client->list_parameters({},10);
+    auto list_parameters_result = parameters_client->list_parameters({}, 10);
     auto list_result = rclcpp::spin_until_future_complete(
-        node, list_parameters_result, std::chrono::milliseconds(10000));
+      node, list_parameters_result, std::chrono::milliseconds(10000));
     if (list_result == rclcpp::executor::FutureReturnCode::SUCCESS) {
-      printf("Node %s has %d parameters:\n", remote_node.c_str(), (int) list_parameters_result.get().names.size());
+      printf("Node %s has %zu parameters:\n", remote_node.c_str(),
+        list_parameters_result.get().names.size());
       for (auto name : list_parameters_result.get().names) {
         printf("%s\n", name.c_str());
       }
-    } else if (list_result == rclcpp::executor::FutureReturnCode::TIMEOUT){
+    } else if (list_result == rclcpp::executor::FutureReturnCode::TIMEOUT) {
       fprintf(stderr, "Timed out trying to list parameters: 10 seconds\n");
       return 1;
     } else {
