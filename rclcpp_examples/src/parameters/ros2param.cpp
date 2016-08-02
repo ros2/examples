@@ -43,17 +43,17 @@ parse_args(int argc, char ** argv, std::string & remote_node, param_operation_t 
     op = PARAM_LIST;
     remote_node = name;
     return rclcpp::parameter::ParameterVariant();
-  } else {
-    size_t slash = name.find('/');
-    if ((slash == std::string::npos) ||
-        (slash == 0) ||
-        (slash == (name.size() - 1)))
-    {
-      return rclcpp::parameter::ParameterVariant();
-    }
-    remote_node = name.substr(0, slash);
-    variable = name.substr(slash + 1, name.size() - slash - 1);
   }
+
+  size_t slash = name.find('/');
+  if ((slash == std::string::npos) ||
+      (slash == 0) ||
+      (slash == (name.size() - 1)))
+  {
+    return rclcpp::parameter::ParameterVariant();
+  }
+  remote_node = name.substr(0, slash);
+  variable = name.substr(slash + 1, name.size() - slash - 1);
 
 
   if ((verb == "get") && (argc == 3)) {
@@ -113,21 +113,22 @@ int main(int argc, char ** argv)
     {
       fprintf(stderr, "Failed to get parameter\n");
       return 1;
-    } else {
-      auto result = get_parameters_result.get()[0];
-      if (result.get_type() == rclcpp::parameter::PARAMETER_BOOL) {
-        printf("%s\n", result.get_value<bool>() ? "true" : "false");
-      } else if (result.get_type() == rclcpp::parameter::PARAMETER_INTEGER) {
-        printf("%" PRId64 "\n", result.get_value<int64_t>());
-      } else if (result.get_type() == rclcpp::parameter::PARAMETER_DOUBLE) {
-        printf("%f\n", result.get_value<double>());
-      } else if (result.get_type() == rclcpp::parameter::PARAMETER_STRING) {
-        printf("%s\n", result.get_value<std::string>().c_str());
-      } else if (result.get_type() == rclcpp::parameter::PARAMETER_BYTES) {
-        fprintf(stderr, "BYTES type not implemented\n");
-        return 1;
-      }
     }
+
+    auto result = get_parameters_result.get()[0];
+    if (result.get_type() == rclcpp::parameter::PARAMETER_BOOL) {
+      printf("%s\n", result.get_value<bool>() ? "true" : "false");
+    } else if (result.get_type() == rclcpp::parameter::PARAMETER_INTEGER) {
+      printf("%" PRId64 "\n", result.get_value<int64_t>());
+    } else if (result.get_type() == rclcpp::parameter::PARAMETER_DOUBLE) {
+      printf("%f\n", result.get_value<double>());
+    } else if (result.get_type() == rclcpp::parameter::PARAMETER_STRING) {
+      printf("%s\n", result.get_value<std::string>().c_str());
+    } else if (result.get_type() == rclcpp::parameter::PARAMETER_BYTES) {
+      fprintf(stderr, "BYTES type not implemented\n");
+      return 1;
+    }
+
   } else if (op == PARAM_SET) {
     auto set_parameters_result = parameters_client->set_parameters({var});
     auto set_result = rclcpp::spin_until_future_complete(
@@ -150,6 +151,7 @@ int main(int argc, char ** argv)
       return 1;
     } else {
       fprintf(stderr, "Error listing parameters\n");
+      return 1;
     }
   } else {
     fprintf(stderr, "%s\n", USAGE);
