@@ -146,10 +146,10 @@ int main(int argc, char ** argv)
         printf("%s\n", name.c_str());
       }
     } else if (list_result == rclcpp::executor::FutureReturnCode::TIMEOUT){
-      printf("Timed out trying to list parameters from node\n");
+      fprintf(stderr, "Timed out trying to list parameters: 10 seconds\n");
       return 1;
     } else {
-      printf("Error listing parameters\n");
+      fprintf(stderr, "Error listing parameters\n");
     }
   } else {
     fprintf(stderr, "%s\n", USAGE);
