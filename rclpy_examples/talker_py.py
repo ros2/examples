@@ -17,8 +17,6 @@ from time import sleep
 
 import rclpy
 
-from rclpy.qos import qos_profile_default
-
 from std_msgs.msg import String
 
 
@@ -27,6 +25,7 @@ def main(args=None):
         args = sys.argv
 
     rclpy.init(args)
+    from rclpy.qos import qos_profile_default
 
     node = rclpy.create_node('talker')
 
