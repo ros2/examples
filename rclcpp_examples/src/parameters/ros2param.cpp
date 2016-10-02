@@ -14,6 +14,7 @@
 
 #include <inttypes.h>
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
