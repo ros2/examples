@@ -9,9 +9,10 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(rclc REQUIRED)
-find_package(rclcpp REQUIRED)
+find_package(rcl REQUIRED)
 find_package(rmw REQUIRED)
 find_package(rmw_implementation_cmake REQUIRED)
+find_package(rmw_implementation REQUIRED)
 find_package(std_msgs REQUIRED)
 
 ament_package()
@@ -21,7 +22,7 @@ ament_package()
 ##
 macro(targets)
   if(NOT target_suffix STREQUAL "")
-    get_rclcpp_information("${rmw_implementation}" "rclcpp${target_suffix}")
+    get_rcl_information("${rmw_implementation}" "rcl${target_suffix}")
   endif()
 
   add_executable(talker_c${target_suffix}
