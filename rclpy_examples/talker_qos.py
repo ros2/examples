@@ -27,14 +27,19 @@ def main(args=None):
     if args is None:
         args = sys.argv
 
-    rclpy.init(args)
+    rclpy.init()
 
-    node = rclpy.create_node('talker2')
+    profile = args[1]
+    print(str(profile))
     custom_qos_profile = qos_profile_default
-    custom_qos_profile.reliability = QoSReliabilityPolicy.RMW_QOS_POLICY_BEST_EFFORT
-    custom_qos_profile.history = QoSHistoryPolicy.RMW_QOS_POLICY_KEEP_LAST_HISTORY
 
-    chatter_pub = node.create_publisher(String, 'chatter2', custom_qos_profile)
+    if profile == 1:
+        custom_qos_profile.reliability = QoSReliabilityPolicy.RMW_QOS_POLICY_BEST_EFFORT
+        custom_qos_profile.history = QoSHistoryPolicy.RMW_QOS_POLICY_KEEP_LAST_HISTORY
+
+    node = rclpy.create_node('talker_qos')
+
+    chatter_pub = node.create_publisher(String, 'chatter_qos', custom_qos_profile)
 
     msg = String()
 

@@ -28,15 +28,19 @@ def main(args=None):
     if args is None:
         args = sys.argv
 
-    rclpy.init(args)
+    rclpy.init()
 
+    profile = args[1]
     custom_qos_profile = qos_profile_default
-    custom_qos_profile.reliability = QoSReliabilityPolicy.RMW_QOS_POLICY_BEST_EFFORT
-    custom_qos_profile.history = QoSHistoryPolicy.RMW_QOS_POLICY_KEEP_LAST_HISTORY
+    print(str(profile))
 
-    node = rclpy.create_node('listener')
-  
-    sub = node.create_subscription(String, 'chatter', chatter_callback, custom_qos_profile)
+    if profile == 1:
+        custom_qos_profile.reliability = QoSReliabilityPolicy.RMW_QOS_POLICY_BEST_EFFORT
+        custom_qos_profile.history = QoSHistoryPolicy.RMW_QOS_POLICY_KEEP_LAST_HISTORY
+
+    node = rclpy.create_node('listener_qos')
+
+    sub = node.create_subscription(String, 'chatter_qos', chatter_callback, custom_qos_profile)
 
     assert sub  # prevent unused warning
 
