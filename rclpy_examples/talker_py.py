@@ -21,12 +21,18 @@ from rclpy.qos import qos_profile_default
 
 from std_msgs.msg import String
 
+import os
+
 
 def main(args=None):
     if args is None:
         args = sys.argv
+    else:
+        env = dict(os.environ)
+        env['RCLPY_IMPLEMENTATION'] = args
+        os.environ = env
 
-    rclpy.init(args)
+    rclpy.init()
 
     node = rclpy.create_node('talker')
 
@@ -42,6 +48,14 @@ def main(args=None):
         chatter_pub.publish(msg)
         # TODO(wjwwood): need to spin_some or spin_once with timeout
         sleep(1)
+
+
+class main_for_rmw_impl_class(object):
+    def __getattr__(self, key):
+        return main(key)
+
+
+main_for_rmw_impl = main_for_rmw_impl_class()
 
 if __name__ == '__main__':
     main()
