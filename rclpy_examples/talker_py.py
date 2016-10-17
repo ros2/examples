@@ -21,16 +21,13 @@ from rclpy.qos import qos_profile_default
 
 from std_msgs.msg import String
 
-import os
-
 
 def main(args=None):
     if args is None:
         args = sys.argv
     else:
-        env = dict(os.environ)
-        env['RCLPY_IMPLEMENTATION'] = args
-        os.environ = env
+        from rclpy.impl.rmw_implementation_tools import select_rmw_implementation
+        select_rmw_implementation(args[0])
 
     rclpy.init()
 
@@ -52,7 +49,7 @@ def main(args=None):
 
 class main_for_rmw_impl_class(object):
     def __getattr__(self, key):
-        return main(key)
+        return main([key])
 
 
 main_for_rmw_impl = main_for_rmw_impl_class()
