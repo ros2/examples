@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 import os
 import sys
 from time import sleep
@@ -49,12 +50,19 @@ def main(args=None):
         sleep(1)
 
 
-class MainForRmwImplClass(object):
+class MainForRmwImpl(object):
     def __getattr__(self, key):
         return main([os.path.basename(__file__), key])
 
 
-main_for_rmw_impl = MainForRmwImplClass()
+main_for_rmw_impl = MainForRmwImpl()
 
 if __name__ == '__main__':
-    main()
+    from rclpy.impl.rmw_implementation_tools import get_rmw_implementations
+    rmw_implementations = get_rmw_implementations()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('rmw_implementation', default=rmw_implementations[0],
+                        choices=rmw_implementations,
+                        help='rmw_implementation identifier')
+    args = parser.parse_args()
+    main(args)
