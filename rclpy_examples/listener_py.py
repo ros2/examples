@@ -35,7 +35,8 @@ def main(args=None):
 
     node = rclpy.create_node('listener')
 
-    sub = node.create_subscription(String, 'chatter', chatter_callback, qos_profile_default)
+    sub = node.create_subscription(
+        String, 'chatter', chatter_callback, qos_profile_default)
     assert sub  # prevent unused warning
 
     while rclpy.ok():
