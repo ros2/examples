@@ -14,6 +14,7 @@
 
 import argparse
 from time import sleep
+import sys
 
 import rclpy
 from rclpy.qos import qos_profile_default
@@ -21,7 +22,7 @@ from rclpy.qos import qos_profile_default
 from std_msgs.msg import String
 
 
-def main(args=None):
+def main(argv=sys.argv[1:]):
     from rclpy.impl.rmw_implementation_tools import get_rmw_implementations
     rmw_implementations = get_rmw_implementations()
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -29,15 +30,12 @@ def main(args=None):
                         default=rmw_implementations[0],
                         choices=rmw_implementations,
                         help='rmw_implementation identifier')
-    if args is None:
-        parsargs = parser.parse_args()
-    else:
-        parsargs = parser.parse_args(args)
+    args = parser.parse_args(argv)
 
-    if parsargs is not None:
-        if parsargs.rmw_implementation is not None:
+    if args is not None:
+        if args.rmw_implementation is not None:
             from rclpy.impl.rmw_implementation_tools import select_rmw_implementation
-            select_rmw_implementation(parsargs.rmw_implementation)
+            select_rmw_implementation(args.rmw_implementation)
 
     rclpy.init()
 
