@@ -13,10 +13,9 @@
 # limitations under the License.
 
 import argparse
-import os
-import sys
 
 import rclpy
+
 from rclpy.qos import qos_profile_default
 
 from std_msgs.msg import String
@@ -27,12 +26,22 @@ def chatter_callback(msg):
 
 
 def main(args=None):
+    from rclpy.impl.rmw_implementation_tools import get_rmw_implementations
+    rmw_implementations = get_rmw_implementations()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('rmw_implementation', nargs='?',
+                        default=rmw_implementations[0],
+                        choices=rmw_implementations,
+                        help='rmw_implementation identifier')
     if args is None:
-        args = sys.argv
+        parsargs = parser.parse_args()
     else:
-        if len(args) > 1:
+        parsargs = parser.parse_args(args)
+
+    if parsargs is not None:
+        if parsargs.rmw_implementation is not None:
             from rclpy.impl.rmw_implementation_tools import select_rmw_implementation
-            select_rmw_implementation(args[1])
+            select_rmw_implementation(parsargs.rmw_implementation)
 
     rclpy.init()
 
@@ -48,17 +57,7 @@ def main(args=None):
 
 class MainForRmwImpl(object):
     def __getattr__(self, key):
-        return main([os.path.basename(__file__), key])
+        return main([key])
 
 
 main_for_rmw_impl = MainForRmwImpl()
-
-if __name__ == '__main__':
-    from rclpy.impl.rmw_implementation_tools import get_rmw_implementations
-    rmw_implementations = get_rmw_implementations()
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('rmw_implementation', default=rmw_implementations[0],
-                        choices=rmw_implementations,
-                        help='rmw_implementation identifier')
-    args = parser.parse_args()
-    main(args)
