@@ -32,12 +32,12 @@ def main(argv=sys.argv[1:]):
                         help='rmw_implementation identifier')
     args = parser.parse_args(argv)
 
-    if args is not None:
-        if args.rmw_implementation is not None:
-            from rclpy.impl.rmw_implementation_tools import select_rmw_implementation
-            select_rmw_implementation(args.rmw_implementation)
+    from rclpy.impl.rmw_implementation_tools import select_rmw_implementation
+    select_rmw_implementation(args.rmw_implementation)
 
     rclpy.init()
+
+    print('rmw implementation used: ' + rclpy.get_rmw_implementation_identifier())
 
     node = rclpy.create_node('talker')
 
@@ -46,7 +46,6 @@ def main(argv=sys.argv[1:]):
     msg = String()
 
     i = 1
-    print(rclpy.get_rmw_implementation_identifier())
     while True:
         msg.data = 'Hello World: {0}'.format(i)
         i += 1
