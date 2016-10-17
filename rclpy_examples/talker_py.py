@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import sys
 from time import sleep
 
@@ -26,8 +27,9 @@ def main(args=None):
     if args is None:
         args = sys.argv
     else:
-        from rclpy.impl.rmw_implementation_tools import select_rmw_implementation
-        select_rmw_implementation(args[0])
+        if len(args) > 1:
+            from rclpy.impl.rmw_implementation_tools import select_rmw_implementation
+            select_rmw_implementation(args[1])
 
     rclpy.init()
 
@@ -47,12 +49,12 @@ def main(args=None):
         sleep(1)
 
 
-class main_for_rmw_impl_class(object):
+class MainForRmwImplClass(object):
     def __getattr__(self, key):
-        return main([key])
+        return main([os.path.basename(__file__), key])
 
 
-main_for_rmw_impl = main_for_rmw_impl_class()
+main_for_rmw_impl = MainForRmwImplClass()
 
 if __name__ == '__main__':
     main()
