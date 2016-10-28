@@ -36,7 +36,8 @@ int main(int argc, char ** argv)
 
   auto node = rclcpp::Node::make_shared("add_two_ints_server");
 
-  auto server = node->create_service<example_interfaces::srv::AddTwoInts>("add_two_ints", handle_add_two_ints);
+  auto server =
+    node->create_service<example_interfaces::srv::AddTwoInts>("add_two_ints", handle_add_two_ints);
 
   rclcpp::spin(node);
 
