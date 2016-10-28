@@ -77,15 +77,7 @@ if(BUILD_TESTING)
 
   macro(tests)
     set(example_tests_to_test ${example_tests})
-    # TODO(wjwwood): recombine with example_tests this when all rmw supports wait_for_service.
-    if(
-      NOT rmw_implementation STREQUAL "rmw_opensplice_cpp" AND
-      NOT rmw_implementation STREQUAL "rmw_fastrtps_cpp"
-    )
-      message(STATUS "Skipping service example tests for '${rmw_implementation}'")
-    else()
-      list(APPEND example_tests_to_test ${service_example_tests})
-    endif()
+    list(APPEND example_tests_to_test ${service_example_tests})
 
     foreach(example_test ${example_tests_to_test})
       string(REPLACE ":" ";" example_executables "${example_test}")
