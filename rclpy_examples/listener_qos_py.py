@@ -15,7 +15,7 @@
 import sys
 
 import rclpy
-from rclpy.qos import qos_profile_default, QoSReliabilityPolicy, QoSHistoryPolicy
+from rclpy.qos import qos_profile_default, qos_profile_sensor_data
 
 from std_msgs.msg import String
 
@@ -30,13 +30,14 @@ def main(args=None):
 
     rclpy.init()
 
-    profile = args[1]
-    custom_qos_profile = qos_profile_default
-    print(str(profile))
+    profile = int(args[1])
 
     if profile == 1:
-        custom_qos_profile.reliability = QoSReliabilityPolicy.RMW_QOS_POLICY_BEST_EFFORT
-        custom_qos_profile.history = QoSHistoryPolicy.RMW_QOS_POLICY_KEEP_LAST_HISTORY
+        custom_qos_profile = qos_profile_sensor_data
+        print('best effort subscriber')
+    else:
+        custom_qos_profile = qos_profile_default
+        print('reliable subscriber')
 
     node = rclpy.create_node('listener_qos')
 

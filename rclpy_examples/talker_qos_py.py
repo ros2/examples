@@ -17,8 +17,7 @@ from time import sleep
 
 import rclpy
 
-import rclpy.qos  # import *  # qos_profile_default
-from rclpy.qos import qos_profile_default, QoSReliabilityPolicy, QoSHistoryPolicy
+from rclpy.qos import qos_profile_default, qos_profile_sensor_data
 
 from std_msgs.msg import String
 
@@ -29,13 +28,14 @@ def main(args=None):
 
     rclpy.init()
 
-    profile = args[1]
-    print(str(profile))
-    custom_qos_profile = qos_profile_default
+    profile = int(args[1])
 
     if profile == 1:
-        custom_qos_profile.reliability = QoSReliabilityPolicy.RMW_QOS_POLICY_BEST_EFFORT
-        custom_qos_profile.history = QoSHistoryPolicy.RMW_QOS_POLICY_KEEP_LAST_HISTORY
+        custom_qos_profile = qos_profile_sensor_data
+        print('best effort publisher')
+    else:
+        custom_qos_profile = qos_profile_default
+        print('reliable publisher')
 
     node = rclpy.create_node('talker_qos')
 
@@ -44,12 +44,11 @@ def main(args=None):
     msg = String()
 
     i = 1
-    while True:
+    while rclpy.ok():
         msg.data = 'Hello World: {0}'.format(i)
         i += 1
         print('Publishing: "{0}"'.format(msg.data))
         chatter_pub.publish(msg)
-        # TODO(wjwwood): need to spin_some or spin_once with timeout
         sleep(1)
 
 if __name__ == '__main__':
