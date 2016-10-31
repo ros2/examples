@@ -32,7 +32,7 @@ def main(argv=sys.argv[1:]):
                         choices=[0, 1],
                         help='0: reliable, 1: best effort')
     parser.add_argument('-n', '--number_of_cycles', type=int, default=20,
-                        help='number of sending attempts')
+                        help='max number of spin_once iterations')
     args = parser.parse_args(argv)
     rclpy.init()
 
