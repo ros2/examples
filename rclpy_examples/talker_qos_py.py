@@ -12,25 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 import sys
 from time import sleep
 
 import rclpy
-
 from rclpy.qos import qos_profile_default, qos_profile_sensor_data
 
 from std_msgs.msg import String
 
 
-def main(args=None):
-    if args is None:
-        args = sys.argv
+def main(argv=sys.argv[1:]):
 
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument('-r', '--reliability', type=int, default=0,
+                        choices=[0, 1],
+                        help='0: reliable, 1: best effort')
+    parser.add_argument('-n', '--number_of_cycles', type=int, default=20,
+                        help='number of sending attempts')
+    args = parser.parse_args(argv)
     rclpy.init()
 
-    profile = int(args[1])
-
-    if profile == 1:
+    if args.reliability == 1:
         custom_qos_profile = qos_profile_sensor_data
         print('best effort publisher')
     else:
@@ -43,12 +46,12 @@ def main(args=None):
 
     msg = String()
 
-    i = 1
-    while rclpy.ok():
-        msg.data = 'Hello World: {0}'.format(i)
-        i += 1
+    cycle_count = 0
+    while rclpy.ok() and cycle_count < args.number_of_cycles:
+        msg.data = 'Hello World: {0}'.format(cycle_count)
         print('Publishing: "{0}"'.format(msg.data))
         chatter_pub.publish(msg)
+        cycle_count += 1
         sleep(1)
 
 if __name__ == '__main__':
