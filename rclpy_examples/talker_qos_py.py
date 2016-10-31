@@ -25,15 +25,16 @@ from std_msgs.msg import String
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
-        '-r', '--reliability', type=int, default=0, choices=[0, 1],
-        help='1: reliable, 0: best effort')
+        '--reliable', dest='reliable', action='store_true',
+        help='set qos profile to reliable')
+    parser.set_defaults(reliable=False)
     parser.add_argument(
         '-n', '--number_of_cycles', type=int, default=20,
         help='number of sending attempts')
     args = parser.parse_args(argv)
     rclpy.init()
 
-    if args.reliability == 1:
+    if args.reliable:
         custom_qos_profile = qos_profile_default
         print('reliable publisher')
     else:
