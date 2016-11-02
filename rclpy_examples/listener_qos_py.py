@@ -39,10 +39,10 @@ def main(argv=sys.argv[1:]):
 
     if args.reliable:
         custom_qos_profile = qos_profile_default
-        print('reliable publisher')
+        print('Reliable listener')
     else:
         custom_qos_profile = qos_profile_sensor_data
-        print('best effort publisher')
+        print('Best effort listener')
 
     node = rclpy.create_node('listener_qos')
 

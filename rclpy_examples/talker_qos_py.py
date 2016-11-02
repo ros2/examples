@@ -36,10 +36,10 @@ def main(argv=sys.argv[1:]):
 
     if args.reliable:
         custom_qos_profile = qos_profile_default
-        print('reliable publisher')
+        print('Reliable publisher')
     else:
         custom_qos_profile = qos_profile_sensor_data
-        print('best effort publisher')
+        print('Best effort publisher')
 
     node = rclpy.create_node('talker_qos')
 
