@@ -28,7 +28,6 @@ def main(args=None):
     node = rclpy.create_node('add_two_ints_client')
 
     cli = node.create_client(AddTwoInts, 'add_two_ints')
-    assert cli  # prevent unused warning
 
     max_iter = 3
     i = 0
