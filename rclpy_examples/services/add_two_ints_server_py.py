@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 
 from example_interfaces.srv import AddTwoInts
@@ -27,20 +25,16 @@ def add_two_ints_callback(request, response):
 
 
 def main(args=None):
-    if args is None:
-        args = sys.argv
-
     rclpy.init(args)
 
     node = rclpy.create_node('add_two_ints_server')
 
     srv = node.create_service(AddTwoInts, 'add_two_ints', add_two_ints_callback)
-    assert srv  # prevent unused warning
     max_iter = 3
     i = 0
     while rclpy.ok() and i < max_iter:
         rclpy.spin_once(node)
         i += 1
-
+    node.destroy_service(srv)
 if __name__ == '__main__':
     main()

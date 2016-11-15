@@ -14,15 +14,10 @@
 
 import rclpy
 
-import sys
-
 from example_interfaces.srv import AddTwoInts
 
 
 def main(args=None):
-    if args is None:
-        args = sys.argv
-
     rclpy.init(args)
 
     node = rclpy.create_node('add_two_ints_client')
@@ -38,7 +33,6 @@ def main(args=None):
         cli.wait_for_future()
         print('Result of add_two_ints: %d' % cli.response.sum)
         i += 1
-        rclpy.spin_once(node, 0.5)
 
 if __name__ == '__main__':
     main()

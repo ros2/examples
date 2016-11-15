@@ -14,14 +14,10 @@
 
 import rclpy
 
-import sys
-
 from example_interfaces.srv import AddTwoInts
 
 
 def main(args=None):
-    if args is None:
-        args = sys.argv
 
     rclpy.init(args)
 
@@ -43,7 +39,7 @@ def main(args=None):
             req.a = i
             req.b = i + 1
             cli.call(req)
-        rclpy.spin_once(node, 0.5)
+        rclpy.spin_once(node, 2)
 
 if __name__ == '__main__':
     main()
