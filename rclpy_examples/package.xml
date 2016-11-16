@@ -15,9 +15,6 @@
   <test_depend>ament_pep257</test_depend>
   <test_depend>ament_pep8</test_depend>
   <test_depend>ament_pyflakes</test_depend>
-  <test_depend>example_interfaces</test_depend>
-  <test_depend>rclpy</test_depend>
-  <test_depend>std_msgs</test_depend>
 
   <export>
     <build_type>ament_python</build_type>
