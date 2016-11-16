@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
+
 import rclpy
 
 from example_interfaces.srv import AddTwoInts
@@ -30,6 +32,7 @@ def main(args=None):
     req = AddTwoInts.Request()
     req.a = i
     req.b = i + 1
+    time.sleep(2)
     cli.call(req)
     while rclpy.ok() and i < max_iter:
         if cli.response is not None:
@@ -39,7 +42,7 @@ def main(args=None):
             req.a = i
             req.b = i + 1
             cli.call(req)
-        rclpy.spin_once(node, 2)
+        rclpy.spin_once(node)
 
 if __name__ == '__main__':
     main()
