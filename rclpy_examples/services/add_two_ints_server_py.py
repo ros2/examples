@@ -35,6 +35,9 @@ def main(args=None):
     while rclpy.ok() and i < max_iter:
         rclpy.spin_once(node)
         i += 1
+    # the next line explicitely destroy the service attached to the node
+    # it is not necessary and will be done automatically when the garbage collector
+    # will destroy the node object
     node.destroy_service(srv)
 if __name__ == '__main__':
     main()
