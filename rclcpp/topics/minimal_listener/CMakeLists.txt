@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(minimal_listener)
+project(examples_minimal_listener)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
