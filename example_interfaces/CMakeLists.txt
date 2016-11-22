@@ -16,4 +16,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   DEPENDENCIES builtin_interfaces
 )
 
+install(FILES service_mapping_rules.yaml DESTINATION share/${PROJECT_NAME})
+
 ament_package()
