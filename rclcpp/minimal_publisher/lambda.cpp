@@ -2,13 +2,14 @@
 #include "std_msgs/msg/string.hpp"
 
 /* This example creates a subclass of Node and uses a fancy C++11 lambda
- * function to shorten the callback syntax slightly. */
+ * function to shorten the callback syntax, at the expense of making the
+ * code somewhat more difficult to understand at first glance. */
 
-struct Talker : public rclcpp::Node
+struct MinimalPublisher : public rclcpp::Node
 {
-  Talker() : Node("talker"), count_(0)
+  MinimalPublisher() : Node("minimal_publisher"), count_(0)
   {
-    publisher_ = this->create_publisher<std_msgs::msg::String>("chatter");
+    publisher_ = this->create_publisher<std_msgs::msg::String>("topic");
     auto timer_callback = [this]() -> void {
       auto message = std_msgs::msg::String();
       message.data = "Hello, world! " + std::to_string(this->count_++);
@@ -26,6 +27,6 @@ private:
 int main(int argc, char *argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<Talker>());
+  rclcpp::spin(std::make_shared<MinimalPublisher>());
   return 0;
 }

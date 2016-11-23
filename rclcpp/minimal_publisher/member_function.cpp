@@ -4,13 +4,13 @@
 /* This example creates a subclass of Node and uses std::bind() to register a
  * member function as a callback from the timer. */
 
-struct Talker : public rclcpp::Node
+struct MinimalPublisher : public rclcpp::Node
 {
-  Talker() : Node("talker"), count_(0)
+  MinimalPublisher() : Node("minimal_publisher"), count_(0)
   {
-    publisher_ = this->create_publisher<std_msgs::msg::String>("chatter");
-    timer_ = this->create_wall_timer(500_ms,
-                                     std::bind(&Talker::timer_callback, this));
+    publisher_ = this->create_publisher<std_msgs::msg::String>("topic");
+    timer_ = this->create_wall_timer(
+        500_ms, std::bind(&MinimalPublisher::timer_callback, this));
   }
 private:
   void timer_callback()
@@ -28,6 +28,6 @@ private:
 int main(int argc, char *argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<Talker>());
+  rclcpp::spin(std::make_shared<MinimalPublisher>());
   return 0;
 }

@@ -2,11 +2,11 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-struct Listener : public rclcpp::Node
+struct MinimalSubscriber : public rclcpp::Node
 {
-  Listener() : Node("listener")
+  MinimalSubscriber() : Node("minimal_subscriber")
   {
-    subscription_ = this->create_subscription<std_msgs::msg::String>("chatter",
+    subscription_ = this->create_subscription<std_msgs::msg::String>("topic",
         [](std_msgs::msg::String::UniquePtr msg) {
           printf("I heard: [%s]\n", msg->data.c_str());
         });
@@ -18,6 +18,6 @@ private:
 int main(int argc, char *argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<Listener>());
+  rclcpp::spin(std::make_shared<MinimalSubscriber>());
   return 0;
 }
