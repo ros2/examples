@@ -18,27 +18,25 @@ import rclpy
 from std_msgs.msg import Int64
 
 
-class MyApplication:
-    def __init__(self):
-        self.val = 1
-
-    def publish_data(self):
-        msg = Int64()
-        msg.data = self.val
-        self.data_pub.publish(msg)
-        print('Publishing: "{0}"'.format(msg.data))
-        self.val *= -1
-
 def main():
-    my_application = MyApplication()
-
     rclpy.init()
 
     node = rclpy.create_node('data_publisher')
-    my_application.data_pub = node.create_publisher(Int64, 'data')
+    data_pub = node.create_publisher(Int64, 'data')
 
+    val = -1
+    msg = Int64()
+
+    # Function for publishing and updating data
+    def update_data():
+        nonlocal val
+        val *= -1
+        msg.data = val
+        print('Publishing: "{0}"'.format(msg.data))
+        data_pub.publish(msg)
+        
     # Create a timer that will cause data to be published every 0.1 seconds
-    node.create_timer(0.1, my_application.publish_data)
+    node.create_timer(0.1, update_data)
 
     while rclpy.ok():
         rclpy.spin_once(node)
