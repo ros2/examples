@@ -41,6 +41,8 @@ def main():
     while rclpy.ok():
         rclpy.spin_once(node)
 
+    rclpy.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
