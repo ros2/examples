@@ -26,13 +26,15 @@ from std_msgs.msg import Int64
 
 
 # Plot updates are scheduled at a regular interval, independent of the rate at which data is 
-# received. Plotting calls will block the reception of data messages.
+# received. Slow plotting calls will not block the reception of frequent data messages.
+
 time_between_plot_updates = 1  # time in seconds between plot updates
 
 # Class for managing the storage and display of data received
-class MyApplication:
+class DataPlotter:
     def __init__(self):
-        self.data_plotter = DataPlotter()
+        plt.ion()
+        self.fig = plt.figure()
         self.received_data = []
         # As the received data can be access by both the main plotting thread and the thread
         # processing data callbacks, its access must be protected by a lock
@@ -57,31 +59,18 @@ class MyApplication:
         print('Updating plot')
         start_time = time.time()
 
-        # Make a copy of the data that will be needed, so the other thread isn't blocked
+        # Make a copy of the data that will be needed, so that other threads aren't blocked
         self.received_data_lock.acquire()
-        data = deepcopy(self.received_data)
+        y_data = deepcopy(self.received_data)
         self.received_data_lock.release()
 
         # Update the plot
-        self.data_plotter.update_plot(data)
+        x_data = range(0, len(y_data))
+        plt.plot(x_data, y_data, '-r')
+        self.fig.canvas.draw()
 
         elapsed_time = time.time() - start_time
         print('Time taken to update plot: %.3f seconds' % elapsed_time)
-
-
-class DataPlotter:
-    def __init__(self):
-        self.make_plot()
-
-    def make_plot(self):
-        plt.ion()
-        self.fig = plt.figure()
-        self.ax = self.fig.add_subplot(111)
-
-    def update_plot(self, y_data):
-        x_data = range(0, len(y_data))
-        self.line, = self.ax.plot(x_data, y_data, '-r')
-        self.fig.canvas.draw()
 
 
 class RCLPYThread(Thread):
@@ -91,7 +80,7 @@ class RCLPYThread(Thread):
 
     def run(self):
         self.node = rclpy.create_node('data_listener')
-        sub = self.node.create_subscription(Int64, 'data', my_application.data_callback)
+        sub = self.node.create_subscription(Int64, 'data', data_plotter.data_callback)
         while rclpy.ok():
             # Wait for messages with a timeout, otherwise this thread will block other threads
             # until a message is received
@@ -103,7 +92,7 @@ class RCLPYThread(Thread):
         return
 
 
-my_application = MyApplication()
+data_plotter = DataPlotter()
 def main():
     try:
         # Start a thread that will process the subscription in the background
@@ -117,7 +106,7 @@ def main():
             elapsed_time = now - last_plot_time
             if elapsed_time > time_between_plot_updates:
                 last_plot_time = now
-                my_application.update_plot()
+                data_plotter.update_plot()
 
     except KeyboardInterrupt:
         # Stop the main thread and join the background thread
