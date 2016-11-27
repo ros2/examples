@@ -1,12 +1,12 @@
 from setuptools import setup
 
 setup(
-    name='examples_rclpy_minimal_publisher',
+    name='examples_rclpy_minimal_subscriber',
     version='0.0.0',
     packages=[],
     py_modules=[
-        'minimal_publisher', 'minimal_publisher_timer_lambda',
-        'minimal_publisher_timer_local_function'],
+        'minimal_subscriber', 'minimal_subscriber_lambda',
+        'minimal_subscriber_local_function'],
     install_requires=['setuptools'],
     author='Mikael Arguedas',
     author_email='Mikael@osrfoundation.org',
@@ -19,14 +19,14 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
-    description='Package containing examples of how to use the rclpy API.',
+    description='Examples of minimal subscribers using rclpy.',
     license='Apache License, Version 2.0',
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'minimal_publisher_py = minimal_publisher:main',
-            'minimal_publisher_timer_lambda_py = minimal_publisher_timer_lambda:main',
-            'minimal_publisher_timer_local_function_py = minimal_publisher_timer_local_function:main',
+            'minimal_subscriber_py = minimal_subscriber:main',
+            'minimal_subscriber_lambda_py = minimal_subscriber_lambda:main',
+            'minimal_subscriber_local_function_py = minimal_subscriber_local_function:main',
         ],
     },
 )

@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import sys
-from time import sleep
 
 import rclpy
 
@@ -28,18 +27,15 @@ def main(args=None):
 
     node = rclpy.create_node('minimal_publisher')
 
-    publisher_ = node.create_publisher(String, 'topic')
+    def listener_cb(msg):
+        print('I heard: [%s]' % msg.data)
 
-    msg = String()
+    subscription_ = node.create_subscription(
+        String, 'topic', listener_cb)
+    subscription_  # noqa
 
-    i = 0
     while rclpy.ok():
-        msg.data = 'Hello World: %d' % i
-        i += 1
-        print('Publishing: "%s"' % msg.data)
-        publisher_.publish(msg)
-        # TODO(mikaelarguedas): explain why spin_once can't be used here
-        sleep(0.5)
+        rclpy.spin_once(node)
 
     node.destroy_node()
     rclpy.shutdown()

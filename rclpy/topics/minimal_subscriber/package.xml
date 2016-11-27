@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
-  <name>examples_rclpy_minimal_publisher</name>
+  <name>examples_rclpy_minimal_subscriber</name>
   <version>0.0.0</version>
-  <description>Examples of minimal publishers using rclpy.</description>
-
+  <description>Examples of minimal subscribers using rclpy.</description>
   <maintainer email="mikael@osrfoundation.org">Mikael Arguedas</maintainer>
   <license>Apache License 2.0</license>
 
