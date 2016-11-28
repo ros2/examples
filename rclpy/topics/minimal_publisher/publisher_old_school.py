@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# We do not recommend this style anymore, because ROS 2 provides timers
+# no node should have only a single publisher and should all call spin
+# for periodic publication please see the other examples using timers
+# This example is only included for completeness because
+# it is similar to "classic" standalone ROS nodes.
+
 from time import sleep
 
 import rclpy
@@ -34,8 +40,6 @@ def main(args=None):
         i += 1
         print('Publishing: "%s"' % msg.data)
         publisher.publish(msg)
-        # For now spin_once cannot be called in nodes containing only publishers
-        # This is not a guideline and will be possible in the near future
         sleep(0.5)
 
     # Destroy the node explicitly
