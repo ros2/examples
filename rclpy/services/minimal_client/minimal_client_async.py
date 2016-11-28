@@ -27,11 +27,9 @@ def main(args=None):
 
     cli = node.create_client(AddTwoInts, 'add_two_ints')
 
-    max_iter = 3
-    i = 0
     req = AddTwoInts.Request()
-    req.a = i
-    req.b = i + 1
+    req.a = 41
+    req.b = 1
     # wait for connection to be established
     # (no wait for service in Python yet)
     time.sleep(2)
@@ -39,14 +37,8 @@ def main(args=None):
     while rclpy.ok():
         if cli.response is not None:
             print('Result of add_two_ints: %d' % cli.response.sum)
-            i += 1
             cli.response = None
-            if i < max_iter:
-                req.a = i
-                req.b = i + 1
-                cli.call(req)
-            else:
-                break
+            break
         rclpy.spin_once(node)
 
     # Destroy the node explicitly

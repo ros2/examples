@@ -19,20 +19,18 @@ from example_interfaces.srv import AddTwoInts
 
 def main(args=None):
     rclpy.init(args)
-
     node = rclpy.create_node('minimal_client')
-
     cli = node.create_client(AddTwoInts, 'add_two_ints')
-    max_iter = 3
-    i = 0
-    while rclpy.ok() and i < max_iter:
+
+    while rclpy.ok():
         req = AddTwoInts.Request()
-        req.a = i
-        req.b = i + 1
+        req.a = 41
+        req.b = 1
         cli.call(req)
+        # when calling wait for future
+        # spin should not be called in the main loop
         cli.wait_for_future()
         print('Result of add_two_ints: %d' % cli.response.sum)
-        i += 1
 
 if __name__ == '__main__':
     main()

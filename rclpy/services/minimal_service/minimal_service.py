@@ -30,9 +30,8 @@ def main(args=None):
     node = rclpy.create_node('add_two_ints_server')
 
     srv = node.create_service(AddTwoInts, 'add_two_ints', add_two_ints_callback)
-    # max_iter = 3
     i = 0
-    while rclpy.ok():  # and i < max_iter:
+    while rclpy.ok():
         rclpy.spin_once(node)
         i += 1
     # Destroy the service attached to the node explicitly
