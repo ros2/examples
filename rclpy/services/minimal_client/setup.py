@@ -19,7 +19,7 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
-    description='Package containing examples of how to use the rclpy API.',
+    description='Examples of minimal service clients using rclpy.',
     license='Apache License, Version 2.0',
     test_suite='test',
     entry_points={
