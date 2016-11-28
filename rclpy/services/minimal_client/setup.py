@@ -5,8 +5,9 @@ setup(
     version='0.0.0',
     packages=[],
     py_modules=[
-        'minimal_client',
-        'minimal_client_async'],
+        'client',
+        'client_async',
+        'client_async_member_function'],
     install_requires=['setuptools'],
     author='Mikael Arguedas',
     author_email='Mikael@osrfoundation.org',
@@ -24,8 +25,10 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'examples_rclpy_minimal_client = minimal_client:main',
-            'examples_rclpy_minimal_client_async = minimal_client_async:main',
+            'examples_rclpy_minimal_client = client:main',
+            'examples_rclpy_minimal_client_async = client_async:main',
+            'examples_rclpy_minimal_client_async_member_function ='
+            ' client_async_member_function:main',
         ],
     },
 )

@@ -5,7 +5,8 @@ setup(
     version='0.0.0',
     packages=[],
     py_modules=[
-        'minimal_service'],
+        'service',
+        'service_member_function'],
     install_requires=['setuptools'],
     author='Mikael Arguedas',
     author_email='Mikael@osrfoundation.org',
@@ -23,7 +24,8 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'examples_rclpy_minimal_service = minimal_service:main',
+            'examples_rclpy_minimal_service = service:main',
+            'examples_rclpy_minimal_service_member_function = service_member_function:main',
         ],
     },
 )

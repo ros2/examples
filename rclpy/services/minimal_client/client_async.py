@@ -41,10 +41,6 @@ def main(args=None):
             break
         rclpy.spin_once(node)
 
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    node.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

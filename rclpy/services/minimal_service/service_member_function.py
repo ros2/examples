@@ -17,25 +17,28 @@ import rclpy
 from example_interfaces.srv import AddTwoInts
 
 
-def add_two_ints_callback(request, response):
-    response.sum = request.a + request.b
-    print('Incoming request\na: %d b:%d' % (request.a, request.b))
+class MinimalService:
+    def __init__(self, node):
+        self.srv = node.create_service(AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
 
-    return response
+    def add_two_ints_callback(self, request, response):
+        response.sum = request.a + request.b
+        print('Incoming request\na: %d b:%d' % (request.a, request.b))
+
+        return response
 
 
 def main(args=None):
     rclpy.init(args)
 
     node = rclpy.create_node('add_two_ints_server')
+    minimal_service = MinimalService(node)
+    minimal_service  # prevent unused variable warning
 
-    srv = node.create_service(AddTwoInts, 'add_two_ints', add_two_ints_callback)
     while rclpy.ok():
         rclpy.spin_once(node)
 
-    # Destroy the service attached to the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    node.destroy_service(srv)
+    rclpy.shutdown()
+
 if __name__ == '__main__':
     main()
