@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 
 from std_msgs.msg import String
@@ -23,13 +21,9 @@ class MinimalPublisher:
 
     def __init__(self):
         self.node = rclpy.create_node('minimal_publisher')
-
         self.publisher_ = self.node.create_publisher(String, 'topic')
-
         self.timer = self.node.create_timer(0.5, self.timer_callback)
-
         self.msg = String()
-
         self.i = 0
 
     def timer_callback(self):
@@ -38,11 +32,14 @@ class MinimalPublisher:
         print('Publishing: "%s"' % self.msg.data)
         self.i += 1
 
+    def __del__(self):
+        # Destroy the node explicitly
+        # (optional - otherwise it will be done automatically
+        # when the garbage collector destroys the node object)
+        self.node.destroy_node()
+
 
 def main(args=None):
-    if args is None:
-        args = sys.argv
-
     rclpy.init(args)
 
     minimal_publisher = MinimalPublisher()
@@ -50,10 +47,6 @@ def main(args=None):
     while rclpy.ok():
         rclpy.spin_once(minimal_publisher.node)
 
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    minimal_publisher.node.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

@@ -12,24 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 
 from std_msgs.msg import String
 
 
 def main(args=None):
-    if args is None:
-        args = sys.argv
-
     rclpy.init(args)
 
     node = rclpy.create_node('minimal_subscriber')
 
     subscription_ = node.create_subscription(
         String, 'topic', lambda msg: print('I heard: [%s]' % msg.data))
-    subscription_  # noqa
+    subscription_  # prevent unused variable warning
 
     while rclpy.ok():
         rclpy.spin_once(node)

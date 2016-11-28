@@ -6,7 +6,6 @@ setup(
     packages=[],
     py_modules=[
         'publisher_old_school',
-        'publisher_lambda',
         'publisher_local_function',
         'publisher_member_function'],
     install_requires=['setuptools'],
@@ -27,7 +26,6 @@ setup(
     entry_points={
         'console_scripts': [
             'examples_rclpy_minimal_publisher_old_school = publisher_old_school:main',
-            'examples_rclpy_minimal_publisher_lambda = publisher_lambda:main',
             'examples_rclpy_minimal_publisher_local_function = publisher_local_function:main',
             'examples_rclpy_minimal_publisher_member_function = publisher_member_function:main',
         ],

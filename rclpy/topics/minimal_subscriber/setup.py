@@ -7,7 +7,6 @@ setup(
     py_modules=[
         'subscriber_old_school',
         'subscriber_lambda',
-        'subscriber_local_function',
         'subscriber_member_function'],
     install_requires=['setuptools'],
     author='Mikael Arguedas',
@@ -28,7 +27,6 @@ setup(
         'console_scripts': [
             'examples_rclpy_minimal_subscriber_old_school = subscriber_old_school:main',
             'examples_rclpy_minimal_subscriber_lambda = subscriber_lambda:main',
-            'examples_rclpy_minimal_subscriber_local_function = subscriber_local_function:main',
             'examples_rclpy_minimal_subscriber_member_function = subscriber_member_function:main',
         ],
     },

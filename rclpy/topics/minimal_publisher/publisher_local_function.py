@@ -12,17 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 
 from std_msgs.msg import String
 
 
 def main(args=None):
-    if args is None:
-        args = sys.argv
-
     rclpy.init(args)
 
     node = rclpy.create_node('minimal_publisher')

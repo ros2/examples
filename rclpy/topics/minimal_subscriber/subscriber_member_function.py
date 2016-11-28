@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 
 from std_msgs.msg import String
@@ -27,16 +25,13 @@ class MinimalSubscriber:
             String,
             'topic',
             self.listener_callback)
-        self.subscription_  # noqa
+        self.subscription_  # prevent unused variable warning
 
     def listener_callback(self, msg):
         print('I heard: [%s]' % msg.data)
 
 
 def main(args=None):
-    if args is None:
-        args = sys.argv
-
     rclpy.init(args)
 
     minimal_subscriber = MinimalSubscriber()
