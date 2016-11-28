@@ -19,32 +19,31 @@ import rclpy
 from std_msgs.msg import String
 
 
+class MinimalSubscriber:
+
+    def __init__(self):
+        self.node = rclpy.create_node('minimal_publisher')
+        self.subscription_ = self.node.create_subscription(
+            String,
+            'topic',
+            self.listener_callback)
+        self.subscription_  # noqa
+
+    def listener_callback(self, msg):
+        print('I heard: [%s]' % msg.data)
+
+
 def main(args=None):
     if args is None:
         args = sys.argv
 
     rclpy.init(args)
 
-    node = rclpy.create_node('minimal_publisher')
-    publisher_ = node.create_publisher(String, 'topic')
-
-    msg = String()
-    i = 0
-
-    def timer_cb():
-        nonlocal i
-        msg.data = 'Hello World: %d' % i
-        i += 1
-        print('Publishing: "%s"' % msg.data)
-        publisher_.publish(msg)
-
-    timer = node.create_timer(0.5, timer_cb)
-
+    minimal_subscriber = MinimalSubscriber()
     while rclpy.ok():
-        rclpy.spin_once(node)
+        rclpy.spin_once(minimal_subscriber.node)
 
-    node.destroy_timer(timer)
-    node.destroy_node()
+    minimal_subscriber.node.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

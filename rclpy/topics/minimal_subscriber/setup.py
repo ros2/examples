@@ -5,8 +5,10 @@ setup(
     version='0.0.0',
     packages=[],
     py_modules=[
-        'minimal_subscriber', 'minimal_subscriber_lambda',
-        'minimal_subscriber_local_function'],
+        'minimal_subscriber',
+        'minimal_subscriber_lambda',
+        'minimal_subscriber_local_function',
+        'minimal_subscriber_class'],
     install_requires=['setuptools'],
     author='Mikael Arguedas',
     author_email='Mikael@osrfoundation.org',
@@ -27,6 +29,7 @@ setup(
             'minimal_subscriber_py = minimal_subscriber:main',
             'minimal_subscriber_lambda_py = minimal_subscriber_lambda:main',
             'minimal_subscriber_local_function_py = minimal_subscriber_local_function:main',
+            'minimal_subscriber_class_py = minimal_subscriber_class:main',
         ],
     },
 )

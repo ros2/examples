@@ -5,8 +5,9 @@ setup(
     version='0.0.0',
     packages=[],
     py_modules=[
-        'minimal_publisher', 'minimal_publisher_timer_lambda',
-        'minimal_publisher_timer_local_function'],
+        'minimal_publisher',
+        'minimal_publisher_timer_lambda',
+        'minimal_publisher_class'],
     install_requires=['setuptools'],
     author='Mikael Arguedas',
     author_email='Mikael@osrfoundation.org',
@@ -19,14 +20,14 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
-    description='Package containing examples of how to use the rclpy API.',
+    description='Examples of minimal publishers using rclpy.',
     license='Apache License, Version 2.0',
     test_suite='test',
     entry_points={
         'console_scripts': [
             'minimal_publisher_py = minimal_publisher:main',
             'minimal_publisher_timer_lambda_py = minimal_publisher_timer_lambda:main',
-            'minimal_publisher_timer_local_function_py = minimal_publisher_timer_local_function:main',
+            'minimal_publisher_class_py = minimal_publisher_class:main',
         ],
     },
 )
