@@ -41,6 +41,9 @@ def main(args=None):
         # TODO(mikaelarguedas): explain why spin_once can't be used here
         sleep(0.5)
 
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
     node.destroy_node()
     rclpy.shutdown()
 

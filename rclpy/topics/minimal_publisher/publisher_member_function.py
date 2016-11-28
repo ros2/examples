@@ -50,6 +50,9 @@ def main(args=None):
     while rclpy.ok():
         rclpy.spin_once(minimal_publisher.node)
 
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
     minimal_publisher.node.destroy_node()
     rclpy.shutdown()
 

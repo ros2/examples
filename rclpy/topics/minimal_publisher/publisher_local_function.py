@@ -43,6 +43,9 @@ def main(args=None):
     while rclpy.ok():
         rclpy.spin_once(node)
 
+    # Destroy the timer attached to the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
     node.destroy_timer(timer)
     node.destroy_node()
     rclpy.shutdown()
