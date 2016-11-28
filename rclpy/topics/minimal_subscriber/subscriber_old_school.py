@@ -26,8 +26,8 @@ def main(args=None):
 
     node = rclpy.create_node('minimal_subscriber')
 
-    subscription_ = node.create_subscription(String, 'topic', chatter_callback)
-    subscription_  # prevent unused variable warning
+    subscription = node.create_subscription(String, 'topic', chatter_callback)
+    subscription  # prevent unused variable warning
 
     while rclpy.ok():
         rclpy.spin_once(node)

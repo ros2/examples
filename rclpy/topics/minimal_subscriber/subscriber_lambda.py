@@ -22,9 +22,9 @@ def main(args=None):
 
     node = rclpy.create_node('minimal_subscriber')
 
-    subscription_ = node.create_subscription(
+    subscription = node.create_subscription(
         String, 'topic', lambda msg: print('I heard: [%s]' % msg.data))
-    subscription_  # prevent unused variable warning
+    subscription  # prevent unused variable warning
 
     while rclpy.ok():
         rclpy.spin_once(node)

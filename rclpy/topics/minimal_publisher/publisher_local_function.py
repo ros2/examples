@@ -21,7 +21,7 @@ def main(args=None):
     rclpy.init(args)
 
     node = rclpy.create_node('minimal_publisher')
-    publisher_ = node.create_publisher(String, 'topic')
+    publisher = node.create_publisher(String, 'topic')
 
     msg = String()
     i = 0
@@ -31,7 +31,7 @@ def main(args=None):
         msg.data = 'Hello World: %d' % i
         i += 1
         print('Publishing: "%s"' % msg.data)
-        publisher_.publish(msg)
+        publisher.publish(msg)
 
     timer = node.create_timer(0.5, timer_callback)
 

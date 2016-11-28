@@ -20,11 +20,11 @@ from std_msgs.msg import String
 class MinimalSubscriber:
 
     def __init__(self, node):
-        self.subscription_ = node.create_subscription(
+        self.subscription = node.create_subscription(
             String,
             'topic',
             self.listener_callback)
-        self.subscription_  # prevent unused variable warning
+        self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
         print('I heard: [%s]' % msg.data)

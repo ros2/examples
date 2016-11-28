@@ -24,7 +24,7 @@ def main(args=None):
 
     node = rclpy.create_node('minimal_publisher')
 
-    publisher_ = node.create_publisher(String, 'topic')
+    publisher = node.create_publisher(String, 'topic')
 
     msg = String()
 
@@ -33,7 +33,7 @@ def main(args=None):
         msg.data = 'Hello World: %d' % i
         i += 1
         print('Publishing: "%s"' % msg.data)
-        publisher_.publish(msg)
+        publisher.publish(msg)
         # For now spin_once cannot be called in nodes containing only publishers
         # This is not a guideline and will be possible in the near future
         sleep(0.5)
