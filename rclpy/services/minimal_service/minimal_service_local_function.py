@@ -27,14 +27,11 @@ def main(args=None):
         print('Incoming request\na: %d b:%d' % (request.a, request.b))
 
         return response
-    srv = node.create_service(
-        AddTwoInts,
-        'add_two_ints',
-        add_two_ints_callback)
-    i = 0
+
+    srv = node.create_service(AddTwoInts, 'add_two_ints', add_two_ints_callback)
     while rclpy.ok():
         rclpy.spin_once(node)
-        i += 1
+
     # Destroy the service attached to the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
