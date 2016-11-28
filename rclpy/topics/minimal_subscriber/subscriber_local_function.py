@@ -27,11 +27,11 @@ def main(args=None):
 
     node = rclpy.create_node('minimal_publisher')
 
-    def listener_cb(msg):
+    def listener_callback(msg):
         print('I heard: [%s]' % msg.data)
 
     subscription_ = node.create_subscription(
-        String, 'topic', listener_cb)
+        String, 'topic', listener_callback)
     subscription_  # noqa
 
     while rclpy.ok():

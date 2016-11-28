@@ -5,10 +5,10 @@ setup(
     version='0.0.0',
     packages=[],
     py_modules=[
-        'minimal_subscriber',
-        'minimal_subscriber_lambda',
-        'minimal_subscriber_local_function',
-        'minimal_subscriber_class'],
+        'subscriber_old_school',
+        'subscriber_lambda',
+        'subscriber_local_function',
+        'subscriber_member_function'],
     install_requires=['setuptools'],
     author='Mikael Arguedas',
     author_email='Mikael@osrfoundation.org',
@@ -26,10 +26,10 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'minimal_subscriber_py = minimal_subscriber:main',
-            'minimal_subscriber_lambda_py = minimal_subscriber_lambda:main',
-            'minimal_subscriber_local_function_py = minimal_subscriber_local_function:main',
-            'minimal_subscriber_class_py = minimal_subscriber_class:main',
+            'examples_rclpy_minimal_subscriber_old_school = subscriber_old_school:main',
+            'examples_rclpy_minimal_subscriber_lambda = subscriber_lambda:main',
+            'examples_rclpy_minimal_subscriber_local_function = subscriber_local_function:main',
+            'examples_rclpy_minimal_subscriber_member_function = subscriber_member_function:main',
         ],
     },
 )

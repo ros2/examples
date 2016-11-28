@@ -5,9 +5,10 @@ setup(
     version='0.0.0',
     packages=[],
     py_modules=[
-        'minimal_publisher',
-        'minimal_publisher_timer_lambda',
-        'minimal_publisher_class'],
+        'publisher_old_school',
+        'publisher_lambda',
+        'publisher_local_function',
+        'publisher_member_function'],
     install_requires=['setuptools'],
     author='Mikael Arguedas',
     author_email='Mikael@osrfoundation.org',
@@ -25,9 +26,10 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'minimal_publisher_py = minimal_publisher:main',
-            'minimal_publisher_timer_lambda_py = minimal_publisher_timer_lambda:main',
-            'minimal_publisher_class_py = minimal_publisher_class:main',
+            'examples_rclpy_minimal_publisher_old_school = publisher_old_school:main',
+            'examples_rclpy_minimal_publisher_lambda = publisher_lambda:main',
+            'examples_rclpy_minimal_publisher_local_function = publisher_local_function:main',
+            'examples_rclpy_minimal_publisher_member_function = publisher_member_function:main',
         ],
     },
 )
