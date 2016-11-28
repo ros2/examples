@@ -22,16 +22,14 @@ def main(args=None):
     node = rclpy.create_node('minimal_client')
     cli = node.create_client(AddTwoInts, 'add_two_ints')
 
-    while rclpy.ok():
-        req = AddTwoInts.Request()
-        req.a = 41
-        req.b = 1
-        cli.call(req)
-        # when calling wait for future
-        # spin should not be called in the main loop
-        cli.wait_for_future()
-        print('Result of add_two_ints: %d' % cli.response.sum)
-        break
+    req = AddTwoInts.Request()
+    req.a = 41
+    req.b = 1
+    cli.call(req)
+    # when calling wait for future
+    # spin should not be called in the main loop
+    cli.wait_for_future()
+    print('Result of add_two_ints: %d' % cli.response.sum)
 
 if __name__ == '__main__':
     main()
