@@ -38,7 +38,8 @@ def main(args=None):
         i += 1
         print('Publishing: "%s"' % msg.data)
         publisher_.publish(msg)
-        # TODO(mikaelarguedas): explain why spin_once can't be used here
+        # For now spin_once cannot be called in nodes containing only publishers
+        # This is not a guideline and will be possible in the near future
         sleep(0.5)
 
     # Destroy the node explicitly
