@@ -24,8 +24,8 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'minimal_client_py = minimal_client:main',
-            'minimal_client_async_py = minimal_client_async:main',
+            'examples_rclpy_minimal_client = minimal_client:main',
+            'examples_rclpy_minimal_client_async = minimal_client_async:main',
         ],
     },
 )

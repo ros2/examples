@@ -24,8 +24,8 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'minimal_service_py = minimal_service:main',
-            'minimal_service_local_function_py = minimal_service_local_function:main',
+            'examples_rclpy_minimal_service = minimal_service:main',
+            'examples_rclpy_minimal_service_local_function = minimal_service_local_function:main',
         ],
     },
 )
