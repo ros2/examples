@@ -31,6 +31,7 @@ def main(args=None):
         # spin should not be called in the main loop
         cli.wait_for_future()
         print('Result of add_two_ints: %d' % cli.response.sum)
+        break
 
 if __name__ == '__main__':
     main()
