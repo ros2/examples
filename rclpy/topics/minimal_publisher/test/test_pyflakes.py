@@ -16,5 +16,5 @@ from ament_pyflakes.main import main
 
 
 def test_pyflakes():
-    rc = main(argv=['.', 'test'])
+    rc = main(argv=['.'])
     assert rc == 0, 'Found errors'

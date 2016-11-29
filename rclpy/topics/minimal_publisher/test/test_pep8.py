@@ -16,5 +16,5 @@ from ament_pep8.main import main
 
 
 def test_pep8():
-    rc = main(argv=['.', 'test'])
+    rc = main(argv=['.'])
     assert rc == 0, 'Found code style errors / warnings'
