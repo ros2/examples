@@ -6,10 +6,11 @@ struct MinimalSubscriber : public rclcpp::Node
 {
   MinimalSubscriber() : Node("minimal_subscriber")
   {
-    subscription_ = this->create_subscription<std_msgs::msg::String>("topic",
-        [](std_msgs::msg::String::UniquePtr msg) {
-          printf("I heard: [%s]\n", msg->data.c_str());
-        });
+    subscription_ = this->create_subscription<std_msgs::msg::String>(
+      "topic",
+      [](std_msgs::msg::String::UniquePtr msg) {
+        printf("I heard: [%s]\n", msg->data.c_str());
+      });
   }
 private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
