@@ -34,7 +34,6 @@ class MinimalClientAsync:
 
 
 def main(args=None):
-
     rclpy.init(args)
 
     node = rclpy.create_node('minimal_client_async')
