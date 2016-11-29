@@ -20,7 +20,6 @@ from example_interfaces.srv import AddTwoInts
 
 
 def main(args=None):
-
     rclpy.init(args)
 
     node = rclpy.create_node('minimal_client_async')
