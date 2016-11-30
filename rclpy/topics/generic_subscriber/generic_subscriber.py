@@ -44,9 +44,8 @@ def subscriber(message_type):
 
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('message_type', default='std_msgs/String',
+    parser.add_argument('message_type', nargs='?', default='std_msgs/String',
                         help='type of the ROS message')
-    args = parser.parse_args()
     args = parser.parse_args()
     try:
         subscriber(
