@@ -19,6 +19,8 @@
 
 #include "example_interfaces/srv/add_two_ints.hpp"
 
+using namespace rclcpp::literals;
+
 // TODO(wjwwood): make this into a method of rclcpp::client::Client.
 example_interfaces::srv::AddTwoInts_Response::SharedPtr send_request(
   rclcpp::Node::SharedPtr node,

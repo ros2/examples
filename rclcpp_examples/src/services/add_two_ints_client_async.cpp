@@ -19,6 +19,8 @@
 
 #include "example_interfaces/srv/add_two_ints.hpp"
 
+using namespace rclcpp::literals;
+
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
