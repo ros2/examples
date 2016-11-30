@@ -33,7 +33,8 @@ def main(args=None):
         print('Publishing: "%s"' % msg.data)
         publisher.publish(msg)
 
-    timer = node.create_timer(0.5, timer_callback)
+    timer_period = 0.5  # seconds
+    timer = node.create_timer(timer_period, timer_callback)
 
     while rclpy.ok():
         rclpy.spin_once(node)

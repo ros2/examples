@@ -21,7 +21,8 @@ class MinimalPublisher:
 
     def __init__(self, node):
         self.publisher_ = node.create_publisher(String, 'topic')
-        self.timer = node.create_timer(0.5, self.timer_callback)
+        timer_period = 0.5  # seconds
+        self.timer = node.create_timer(timer_period, self.timer_callback)
         self.msg = String()
         self.i = 0
 

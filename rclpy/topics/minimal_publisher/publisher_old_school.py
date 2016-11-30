@@ -40,7 +40,7 @@ def main(args=None):
         i += 1
         print('Publishing: "%s"' % msg.data)
         publisher.publish(msg)
-        sleep(0.5)
+        sleep(0.5)  # seconds
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
