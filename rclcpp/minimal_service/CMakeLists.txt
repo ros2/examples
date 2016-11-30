@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.5)
 project(examples_rclcpp_minimal_service)
-find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-if (NOT WIN32)
+if(NOT WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra")
 endif()
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME} "srv/AddTwoInts.srv")
 
