@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
-  <name>minimal_listener</name>
+  <name>examples_rclcpp_minimal_subscriber</name>
   <version>0.0.0</version>
-  <description>Minimal listener recipes</description>
+  <description>Examples of minimal subscribers</description>
   <maintainer email="morgan@osrfoundation.org">Morgan Quigley</maintainer>
   <license>Apache License 2.0</license>
 
