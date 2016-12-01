@@ -8,7 +8,10 @@ setup(
         'data_plotter',
         'data_publisher',
     ],
-    install_requires=['setuptools'],
+    install_requires=[
+        'matplotlib',
+        'setuptools',
+    ],
     keywords=['ROS'],
     classifiers=[
         'Intended Audience :: Developers',
