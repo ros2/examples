@@ -28,7 +28,7 @@ from std_msgs.msg import Int64
 # This script starts a node with a subscription to a relatively high-frequency topic.
 # The data received from the subscription callbacks is plotted in the main thread,
 # while the callbacks themselves are processed in a second thread.
-# Plot updates are scheduled at a regular interval, independent of the rate at which data is 
+# Plot updates are scheduled at a regular interval, independent of the rate at which data is
 # received. Slow plotting calls will not block the reception of frequent data messages.
 
 time_between_plot_updates = 1  # time in seconds between plot updates
@@ -77,7 +77,8 @@ class RCLPYThread(Thread):
 
     def run(self):
         self.node = rclpy.create_node('data_listener')
-        sub = self.node.create_subscription(Int64, 'data', data_plotter.data_callback)
+        self.sub = self.node.create_subscription(Int64, 'data', data_plotter.data_callback)
+
         while rclpy.ok():
             # Wait for messages with a timeout, otherwise this thread will block other threads
             # until a message is received
@@ -88,8 +89,9 @@ class RCLPYThread(Thread):
         self.node.destroy_node()
         rclpy.shutdown()
 
-
 data_plotter = DataPlotter()
+
+
 def main():
     try:
         # Start a thread that will process the subscription

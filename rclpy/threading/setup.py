@@ -7,7 +7,7 @@ setup(
     py_modules=[
         'data_plotter',
         'data_publisher',
-        ],
+    ],
     install_requires=['setuptools'],
     keywords=['ROS'],
     classifiers=[

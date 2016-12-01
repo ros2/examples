@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 from std_msgs.msg import Int64
 
@@ -34,7 +32,7 @@ def main():
         msg.data = val
         print('Publishing: "{0}"'.format(msg.data))
         data_pub.publish(msg)
-        
+
     # Create a timer that will cause data to be published every 0.1 seconds
     node.create_timer(0.1, update_data)
 
