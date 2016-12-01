@@ -40,7 +40,7 @@ class DataPlotter:
         plt.ion()
         self.fig = plt.figure()
         self.received_data = []
-        # As the received data can be access by both the main plotting thread and the thread
+        # As the received data can be accessed by both the main plotting thread and the thread
         # processing data callbacks, its access must be protected by a lock
         self.received_data_lock = Lock()
 
