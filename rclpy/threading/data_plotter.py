@@ -37,8 +37,6 @@ class DataPlotter:
     """Class for managing the storage and display of data received."""
 
     def __init__(self):
-        plt.ion()
-        self.fig = plt.figure()
         self.received_data = []
         # As the received data can be accessed by both the main plotting thread and the thread
         # processing data callbacks, its access must be protected by a lock
@@ -63,7 +61,8 @@ class DataPlotter:
         # Update the plot
         x_data = range(0, len(y_data))
         plt.plot(x_data, y_data, '-r')
-        self.fig.canvas.draw()
+        plt.pause(0.0001)
+        plt.show(block=False)
 
         print('Finished updating plot')
 
