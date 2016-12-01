@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='threading_example',
+    name='examples_rclpy_threading',
     version='0.0.0',
     packages=[],
     py_modules=[
@@ -16,7 +16,7 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
-    description='Package containing examples of how to use the rclpy API.',
+    description='Package containing examples of using threading with rclpy.',
     license='Apache License, Version 2.0',
     entry_points={
         'console_scripts': [
