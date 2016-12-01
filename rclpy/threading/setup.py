@@ -23,8 +23,8 @@ setup(
     license='Apache License, Version 2.0',
     entry_points={
         'console_scripts': [
-            'data_plotter = data_plotter:main',
-            'data_publisher = data_publisher:main',
+            'examples_rclpy_data_plotter = data_plotter:main',
+            'examples_rclpy_data_publisher = data_publisher:main',
         ],
     },
 )
