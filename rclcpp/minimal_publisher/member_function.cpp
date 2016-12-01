@@ -15,6 +15,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+using namespace std::chrono_literals;
+
 /* This example creates a subclass of Node and uses std::bind() to register a
  * member function as a callback from the timer. */
 
@@ -26,7 +28,7 @@ public:
   {
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic");
     timer_ = this->create_wall_timer(
-      500_ms, std::bind(&MinimalPublisher::timer_callback, this));
+      500ms, std::bind(&MinimalPublisher::timer_callback, this));
   }
 
 private:

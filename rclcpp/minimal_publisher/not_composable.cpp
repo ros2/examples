@@ -16,6 +16,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+using namespace std::chrono_literals;
+
 /* We do not recommend this style anymore, because composition of multiple
  * nodes in the same executable is not possible. Please see one of the subclass
  * examples for the "new" recommended styles. This example is only included
@@ -33,7 +35,7 @@ int main(int argc, char * argv[])
     printf("Publishing: [%s]\n", message->data.c_str());
     publisher->publish(message);
     rclcpp::spin_some(node);
-    rclcpp::utilities::sleep_for(std::chrono::milliseconds(500));
+    rclcpp::utilities::sleep_for(500ms);
   }
   return 0;
 }
