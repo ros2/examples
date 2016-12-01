@@ -46,20 +46,18 @@ class DataPlotter:
         print('Data received: {0}'.format(msg.data))
 
         # Store received data
-        self.received_data_lock.acquire()
-        self.received_data.append(msg.data)
-        self.received_data_lock.release()
+        with self.received_data_lock:
+            self.received_data.append(msg.data)
 
     def update_plot(self):
         print('Updating plot')
 
         # Make a copy of the data that will be needed, so that other threads aren't blocked
-        self.received_data_lock.acquire()
-        y_data = deepcopy(self.received_data)
-        self.received_data_lock.release()
+        with self.received_data_lock:
+            y_data = deepcopy(self.received_data)
 
         # Update the plot
-        x_data = range(0, len(y_data))
+        x_data = range(len(y_data))
         plt.plot(x_data, y_data, '-r')
         plt.pause(0.0001)
         plt.show(block=False)
@@ -69,18 +67,18 @@ class DataPlotter:
 
 class RCLPYThread(Thread):
     def __init__(self):
+        super(RCLPYThread, self).__init__()
         rclpy.init()
-        Thread.__init__(self)
 
     def run(self):
         self.node = rclpy.create_node('data_listener')
         self.sub = self.node.create_subscription(Int64, 'data', data_plotter.data_callback)
 
+        spin_timeout = 0.05  # seconds
         while rclpy.ok():
             # Wait for messages with a timeout, otherwise this thread will block any other threads
             # until a message is received
-            timeout = 0.05  # seconds
-            rclpy.spin_once(self.node, timeout)
+            rclpy.spin_once(self.node, spin_timeout)
 
     def stop(self):
         self.node.destroy_node()
@@ -97,7 +95,7 @@ def main():
 
         # Continually update the display in the main thread
         last_plot_time = time.time()
-        while(1):
+        while(True):
             now = time.time()
             elapsed_time = now - last_plot_time
             if elapsed_time > time_between_plot_updates:
@@ -106,6 +104,8 @@ def main():
 
     except KeyboardInterrupt:
         thread.stop()
+
+    finally:
         # Block the main thread until the other thread terminates
         thread.join()
 
