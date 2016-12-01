@@ -25,7 +25,6 @@ def main():
     val = -1
     msg = Int64()
 
-    # Function for publishing and updating data
     def update_data():
         nonlocal val
         val *= -1

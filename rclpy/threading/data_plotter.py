@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # Copyright 2016 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,24 +16,26 @@ from copy import deepcopy
 from threading import Lock, Thread
 import time
 
-import rclpy
-
 import matplotlib.pyplot as plt
+import rclpy
 
 from std_msgs.msg import Int64
 
 
-# This script starts a node with a subscription to a relatively high-frequency topic.
-# The data received from the subscription callbacks is plotted in the main thread,
-# while the callbacks themselves are processed in a second thread.
-# Plot updates are scheduled at a regular interval, independent of the rate at which data is
-# received. Slow plotting calls will not block the reception of frequent data messages.
+"""
+This script starts a node with a subscription to a relatively high-frequency topic.
+The data received from the subscription callbacks is plotted in the main thread,
+while the callbacks themselves are processed in a second thread.
+Plot updates are scheduled at a regular interval independent of the rate at which data is received.
+Slow plotting calls will not block the reception of frequent data messages.
+"""
 
 time_between_plot_updates = 1  # time in seconds between plot updates
 
 
-# Class for managing the storage and display of data received
 class DataPlotter:
+    """Class for managing the storage and display of data received."""
+
     def __init__(self):
         plt.ion()
         self.fig = plt.figure()
@@ -44,7 +44,6 @@ class DataPlotter:
         # processing data callbacks, its access must be protected by a lock
         self.received_data_lock = Lock()
 
-    # Called when new data is received
     def data_callback(self, msg):
         print('Data received: {0}'.format(msg.data))
 
@@ -53,7 +52,6 @@ class DataPlotter:
         self.received_data.append(msg.data)
         self.received_data_lock.release()
 
-    # Called when it's time to update the plot
     def update_plot(self):
         print('Updating plot')
 
