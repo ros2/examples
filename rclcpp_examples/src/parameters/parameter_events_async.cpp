@@ -17,6 +17,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 
+// NOLINTNEXTLINE(build/namespaces)
 using namespace rclcpp::literals;
 
 void on_parameter_event(const rcl_interfaces::msg::ParameterEvent::SharedPtr event)

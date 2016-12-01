@@ -19,6 +19,7 @@
 
 #include "example_interfaces/srv/add_two_ints.hpp"
 
+// NOLINTNEXTLINE(build/namespaces)
 using namespace rclcpp::literals;
 
 // TODO(wjwwood): make this into a method of rclcpp::client::Client.
