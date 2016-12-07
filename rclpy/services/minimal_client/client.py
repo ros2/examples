@@ -36,6 +36,9 @@ def main(args=None):
     # when calling wait for future
     # spin should not be called in the main loop
     cli.wait_for_future()
+    # TODO(mikaelarguedas) This is not the final API, and this does not scale
+    # for multiple pending requests. This will change once an executor model is implemented
+    # In the future the response will not be stored in cli.response
     print(
         'Result of add_two_ints: for %d + %d = %d' %
         (req.a, req.b, cli.response.sum))

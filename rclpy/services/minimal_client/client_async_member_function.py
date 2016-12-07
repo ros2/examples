@@ -43,6 +43,9 @@ def main(args=None):
     minimal_client.send_request()
 
     while rclpy.ok():
+        # TODO(mikaelarguedas) This is not the final API, and this does not scale
+        # for multiple pending requests. This will change once an executor model is implemented
+        # In the future the response will not be stored in cli.response
         if minimal_client.cli.response is not None:
             print(
               'Result of add_two_ints: for %d + %d = %d' %

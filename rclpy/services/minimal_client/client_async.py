@@ -35,6 +35,9 @@ def main(args=None):
     time.sleep(1)
     cli.call(req)
     while rclpy.ok():
+        # TODO(mikaelarguedas) This is not the final API, and this does not scale
+        # for multiple pending requests. This will change once an executor model is implemented
+        # In the future the response will not be stored in cli.response
         if cli.response is not None:
             print(
                 'Result of add_two_ints: for %d + %d = %d' %
