@@ -19,7 +19,7 @@ from example_interfaces.srv import AddTwoInts
 
 def add_two_ints_callback(request, response):
     response.sum = request.a + request.b
-    print('Incoming request\na: %d b:%d' % (request.a, request.b))
+    print('Incoming request\na: %d b: %d' % (request.a, request.b))
 
     return response
 
