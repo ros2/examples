@@ -22,6 +22,7 @@ from example_interfaces.srv import AddTwoInts
 class MinimalClientAsync:
     def __init__(self, node):
         self.cli = node.create_client(AddTwoInts, 'add_two_ints')
+        # TODO(mikaelarguedas) remove this once wait for service implemented
         # wait for connection to be established
         # (no wait for service in Python yet)
         time.sleep(1)

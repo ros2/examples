@@ -29,6 +29,7 @@ def main(args=None):
     req = AddTwoInts.Request()
     req.a = 41
     req.b = 1
+    # TODO(mikaelarguedas) remove this once wait for service implemented
     # wait for connection to be established
     # (no wait for service in Python yet)
     time.sleep(1)
