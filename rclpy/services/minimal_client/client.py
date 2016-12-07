@@ -36,10 +36,9 @@ def main(args=None):
     # when calling wait for future
     # spin should not be called in the main loop
     cli.wait_for_future()
-    print('Result of add_two_ints: for %d + %d = %d' % (
-          req.a,
-          req.b,
-          cli.response.sum))
+    print(
+        'Result of add_two_ints: for %d + %d = %d' %
+        (req.a, req.b, cli.response.sum))
 
 if __name__ == '__main__':
     main()

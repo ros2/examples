@@ -36,10 +36,9 @@ def main(args=None):
     cli.call(req)
     while rclpy.ok():
         if cli.response is not None:
-            print('Result of add_two_ints: for %d + %d = %d' % (
-                  req.a,
-                  req.b,
-                  cli.response.sum))
+            print(
+                'Result of add_two_ints: for %d + %d = %d' %
+                (req.a, req.b, cli.response.sum))
             break
         rclpy.spin_once(node)
 

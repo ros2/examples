@@ -44,10 +44,9 @@ def main(args=None):
 
     while rclpy.ok():
         if minimal_client.cli.response is not None:
-            print('Result of add_two_ints: for %d + %d = %d' % (
-                minimal_client.req.a,
-                minimal_client.req.b,
-                minimal_client.cli.response.sum))
+            print(
+              'Result of add_two_ints: for %d + %d = %d' %
+              (minimal_client.req.a, minimal_client.req.b, minimal_client.cli.response.sum))
             break
         rclpy.spin_once(node)
 
