@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
+
 import rclpy
 
 from example_interfaces.srv import AddTwoInts
@@ -25,11 +27,18 @@ def main(args=None):
     req = AddTwoInts.Request()
     req.a = 41
     req.b = 1
+    # wait for connection to be established
+    # (no wait for service in Python yet)
+    time.sleep(1)
+
     cli.call(req)
     # when calling wait for future
     # spin should not be called in the main loop
     cli.wait_for_future()
-    print('Result of add_two_ints: %d' % cli.response.sum)
+    print('Result of add_two_ints: for %d + %d = %d' % (
+          req.a,
+          req.b,
+          cli.response.sum))
 
 if __name__ == '__main__':
     main()

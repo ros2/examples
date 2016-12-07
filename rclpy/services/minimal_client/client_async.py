@@ -31,12 +31,14 @@ def main(args=None):
     req.b = 1
     # wait for connection to be established
     # (no wait for service in Python yet)
-    time.sleep(2)
+    time.sleep(1)
     cli.call(req)
     while rclpy.ok():
         if cli.response is not None:
-            print('Result of add_two_ints: %d' % cli.response.sum)
-            cli.response = None
+            print('Result of add_two_ints: for %d + %d = %d' % (
+                  req.a,
+                  req.b,
+                  cli.response.sum))
             break
         rclpy.spin_once(node)
 

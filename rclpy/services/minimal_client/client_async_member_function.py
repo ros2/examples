@@ -24,7 +24,7 @@ class MinimalClientAsync:
         self.cli = node.create_client(AddTwoInts, 'add_two_ints')
         # wait for connection to be established
         # (no wait for service in Python yet)
-        time.sleep(2)
+        time.sleep(1)
         self.req = AddTwoInts.Request()
 
     def send_request(self):
@@ -43,8 +43,10 @@ def main(args=None):
 
     while rclpy.ok():
         if minimal_client.cli.response is not None:
-            print('Result of add_two_ints: %d' % minimal_client.cli.response.sum)
-            minimal_client.cli.response = None
+            print('Result of add_two_ints: for %d + %d = %d' % (
+                minimal_client.req.a,
+                minimal_client.req.b,
+                minimal_client.cli.response.sum))
             break
         rclpy.spin_once(node)
 
