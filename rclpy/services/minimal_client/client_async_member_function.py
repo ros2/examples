@@ -48,8 +48,8 @@ def main(args=None):
         # In the future the response will not be stored in cli.response
         if minimal_client.cli.response is not None:
             print(
-              'Result of add_two_ints: for %d + %d = %d' %
-              (minimal_client.req.a, minimal_client.req.b, minimal_client.cli.response.sum))
+                'Result of add_two_ints: for %d + %d = %d' %
+                (minimal_client.req.a, minimal_client.req.b, minimal_client.cli.response.sum))
             break
         rclpy.spin_once(node)
 
