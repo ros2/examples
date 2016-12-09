@@ -29,8 +29,7 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   auto node = rclcpp::node::Node::make_shared("minimal_subscriber");
-  auto subscription = node->create_subscription<std_msgs::msg::String>
-      ("topic", topic_callback);
+  auto subscription = node->create_subscription("topic", topic_callback);
   rclcpp::spin(node);
   return 0;
 }
