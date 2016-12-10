@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "rcl/visibility_helpers.h"
+#define MINIMAL_COMPOSITION_PUBLIC RCL_EXPORT  // dllexport symbols in header
 #include "minimal_composition/subscriber_node.hpp"
+#undef MINIMAL_COMPOSITION_PUBLIC
+
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 

@@ -13,8 +13,6 @@ include_directories(include)
 add_library(${PROJECT_NAME}_nodes SHARED
             src/publisher_node.cpp
             src/subscriber_node.cpp)
-target_compile_definitions(${PROJECT_NAME}_nodes
-  PRIVATE "MINIMAL_COMPOSITION_DLL")
 ament_target_dependencies(${PROJECT_NAME}_nodes rclcpp std_msgs class_loader)
 
 add_executable(${PROJECT_NAME}_publisher src/standalone_publisher.cpp)
