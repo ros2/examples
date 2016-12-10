@@ -15,9 +15,13 @@
 #ifndef MINIMAL_COMPOSITION__SUBSCRIBER_NODE_HPP_
 #define MINIMAL_COMPOSITION__SUBSCRIBER_NODE_HPP_
 
+#include "rcl/visibility_helpers.h"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "minimal_composition/visibility.h"
+
+#ifndef MINIMAL_COMPOSITION_PUBLIC
+#define MINIMAL_COMPOSITION_PUBLIC RCL_IMPORT
+#endif
 
 class SubscriberNode : public rclcpp::Node
 {
