@@ -12,23 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCLCPP__MINIMAL_COMPOSITION__PUBLISHER_NODE_HPP_
-#define RCLCPP__MINIMAL_COMPOSITION__PUBLISHER_NODE_HPP_
-
+#include "minimal_composition/publisher_node.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "./visibility.h"
 
-class PublisherNode : public rclcpp::Node
+PublisherNode::PublisherNode()
+: Node("publisher_node"), count_(0)
 {
-public:
-  VISIBILITY_PUBLIC PublisherNode();
+  publisher_ = create_publisher<std_msgs::msg::String>("topic");
+  timer_ = create_wall_timer(
+    500_ms, std::bind(&PublisherNode::on_timer, this));
+}
 
-private:
-  void on_timer();
-  size_t count_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
-  rclcpp::TimerBase::SharedPtr timer_;
-};
+void PublisherNode::on_timer()
+{
+  auto message = std_msgs::msg::String();
+  message.data = "Hello, world! " + std::to_string(count_++);
+  printf("Publisher: [%s]\n", message.data.c_str());
+  publisher_->publish(message);
+}
 
-#endif  // RCLCPP__MINIMAL_COMPOSITION__PUBLISHER_NODE_HPP_
+#include "class_loader/class_loader_register_macro.h"
+
+CLASS_LOADER_REGISTER_CLASS(PublisherNode, rclcpp::Node)

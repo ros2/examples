@@ -12,13 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <memory>
-#include "publisher_node.hpp"
-#include "rclcpp/rclcpp.hpp"
+#ifndef MINIMAL_COMPOSITION__SUBSCRIBER_NODE_HPP_
+#define MINIMAL_COMPOSITION__SUBSCRIBER_NODE_HPP_
 
-int main(int argc, char * argv[])
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
+#include "minimal_composition/visibility.h"
+
+class SubscriberNode : public rclcpp::Node
 {
-  rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<PublisherNode>());
-  return 0;
-}
+public:
+  MINIMAL_COMPOSITION_PUBLIC SubscriberNode();
+
+private:
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+};
+
+#endif  // MINIMAL_COMPOSITION__SUBSCRIBER_NODE_HPP_

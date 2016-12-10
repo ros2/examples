@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "minimal_composition/subscriber_node.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "subscriber_node.hpp"
 
 SubscriberNode::SubscriberNode()
 : Node("subscriber_node")

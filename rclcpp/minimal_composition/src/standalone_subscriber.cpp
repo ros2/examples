@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include <memory>
-#include "subscriber_node.hpp"
+#include "minimal_composition/subscriber_node.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 int main(int argc, char * argv[])
