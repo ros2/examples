@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <inttypes.h>
 #include <memory>
 #include "example_interfaces/srv/add_two_ints.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -24,7 +25,7 @@ void handle_service(
   const std::shared_ptr<AddTwoInts::Response> response)
 {
   (void)request_header;
-  printf("request: %ld + %ld\n", request->a, request->b);
+  printf("request: %" PRId64 " + %" PRId64 "\n", request->a, request->b);
   response->sum = request->a + request->b;
 }
 

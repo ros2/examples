@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <inttypes.h>
 #include <memory>
 #include "example_interfaces/srv/add_two_ints.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -41,7 +42,7 @@ int main(int argc, char * argv[])
     return 1;
   }
   auto result = result_future.get();
-  printf("result of sending service request for %ld + %ld = %ld\n",
+  printf("result of %" PRId64 " + %" PRId64 " = %" PRId64 "\n",
     request->a, request->b, result->sum);
   return 0;
 }
