@@ -21,6 +21,8 @@ import rclpy
 
 from std_msgs.msg import Int64
 
+DISPLAY = True
+
 
 """
 This script starts a node with a subscription to a relatively high-frequency topic.
@@ -50,11 +52,14 @@ class DataPlotter:
             self.received_data.append(msg.data)
 
     def update_plot(self):
-        print('Updating plot')
-
         # Make a copy of the data that will be needed, so that other threads aren't blocked
         with self.received_data_lock:
             y_data = deepcopy(self.received_data)
+
+        if not y_data:
+            return
+
+        print('Updating plot')
 
         # Update the plot
         x_data = range(len(y_data))
@@ -100,7 +105,8 @@ def main():
             elapsed_time = now - last_plot_time
             if elapsed_time > time_between_plot_updates:
                 last_plot_time = now
-                data_plotter.update_plot()
+                if DISPLAY:
+                    data_plotter.update_plot()
 
     except KeyboardInterrupt:
         thread.stop()
