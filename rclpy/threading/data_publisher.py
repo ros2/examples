@@ -25,7 +25,7 @@ def main():
     val = -1
     msg = Int64()
 
-    def update_data():
+    def publish_data():
         nonlocal val
         val *= -1
         msg.data = val
@@ -33,7 +33,7 @@ def main():
         data_pub.publish(msg)
 
     # Create a timer that will cause data to be published every 0.1 seconds
-    node.create_timer(0.1, update_data)
+    node.create_timer(0.1, publish_data)
 
     while rclpy.ok():
         rclpy.spin_once(node)
