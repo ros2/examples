@@ -81,9 +81,12 @@ class RCLPYThread(Thread):
 
         spin_timeout = 0.05  # seconds
         while rclpy.ok():
-            # Wait for messages with a timeout, otherwise this thread will block any other threads
-            # until a message is received
-            rclpy.spin_once(self.node, spin_timeout)
+            try:
+                # Wait for messages with a timeout, otherwise this thread will block any other threads
+                # until a message is received
+                rclpy.spin_once(self.node, spin_timeout)
+            except KeyboardInterrupt:
+                self.stop()
 
     def stop(self):
         self.node.destroy_node()
@@ -107,9 +110,12 @@ def main():
                 last_plot_time = now
                 if DISPLAY:
                     data_plotter.update_plot()
+            if not thread.isAlive():
+                break
 
     except KeyboardInterrupt:
-        thread.stop()
+        if thread.isAlive():
+            thread.stop()
 
     finally:
         # Block the main thread until the other thread terminates
