@@ -82,7 +82,8 @@ class RCLPYThread(Thread):
         spin_timeout = 0.05  # seconds
         while rclpy.ok():
             try:
-                # Wait for messages with a timeout, otherwise this thread will block any other threads
+                # Wait for messages with a timeout,
+                # otherwise this thread will block any other threads
                 # until a message is received
                 rclpy.spin_once(self.node, spin_timeout)
             except KeyboardInterrupt:
@@ -103,7 +104,7 @@ def main():
 
         # Continually update the display in the main thread
         last_plot_time = time.time()
-        while(True):
+        while True:
             now = time.time()
             elapsed_time = now - last_plot_time
             if elapsed_time > time_between_plot_updates:
