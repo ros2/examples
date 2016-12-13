@@ -15,6 +15,9 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+// NOLINTNEXTLINE(build/namespaces)
+using namespace rclcpp::literals;
+
 /* This example creates a subclass of Node and uses a fancy C++11 lambda
  * function to shorten the callback syntax, at the expense of making the
  * code somewhat more difficult to understand at first glance. */
