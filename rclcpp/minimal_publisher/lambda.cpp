@@ -15,6 +15,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+using namespace std::chrono_literals;
+
 /* This example creates a subclass of Node and uses a fancy C++11 lambda
  * function to shorten the callback syntax, at the expense of making the
  * code somewhat more difficult to understand at first glance. */
@@ -33,7 +35,7 @@ public:
         printf("Publishing: [%s]\n", message.data.c_str());
         this->publisher_->publish(message);
       };
-    timer_ = this->create_wall_timer(500_ms, timer_callback);
+    timer_ = this->create_wall_timer(500ms, timer_callback);
   }
 
 private:
