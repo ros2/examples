@@ -15,6 +15,6 @@
 
   <export>
     <build_type>ament_cmake</build_type>
-    <ros1_bridge service_mapping_rules="service_mapping_rules.yaml"/>
+    <ros1_bridge mapping_rules="mapping_rules.yaml"/>
   </export>
 </package>

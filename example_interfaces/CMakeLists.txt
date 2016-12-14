@@ -13,6 +13,6 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/AddTwoInts.srv"
 )
 
-install(FILES service_mapping_rules.yaml DESTINATION share/${PROJECT_NAME})
+install(FILES mapping_rules.yaml DESTINATION share/${PROJECT_NAME})
 
 ament_package()
