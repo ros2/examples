@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <inttypes.h>
+#include <chrono>
+#include <cinttypes>
 #include <memory>
 #include "example_interfaces/srv/add_two_ints.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -24,7 +25,7 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
   auto node = rclcpp::node::Node::make_shared("minimal_client");
   auto client = node->create_client<AddTwoInts>("add");
-  while (!client->wait_for_service(1_s)) {
+  while (!client->wait_for_service(std::chrono::seconds(1))) {
     if (!rclcpp::ok()) {
       printf("client interrupted while waiting for service to appear.\n");
       return 1;
