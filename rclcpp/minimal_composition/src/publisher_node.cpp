@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <chrono>
+
 #include "minimal_composition/publisher_node.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -21,7 +23,7 @@ PublisherNode::PublisherNode()
 {
   publisher_ = create_publisher<std_msgs::msg::String>("topic");
   timer_ = create_wall_timer(
-    500_ms, std::bind(&PublisherNode::on_timer, this));
+    std::chrono::milliseconds(500), std::bind(&PublisherNode::on_timer, this));
 }
 
 void PublisherNode::on_timer()
