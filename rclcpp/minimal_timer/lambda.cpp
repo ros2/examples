@@ -19,7 +19,7 @@ using namespace std::chrono_literals;
 /* This example creates a subclass of Node and uses a fancy C++11 lambda
  * function to shorten the timer syntax, at the expense of making the
  * code somewhat more difficult to understand at first glance if you are
- * unaccustomed to */
+ * unaccustomed to C++11 lambda expressions. */
 
 class MinimalTimer : public rclcpp::Node
 {
@@ -27,8 +27,8 @@ public:
   MinimalTimer()
   : Node("minimal_timer")
   {
-    auto timer_callback = [this]() -> void { printf("Hello, world!\n"); };
-    timer_ = this->create_wall_timer(500ms, timer_callback);
+    auto timer_callback = []() -> void { printf("Hello, world!\n"); };
+    timer_ = create_wall_timer(500ms, timer_callback);
   }
 
 private:
