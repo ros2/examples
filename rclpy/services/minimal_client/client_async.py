@@ -14,9 +14,9 @@
 
 import time
 
-import rclpy
-
 from example_interfaces.srv import AddTwoInts
+
+import rclpy
 
 
 def main(args=None):
@@ -46,6 +46,7 @@ def main(args=None):
         rclpy.spin_once(node)
 
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

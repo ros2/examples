@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import rclpy
-
 from example_interfaces.srv import AddTwoInts
+
+import rclpy
 
 
 class MinimalService:
@@ -39,6 +39,7 @@ def main(args=None):
         rclpy.spin_once(node)
 
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()

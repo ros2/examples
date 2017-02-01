@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import rclpy
-
 from example_interfaces.srv import AddTwoInts
+
+import rclpy
 
 
 def add_two_ints_callback(request, response):
@@ -38,6 +38,7 @@ def main(args=None):
     # when the garbage collector destroys the node object)
     node.destroy_service(srv)
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
