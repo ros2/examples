@@ -14,9 +14,9 @@
 
 import time
 
-import rclpy
-
 from example_interfaces.srv import AddTwoInts
+
+import rclpy
 
 
 def main(args=None):
@@ -42,6 +42,7 @@ def main(args=None):
     print(
         'Result of add_two_ints: for %d + %d = %d' %
         (req.a, req.b, cli.response.sum))
+
 
 if __name__ == '__main__':
     main()
