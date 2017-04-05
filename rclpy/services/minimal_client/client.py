@@ -20,7 +20,7 @@ import rclpy
 
 
 def main(args=None):
-    rclpy.init(args)
+    rclpy.init(args=args)
     node = rclpy.create_node('minimal_client')
     cli = node.create_client(AddTwoInts, 'add_two_ints')
 
