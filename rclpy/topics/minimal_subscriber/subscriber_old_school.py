@@ -22,7 +22,7 @@ def chatter_callback(msg):
 
 
 def main(args=None):
-    rclpy.init(args)
+    rclpy.init(args=args)
 
     node = rclpy.create_node('minimal_subscriber')
 

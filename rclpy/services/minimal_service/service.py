@@ -25,7 +25,7 @@ def add_two_ints_callback(request, response):
 
 
 def main(args=None):
-    rclpy.init(args)
+    rclpy.init(args=args)
 
     node = rclpy.create_node('add_two_ints_server')
 

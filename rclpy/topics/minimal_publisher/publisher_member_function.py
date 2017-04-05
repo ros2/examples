@@ -34,7 +34,7 @@ class MinimalPublisher:
 
 
 def main(args=None):
-    rclpy.init(args)
+    rclpy.init(args=args)
 
     node = rclpy.create_node('minimal_publisher')
 
