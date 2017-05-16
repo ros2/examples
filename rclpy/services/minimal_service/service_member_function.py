@@ -31,7 +31,7 @@ class MinimalService:
 def main(args=None):
     rclpy.init(args=args)
 
-    node = rclpy.create_node('add_two_ints_server')
+    node = rclpy.create_node('minimal_service')
     minimal_service = MinimalService(node)
     minimal_service  # prevent unused variable warning
 

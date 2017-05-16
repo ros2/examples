@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("minimal_service");
-  auto server = node->create_service<AddTwoInts>("add", handle_service);
+  auto server = node->create_service<AddTwoInts>("add_two_ints", handle_service);
   rclcpp::spin(node);
   return 0;
 }
