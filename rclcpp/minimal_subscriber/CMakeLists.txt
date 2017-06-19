@@ -27,6 +27,6 @@ install(TARGETS
   ${PROJECT_NAME}_lambda
   ${PROJECT_NAME}_member_function
   ${PROJECT_NAME}_not_composable
-  DESTINATION bin)
+  DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
