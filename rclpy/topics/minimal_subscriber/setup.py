@@ -1,7 +1,11 @@
+from ament_python.script_dir import install_scripts_to_libexec
 from setuptools import setup
 
+package_name = 'examples_rclpy_minimal_subscriber'
+install_scripts_to_libexec(package_name)
+
 setup(
-    name='examples_rclpy_minimal_subscriber',
+    name=package_name,
     version='0.0.0',
     packages=[],
     py_modules=[

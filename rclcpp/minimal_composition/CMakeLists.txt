@@ -40,11 +40,14 @@ ament_target_dependencies(${PROJECT_NAME}_composed rclcpp class_loader)
 
 install(TARGETS
   ${PROJECT_NAME}_nodes
-  ${PROJECT_NAME}_publisher
-  ${PROJECT_NAME}_subscriber
-  ${PROJECT_NAME}_composed
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
+
+install(TARGETS
+  ${PROJECT_NAME}_publisher
+  ${PROJECT_NAME}_subscriber
+  ${PROJECT_NAME}_composed
+  DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

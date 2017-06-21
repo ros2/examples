@@ -7,6 +7,8 @@
   <maintainer email="mikael@osrfoundation.org">Mikael Arguedas</maintainer>
   <license>Apache License 2.0</license>
 
+  <build_depend>ament_python</build_depend>
+
   <exec_depend>rclpy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
 
