@@ -43,6 +43,9 @@ def main(args=None):
         'Result of add_two_ints: for %d + %d = %d' %
         (req.a, req.b, cli.response.sum))
 
+    node.destroy_node()
+    rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
