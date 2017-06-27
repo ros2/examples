@@ -28,8 +28,8 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'examples_rclpy_minimal_service = service:main',
-            'examples_rclpy_minimal_service_member_function = service_member_function:main',
+            'service = service:main',
+            'service_member_function = service_member_function:main',
         ],
     },
 )

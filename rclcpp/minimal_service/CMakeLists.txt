@@ -14,10 +14,10 @@ find_package(ament_cmake REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 
-add_executable(${PROJECT_NAME}_main main.cpp)
-ament_target_dependencies(${PROJECT_NAME}_main rclcpp example_interfaces)
+add_executable(service_main main.cpp)
+ament_target_dependencies(service_main rclcpp example_interfaces)
 
-install(TARGETS ${PROJECT_NAME}_main
+install(TARGETS service_main
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
