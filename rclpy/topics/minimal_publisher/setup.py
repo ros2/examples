@@ -32,9 +32,9 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'examples_rclpy_minimal_publisher_old_school = publisher_old_school:main',
-            'examples_rclpy_minimal_publisher_local_function = publisher_local_function:main',
-            'examples_rclpy_minimal_publisher_member_function = publisher_member_function:main',
+            'publisher_old_school = publisher_old_school:main',
+            'publisher_local_function = publisher_local_function:main',
+            'publisher_member_function = publisher_member_function:main',
         ],
     },
 )

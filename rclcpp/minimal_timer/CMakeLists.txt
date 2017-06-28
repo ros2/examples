@@ -13,15 +13,15 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
-add_executable(${PROJECT_NAME}_lambda lambda.cpp)
-ament_target_dependencies(${PROJECT_NAME}_lambda rclcpp)
+add_executable(timer_lambda lambda.cpp)
+ament_target_dependencies(timer_lambda rclcpp)
 
-add_executable(${PROJECT_NAME}_member_function member_function.cpp)
-ament_target_dependencies(${PROJECT_NAME}_member_function rclcpp)
+add_executable(timer_member_function member_function.cpp)
+ament_target_dependencies(timer_member_function rclcpp)
 
 install(TARGETS
-  ${PROJECT_NAME}_lambda
-  ${PROJECT_NAME}_member_function
+  timer_lambda
+  timer_member_function
   DESTINATION lib/${PROJECT_NAME}
 )
 

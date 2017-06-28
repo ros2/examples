@@ -32,9 +32,9 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'examples_rclpy_minimal_client = client:main',
-            'examples_rclpy_minimal_client_async = client_async:main',
-            'examples_rclpy_minimal_client_async_member_function ='
+            'client = client:main',
+            'client_async = client_async:main',
+            'client_async_member_function ='
             ' client_async_member_function:main',
         ],
     },

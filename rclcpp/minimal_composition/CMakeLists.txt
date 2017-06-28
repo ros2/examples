@@ -17,37 +17,37 @@ find_package(std_msgs REQUIRED)
 
 include_directories(include)
 
-add_library(${PROJECT_NAME}_nodes SHARED
+add_library(composition_nodes SHARED
             src/publisher_node.cpp
             src/subscriber_node.cpp)
-target_compile_definitions(${PROJECT_NAME}_nodes
+target_compile_definitions(composition_nodes
   PRIVATE "MINIMAL_COMPOSITION_DLL")
-ament_target_dependencies(${PROJECT_NAME}_nodes rclcpp std_msgs class_loader)
+ament_target_dependencies(composition_nodes rclcpp std_msgs class_loader)
 
-add_executable(${PROJECT_NAME}_publisher src/standalone_publisher.cpp)
-target_link_libraries(${PROJECT_NAME}_publisher ${PROJECT_NAME}_nodes)
-ament_target_dependencies(${PROJECT_NAME}_publisher
-  rclcpp ${PROJECT_NAME}_nodes)
+add_executable(composition_publisher src/standalone_publisher.cpp)
+target_link_libraries(composition_publisher composition_nodes)
+ament_target_dependencies(composition_publisher
+  rclcpp composition_nodes)
 
-add_executable(${PROJECT_NAME}_subscriber src/standalone_subscriber.cpp)
-target_link_libraries(${PROJECT_NAME}_subscriber ${PROJECT_NAME}_nodes)
-ament_target_dependencies(${PROJECT_NAME}_subscriber
-  rclcpp ${PROJECT_NAME}_nodes)
+add_executable(composition_subscriber src/standalone_subscriber.cpp)
+target_link_libraries(composition_subscriber composition_nodes)
+ament_target_dependencies(composition_subscriber
+  rclcpp composition_nodes)
 
-add_executable(${PROJECT_NAME}_composed src/composed.cpp)
-target_link_libraries(${PROJECT_NAME}_composed ${PROJECT_NAME}_nodes)
-ament_target_dependencies(${PROJECT_NAME}_composed rclcpp class_loader)
+add_executable(composition_composed src/composed.cpp)
+target_link_libraries(composition_composed composition_nodes)
+ament_target_dependencies(composition_composed rclcpp class_loader)
 
 install(TARGETS
-  ${PROJECT_NAME}_nodes
+  composition_nodes
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
 
 install(TARGETS
-  ${PROJECT_NAME}_publisher
-  ${PROJECT_NAME}_subscriber
-  ${PROJECT_NAME}_composed
+  composition_publisher
+  composition_subscriber
+  composition_composed
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

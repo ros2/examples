@@ -32,9 +32,9 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'examples_rclpy_minimal_subscriber_old_school = subscriber_old_school:main',
-            'examples_rclpy_minimal_subscriber_lambda = subscriber_lambda:main',
-            'examples_rclpy_minimal_subscriber_member_function = subscriber_member_function:main',
+            'subscriber_old_school = subscriber_old_school:main',
+            'subscriber_lambda = subscriber_lambda:main',
+            'subscriber_member_function = subscriber_member_function:main',
         ],
     },
 )
