@@ -45,5 +45,6 @@ int main(int argc, char * argv[])
   auto result = result_future.get();
   printf("result of %" PRId64 " + %" PRId64 " = %" PRId64 "\n",
     request->a, request->b, result->sum);
+  rclcpp::shutdown();
   return 0;
 }
