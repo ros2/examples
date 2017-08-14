@@ -26,5 +26,6 @@ int main(int argc, char * argv[])
   exec.add_node(publisher_node);
   exec.add_node(subscriber_node);
   exec.spin();
+  rclcpp::shutdown();
   return 0;
 }

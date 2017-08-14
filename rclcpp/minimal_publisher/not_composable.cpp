@@ -37,5 +37,6 @@ int main(int argc, char * argv[])
     rclcpp::spin_some(node);
     rclcpp::utilities::sleep_for(500ms);
   }
+  rclcpp::shutdown();
   return 0;
 }

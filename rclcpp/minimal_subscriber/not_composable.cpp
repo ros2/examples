@@ -32,5 +32,6 @@ int main(int argc, char * argv[])
   auto subscription = node->create_subscription<std_msgs::msg::String>
       ("topic", topic_callback);
   rclcpp::spin(node);
+  rclcpp::shutdown();
   return 0;
 }
