@@ -66,7 +66,7 @@ class PriorityExecutor(rclpy.Executor):
 
         # wait_for_ready_callbacks yields callbacks that are ready to be executed
         for ready_callback, group, node in self.wait_for_ready_callbacks(
-              timeout=timeout, nodes=nodes):
+                timeout=timeout, nodes=nodes):
             with group.lock:
                 # rclcpp has a switch on callback group type and chooses to take from the group
                 # dependeing on that type. This code expects that logic to live in the group class
