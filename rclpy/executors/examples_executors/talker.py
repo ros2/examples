@@ -21,8 +21,6 @@ class Talker(rclpy.Node):
         super().__init__('talker')
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')
-        # rclcpp adds timers to a mutually exclusive callback group be default
-        # rclpy should add them to a reentrant group to match the behavior of rospy
         self.timer = self.create_timer(1.0, self.timer_callback)
 
     def timer_callback(self):
@@ -37,9 +35,6 @@ def main(args=None):
     # Run standalone
     rclpy.init(args=args)
     try:
-        # rclcpp::spin() creates a SingleThreadedExecutor.
-        # rclpy should create a MultiThreadedExecutor instead because rospy
-        # executes every callback in a new thread by default
         rclpy.spin(Talker)
     finally:
         rclpy.shutdown()

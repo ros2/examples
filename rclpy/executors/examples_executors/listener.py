@@ -19,8 +19,6 @@ from std_msgs.msg import String
 class Listener(rclpy.Node):
     def __init__(self):
         super().__init__('listener')
-        # rclcpp adds subscriptions to a mutually exclusive callback group be default
-        # rclpy should add them to a reentrant group to match the behavior of rospy
         self.sub = self.create_subscription(String, 'chatter', self.chatter_callback)
 
     def chatter_callback(self, msg):
@@ -31,9 +29,6 @@ def main(args=None):
     # Run standalone
     rclpy.init(args=args)
     try:
-        # rclcpp::spin() creates a SingleThreadedExecutor.
-        # rclpy should create a MultiThreadedExecutor instead because rospy
-        # executes every callback in a new thread by default
         rclpy.spin(Listener)
     finally:
         rclpy.shutdown()
