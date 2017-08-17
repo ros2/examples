@@ -50,7 +50,7 @@ def main(args=None):
         finally:
             # Stops all worker threads, blocking until they finish or the timeout is reached. If
             # timeout is None the call blocks until all threads are finished.
-            executor.stop_all_threads(timeout=5)
+            executor.shutdown(timeout=5)
     finally:
         rclpy.shutdown()
 

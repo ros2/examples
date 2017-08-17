@@ -21,10 +21,13 @@ import rclpy
 def main(args=None):
     rclpy.init(args=args)
     try:
-        executor = rclpy.executors.SingleThreadedExecutor()
-        executor.add_node(Talker())
-        executor.add_node(Listener())
-        executor.spin()
+        try:
+            executor = rclpy.executors.SingleThreadedExecutor()
+            executor.add_node(Talker())
+            executor.add_node(Listener())
+            executor.spin()
+        finally:
+            executor.shutdown()
     finally:
         rclpy.shutdown()
 

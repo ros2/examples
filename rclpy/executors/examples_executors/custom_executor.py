@@ -88,11 +88,14 @@ class PriorityExecutor(rclpy.Executor):
 def main(args=None):
     rclpy.init(args=args)
     try:
-        executor = PriorityExecutor()
-        executor.add_high_priority_node(Estopper())
-        executor.add_node(Listener())
-        executor.add_node(Talker())
-        executor.spin()
+        try:
+            executor = PriorityExecutor()
+            executor.add_high_priority_node(Estopper())
+            executor.add_node(Listener())
+            executor.add_node(Talker())
+            executor.spin()
+        finally:
+            executor.shutdown()
     finally:
         rclpy.shutdown()
 
