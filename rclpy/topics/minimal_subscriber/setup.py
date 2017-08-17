@@ -17,7 +17,7 @@ setup(
     data_files=data_files,
     install_requires=['setuptools'],
     author='Mikael Arguedas',
-    author_email='Mikael@osrfoundation.org',
+    author_email='mikael@osrfoundation.org',
     maintainer='Mikael Arguedas',
     maintainer_email='mikael@osrfoundation.org',
     keywords=['ROS'],
