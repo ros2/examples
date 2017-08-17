@@ -52,7 +52,7 @@ class PriorityExecutor(rclpy.Executor):
 
     def spin_once(self, timeout=None):
         '''
-        Run all available callbacks, then return.
+        Execute a single callback, then return.
 
         timeout - seconds to wait for callbacks. Blocks forever if None. Returns immediatly if < 0
         '''
@@ -77,10 +77,12 @@ class PriorityExecutor(rclpy.Executor):
                     t = threading.Thread(
                         target=self.execute_callback, args=(ready_callback, group))
                     t.start()
+                    break
                 else:
                     self.low_priority_thread = threading.Thread(
                         target=self.execute_callback, args=(ready_callback, group))
                     self.low_priority_thread.start()
+                    break
 
 
 def main(args=None):
