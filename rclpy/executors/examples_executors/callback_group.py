@@ -19,7 +19,7 @@ from std_msgs.msg import String
 
 class DoubleTalker(rclpy.Node):
     def __init__(self):
-        super().__init__("double_talker")
+        super().__init__('double_talker')
 
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')

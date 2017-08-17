@@ -17,10 +17,10 @@ from std_msgs.msg import String
 
 
 class ThrottledCallbackGroup(rclpy.CallbackGroup):
-    """Demonstrate an example of a custom group.
+    '''Demonstrate an example of a custom group.
 
     This groups throttles callbacks using a token bucket
-    """
+    '''
 
     def __init__(self):
         super().__init__(self)
@@ -29,7 +29,7 @@ class ThrottledCallbackGroup(rclpy.CallbackGroup):
         self.bucket_max = 10
 
     def can_take_callback(self, callback):
-        """Return true if a callback can be executed."""
+        '''Return true if a callback can be executed.'''
         # assumes caller acquired the group lock already
         return self.bucket > 0
 
@@ -46,7 +46,7 @@ class ThrottledCallbackGroup(rclpy.CallbackGroup):
 
 class ThrottledTalkerListener(rclpy.Node):
     def __init__(self):
-        super().__init__("intermittent_talker_listener")
+        super().__init__('intermittent_talker_listener')
 
         self.pub = self.create_publisher(String, 'chatter')
         self.timer = self.create_timer(0.1, self.timer_callback)

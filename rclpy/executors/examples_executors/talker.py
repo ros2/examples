@@ -18,7 +18,7 @@ from std_msgs.msg import String
 
 class Talker(rclpy.Node):
     def __init__(self):
-        super().__init__("talker")
+        super().__init__('talker')
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')
         # rclcpp adds timers to a mutually exclusive callback group be default
