@@ -1,16 +1,15 @@
-from ament_python.data_files import get_data_files
-from ament_python.script_dir import install_scripts_to_libexec
 from setuptools import setup
 
 package_name = 'examples_rclpy_executors'
-data_files = get_data_files(package_name)
-install_scripts_to_libexec(package_name)
 
 setup(
     name=package_name,
     version='0.0.2',
     packages=[],
-    data_files=data_files,
+    data_files=[
+        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+    ],
     install_requires=['setuptools'],
     author='Shane Loretz',
     author_email='sloretz@openrobotics.org',
