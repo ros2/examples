@@ -65,8 +65,8 @@ class PriorityExecutor(rclpy.Executor):
             nodes = self.get_nodes()
 
         # wait_for_ready_callbacks yields callbacks that are ready to be executed
-        for ready_callback, group, node in self.wait_for_ready_callbacks(timeout=timeout,
-                                                                         nodes=nodes):
+        for ready_callback, group, node in self.wait_for_ready_callbacks(
+              timeout=timeout, nodes=nodes):
             with group.lock:
                 # rclcpp has a switch on callback group type and chooses to take from the group
                 # dependeing on that type. This code expects that logic to live in the group class
@@ -74,12 +74,12 @@ class PriorityExecutor(rclpy.Executor):
                     continue
                 elif node in self.high_priority_nodes:
                     # execute_callback takes the callback from the group, runs it, then returns it
-                    t = threading.Thread(target=self.execute_callback,
-                                         args=(ready_callback, group))
+                    t = threading.Thread(
+                        target=self.execute_callback, args=(ready_callback, group))
                     t.start()
                 else:
-                    self.low_priority_thread = threading.Thread(target=self.execute_callback,
-                                                                args=(ready_callback, group))
+                    self.low_priority_thread = threading.Thread(
+                        target=self.execute_callback, args=(ready_callback, group))
                     self.low_priority_thread.start()
 
 

@@ -52,8 +52,8 @@ class ThrottledTalkerListener(rclpy.Node):
         self.timer = self.create_timer(0.1, self.timer_callback)
 
         self.group = rclpy.ThrottledCallbackGroup()
-        self.sub = self.create_subscription(String, 'chatter', self.chatter_callback,
-                                            group=self.group)
+        self.sub = self.create_subscription(
+            String, 'chatter', self.chatter_callback, group=self.group)
 
     def chatter_callback(self, msg):
         print('I heard: [%s]' % msg.data)
