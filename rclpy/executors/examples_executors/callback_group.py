@@ -39,11 +39,18 @@ class DoubleTalker(rclpy.Node):
 def main(args=None):
     rclpy.init(args=args)
     try:
-        # MultiThreadedExecutor spawns every callback on a new thread
-        executor = rclpy.executors.MultiThreadedExecutor()
-        executor.add_node(DoubleTalker())
-        executor.add_node(Listener())
-        executor.spin()
+        # MultiThreadedExecutor executes callbacks with a thread pool. If num_threads is not
+        # specified then num_threads will be multiprocessing.cpu_count() if it is implemented.
+        # Otherwise it will use a single thread.
+        try:
+            executor = rclpy.executors.MultiThreadedExecutor(num_threads=4)
+            executor.add_node(DoubleTalker())
+            executor.add_node(Listener())
+            executor.spin()
+        finally:
+            # Stops all worker threads, blocking until they finish or the timeout is reached. If
+            # timeout is None the call blocks until all threads are finished.
+            executor.stop_all_threads(timeout=5)
     finally:
         rclpy.shutdown()
 
