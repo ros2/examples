@@ -30,12 +30,12 @@ class Estopper(rclpy.Node):
 
 
 class PriorityExecutor(rclpy.Executor):
-    '''
+    """
     Execute high priority callbacks in multiple threads, all others in a signle thread.
 
     This is an example of a custom exectuor in python. Executors are responsible for managing
     how callbacks get mapped to threads.
-    '''
+    """
 
     def __init__(self):
         super().__init__()
@@ -51,11 +51,11 @@ class PriorityExecutor(rclpy.Executor):
         return self.low_priority_thread is None or not self.low_priority_thread.is_alive()
 
     def spin_once(self, timeout=None):
-        '''
+        """
         Execute a single callback, then return.
 
         timeout - seconds to wait for callbacks. Blocks forever if None. Returns immediatly if < 0
-        '''
+        """
         # Wait only on high priority nodes if the low priority thread is taken.
         # this avoids spinning rapidly when low priority callbacks are available but
         # can't be acted on
