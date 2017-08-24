@@ -1,10 +1,6 @@
-from ament_python.data_files import get_data_files
-from ament_python.script_dir import install_scripts_to_libexec
 from setuptools import setup
 
 package_name = 'examples_rclpy_minimal_service'
-data_files = get_data_files(package_name)
-install_scripts_to_libexec(package_name)
 
 setup(
     name=package_name,
@@ -13,10 +9,14 @@ setup(
     py_modules=[
         'service',
         'service_member_function'],
-    data_files=data_files,
+    data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+    ],
     install_requires=['setuptools'],
     author='Mikael Arguedas',
-    author_email='Mikael@osrfoundation.org',
+    author_email='mikael@osrfoundation.org',
     maintainer='Mikael Arguedas',
     maintainer_email='mikael@osrfoundation.org',
     keywords=['ROS'],
