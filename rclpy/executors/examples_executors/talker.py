@@ -35,7 +35,7 @@ def main(args=None):
     # Run standalone
     rclpy.init(args=args)
     try:
-        rclpy.spin(Talker)
+        rclpy.spin(Talker())
     finally:
         rclpy.shutdown()
 
