@@ -5,7 +5,7 @@ package_name = 'examples_rclpy_executors'
 setup(
     name=package_name,
     version='0.0.2',
-    packages=[],
+    packages=['examples_executors'],
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
@@ -28,9 +28,11 @@ setup(
     entry_points={
         'console_scripts': [
             'listener = examples_executors.listener:main',
-            'talker = examples_executors.listener:main',
+            'talker = examples_executors.talker:main',
+            'callback_group = examples_executors.callback_group:main',
             'composed = examples_executors.composed:main',
             'custom_executor = examples_executors.custom_executor:main',
+            'custom_callback_group = examples_executors.custom_callback_group:main',
         ],
     },
 )
