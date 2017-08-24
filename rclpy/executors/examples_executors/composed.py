@@ -16,13 +16,14 @@
 from examples_executors.listener import Listener
 from examples_executors.talker import Talker
 import rclpy
+from rclpy.executors import SingleThreadedExecutor
 
 
 def main(args=None):
     rclpy.init(args=args)
     try:
         try:
-            executor = rclpy.executors.SingleThreadedExecutor()
+            executor = SingleThreadedExecutor()
             executor.add_node(Talker())
             executor.add_node(Listener())
             executor.spin()
