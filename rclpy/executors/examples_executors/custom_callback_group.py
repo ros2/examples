@@ -12,31 +12,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import threading
+
 import rclpy
+from rclpy.callback_groups import CallbackGroup
+from rclpy.node import Node
 from std_msgs.msg import String
 
 
-class ThrottledCallbackGroup(rclpy.CallbackGroup):
+class ThrottledCallbackGroup(CallbackGroup):
     """Demonstrate an example of a custom group.
 
     This groups throttles callbacks using a token bucket
     """
 
-    def __init__(self):
-        super().__init__(self)
-        self.timer = self.create_timer(0.5, self.timer_callback)
-        self.bucket = 0
+    def __init__(self, node):
+        super().__init__()
+        self.timer = node.create_timer(0.5, self.timer_callback)
+        self.bucket = 10
         self.bucket_max = 10
+        self.lock = threading.Lock()
 
-    def can_take_callback(self, callback):
+    def can_take(self, entity):
         """Return true if a callback can be executed."""
-        # assumes caller acquired the group lock already
         return self.bucket > 0
 
-    def take_callback(self, callback):
-        # assumes caller acquired the group lock already
-        self.bucket -= 1
-        return super().take_callback(callback)
+    def take(self, entity):
+        with self.lock:
+            if self.bucket > 0:
+                self.bucket -= 1
+                return True
+            return False
+
+    def give_back(self, entity):
+        pass
 
     def timer_callback(self):
         with self.lock:
@@ -44,16 +53,14 @@ class ThrottledCallbackGroup(rclpy.CallbackGroup):
                 self.bucket += 1
 
 
-class ThrottledTalkerListener(rclpy.Node):
+class ThrottledTalkerListener(Node):
     def __init__(self):
         super().__init__('intermittent_talker_listener')
-
+        self.i = 0
         self.pub = self.create_publisher(String, 'chatter')
-        self.timer = self.create_timer(0.1, self.timer_callback)
-
-        self.group = rclpy.ThrottledCallbackGroup()
-        self.sub = self.create_subscription(
-            String, 'chatter', self.chatter_callback, group=self.group)
+        self.group = ThrottledCallbackGroup(self)
+        self.timer = self.create_timer(0.1, self.timer_callback, callback_group=self.group)
+        self.sub = self.create_subscription(String, 'chatter', self.chatter_callback)
 
     def chatter_callback(self, msg):
         print('I heard: [%s]' % msg.data)

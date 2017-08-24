@@ -14,6 +14,8 @@
 
 from examples_executors.listener import Listener
 import rclpy
+from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
+from rclpy.executors import MultiThreadedExecutor
 from std_msgs.msg import String
 
 
@@ -24,9 +26,9 @@ class DoubleTalker(rclpy.Node):
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')
 
-        self.group = rclpy.MutuallyExclusiveCallbackGroup()
-        self.timer = self.create_timer(1.0, self.timer_callback, group=self.group)
-        self.timer2 = self.create_timer(0.5, self.timer_callback, group=self.group)
+        self.group = MutuallyExclusiveCallbackGroup()
+        self.timer = self.create_timer(1.0, self.timer_callback, callback_group=self.group)
+        self.timer2 = self.create_timer(0.5, self.timer_callback, callback_group=self.group)
 
     def timer_callback(self):
         msg = String()
@@ -43,7 +45,7 @@ def main(args=None):
         # specified then num_threads will be multiprocessing.cpu_count() if it is implemented.
         # Otherwise it will use a single thread.
         try:
-            executor = rclpy.executors.MultiThreadedExecutor(num_threads=4)
+            executor = MultiThreadedExecutor(num_threads=4)
             executor.add_node(DoubleTalker())
             executor.add_node(Listener())
             executor.spin()

@@ -17,10 +17,12 @@ import threading
 from examples_executors.listener import Listener
 from examples_executors.talker import Talker
 import rclpy
+from rclpy.executors import Executor
+from rclpy.node import Node
 from std_msgs.msg import String
 
 
-class Estopper(rclpy.Node):
+class Estopper(Node):
     def __init__(self):
         super().__init__('estopper')
         self.sub = self.create_subscription(String, 'estop', self.estop_callback)
@@ -29,7 +31,7 @@ class Estopper(rclpy.Node):
         print('I heard: [%s]' % msg.data)
 
 
-class PriorityExecutor(rclpy.Executor):
+class PriorityExecutor(Executor):
     """
     Execute high priority callbacks in multiple threads, all others in a signle thread.
 
@@ -50,39 +52,30 @@ class PriorityExecutor(rclpy.Executor):
     def can_run_low_priority(self):
         return self.low_priority_thread is None or not self.low_priority_thread.is_alive()
 
-    def spin_once(self, timeout=None):
+    def spin_once(self, timeout_sec=None):
         """
         Execute a single callback, then return.
 
-        timeout - seconds to wait for callbacks. Blocks forever if None. Returns immediatly if < 0
+        timeout_sec - seconds to wait for callbacks. Blocks forever if None. Don't wait if <= 0
         """
         # Wait only on high priority nodes if the low priority thread is taken.
         # this avoids spinning rapidly when low priority callbacks are available but
         # can't be acted on
-        nodes = self.high_priority_nodes()
+        nodes = self.high_priority_nodes
         if self.can_run_low_priority():
             # get_nodes returns all nodes added to executor
             nodes = self.get_nodes()
 
         # wait_for_ready_callbacks yields callbacks that are ready to be executed
-        for ready_callback, group, node in self.wait_for_ready_callbacks(
-                timeout=timeout, nodes=nodes):
-            with group.lock:
-                # rclcpp has a switch on callback group type and chooses to take from the group
-                # dependeing on that type. This code expects that logic to live in the group class
-                if not group.can_take_callback(ready_callback):
-                    continue
-                elif node in self.high_priority_nodes:
-                    # execute_callback takes the callback from the group, runs it, then returns it
-                    t = threading.Thread(
-                        target=self.execute_callback, args=(ready_callback, group))
+        for handler, group, node in self.wait_for_ready_callbacks(
+                timeout_sec=timeout_sec, nodes=nodes):
+                if node in self.high_priority_nodes:
+                    t = threading.Thread(target=handler)
                     t.start()
-                    break
                 else:
-                    self.low_priority_thread = threading.Thread(
-                        target=self.execute_callback, args=(ready_callback, group))
+                    self.low_priority_thread = threading.Thread(target=handler)
                     self.low_priority_thread.start()
-                    break
+                break
 
 
 def main(args=None):
