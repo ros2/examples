@@ -29,7 +29,7 @@ def main(args=None):
     # Run standalone
     rclpy.init(args=args)
     try:
-        rclpy.spin(Listener)
+        rclpy.spin(Listener())
     finally:
         rclpy.shutdown()
 
