@@ -67,15 +67,18 @@ class PriorityExecutor(Executor):
             nodes = self.get_nodes()
 
         # wait_for_ready_callbacks yields callbacks that are ready to be executed
-        for handler, group, node in self.wait_for_ready_callbacks(
-                timeout_sec=timeout_sec, nodes=nodes):
-                if node in self.high_priority_nodes:
-                    t = threading.Thread(target=handler)
-                    t.start()
-                else:
-                    self.low_priority_thread = threading.Thread(target=handler)
-                    self.low_priority_thread.start()
-                break
+        try:
+            handler, group, node = next(self.wait_for_ready_callbacks(
+                timeout_sec=timeout_sec, nodes=nodes))
+        except StopIteration:
+            pass
+        else:
+            if node in self.high_priority_nodes:
+                t = threading.Thread(target=handler)
+                t.start()
+            else:
+                self.low_priority_thread = threading.Thread(target=handler)
+                self.low_priority_thread.start()
 
 
 def main(args=None):
