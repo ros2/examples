@@ -33,18 +33,18 @@ class ThrottledCallbackGroup(CallbackGroup):
         self.bucket_max = 10
         self.lock = threading.Lock()
 
-    def can_take(self, entity):
+    def can_execute(self, entity):
         """Return true if a callback can be executed."""
         return self.bucket > 0
 
-    def take(self, entity):
+    def begin_execution(self, entity):
         with self.lock:
             if self.bucket > 0:
                 self.bucket -= 1
                 return True
             return False
 
-    def give_back(self, entity):
+    def end_execution(self, entity):
         pass
 
     def timer_callback(self):
