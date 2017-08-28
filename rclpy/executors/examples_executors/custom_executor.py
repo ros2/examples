@@ -33,7 +33,7 @@ class Estopper(Node):
 
 class PriorityExecutor(Executor):
     """
-    Execute high priority callbacks in multiple threads, all others in a signle thread.
+    Execute high priority callbacks in multiple threads, all others in a single thread.
 
     This is an example of a custom exectuor in python. Executors are responsible for managing
     how callbacks get mapped to threads.
@@ -56,7 +56,8 @@ class PriorityExecutor(Executor):
         """
         Execute a single callback, then return.
 
-        timeout_sec - seconds to wait for callbacks. Blocks forever if None. Don't wait if <= 0
+        :param timeout_sec: Seconds to wait. Block forever if None. Don't wait if <= 0
+        :type timeout_sec: float or None
         """
         # Wait only on high priority nodes if the low priority thread is taken.
         # this avoids spinning rapidly when low priority callbacks are available but
