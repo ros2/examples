@@ -44,8 +44,8 @@ def main(args=None):
         # MultiThreadedExecutor executes callbacks with a thread pool. If num_threads is not
         # specified then num_threads will be multiprocessing.cpu_count() if it is implemented.
         # Otherwise it will use a single thread.
+        executor = MultiThreadedExecutor(num_threads=4)
         try:
-            executor = MultiThreadedExecutor(num_threads=4)
             executor.add_node(DoubleTalker())
             executor.add_node(Listener())
             executor.spin()

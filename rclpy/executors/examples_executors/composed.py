@@ -22,8 +22,8 @@ from rclpy.executors import SingleThreadedExecutor
 def main(args=None):
     rclpy.init(args=args)
     try:
+        executor = SingleThreadedExecutor()
         try:
-            executor = SingleThreadedExecutor()
             executor.add_node(Talker())
             executor.add_node(Listener())
             executor.spin()
