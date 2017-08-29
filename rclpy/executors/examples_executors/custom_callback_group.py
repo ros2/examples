@@ -37,14 +37,14 @@ class ThrottledCallbackGroup(CallbackGroup):
         """Return true if a callback can be executed."""
         return self.bucket > 0
 
-    def begin_execution(self, entity):
+    def beginning_execution(self, entity):
         with self.lock:
             if self.bucket > 0:
                 self.bucket -= 1
                 return True
             return False
 
-    def end_execution(self, entity):
+    def ending_execution(self, entity):
         pass
 
     def timer_callback(self):
