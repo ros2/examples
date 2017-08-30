@@ -20,6 +20,7 @@ import rclpy
 
 
 class MinimalClientAsync:
+
     def __init__(self, node):
         self.cli = node.create_client(AddTwoInts, 'add_two_ints')
         # TODO(mikaelarguedas) remove this once wait for service implemented
