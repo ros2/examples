@@ -18,6 +18,7 @@ import rclpy
 
 
 class MinimalService:
+
     def __init__(self, node):
         self.srv = node.create_service(AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
 
