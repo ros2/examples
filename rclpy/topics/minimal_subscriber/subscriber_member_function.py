@@ -17,10 +17,11 @@ import rclpy
 from std_msgs.msg import String
 
 
-class MinimalSubscriber:
+class MinimalSubscriber(rclpy.Node):
 
-    def __init__(self, node):
-        self.subscription = node.create_subscription(
+    def __init__(self):
+        super().__init__('minimal_subscriber')
+        self.subscription = self.create_subscription(
             String,
             'topic',
             self.listener_callback)
@@ -33,17 +34,14 @@ class MinimalSubscriber:
 def main(args=None):
     rclpy.init(args=args)
 
-    node = rclpy.create_node('minimal_publisher')
+    minimal_subscriber = MinimalSubscriber()
 
-    minimal_subscriber = MinimalSubscriber(node)
-    minimal_subscriber  # prevent unused variable warning
-    while rclpy.ok():
-        rclpy.spin_once(node)
+    rclpy.spin(minimal_subscriber)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    node.destroy_node()
+    minimal_subscriber.destroy_node()
     rclpy.shutdown()
 
 

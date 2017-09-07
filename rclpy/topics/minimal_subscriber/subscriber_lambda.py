@@ -26,8 +26,7 @@ def main(args=None):
         String, 'topic', lambda msg: print('I heard: [%s]' % msg.data))
     subscription  # prevent unused variable warning
 
-    while rclpy.ok():
-        rclpy.spin_once(node)
+    rclpy.spin(node)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically

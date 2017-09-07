@@ -17,37 +17,34 @@ import rclpy
 from std_msgs.msg import String
 
 
-class MinimalPublisher:
+class MinimalPublisher(rclpy.Node):
 
-    def __init__(self, node):
-        self.publisher_ = node.create_publisher(String, 'topic')
+    def __init__(self):
+        super().__init__('minimal_publisher')
+        self.publisher_ = self.create_publisher(String, 'topic')
         timer_period = 0.5  # seconds
-        self.timer = node.create_timer(timer_period, self.timer_callback)
-        self.msg = String()
+        self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
     def timer_callback(self):
-        self.msg.data = 'Hello World: %d' % self.i
-        self.publisher_.publish(self.msg)
-        print('Publishing: "%s"' % self.msg.data)
+        msg = String()
+        msg.data = 'Hello World: %d' % self.i
+        self.publisher_.publish(msg)
+        print('Publishing: "%s"' % msg.data)
         self.i += 1
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    node = rclpy.create_node('minimal_publisher')
+    minimal_publisher = MinimalPublisher()
 
-    minimal_publisher = MinimalPublisher(node)
-    minimal_publisher  # prevent unused variable warning
-
-    while rclpy.ok():
-        rclpy.spin_once(node)
+    rclpy.spin(minimal_publisher)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    node.destroy_node()
+    minimal_publisher.destroy_node()
     rclpy.shutdown()
 
 

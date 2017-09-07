@@ -17,10 +17,11 @@ from example_interfaces.srv import AddTwoInts
 import rclpy
 
 
-class MinimalService:
+class MinimalService(rclpy.Node):
 
-    def __init__(self, node):
-        self.srv = node.create_service(AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
+    def __init__(self):
+        super().__init__('minimal_service')
+        self.srv = self.create_service(AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
 
     def add_two_ints_callback(self, request, response):
         response.sum = request.a + request.b
@@ -32,12 +33,9 @@ class MinimalService:
 def main(args=None):
     rclpy.init(args=args)
 
-    node = rclpy.create_node('minimal_service')
-    minimal_service = MinimalService(node)
-    minimal_service  # prevent unused variable warning
+    minimal_service = MinimalService()
 
-    while rclpy.ok():
-        rclpy.spin_once(node)
+    rclpy.spin(minimal_service)
 
     rclpy.shutdown()
 
