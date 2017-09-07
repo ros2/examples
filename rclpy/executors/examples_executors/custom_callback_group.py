@@ -21,7 +21,8 @@ from std_msgs.msg import String
 
 
 class ThrottledCallbackGroup(CallbackGroup):
-    """Demonstrate an example of a custom group.
+    """
+    Demonstrate an example of a custom group.
 
     This groups throttles callbacks using a token bucket
     """
@@ -54,6 +55,7 @@ class ThrottledCallbackGroup(CallbackGroup):
 
 
 class ThrottledTalkerListener(Node):
+
     def __init__(self):
         super().__init__('intermittent_talker_listener')
         self.i = 0

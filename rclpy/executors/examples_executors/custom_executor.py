@@ -23,6 +23,7 @@ from std_msgs.msg import String
 
 
 class Estopper(Node):
+
     def __init__(self):
         super().__init__('estopper')
         self.sub = self.create_subscription(String, 'estop', self.estop_callback)

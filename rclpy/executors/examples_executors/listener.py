@@ -17,6 +17,7 @@ from std_msgs.msg import String
 
 
 class Listener(rclpy.Node):
+
     def __init__(self):
         super().__init__('listener')
         self.sub = self.create_subscription(String, 'chatter', self.chatter_callback)

@@ -17,6 +17,7 @@ from std_msgs.msg import String
 
 
 class Talker(rclpy.Node):
+
     def __init__(self):
         super().__init__('talker')
         self.i = 0

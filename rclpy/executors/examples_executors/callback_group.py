@@ -20,6 +20,7 @@ from std_msgs.msg import String
 
 
 class DoubleTalker(rclpy.Node):
+
     def __init__(self):
         super().__init__('double_talker')
 
