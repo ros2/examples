@@ -37,7 +37,9 @@ class PriorityExecutor(Executor):
     Execute high priority callbacks in multiple threads, all others in a single thread.
 
     This is an example of a custom exectuor in python. Executors are responsible for managing
-    how callbacks get mapped to threads.
+    how callbacks get mapped to threads. Rclpy provides two executors: one which runs all callbacks
+    in the main thread, and another which runs callbacks in a pool of threads. A custom executor
+    should be written if neither are appropriate for your application.
     """
 
     def __init__(self):
@@ -56,6 +58,10 @@ class PriorityExecutor(Executor):
     def spin_once(self, timeout_sec=None):
         """
         Execute a single callback, then return.
+
+        This is the only function which must be overridden by a custom executor. Its job is to
+        start executing one callback, then return. It uses the method `wait_for_ready_callbacks`
+        to get work to execute.
 
         :param timeout_sec: Seconds to wait. Block forever if None. Don't wait if <= 0
         :type timeout_sec: float or None
@@ -91,7 +97,11 @@ def main(args=None):
         executor.add_node(Listener())
         executor.add_node(Talker())
         try:
-            executor.spin()
+            # TODO(sloretz) use executor.spin() once guard conditions become available to users
+            while rclpy.ok():
+                # A timeout is used to make the executor periodically reevaluate if low priority
+                # nodes can be executed
+                executor.spin_once(timeout_sec=0.5)
         finally:
             executor.shutdown()
     finally:

@@ -17,8 +17,16 @@ from std_msgs.msg import String
 
 
 class Listener(rclpy.Node):
+    """
+    A node with a single subscriber.
+
+    This class creates a node which prints messages it receives on a topic. Creating a node by
+    inheriting from rclpy.Node is recommended because it allows it to be imported and used by
+    other scripts.
+    """
 
     def __init__(self):
+        # Calls rclpy.Node.__init__('listener')
         super().__init__('listener')
         self.sub = self.create_subscription(String, 'chatter', self.chatter_callback)
 
@@ -27,7 +35,15 @@ class Listener(rclpy.Node):
 
 
 def main(args=None):
-    # Run standalone
+    """
+    Run a Listener node standalone.
+
+    This function is called directly when using an entrypoint. Entrypoints are configured in
+    setup.py. This along with the script installation in setup.cfg allows a listener node to be run
+    with the command `ros2 run examples_rclpy_executors listener`.
+
+    :param args: Arguments passed in from the command line.
+    """
     rclpy.init(args=args)
     try:
         rclpy.spin(Listener())
@@ -36,4 +52,5 @@ def main(args=None):
 
 
 if __name__ == '__main__':
+    # Runs a listener node when this script is run directly (not through an entrypoint)
     main()

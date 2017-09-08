@@ -17,11 +17,22 @@ from std_msgs.msg import String
 
 
 class Talker(rclpy.Node):
+    """
+    A node with a single publisher.
+
+    This class creates a node which regularly publishes messages on a topic. Creating a node by
+    inheriting from rclpy.Node is recommended because it allows it to be imported and used by
+    other scripts.
+    """
 
     def __init__(self):
+        # Calls rclpy.Node.__init__('talker')
         super().__init__('talker')
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')
+        # Create a timer that calls a callback every second. A timer is recommended for executing
+        # periodic tasks because it does not block the main thread while it's waiting. This allows
+        # an executor to do other work when mutliple nodes are run in the same process.
         self.timer = self.create_timer(1.0, self.timer_callback)
 
     def timer_callback(self):
@@ -33,6 +44,15 @@ class Talker(rclpy.Node):
 
 
 def main(args=None):
+    """
+    Run a Talker node standalone.
+
+    This function is called directly when using an entrypoint. Entrypoints are configured in
+    setup.py. This along with the script installation in setup.cfg allows a talker node to be run
+    with the command `ros2 run examples_rclpy_executors talker`.
+
+    :param args: Arguments passed in from the command line.
+    """
     # Run standalone
     rclpy.init(args=args)
     try:
@@ -42,4 +62,5 @@ def main(args=None):
 
 
 if __name__ == '__main__':
+    # Runs a talker node when this script is run directly (not through an entrypoint)
     main()

@@ -20,6 +20,7 @@ from std_msgs.msg import String
 
 
 class DoubleTalker(rclpy.Node):
+    """Publish messages to a topic using two publishers at different rates."""
 
     def __init__(self):
         super().__init__('double_talker')
@@ -27,7 +28,9 @@ class DoubleTalker(rclpy.Node):
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')
 
+        # This type of callback group only allows one callback to be executed at a time
         self.group = MutuallyExclusiveCallbackGroup()
+        # Pass the group as a parameter to give it control over the execution of the timer callback
         self.timer = self.create_timer(1.0, self.timer_callback, callback_group=self.group)
         self.timer2 = self.create_timer(0.5, self.timer_callback, callback_group=self.group)
 
@@ -44,7 +47,10 @@ def main(args=None):
     try:
         # MultiThreadedExecutor executes callbacks with a thread pool. If num_threads is not
         # specified then num_threads will be multiprocessing.cpu_count() if it is implemented.
-        # Otherwise it will use a single thread.
+        # Otherwise it will use a single thread. This executor will allow callbacks to happen in
+        # parallel, however the MutuallyExclusiveCallbackGroup in DoubleTalker will only allow its
+        # callbacks to be executed one at a time. The callbacks in Listener are free to execute in
+        # parallel to the ones in DoubleTalker however.
         executor = MultiThreadedExecutor(num_threads=4)
         executor.add_node(DoubleTalker())
         executor.add_node(Listener())

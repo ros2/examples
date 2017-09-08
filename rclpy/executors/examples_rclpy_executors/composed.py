@@ -22,10 +22,13 @@ from rclpy.executors import SingleThreadedExecutor
 def main(args=None):
     rclpy.init(args=args)
     try:
+        # Runs all callbacks in the main thread
         executor = SingleThreadedExecutor()
+        # Add imported nodes to this executor
         executor.add_node(Talker())
         executor.add_node(Listener())
         try:
+            # Execute callbacks for both nodes as they become ready
             executor.spin()
         finally:
             executor.shutdown()
