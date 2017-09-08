@@ -87,10 +87,10 @@ def main(args=None):
     rclpy.init(args=args)
     try:
         executor = PriorityExecutor()
+        executor.add_high_priority_node(Estopper())
+        executor.add_node(Listener())
+        executor.add_node(Talker())
         try:
-            executor.add_high_priority_node(Estopper())
-            executor.add_node(Listener())
-            executor.add_node(Talker())
             executor.spin()
         finally:
             executor.shutdown()

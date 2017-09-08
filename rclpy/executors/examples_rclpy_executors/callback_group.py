@@ -46,14 +46,12 @@ def main(args=None):
         # specified then num_threads will be multiprocessing.cpu_count() if it is implemented.
         # Otherwise it will use a single thread.
         executor = MultiThreadedExecutor(num_threads=4)
+        executor.add_node(DoubleTalker())
+        executor.add_node(Listener())
         try:
-            executor.add_node(DoubleTalker())
-            executor.add_node(Listener())
             executor.spin()
         finally:
-            # Stops all worker threads, blocking until they finish or the timeout is reached. If
-            # timeout is None the call blocks until all threads are finished.
-            executor.shutdown(timeout=5)
+            executor.shutdown()
     finally:
         rclpy.shutdown()
 

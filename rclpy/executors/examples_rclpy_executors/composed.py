@@ -23,9 +23,9 @@ def main(args=None):
     rclpy.init(args=args)
     try:
         executor = SingleThreadedExecutor()
+        executor.add_node(Talker())
+        executor.add_node(Listener())
         try:
-            executor.add_node(Talker())
-            executor.add_node(Listener())
             executor.spin()
         finally:
             executor.shutdown()
