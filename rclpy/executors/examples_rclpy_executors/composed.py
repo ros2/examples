@@ -13,8 +13,8 @@
 # limitations under the License.
 
 
-from examples_executors.listener import Listener
-from examples_executors.talker import Talker
+from examples_rclpy_executors.listener import Listener
+from examples_rclpy_executors.talker import Talker
 import rclpy
 from rclpy.executors import SingleThreadedExecutor
 

@@ -14,8 +14,8 @@
 
 import threading
 
-from examples_executors.listener import Listener
-from examples_executors.talker import Talker
+from examples_rclpy_executors.listener import Listener
+from examples_rclpy_executors.talker import Talker
 import rclpy
 from rclpy.executors import Executor
 from rclpy.node import Node
