@@ -36,8 +36,7 @@ def main(args=None):
     timer_period = 0.5  # seconds
     timer = node.create_timer(timer_period, timer_callback)
 
-    while rclpy.ok():
-        rclpy.spin_once(node)
+    rclpy.spin(node)
 
     # Destroy the timer attached to the node explicitly
     # (optional - otherwise it will be done automatically

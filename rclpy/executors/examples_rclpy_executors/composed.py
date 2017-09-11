@@ -1,4 +1,4 @@
-# Copyright 2016 Open Source Robotics Foundation, Inc.
+# Copyright 2017 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,32 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from example_interfaces.srv import AddTwoInts
 
+from examples_rclpy_executors.listener import Listener
+from examples_rclpy_executors.talker import Talker
 import rclpy
-
-
-class MinimalService(rclpy.Node):
-
-    def __init__(self):
-        super().__init__('minimal_service')
-        self.srv = self.create_service(AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
-
-    def add_two_ints_callback(self, request, response):
-        response.sum = request.a + request.b
-        print('Incoming request\na: %d b: %d' % (request.a, request.b))
-
-        return response
+from rclpy.executors import SingleThreadedExecutor
 
 
 def main(args=None):
     rclpy.init(args=args)
-
-    minimal_service = MinimalService()
-
-    rclpy.spin(minimal_service)
-
-    rclpy.shutdown()
+    try:
+        # Runs all callbacks in the main thread
+        executor = SingleThreadedExecutor()
+        # Add imported nodes to this executor
+        executor.add_node(Talker())
+        executor.add_node(Listener())
+        try:
+            # Execute callbacks for both nodes as they become ready
+            executor.spin()
+        finally:
+            executor.shutdown()
+    finally:
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':

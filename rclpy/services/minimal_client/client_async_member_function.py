@@ -19,10 +19,11 @@ from example_interfaces.srv import AddTwoInts
 import rclpy
 
 
-class MinimalClientAsync:
+class MinimalClientAsync(rclpy.Node):
 
-    def __init__(self, node):
-        self.cli = node.create_client(AddTwoInts, 'add_two_ints')
+    def __init__(self):
+        super().__init__('minimal_client_async')
+        self.cli = self.create_client(AddTwoInts, 'add_two_ints')
         # TODO(mikaelarguedas) remove this once wait for service implemented
         # wait for connection to be established
         # (no wait for service in Python yet)
@@ -38,9 +39,7 @@ class MinimalClientAsync:
 def main(args=None):
     rclpy.init(args=args)
 
-    node = rclpy.create_node('minimal_client_async')
-
-    minimal_client = MinimalClientAsync(node)
+    minimal_client = MinimalClientAsync()
     minimal_client.send_request()
 
     while rclpy.ok():
@@ -52,9 +51,9 @@ def main(args=None):
                 'Result of add_two_ints: for %d + %d = %d' %
                 (minimal_client.req.a, minimal_client.req.b, minimal_client.cli.response.sum))
             break
-        rclpy.spin_once(node)
+        rclpy.spin_once(minimal_client)
 
-    node.destroy_node()
+    minimal_client.destroy_node()
     rclpy.shutdown()
 
 
