@@ -77,7 +77,7 @@ class ThrottledCallbackGroup(CallbackGroup):
                 self.bucket += 1
 
 
-class ThrottledTalkerListener(Node):
+class ThrottledTalker(Node):
     """A Node which uses a custom callback group."""
 
     def __init__(self):
@@ -99,7 +99,7 @@ class ThrottledTalkerListener(Node):
 def main(args=None):
     rclpy.init(args=args)
     try:
-        rclpy.spin(ThrottledTalkerListener())
+        rclpy.spin(ThrottledTalker())
     finally:
         rclpy.shutdown()
 
