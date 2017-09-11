@@ -81,7 +81,7 @@ class ThrottledTalker(Node):
     """A Node which uses a custom callback group."""
 
     def __init__(self):
-        super().__init__('intermittent_talker_listener')
+        super().__init__('intermittent_talker')
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')
         self.group = ThrottledCallbackGroup(self)
