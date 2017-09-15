@@ -44,16 +44,41 @@ class PriorityExecutor(Executor):
 
     def __init__(self):
         super().__init__()
+        self.is_shutdown = False
         self.high_priority_nodes = set()
-        self.low_priority_thread = None
+        self.lp_handler = None
+        self.lp_cv = threading.Condition()
+        self.lp_thread = threading.Thread(target=self.low_priority_runner)
+        self.lp_thread.start()
 
     def add_high_priority_node(self, node):
         self.high_priority_nodes.add(node)
         # add_node inherited
         self.add_node(node)
 
+    def shutdown(self, timeout_sec=None):
+        """Wait for all calbacks to finish executing and stop spinning."""
+        if super().shutdown(timeout_sec=timeout_sec):
+            with self.lp_cv:
+                self.is_shutdown = True
+                self.lp_cv.notify_all()
+            self.lp_thread.join()
+            return True
+        return False
+
+    def low_priority_runner(self):
+        """Wait for a low priority callback and run it."""
+        while not self.is_shutdown:
+            with self.lp_cv:
+                self.lp_cv.wait_for(lambda: self.is_shutdown or self.lp_handler is not None)
+                if self.lp_handler is not None:
+                    try:
+                        self.lp_handler()
+                    finally:
+                        self.lp_handler = None
+
     def can_run_low_priority(self):
-        return self.low_priority_thread is None or not self.low_priority_thread.is_alive()
+        return self.lp_handler is None
 
     def spin_once(self, timeout_sec=None):
         """
@@ -85,8 +110,9 @@ class PriorityExecutor(Executor):
                 t = threading.Thread(target=handler)
                 t.start()
             else:
-                self.low_priority_thread = threading.Thread(target=handler)
-                self.low_priority_thread.start()
+                with self.lp_cv:
+                    self.lp_handler = handler
+                    self.lp_cv.notify_all()
 
 
 def main(args=None):
