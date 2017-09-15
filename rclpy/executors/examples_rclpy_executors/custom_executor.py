@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import threading
+from concurrent.futures import ThreadPoolExecutor
 
 from examples_rclpy_executors.listener import Listener
 from examples_rclpy_executors.talker import Talker
@@ -44,41 +44,14 @@ class PriorityExecutor(Executor):
 
     def __init__(self):
         super().__init__()
-        self.is_shutdown = False
         self.high_priority_nodes = set()
-        self.lp_handler = None
-        self.lp_cv = threading.Condition()
-        self.lp_thread = threading.Thread(target=self.low_priority_runner)
-        self.lp_thread.start()
+        self.hp_executor = ThreadPoolExecutor(max_workers=10)
+        self.lp_executor = ThreadPoolExecutor(max_workers=1)
 
     def add_high_priority_node(self, node):
         self.high_priority_nodes.add(node)
         # add_node inherited
         self.add_node(node)
-
-    def shutdown(self, timeout_sec=None):
-        """Wait for all calbacks to finish executing and stop spinning."""
-        if super().shutdown(timeout_sec=timeout_sec):
-            with self.lp_cv:
-                self.is_shutdown = True
-                self.lp_cv.notify_all()
-            self.lp_thread.join()
-            return True
-        return False
-
-    def low_priority_runner(self):
-        """Wait for a low priority callback and run it."""
-        while not self.is_shutdown:
-            with self.lp_cv:
-                self.lp_cv.wait_for(lambda: self.is_shutdown or self.lp_handler is not None)
-                if self.lp_handler is not None:
-                    try:
-                        self.lp_handler()
-                    finally:
-                        self.lp_handler = None
-
-    def can_run_low_priority(self):
-        return self.lp_handler is None
 
     def spin_once(self, timeout_sec=None):
         """
@@ -91,28 +64,16 @@ class PriorityExecutor(Executor):
         :param timeout_sec: Seconds to wait. Block forever if None. Don't wait if <= 0
         :type timeout_sec: float or None
         """
-        # Wait only on high priority nodes if the low priority thread is taken.
-        # this avoids spinning rapidly when low priority callbacks are available but
-        # can't be acted on
-        nodes = self.high_priority_nodes
-        if self.can_run_low_priority():
-            # get_nodes returns all nodes added to executor
-            nodes = self.get_nodes()
-
         # wait_for_ready_callbacks yields callbacks that are ready to be executed
         try:
-            handler, group, node = next(self.wait_for_ready_callbacks(
-                timeout_sec=timeout_sec, nodes=nodes))
+            handler, group, node = next(self.wait_for_ready_callbacks(timeout_sec=timeout_sec))
         except StopIteration:
             pass
         else:
             if node in self.high_priority_nodes:
-                t = threading.Thread(target=handler)
-                t.start()
+                self.hp_executor.submit(handler)
             else:
-                with self.lp_cv:
-                    self.lp_handler = handler
-                    self.lp_cv.notify_all()
+                self.lp_executor.submit(handler)
 
 
 def main(args=None):
@@ -123,11 +84,7 @@ def main(args=None):
         executor.add_node(Listener())
         executor.add_node(Talker())
         try:
-            # TODO(sloretz) use executor.spin() once guard conditions become available to users
-            while rclpy.ok():
-                # A timeout is used to make the executor periodically reevaluate if low priority
-                # nodes can be executed
-                executor.spin_once(timeout_sec=0.5)
+            executor.spin()
         finally:
             executor.shutdown()
     finally:
