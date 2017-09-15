@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-
 from ament_flake8.main import main
 
 
 def test_flake8():
-    root_path = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
-    rc = main(argv=[root_path])
+    # Test is called from package root
+    rc = main(argv=['.'])
     assert rc == 0, 'Found errors'
