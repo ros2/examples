@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from concurrent.futures import ThreadPoolExecutor
-import multiprocessing
+import os
 
 from examples_rclpy_executors.listener import Listener
 from examples_rclpy_executors.talker import Talker
@@ -46,7 +46,7 @@ class PriorityExecutor(Executor):
     def __init__(self):
         super().__init__()
         self.high_priority_nodes = set()
-        self.hp_executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
+        self.hp_executor = ThreadPoolExecutor(max_workers=(os.cpu_count() or 4))
         self.lp_executor = ThreadPoolExecutor(max_workers=1)
 
     def add_high_priority_node(self, node):
