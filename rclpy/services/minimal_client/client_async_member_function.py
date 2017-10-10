@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
-
 from example_interfaces.srv import AddTwoInts
 
 import rclpy
@@ -25,10 +23,7 @@ class MinimalClientAsync(Node):
     def __init__(self):
         super().__init__('minimal_client_async')
         self.cli = self.create_client(AddTwoInts, 'add_two_ints')
-        # TODO(mikaelarguedas) remove this once wait for service implemented
-        # wait for connection to be established
-        # (no wait for service in Python yet)
-        time.sleep(1)
+        self.cli.wait_for_service()
         self.req = AddTwoInts.Request()
 
     def send_request(self):
