@@ -27,7 +27,8 @@ def main(args=None):
     req = AddTwoInts.Request()
     req.a = 41
     req.b = 1
-    cli.wait_for_service()
+    while not cli.wait_for_service(timeout_sec=1.0):
+        print("Still waiting for service")
 
     cli.call(req)
     while rclpy.ok():

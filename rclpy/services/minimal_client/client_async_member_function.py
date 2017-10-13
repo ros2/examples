@@ -23,7 +23,8 @@ class MinimalClientAsync(Node):
     def __init__(self):
         super().__init__('minimal_client_async')
         self.cli = self.create_client(AddTwoInts, 'add_two_ints')
-        self.cli.wait_for_service()
+        while not self.cli.wait_for_service(timeout_sec=1.0):
+            print("Still waiting for service")
         self.req = AddTwoInts.Request()
 
     def send_request(self):
