@@ -26,7 +26,7 @@ def main(args=None):
     req.a = 41
     req.b = 1
     while not cli.wait_for_service(timeout_sec=1.0):
-        print("Still waiting for service")
+        print("service not available, waiting again...")
 
     cli.call(req)
     # when calling wait for future
