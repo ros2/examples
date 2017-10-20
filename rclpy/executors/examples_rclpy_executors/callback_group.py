@@ -16,14 +16,18 @@ from examples_rclpy_executors.listener import Listener
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
+import rclpy.logging
 from std_msgs.msg import String
+
+logger = rclpy.logging.get_named_logger('callback_group_example')
+# logger.set_severity_threshold(rclpy.logging.LoggingSeverity.DEBUG)
 
 
 class DoubleTalker(rclpy.Node):
     """Publish messages to a topic using two publishers at different rates."""
 
-    def __init__(self):
-        super().__init__('double_talker')
+    def __init__(self, parent_logger=None):
+        super().__init__('double_talker', parent_logger=parent_logger)
 
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')
@@ -33,12 +37,13 @@ class DoubleTalker(rclpy.Node):
         # Pass the group as a parameter to give it control over the execution of the timer callback
         self.timer = self.create_timer(1.0, self.timer_callback, callback_group=self.group)
         self.timer2 = self.create_timer(0.5, self.timer_callback, callback_group=self.group)
+        self.logger.debug('Initialization complete')
 
     def timer_callback(self):
         msg = String()
         msg.data = 'Hello World: {0}'.format(self.i)
         self.i += 1
-        print('Publishing: "{0}"'.format(msg.data))
+        self.logger.info('Publishing: "{0}"'.format(msg.data))
         self.pub.publish(msg)
 
 
@@ -52,11 +57,13 @@ def main(args=None):
         # callbacks to be executed one at a time. The callbacks in Listener are free to execute in
         # parallel to the ones in DoubleTalker however.
         executor = MultiThreadedExecutor(num_threads=4)
-        executor.add_node(DoubleTalker())
-        executor.add_node(Listener())
+        executor.add_node(DoubleTalker(parent_logger=logger))
+        executor.add_node(Listener(parent_logger=logger))
+        logger.debug('Nodes added to executor')
         try:
             executor.spin()
         finally:
+            logger.debug('Executor shutting down')
             executor.shutdown()
     finally:
         rclpy.shutdown()
