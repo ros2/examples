@@ -25,9 +25,9 @@ class Listener(rclpy.Node):
     other scripts.
     """
 
-    def __init__(self, parent_logger=None):
+    def __init__(self, **node_init_args):
         # Calls rclpy.Node.__init__('listener')
-        super().__init__('listener', parent_logger=parent_logger)
+        super().__init__('listener', **node_init_args)
         self.sub = self.create_subscription(String, 'chatter', self.chatter_callback)
 
     def chatter_callback(self, msg):

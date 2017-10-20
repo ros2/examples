@@ -26,8 +26,8 @@ logger = rclpy.logging.get_named_logger('callback_group_example')
 class DoubleTalker(rclpy.Node):
     """Publish messages to a topic using two publishers at different rates."""
 
-    def __init__(self, parent_logger=None):
-        super().__init__('double_talker', parent_logger=parent_logger)
+    def __init__(self, **node_init_args):
+        super().__init__('double_talker', **node_init_args)
 
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')
