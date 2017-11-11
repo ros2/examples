@@ -24,7 +24,7 @@ setup(
     ],
     description='Examples of creating and using exectors to run multiple nodes in rclpy.',
     license='Apache License, Version 2.0',
-    test_suite='test',
+    tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'listener = examples_rclpy_executors.listener:main',

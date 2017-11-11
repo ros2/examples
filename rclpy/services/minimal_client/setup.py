@@ -29,7 +29,7 @@ setup(
     ],
     description='Examples of minimal service clients using rclpy.',
     license='Apache License, Version 2.0',
-    test_suite='test',
+    tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'client = client:main',
