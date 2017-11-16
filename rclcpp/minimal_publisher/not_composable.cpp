@@ -30,7 +30,7 @@ int main(int argc, char * argv[])
   auto publisher = node->create_publisher<std_msgs::msg::String>("topic");
   auto message = std::make_shared<std_msgs::msg::String>();
   auto publish_count = 0;
-  rclcpp::WallRate loop_rate(2s);
+  rclcpp::WallRate loop_rate(500ms);
 
   while (rclcpp::ok()) {
     message->data = "Hello, world! " + std::to_string(publish_count++);
