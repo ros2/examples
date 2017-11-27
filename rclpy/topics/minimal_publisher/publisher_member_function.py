@@ -13,11 +13,12 @@
 # limitations under the License.
 
 import rclpy
+from rclpy.node import Node
 
 from std_msgs.msg import String
 
 
-class MinimalPublisher(rclpy.Node):
+class MinimalPublisher(Node):
 
     def __init__(self):
         super().__init__('minimal_publisher')

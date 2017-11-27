@@ -17,9 +17,10 @@ import time
 from example_interfaces.srv import AddTwoInts
 
 import rclpy
+from rclpy.node import Node
 
 
-class MinimalClientAsync(rclpy.Node):
+class MinimalClientAsync(Node):
 
     def __init__(self):
         super().__init__('minimal_client_async')
