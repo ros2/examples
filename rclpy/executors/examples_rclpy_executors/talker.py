@@ -13,20 +13,21 @@
 # limitations under the License.
 
 import rclpy
+from rclpy.node import Node
 from std_msgs.msg import String
 
 
-class Talker(rclpy.Node):
+class Talker(Node):
     """
     A node with a single publisher.
 
     This class creates a node which regularly publishes messages on a topic. Creating a node by
-    inheriting from rclpy.Node is recommended because it allows it to be imported and used by
+    inheriting from Node is recommended because it allows it to be imported and used by
     other scripts.
     """
 
     def __init__(self):
-        # Calls rclpy.Node.__init__('talker')
+        # Calls Node.__init__('talker')
         super().__init__('talker')
         self.i = 0
         self.pub = self.create_publisher(String, 'chatter')

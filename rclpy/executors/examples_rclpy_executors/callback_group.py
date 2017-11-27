@@ -16,10 +16,11 @@ from examples_rclpy_executors.listener import Listener
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
+from rclpy.node import Node
 from std_msgs.msg import String
 
 
-class DoubleTalker(rclpy.Node):
+class DoubleTalker(Node):
     """Publish messages to a topic using two publishers at different rates."""
 
     def __init__(self):
