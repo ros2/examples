@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import time
-
 from example_interfaces.srv import AddTwoInts
 
 import rclpy
@@ -27,10 +25,8 @@ def main(args=None):
     req = AddTwoInts.Request()
     req.a = 41
     req.b = 1
-    # TODO(mikaelarguedas) remove this once wait for service implemented
-    # wait for connection to be established
-    # (no wait for service in Python yet)
-    time.sleep(1)
+    while not cli.wait_for_service(timeout_sec=1.0):
+        print('service not available, waiting again...')
 
     cli.call(req)
     # when calling wait for future
