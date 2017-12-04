@@ -23,7 +23,7 @@ using AddTwoInts = example_interfaces::srv::AddTwoInts;
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  auto node = rclcpp::node::Node::make_shared("minimal_client");
+  auto node = rclcpp::Node::make_shared("minimal_client");
   auto client = node->create_client<AddTwoInts>("add_two_ints");
   while (!client->wait_for_service(std::chrono::seconds(1))) {
     if (!rclcpp::ok()) {
