@@ -32,7 +32,7 @@ public:
 private:
   void timer_callback()
   {
-    printf("Hello, world!\n");
+    RCLCPP_INFO(this->get_logger(), "Hello, world!")
   }
   rclcpp::TimerBase::SharedPtr timer_;
 };

@@ -28,7 +28,7 @@ def main(args=None):
     req.a = 41
     req.b = 1
     while not cli.wait_for_service(timeout_sec=1.0):
-        print('service not available, waiting again...')
+        node.get_logger().info('service not available, waiting again...')
 
     cli.call(req)
     while rclpy.ok():
@@ -36,7 +36,7 @@ def main(args=None):
         # for multiple pending requests. This will change once an executor model is implemented
         # In the future the response will not be stored in cli.response
         if cli.response is not None:
-            print(
+            node.get_logger().info(
                 'Result of add_two_ints: for %d + %d = %d' %
                 (req.a, req.b, cli.response.sum))
             break

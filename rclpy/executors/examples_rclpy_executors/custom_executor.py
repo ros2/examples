@@ -30,7 +30,7 @@ class Estopper(Node):
         self.sub = self.create_subscription(String, 'estop', self.estop_callback)
 
     def estop_callback(self, msg):
-        print('I heard: [%s]' % msg.data)
+        self.get_logger().info('I heard: "%s"' % msg.data)
 
 
 class PriorityExecutor(Executor):

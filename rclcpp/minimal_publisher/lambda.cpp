@@ -32,7 +32,7 @@ public:
       [this]() -> void {
         auto message = std_msgs::msg::String();
         message.data = "Hello, world! " + std::to_string(this->count_++);
-        printf("Publishing: [%s]\n", message.data.c_str());
+        RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str())
         this->publisher_->publish(message);
       };
     timer_ = this->create_wall_timer(500ms, timer_callback);
