@@ -18,7 +18,7 @@
 #include "rclcpp/rclcpp.hpp"
 
 using AddTwoInts = example_interfaces::srv::AddTwoInts;
-rclcpp::Node::SharedPtr node = nullptr;
+rclcpp::Node::SharedPtr g_node = nullptr;
 
 void handle_service(
   const std::shared_ptr<rmw_request_id_t> request_header,
