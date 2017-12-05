@@ -27,7 +27,7 @@ public:
   MinimalTimer()
   : Node("minimal_timer")
   {
-    auto timer_callback = []() -> void { printf("Hello, world!\n"); };
+    auto timer_callback = [this]() -> void { RCLCPP_INFO(this->get_logger(), "Hello, world!") };
     timer_ = create_wall_timer(500ms, timer_callback);
   }
 
