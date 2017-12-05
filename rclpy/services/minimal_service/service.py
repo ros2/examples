@@ -19,7 +19,8 @@ import rclpy
 
 def add_two_ints_callback(request, response):
     response.sum = request.a + request.b
-    print('Incoming request\na: %d b: %d' % (request.a, request.b))
+    rclpy.logging.get_logger('minimal_service').info(
+        'Incoming request\na: %d b: %d' % (request.a, request.b))
 
     return response
 

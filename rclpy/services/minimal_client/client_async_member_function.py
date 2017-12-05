@@ -24,7 +24,7 @@ class MinimalClientAsync(Node):
         super().__init__('minimal_client_async')
         self.cli = self.create_client(AddTwoInts, 'add_two_ints')
         while not self.cli.wait_for_service(timeout_sec=1.0):
-            print('service not available, waiting again...')
+            self.get_logger().info('service not available, waiting again...')
         self.req = AddTwoInts.Request()
 
     def send_request(self):
@@ -44,7 +44,7 @@ def main(args=None):
         # for multiple pending requests. This will change once an executor model is implemented
         # In the future the response will not be stored in cli.response
         if minimal_client.cli.response is not None:
-            print(
+            minimal_client.get_logger().info(
                 'Result of add_two_ints: for %d + %d = %d' %
                 (minimal_client.req.a, minimal_client.req.b, minimal_client.cli.response.sum))
             break
