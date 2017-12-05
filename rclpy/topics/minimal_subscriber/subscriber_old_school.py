@@ -18,7 +18,8 @@ from std_msgs.msg import String
 
 
 def chatter_callback(msg):
-    print('I heard: [%s]' % msg.data)
+    rclpy.logging.get_logger('minimal_subscriber').info(
+        'I heard: "%s"' % msg.data)
 
 
 def main(args=None):

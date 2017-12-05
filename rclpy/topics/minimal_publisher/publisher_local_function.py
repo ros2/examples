@@ -30,7 +30,7 @@ def main(args=None):
         nonlocal i
         msg.data = 'Hello World: %d' % i
         i += 1
-        print('Publishing: "%s"' % msg.data)
+        node.get_logger().info('Publishing: "%s"' % msg.data)
         publisher.publish(msg)
 
     timer_period = 0.5  # seconds
