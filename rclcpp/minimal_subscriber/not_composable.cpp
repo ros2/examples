@@ -22,7 +22,7 @@
 
 void topic_callback(const std_msgs::msg::String::SharedPtr msg)
 {
-  printf("I heard: [%s]\n", msg->data.c_str());
+  RCLCPP_INFO(rclcpp::get_logger("minimal_subscriber"), "I heard: '%s'", msg->data.c_str())
 }
 
 int main(int argc, char * argv[])

@@ -25,7 +25,9 @@ void handle_service(
   const std::shared_ptr<AddTwoInts::Response> response)
 {
   (void)request_header;
-  printf("request: %" PRId64 " + %" PRId64 "\n", request->a, request->b);
+  RCLCPP_INFO(
+    rclcpp::get_logger("minimal_service"),
+    "request: %" PRId64 " + %" PRId64, request->a, request->b)
   response->sum = request->a + request->b;
 }
 

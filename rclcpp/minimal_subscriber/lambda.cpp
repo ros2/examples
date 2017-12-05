@@ -24,8 +24,8 @@ public:
   {
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
-      [](std_msgs::msg::String::UniquePtr msg) {
-      printf("I heard: [%s]\n", msg->data.c_str());
+      [this](std_msgs::msg::String::UniquePtr msg) {
+      RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str())
     });
   }
 
