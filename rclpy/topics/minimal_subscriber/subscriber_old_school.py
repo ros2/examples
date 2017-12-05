@@ -21,7 +21,6 @@ g_node = None
 
 def chatter_callback(msg):
     global g_node
-    # rclpy.logging.get_logger('minimal_subscriber').info(
     g_node.get_logger().info(
         'I heard: "%s"' % msg.data)
 
