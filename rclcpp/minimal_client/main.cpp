@@ -30,7 +30,7 @@ int main(int argc, char * argv[])
       RCLCPP_ERROR(node->get_logger(), "client interrupted while waiting for service to appear.")
       return 1;
     }
-    RCLCPP_ERROR(node->get_logger(), "waiting for service to appear...")
+    RCLCPP_INFO(node->get_logger(), "waiting for service to appear...")
   }
   auto request = std::make_shared<AddTwoInts::Request>();
   request->a = 41;
