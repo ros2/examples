@@ -30,7 +30,7 @@ void PublisherNode::on_timer()
 {
   auto message = std_msgs::msg::String();
   message.data = "Hello, world! " + std::to_string(count_++);
-  printf("Publisher: [%s]\n", message.data.c_str());
+  RCLCPP_INFO(this->get_logger(), "Publisher: '%s'", message.data.c_str())
   publisher_->publish(message);
 }
 

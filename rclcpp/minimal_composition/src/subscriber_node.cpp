@@ -21,8 +21,8 @@ SubscriberNode::SubscriberNode()
 {
   subscription_ = create_subscription<std_msgs::msg::String>(
     "topic",
-    [](std_msgs::msg::String::UniquePtr msg) {
-    printf("Subscriber: [%s]\n", msg->data.c_str());
+    [this](std_msgs::msg::String::UniquePtr msg) {
+    RCLCPP_INFO(this->get_logger(), "Subscriber: '%s'", msg->data.c_str())
   });
 }
 

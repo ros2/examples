@@ -29,7 +29,7 @@ public:
 private:
   void topic_callback(const std_msgs::msg::String::SharedPtr msg)
   {
-    printf("I heard: [%s]\n", msg->data.c_str());
+    RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str())
   }
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
 };

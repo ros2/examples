@@ -16,26 +16,31 @@ import rclpy
 
 from std_msgs.msg import String
 
+g_node = None
+
 
 def chatter_callback(msg):
-    print('I heard: [%s]' % msg.data)
+    global g_node
+    g_node.get_logger().info(
+        'I heard: "%s"' % msg.data)
 
 
 def main(args=None):
+    global g_node
     rclpy.init(args=args)
 
-    node = rclpy.create_node('minimal_subscriber')
+    g_node = rclpy.create_node('minimal_subscriber')
 
-    subscription = node.create_subscription(String, 'topic', chatter_callback)
+    subscription = g_node.create_subscription(String, 'topic', chatter_callback)
     subscription  # prevent unused variable warning
 
     while rclpy.ok():
-        rclpy.spin_once(node)
+        rclpy.spin_once(g_node)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    node.destroy_node()
+    g_node.destroy_node()
     rclpy.shutdown()
 
 
