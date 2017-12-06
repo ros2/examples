@@ -57,8 +57,10 @@ def main(args=None):
     # Run standalone
     rclpy.init(args=args)
     try:
-        rclpy.spin(Talker())
+        talker = Talker()
+        rclpy.spin(talker)
     finally:
+        talker.destroy_node()
         rclpy.shutdown()
 
 

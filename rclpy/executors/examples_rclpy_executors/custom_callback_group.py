@@ -99,8 +99,10 @@ class ThrottledTalker(Node):
 def main(args=None):
     rclpy.init(args=args)
     try:
-        rclpy.spin(ThrottledTalker())
+        talker = ThrottledTalker()
+        rclpy.spin(talker)
     finally:
+        talker.destroy_node()
         rclpy.shutdown()
 
 
