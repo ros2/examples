@@ -30,7 +30,7 @@ void topic_callback(const std_msgs::msg::String::SharedPtr msg)
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  auto g_node = rclcpp::Node::make_shared("minimal_subscriber");
+  g_node = rclcpp::Node::make_shared("minimal_subscriber");
   auto subscription = g_node->create_subscription<std_msgs::msg::String>
       ("topic", topic_callback);
   rclcpp::spin(g_node);
