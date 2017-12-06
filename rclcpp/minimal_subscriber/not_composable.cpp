@@ -35,5 +35,6 @@ int main(int argc, char * argv[])
       ("topic", topic_callback);
   rclcpp::spin(g_node);
   rclcpp::shutdown();
+  g_node = nullptr;
   return 0;
 }

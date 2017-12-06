@@ -39,5 +39,6 @@ int main(int argc, char ** argv)
   auto server = g_node->create_service<AddTwoInts>("add_two_ints", handle_service);
   rclcpp::spin(g_node);
   rclcpp::shutdown();
+  g_node = nullptr;
   return 0;
 }
