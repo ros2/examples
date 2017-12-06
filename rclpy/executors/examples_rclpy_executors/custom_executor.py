@@ -67,7 +67,7 @@ class PriorityExecutor(Executor):
         """
         # wait_for_ready_callbacks yields callbacks that are ready to be executed
         try:
-            handler, group, node = next(self.wait_for_ready_callbacks(timeout_sec=timeout_sec))
+            handler, group, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
         except StopIteration:
             pass
         else:
