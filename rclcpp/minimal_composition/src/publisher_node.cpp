@@ -18,12 +18,14 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+using namespace std::chrono_literals;
+
 PublisherNode::PublisherNode()
 : Node("publisher_node"), count_(0)
 {
   publisher_ = create_publisher<std_msgs::msg::String>("topic");
   timer_ = create_wall_timer(
-    std::chrono::milliseconds(500), std::bind(&PublisherNode::on_timer, this));
+    500ms, std::bind(&PublisherNode::on_timer, this));
 }
 
 void PublisherNode::on_timer()
