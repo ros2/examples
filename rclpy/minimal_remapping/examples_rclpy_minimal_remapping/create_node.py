@@ -20,7 +20,8 @@ from std_msgs.msg import String
 def main(args=None):
     rclpy.init(args=args)
 
-    node = rclpy.create_node('minimal_remapping_subscriber', remap_rules=['/foo/bar:=/bar/foo'])
+    # Node will ignore global args, using cli_args only
+    node = rclpy.create_node('minimal_remapping_subscriber', cli_args=['/foo/bar:=/bar/foo'])
 
     subscription = node.create_subscription(
         String, '/foo/bar', lambda msg: node.get_logger().info('I heard: "%s"' % msg.data))

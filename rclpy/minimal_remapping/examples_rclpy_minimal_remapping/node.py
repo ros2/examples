@@ -20,8 +20,9 @@ from std_msgs.msg import String
 
 class MinimalRemappingSubscriber(Node):
 
-    def __init__(self, remap_rules):
-        super().__init__(self, 'minimal_remapping_subscriber', remap_rules=remap_rules)
+    def __init__(self, *args, **kwargs):
+        # Custom node must be good about passing args and kwargs through to the node
+        super().__init__(self, 'minimal_remapping_subscriber', *args, **kwargs)
 
         self.subscription = self.create_subscription(
             String, '/foo/bar', lambda msg: self.get_logger().info('I heard: "%s"' % msg.data))
@@ -30,7 +31,8 @@ class MinimalRemappingSubscriber(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    node = MinimalRemappingSubscriber(remap_rules=['/foo/bar:=/bar/foo'])
+    # Keyword args get passed through to Node.__init__()
+    node = MinimalRemappingSubscriber(cli_args=['/foo/bar:=/bar/foo'])
     rclpy.spin(node)
 
     node.destroy_node()

@@ -18,8 +18,8 @@
 class MinimalRemappingSubscriber : public rclcpp::Node
 {
 public:
-  MinimalRemappingSubscriber(const rclcpp::RemapRules & rules)
-  : Node("minimal_remapping_subscriber", rules)
+  MinimalRemappingSubscriber(const rclcpp::ParsedArgs & node_args)
+  : Node("minimal_remapping_subscriber", node_args)
   {
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "/foo/bar",
@@ -35,9 +35,8 @@ private:
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::RemapRules rules;
-  rules.push_back("/foo/bar:=/bar/foo");
-  rclcpp::spin(std::make_shared<MinimalRemappingSubscriber>(rules));
+  rclcpp::ParsedArgs node_args = {"/foo/bar:=/bar/foo"};
+  rclcpp::spin(std::make_shared<MinimalRemappingSubscriber>(node_args));
   rclcpp::shutdown();
   return 0;
 }
