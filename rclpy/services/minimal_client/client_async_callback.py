@@ -17,6 +17,7 @@ from example_interfaces.srv import AddTwoInts
 import rclpy
 from rclpy.callback_groups import ReentrantCallbackGroup
 
+
 def main(args=None):
     rclpy.init(args=args)
     node = rclpy.create_node('minimal_client')
@@ -35,21 +36,15 @@ def main(args=None):
             req = AddTwoInts.Request()
             req.a = 41
             req.b = 1
-            print("_____Calling client")
             future = cli.call_async(req)
-            print ("_____awaiting future")
             result = await future
-            print("_____Checking result")
-            if future.result() is not None:
+            if result is not None:
                 node.get_logger().info(
                     'Result of add_two_ints: for %d + %d = %d' %
-                    (req.a, req.b, future.result().sum))
+                    (req.a, req.b, result.sum))
             else:
                 node.get_logger().info('Service call failed %r' % (future.exception(),))
         finally:
-            print("_____Done with service callbac")
-            import traceback
-            traceback.print_exc()
             did_get_result = True
 
     while not cli.wait_for_service(timeout_sec=1.0):
@@ -57,23 +52,15 @@ def main(args=None):
 
     timer = node.create_timer(0.5, call_service, callback_group=cb_group)
 
-    print("Waiting for callback to get called")
     while rclpy.ok() and not did_run:
-        print("About to call spin_once")
         rclpy.spin_once(node)
-        print("looping again")
 
-    print("Done waiting for callback to be called")
     if did_run:
-        print("callback did run")
         # call timer callback only once
         timer.cancel()
 
-    print ("Waiting for result")
     while rclpy.ok() and not did_get_result:
         rclpy.spin_once(node)
-
-    print("Got result, shutting down")
 
     node.destroy_node()
     rclpy.shutdown()
