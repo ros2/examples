@@ -28,16 +28,15 @@ def main(args=None):
     while not cli.wait_for_service(timeout_sec=1.0):
         node.get_logger().info('service not available, waiting again...')
 
-    cli.call(req)
-    # when calling wait for future
-    # spin should not be called in the main loop
-    cli.wait_for_future()
-    # TODO(mikaelarguedas) This is not the final API, and this does not scale
-    # for multiple pending requests. This will change once an executor model is implemented
-    # In the future the response will not be stored in cli.response
-    node.get_logger().info(
-        'Result of add_two_ints: for %d + %d = %d' %
-        (req.a, req.b, cli.response.sum))
+    future = cli.call_async(req)
+    rclpy.spin_until_future_complete(node, future)
+
+    if future.result() is not None:
+        node.get_logger().info(
+            'Result of add_two_ints: for %d + %d = %d' %
+            (req.a, req.b, future.result().sum))
+    else:
+        node.get_logger().info('Service call failed %r' % (future.exception(),))
 
     node.destroy_node()
     rclpy.shutdown()
