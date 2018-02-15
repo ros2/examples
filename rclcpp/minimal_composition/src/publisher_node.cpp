@@ -36,6 +36,6 @@ void PublisherNode::on_timer()
   publisher_->publish(message);
 }
 
-#include "class_loader/class_loader_register_macro.h"
+#include "class_loader/register_macro.hpp"
 
 CLASS_LOADER_REGISTER_CLASS(PublisherNode, rclcpp::Node)
