@@ -16,6 +16,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
+    zip_safe=True,
     author='Mikael Arguedas',
     author_email='mikael@osrfoundation.org',
     maintainer='Mikael Arguedas',
