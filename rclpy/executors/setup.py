@@ -11,6 +11,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
+    zip_safe=True,
     author='Shane Loretz',
     author_email='sloretz@openrobotics.org',
     maintainer='Shane Loretz',
