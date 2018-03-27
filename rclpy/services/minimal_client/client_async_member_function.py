@@ -30,7 +30,7 @@ class MinimalClientAsync(Node):
     def send_request(self):
         self.req.a = 41
         self.req.b = 1
-        self.cli.call(self.req)
+        self.future = self.cli.call_async(self.req)
 
 
 def main(args=None):
@@ -40,15 +40,17 @@ def main(args=None):
     minimal_client.send_request()
 
     while rclpy.ok():
-        # TODO(mikaelarguedas) This is not the final API, and this does not scale
-        # for multiple pending requests. This will change once an executor model is implemented
-        # In the future the response will not be stored in cli.response
-        if minimal_client.cli.response is not None:
-            minimal_client.get_logger().info(
-                'Result of add_two_ints: for %d + %d = %d' %
-                (minimal_client.req.a, minimal_client.req.b, minimal_client.cli.response.sum))
-            break
         rclpy.spin_once(minimal_client)
+        if minimal_client.future.done():
+            if minimal_client.future.result() is not None:
+                response = minimal_client.future.result()
+                minimal_client.get_logger().info(
+                    'Result of add_two_ints: for %d + %d = %d' %
+                    (minimal_client.req.a, minimal_client.req.b, response.sum))
+            else:
+                minimal_client.get_logger().info(
+                    'Service call failed %r' % (minimal_client.future.exception(),))
+            break
 
     minimal_client.destroy_node()
     rclpy.shutdown()

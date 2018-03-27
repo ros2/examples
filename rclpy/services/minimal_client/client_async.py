@@ -30,17 +30,17 @@ def main(args=None):
     while not cli.wait_for_service(timeout_sec=1.0):
         node.get_logger().info('service not available, waiting again...')
 
-    cli.call(req)
+    future = cli.call_async(req)
     while rclpy.ok():
-        # TODO(mikaelarguedas) This is not the final API, and this does not scale
-        # for multiple pending requests. This will change once an executor model is implemented
-        # In the future the response will not be stored in cli.response
-        if cli.response is not None:
-            node.get_logger().info(
-                'Result of add_two_ints: for %d + %d = %d' %
-                (req.a, req.b, cli.response.sum))
-            break
         rclpy.spin_once(node)
+        if future.done():
+            if future.result() is not None:
+                node.get_logger().info(
+                    'Result of add_two_ints: for %d + %d = %d' %
+                    (req.a, req.b, future.result().sum))
+            else:
+                node.get_logger().info('Service call failed %r' % (future.exception(),))
+            break
 
     node.destroy_node()
     rclpy.shutdown()

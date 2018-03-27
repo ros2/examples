@@ -9,7 +9,8 @@ setup(
     py_modules=[
         'client',
         'client_async',
-        'client_async_member_function'],
+        'client_async_member_function',
+        'client_async_callback'],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -37,6 +38,7 @@ setup(
             'client_async = client_async:main',
             'client_async_member_function ='
             ' client_async_member_function:main',
+            'client_async_callback = client_async_callback:main',
         ],
     },
 )
