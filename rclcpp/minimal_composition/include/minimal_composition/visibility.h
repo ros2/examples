@@ -15,7 +15,7 @@
 #ifndef MINIMAL_COMPOSITION__VISIBILITY_H_
 #define MINIMAL_COMPOSITION__VISIBILITY_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -59,7 +59,7 @@ extern "C"
   #define MINIMAL_COMPOSITION_PUBLIC_TYPE
 #endif
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
