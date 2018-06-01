@@ -13,8 +13,11 @@
 # limitations under the License.
 
 from ament_pep257.main import main
+import pytest
 
 
+@pytest.mark.linter
+@pytest.mark.pep257
 def test_pep257():
     # Test is called from package root
     rc = main(argv=['.'])
