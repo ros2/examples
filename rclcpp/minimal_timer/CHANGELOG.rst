@@ -1,0 +1,23 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package examples_rclcpp_minimal_timer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* Merge pull request `#198 <https://github.com/ros2/examples/issues/198>`_ from youtalk/include-chrono-if-using-chrono-literals
+  Add #include <chrono> if using std::chrono_literals
+* include chrono if using chrono_literals
+* Contributors: Mikael Arguedas, Yutaka Kondo
+
+0.4.0 (2017-12-08)
+------------------
+* Use logging (`#190 <https://github.com/ros2/examples/issues/190>`_)
+* 0.0.3
+* call shutdown before exiting (`#179 <https://github.com/ros2/examples/issues/179>`_)
+* 0.0.2
+* rename executables with shorter names (`#177 <https://github.com/ros2/examples/issues/177>`_)
+* install executables in package specific path `#173 <https://github.com/ros2/examples/issues/173>`_
+* use CMAKE_X_STANDARD and check compiler rather than platform
+* add pedantic flag
+* print hello world from timer callbacks (`#159 <https://github.com/ros2/examples/issues/159>`_)
+* Contributors: Dirk Thomas, Mikael Arguedas, Morgan Quigley

@@ -1,0 +1,31 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package examples_rclpy_minimal_client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* add pytest markers to linter tests
+* Update examples for new client api (`#203 <https://github.com/ros2/examples/issues/203>`_)
+* set zip_safe to avoid warning during installation (`#205 <https://github.com/ros2/examples/issues/205>`_)
+* Contributors: Dirk Thomas, Mikael Arguedas, Shane Loretz
+
+0.4.0 (2017-12-08)
+------------------
+* Use logging (`#190 <https://github.com/ros2/examples/issues/190>`_)
+* Use wait_for_service (`#185 <https://github.com/ros2/examples/issues/185>`_)
+* Fix import statement and usage for rclpy.node.Node (`#189 <https://github.com/ros2/examples/issues/189>`_)
+* remove test_suite, add pytest as test_requires
+* 0.0.3
+* Examples for Executors and callback groups (`#182 <https://github.com/ros2/examples/issues/182>`_)
+* update style to satisfy new flake8 plugins `#181 <https://github.com/ros2/examples/issues/181>`_
+* remove dependency on ament_python and perform customizations in setup.py `#178 <https://github.com/ros2/examples/issues/178>`_
+* 0.0.2
+* rename executables with shorter names (`#177 <https://github.com/ros2/examples/issues/177>`_)
+* install data_files `#176 <https://github.com/ros2/examples/issues/176>`_
+* fix error when exiting scripts `#175 <https://github.com/ros2/examples/issues/175>`_
+* install executables in package specific path `#173 <https://github.com/ros2/examples/issues/173>`_
+* use explicit kwargs `#169 <https://github.com/ros2/examples/issues/169>`_
+* fix function name (`#168 <https://github.com/ros2/examples/issues/168>`_)
+* comply with flake8 import order (`#167 <https://github.com/ros2/examples/issues/167>`_)
+* Rclpy minimal services (`#140 <https://github.com/ros2/examples/issues/140>`_)
+* Contributors: Dirk Thomas, Mikael Arguedas, Shane Loretz

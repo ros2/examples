@@ -1,0 +1,27 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package examples_rclcpp_minimal_subscriber
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* Change the not_composable example to destroy subscription first. (`#210 <https://github.com/ros2/examples/issues/210>`_)
+* Contributors: Chris Lalancette
+
+0.4.0 (2017-12-08)
+------------------
+* use global node not local (`#195 <https://github.com/ros2/examples/issues/195>`_)
+* Use logging (`#190 <https://github.com/ros2/examples/issues/190>`_)
+* 0.0.3
+* call shutdown before exiting (`#179 <https://github.com/ros2/examples/issues/179>`_)
+* 0.0.2
+* rename executables with shorter names (`#177 <https://github.com/ros2/examples/issues/177>`_)
+* install executables in package specific path `#173 <https://github.com/ros2/examples/issues/173>`_
+* use CMAKE_X_STANDARD and check compiler rather than platform
+* add pedantic flag
+* Cpp14 (`#147 <https://github.com/ros2/examples/issues/147>`_)
+* Minimal service and client (`#138 <https://github.com/ros2/examples/issues/138>`_)
+* Add examples\_ prefix to package names to avoid future collisions. (`#137 <https://github.com/ros2/examples/issues/137>`_)
+* attempt to improve indentation which includes a c++11 lambda
+* fix cmake indentation and c++11 flag ordering
+* change talker/listener to minimal_publisher/minimal_subscriber
+* Contributors: Dirk Thomas, Mikael Arguedas, Morgan Quigley
