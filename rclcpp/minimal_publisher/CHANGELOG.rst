@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2018-06-26)
+------------------
 * Add #include <chrono> if using std::chrono_literals `#198 <https://github.com/ros2/examples/issues/198>`_
 * Contributors: Mikael Arguedas, Yutaka Kondo
 

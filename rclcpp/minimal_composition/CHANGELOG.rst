@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_minimal_composition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2018-06-26)
+------------------
 * Change #if to #ifdef `#206 <https://github.com/ros2/examples/issues/206>`_
 * Deprecate class loader headers (`#204 <https://github.com/ros2/examples/issues/204>`_)
 * Use std::chrono_literals only (`#197 <https://github.com/ros2/examples/issues/197>`_)

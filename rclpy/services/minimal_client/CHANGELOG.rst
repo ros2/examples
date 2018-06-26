@@ -2,8 +2,8 @@
 Changelog for package examples_rclpy_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2018-06-26)
+------------------
 * add pytest markers to linter tests
 * Update examples for new client api (`#203 <https://github.com/ros2/examples/issues/203>`_)
 * set zip_safe to avoid warning during installation (`#205 <https://github.com/ros2/examples/issues/205>`_)

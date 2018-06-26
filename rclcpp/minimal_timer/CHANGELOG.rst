@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_minimal_timer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2018-06-26)
+------------------
 * Merge pull request `#198 <https://github.com/ros2/examples/issues/198>`_ from youtalk/include-chrono-if-using-chrono-literals
   Add #include <chrono> if using std::chrono_literals
 * include chrono if using chrono_literals

@@ -2,8 +2,8 @@
 Changelog for package examples_rclpy_executors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2018-06-26)
+------------------
 * add pytest markers to linter tests
 * set zip_safe to avoid warning during installation (`#205 <https://github.com/ros2/examples/issues/205>`_)
 * Contributors: Dirk Thomas, Mikael Arguedas
