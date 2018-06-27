@@ -5,8 +5,9 @@
   <version>0.5.0</version>
   <description>Minimalist examples of composing nodes in the same
   process</description>
-  <maintainer email="morgan@osrfoundation.org">Morgan Quigley</maintainer>
+  <maintainer email="mikael@osrfoundation.org">Mikael Arguedas</maintainer>
   <license>Apache License 2.0</license>
+  <author>Morgan Quigley</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <build_depend>class_loader</build_depend>
