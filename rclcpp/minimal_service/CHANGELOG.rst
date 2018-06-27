@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* make Mikael Arguedas the maintainer (`#212 <https://github.com/ros2/examples/issues/212>`_)
+* Contributors: Mikael Arguedas
+
 0.5.0 (2018-06-26)
 ------------------
 
