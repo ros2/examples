@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_composition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* make Mikael Arguedas the maintainer (`#212 <https://github.com/ros2/examples/issues/212>`_)
+* Contributors: Mikael Arguedas
+
 0.5.0 (2018-06-26)
 ------------------
 * Change #if to #ifdef `#206 <https://github.com/ros2/examples/issues/206>`_
