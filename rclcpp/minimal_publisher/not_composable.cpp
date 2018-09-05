@@ -35,7 +35,7 @@ int main(int argc, char * argv[])
 
   while (rclcpp::ok()) {
     message->data = "Hello, world! " + std::to_string(publish_count++);
-    RCLCPP_INFO(node->get_logger(), "Publishing: '%s'", message->data.c_str())
+    RCLCPP_INFO(node->get_logger(), "Publishing: '%s'", message->data.c_str());
     publisher->publish(message);
     rclcpp::spin_some(node);
     loop_rate.sleep();

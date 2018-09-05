@@ -24,7 +24,7 @@ rclcpp::Node::SharedPtr g_node = nullptr;
 
 void topic_callback(const std_msgs::msg::String::SharedPtr msg)
 {
-  RCLCPP_INFO(g_node->get_logger(), "I heard: '%s'", msg->data.c_str())
+  RCLCPP_INFO(g_node->get_logger(), "I heard: '%s'", msg->data.c_str());
 }
 
 int main(int argc, char * argv[])
