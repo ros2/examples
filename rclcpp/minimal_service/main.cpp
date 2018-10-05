@@ -28,7 +28,7 @@ void handle_service(
   (void)request_header;
   RCLCPP_INFO(
     g_node->get_logger(),
-    "request: %" PRId64 " + %" PRId64, request->a, request->b)
+    "request: %" PRId64 " + %" PRId64, request->a, request->b);
   response->sum = request->a + request->b;
 }
 
