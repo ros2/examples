@@ -34,10 +34,12 @@ class MinimalActionClientAsync(Node):
         future = self.action_client.send_goal_async(goal_msg)
         await future
 
-        if goal.exception() is not None:
-            self.get_logger().error('Action request failed {0}'.format(repr(goal.exception())))
+        if future.exception() is not None:
+            self.get_logger().error(
+                'Action request failed {0}'.format(repr(future.exception())))
         else:
-            self.get_logger().info('Action succeeded {0}'.format(repr(goal.result())))
+            self.get_logger().info(
+                'Action succeeded {0}'.format(repr(future.result())))
 
 
 def main(args=None):
