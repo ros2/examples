@@ -24,6 +24,14 @@ target_compile_definitions(composition_nodes
   PRIVATE "MINIMAL_COMPOSITION_DLL")
 ament_target_dependencies(composition_nodes rclcpp std_msgs class_loader)
 
+# This package installs libraries without exporting them.
+# Export the library path to ensure that the installed libraries are available.
+if(NOT WIN32)
+  ament_environment_hooks(
+    "${ament_cmake_package_templates_ENVIRONMENT_HOOK_LIBRARY_PATH}"
+    )
+endif()
+
 add_executable(composition_publisher src/standalone_publisher.cpp)
 target_link_libraries(composition_publisher composition_nodes)
 ament_target_dependencies(composition_publisher
