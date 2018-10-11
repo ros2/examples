@@ -45,7 +45,6 @@ def main(args=None):
         else:
             node.get_logger().info(
                 'Action request failed {0}'.format(repr(future.exception())))
-        break
 
     node.destroy_node()
     rclpy.shutdown()
