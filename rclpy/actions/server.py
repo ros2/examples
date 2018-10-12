@@ -19,7 +19,6 @@ from rclpy.node import Node
 import threading
 
 
-g_cancel = threading.Event()
 g_goal = None
 g_lock = threading.Lock()
 
@@ -27,7 +26,6 @@ g_lock = threading.Lock()
 def handle_cancel(goal):
     """Accepts or rejects a client request to cancel an action."""
     with g_lock:
-        g_cancel.set()
         goal.accept_cancel()
 
 
@@ -38,7 +36,6 @@ def handle_goal(goal):
         if g_goal is None:
             goal.accept()
             g_goal = goal
-            g_cancel.clear()
 
 
 async def execute_callback(goal):
