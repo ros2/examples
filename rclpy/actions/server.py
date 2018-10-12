@@ -27,20 +27,18 @@ g_lock = threading.Lock()
 
 def handle_cancel(goal):
     """Accepts or rejects a client request to cancel an action."""
-    with g_lock:
-        goal.accept_cancel()
-        g_goal = goal
-        return GoalResponse.ACCEPT
+    return GoalResponse.ACCEPT
 
 
 def handle_goal(goal):
     """Accepts or rejects a client request to begin an action."""
     with g_lock:
         # This server only allows one goal at a time
-        if g_goal is None:
-            g_goal = goal
-            return GoalResponse.ACCEPT
-    return GoalResponse.REJECT
+        if g_goal is not None:
+            # Preempt existing goal
+            g_goal->cancel()
+        g_goal = goal
+    return GoalResponse.ACCEPT
 
 
 async def execute_callback(goal):
@@ -52,9 +50,10 @@ async def execute_callback(goal):
 
     # start executing the action
     for i in range(1, goal.request.order):
-        if goal.is_preempt_requested():
-            goal.set_preempted()
-            return
+        if goal.is_cancel_requested():
+            result = Fibonacci.Result()
+            result.response = GoalResponse.CANCELLED
+            return result
         feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1]))
         # publish the feedback
         goal.publish_feedback(feedback_msg)
@@ -62,9 +61,12 @@ async def execute_callback(goal):
         # Sleep for demonstration purposes
         asyncio.sleep(1)
 
+    with g_lock:
+        g_goal = None
     result = Fibonacci.Result()
-    result.sequence = feedback_msg.sequence
-    goal.set_succeeded(result)
+    result.result.sequence = feedback_msg.sequence
+    result.response = GoalResponse.SUCCEEDED
+    return result
 
 
 def main(args=None):
