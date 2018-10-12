@@ -48,7 +48,7 @@ async def execute_callback(goal):
 
     # start executing the action
     for i in range(1, goal.request.order):
-        if goal.is_preempt_requested:
+        if goal.is_preempt_requested():
             goal.set_preempted()
             return
         feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1])
