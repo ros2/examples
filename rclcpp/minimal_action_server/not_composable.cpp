@@ -16,9 +16,11 @@
 #include <memory>
 #include "example_interfaces/action/fibonacci.hpp"
 #include "rclcpp/rclcpp.hpp"
+// TODO(jacobperron): Remove this once it is included as part of 'rclcpp.hpp'
+#include "rclcpp_action/rclcpp_action.hpp"
 
 using Fibonacci = example_interfaces::action::Fibonacci;
-using GoalHandleFibonacci = rclcpp::GoalHandle<Fibonacci>
+using GoalHandleFibonacci = rclcpp_action::ServerGoalHandle<Fibonacci>
 rclcpp::Node::SharedPtr g_node = nullptr;
 rclcpp::ActionServer<Fibonacci>::SharedPtr g_action_server = nullptr;
 std::shared_ptr<GoalHandleFibonacci> g_goal_handle = nullptr;
@@ -44,6 +46,7 @@ void handle_goal(const std::shared_ptr<GoalHandleFibonacci> goal_handle)
 
 void handle_cancel(const std::shared_ptr<GoalHandleFibonacci> goal_handle)
 {
+  // If the goal matches the currently active goal, then cancel
   if (g_goal_handle && (*g_goal_handle == *goal_handle))
   {
     auto result = Fibonacci::Result();
@@ -52,40 +55,64 @@ void handle_cancel(const std::shared_ptr<GoalHandleFibonacci> goal_handle)
   }
 }
 
-int main(int argc, char ** argv)
+void execute(const std::shared_ptr<GoalHandleFibonacci goal_handle)
 {
-  rclcpp::init(argc, argv);
-  g_node = rclcpp::Node::make_shared("minimal_action_server");
-  g_action_server = g_node->create_action_server<Fibonacci>("fibonacci", handle_goal, handle_cancel);
-  g_feedback = std::make_shared<Fibonacci::Feedback>(Fibonacci::Feedback());
-
+  // TODO: spinning?
+  /*
   rclcpp::Rate loop_rate(1);
   while (rclcpp::ok())
   {
-    // Process an active goal
-    if (g_goal_handle && g_goal_handle->is_active())
-    {
-      const auto& goal = g_goal_handle->goal;
-      const auto& sequence = g_feedback->sequence;
-      const int i = sequence.size() - 1;
-      // Check if goal is done
-      if (i > goal->order)
-      {
-        auto result = Fibonacci::Result();
-        result.sequence = sequence;
-        goal->set_succeeded(result);
-      }
-      else
-      {
-        // Update sequence
-        sequence.push_back(sequence[i] + sequence[i - 1]);
-        // Publish feedback
-        g_goal_handle->publish_feedback(g_feedback);
-      }
-    }
     rclcpp::spin_some(g_node);
     loop_rate.sleep();
   }
+  */
+
+  // Process an active goal
+  if (goal_handle->is_active())
+  {
+    // Check if there is a cancel request
+    if (goal_handle->is_cancel_request())
+    {
+      auto result = Fibonacci::Result();
+      result.sequence = g_feedback->sequence;
+      goal_handle->cancel(result, "Canceling goal at clients request.");
+      return;
+    }
+
+    const auto& goal = g_goal_handle->goal;
+    const auto& sequence = g_feedback->sequence;
+    const int i = sequence.size() - 1;
+    // Check if goal is done
+    if (i > goal->order)
+    {
+      auto result = Fibonacci::Result();
+      result.sequence = sequence;
+      goal->set_succeeded(result);
+    }
+    else
+    {
+      // Update sequence
+      sequence.push_back(sequence[i] + sequence[i - 1]);
+      // Publish feedback
+      g_goal_handle->publish_feedback(g_feedback);
+    }
+  }
+}
+
+int main(int argc, char ** argv)
+{
+  rclcpp::init(argc, argv);
+  g_feedback = std::make_shared<Fibonacci::Feedback>(Fibonacci::Feedback());
+  g_node = rclcpp::Node::make_shared("minimal_action_server");
+  g_action_server = rclcpp_action::create_action_server<Fibonacci>(
+    node,
+    "fibonacci",
+    handle_goal,
+    handle_cancel,
+    execute);  // TODO: Policy?
+
+  rclcpp::spin(g_node);
+
   rclcpp::shutdown();
   g_feedback = nullptr;
   g_action_server = nullptr;
