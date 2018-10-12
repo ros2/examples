@@ -51,9 +51,10 @@ class MinimalActionServer(Node):
 
         # start executing the action
         for i in range(1, goal.request.order):
-            if goal.is_preempt_requested():
-                goal.set_preempted()
-                return
+            if goal.is_cancel_requested():
+                result = Fibonacci.Result()
+                result.response = GoalResponse.CANCELLED
+                return result
             feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1]))
             # publish the feedback
             goal.publish_feedback(feedback_msg)
@@ -62,8 +63,9 @@ class MinimalActionServer(Node):
             asyncio.sleep(1)
 
         result = Fibonacci.Result()
-        result.sequence = feedback_msg.sequence
-        goal.set_succeeded(result)
+        result.result.sequence = feedback_msg.sequence
+        result.response = GoalResponse.SUCCEEDED
+        return result
 
 
 def main(args=None):
