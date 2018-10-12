@@ -37,16 +37,13 @@ int main(int argc, char ** argv)
   g_node = rclcpp::Node::make_shared("minimal_action_client");
   auto action_client = rclcpp_action::create_action_client<Fibonacci>(g_node, "fibonacci");
 
-  // Create goal handle
-  auto goal_handle = rclcpp_action::ClientGoalHandle();
-
   // Populate a goal
   auto goal_msg = Fibonacci::Goal();
   goal_msg.order = 10;
 
   // Send goal and wait for result
-  auto result_future = action_client->async_send_goal(goal_msg, goal_handle, feedback_callback);
-  if (rclcpp::spin_until_future_complete(g_node, result_future) !=
+  auto goal_handle = action_client->async_send_goal(goal_msg, feedback_callback);
+  if (rclcpp::spin_until_future_complete(g_node, goal_handle->result_future()) !=
     rclcpp::executor::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(g_node->get_logger(), "send goal call failed :(");
@@ -54,7 +51,7 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  auto result = result_future.get();
+  auto result = goal_handle->result_future.get();
   RCLCPP_INFO(g_node->get_logger(), "result received");
   for (auto number : result.sequence)
   {

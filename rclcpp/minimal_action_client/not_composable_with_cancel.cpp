@@ -28,18 +28,15 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("minimal_action_client");
   auto action_client = rclcpp_action::create_action_client<Fibonacci>(node, "fibonacci");
 
-  // Create goal handle
-  auto goal_handle = rclcpp_action::ClientGoalHandle();
-
   // Populate a goal
   auto goal_msg = Fibonacci::Goal();
   goal_msg.order = 10;
 
   // Send goal and wait for result (registering feedback callback is optional)
-  auto result_future = action_client->async_send_goal(goal_msg, goal_handle);
-  auto wait_result = rclcpp::spin_until_future_complete(
+  auto goal_handle = action_client->async_send_goal(goal_msg);
+  auto wait_result = rclcpp::spin_until_future_complete
     node,
-    result_future,
+    goal_handle->result_future(),
     std::chrono::duration<int64_t, std::milli>(3000));
 
   if (rclcpp::executor::FutureReturnCode::TIMEOUT == wait_result)
@@ -65,7 +62,7 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  auto result = result_future.get();
+  auto result = goal_handle->result_future().get();
   RCLCPP_INFO(node->get_logger(), "result received");
   rclcpp::shutdown();
   return 0;
