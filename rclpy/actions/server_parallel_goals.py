@@ -61,7 +61,7 @@ class MinimalActionServer(Node):
             asyncio.sleep(1)
 
         result = Fibonacci.Result()
-        result.sequence = feedback_msg.sequence)
+        result.sequence = feedback_msg.sequence
         goal.set_succeeded(result)
 
 
