@@ -1,0 +1,79 @@
+# Copyright 2016 Open Source Robotics Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from example_interfaces.action import Fibonacci
+
+import rclpy
+from rclpy.action import ActionServer
+from rclpy.node import Node
+import threading
+
+
+class MinimalActionServer(Node):
+
+    def __init__(self):
+        super().__init__('minimal_action_server')
+
+        self.lock = threading.Lock()
+        self.action_server = ActionServer(
+            node, 'fibonacci', Fibonacci, node, execute_cb=self.execute_callback,
+            handle_cancel=self.handle_cancel, handle_goal=self.handle_goal)
+
+    def handle_cancel(self, goal):
+        """Accepts or rejects a client request to cancel an action."""
+        goal.accept_cancel()
+
+    def handle_goal(self, goal):
+        """Accepts or rejects a client request to begin an action."""
+        # This server allows multiple goals in parallel
+        goal.accept()
+
+    async def execute_callback(self, goal):
+        """Executes a goal."""
+        feedback_msg = Fibonacci.Feedback()
+
+        # append the seeds for the fibonacci sequence
+        feedback_msg.sequence = [0, 1]
+
+        # start executing the action
+        for i in range(1, goal.request.order):
+            if goal.is_preempt_requested():
+                goal.set_preempted()
+                return
+            feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1])
+            # publish the feedback
+            goal.publish_feedback(feedback_msg)
+
+            # Sleep for demonstration purposes
+            asyncio.sleep(1)
+
+        with self.lock:
+            result = Fibonacci.Result()
+            result.sequence = feedback_msg.sequence)
+            goal.set_succeeded(result)
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    minimal_action_server = MinimalActionServer()
+
+    rclpy.spin(minimal_action_server)
+
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()
+
