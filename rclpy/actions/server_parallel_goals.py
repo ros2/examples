@@ -53,7 +53,7 @@ class MinimalActionServer(Node):
             if goal.is_preempt_requested():
                 goal.set_preempted()
                 return
-            feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1])
+            feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1]))
             # publish the feedback
             goal.publish_feedback(feedback_msg)
 
