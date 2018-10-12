@@ -20,7 +20,7 @@ from rclpy.node import Node
 
 
 def feedback_cb(logger, feedback):
-    logger.info('got feedback {0}'.format(repr(feedback))
+    logger.info('got feedback {0}'.format(repr(feedback)))
 
 
 def main(args=None):

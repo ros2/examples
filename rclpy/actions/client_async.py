@@ -28,11 +28,14 @@ class MinimalActionClientAsync(Node):
         timer_period = 10  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
+    def feedback_callback(self, feedback):
+        self.get_logger().info('got feedback {0}'.format(repr(feedback)))
+
     async def timer_callback(self):
         goal_msg = Fibonacci.Goal()
         goal_msg.order = 10
 
-        future = self.action_client.send_goal_async(goal_msg)
+        future = self.action_client.send_goal_async(goal_msg, feedback_cb=self.feedback_callback)
         await future
 
         if future.exception() is not None:

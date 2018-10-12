@@ -51,7 +51,7 @@ async def execute_callback(goal):
         if goal.is_preempt_requested():
             goal.set_preempted()
             return
-        feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1])
+        feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1]))
         # publish the feedback
         goal.publish_feedback(feedback_msg)
 
@@ -59,7 +59,7 @@ async def execute_callback(goal):
         asyncio.sleep(1)
 
     result = Fibonacci.Result()
-    result.sequence = feedback_msg.sequence)
+    result.sequence = feedback_msg.sequence
     goal.set_succeeded(result)
 
 
