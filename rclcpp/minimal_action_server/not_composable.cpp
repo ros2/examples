@@ -42,10 +42,12 @@ rclcpp_action::ResultResponse<Fibonacci::Result> execute(
   const std::shared_ptr<GoalHandleFibonacci> goal_handle)
 {
   rclcpp::Rate loop_rate(1);
-  auto feedback = Fibonacci::Feedback();
-  auto result_response = rclcpp_action::ResultResponse<Fibonacci::Result>();
   const auto& goal = goal_handle->goal;
-  const auto& sequence = feedback.sequence;
+  auto feedback = Fibonacci::Feedback();
+  auto& sequence = feedback.sequence;
+  sequence.push_back(0);
+  sequence.push_back(1);
+  auto result_response = rclcpp_action::ResultResponse<Fibonacci::Result>();
 
   while (rclcpp::ok())
   {
