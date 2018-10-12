@@ -15,6 +15,7 @@
 from example_interfaces.action import Fibonacci
 
 import rclpy
+from rclpy.action import ActionClient
 from rclpy.node import Node
 
 
@@ -27,12 +28,12 @@ def main(args=None):
 
     node = rclpy.create_node('minimal_action_client')
 
-    action_client = self.create_action_client(Fibonacci, 'fibonacci')
+    action_client = ActionClient(node, Fibonacci, 'fibonacci')
 
     goal_msg = Fibonacci.Goal()
     goal_msg.order = 10
 
-    future = self.action_client.send_goal_async(
+    future = action_client.send_goal_async(
         goal_msg, feedback_callback=lambda feedback: feedback_cb(node.get_logger(), feedback))
 
     while rclpy.ok() and not future.done():

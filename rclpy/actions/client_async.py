@@ -15,6 +15,7 @@
 from example_interfaces.action import Fibonacci
 
 import rclpy
+from rclpy.action import ActionClient
 from rclpy.node import Node
 
 
@@ -22,7 +23,7 @@ class MinimalActionClientAsync(Node):
 
     def __init__(self):
         super().__init__('minimal_action_client')
-        self.action_client = self.create_action_client(Fibonacci, 'fibonacci')
+        self.action_client = ActionClient(self, Fibonacci, 'fibonacci')
 
         timer_period = 10  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
