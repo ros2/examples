@@ -58,10 +58,9 @@ class MinimalActionServer(Node):
             # Sleep for demonstration purposes
             asyncio.sleep(1)
 
-        with self.lock:
-            result = Fibonacci.Result()
-            result.sequence = feedback_msg.sequence)
-            goal.set_succeeded(result)
+        result = Fibonacci.Result()
+        result.sequence = feedback_msg.sequence)
+        goal.set_succeeded(result)
 
 
 def main(args=None):
