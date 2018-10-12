@@ -28,7 +28,7 @@ class MinimalActionServer(Node):
 
         self.lock = threading.Lock()
         self.action_server = ActionServer(
-            node, 'fibonacci', Fibonacci, node, execute_cb=self.execute_callback,
+            self, 'fibonacci', Fibonacci, node, execute_cb=self.execute_callback,
             execute_cb_group=ReentrantCallbackGroup(),
             handle_cancel=self.handle_cancel, handle_goal=self.handle_goal)
 
