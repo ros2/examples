@@ -15,6 +15,7 @@
 from example_interfaces.action import Fibonacci
 
 import rclpy
+from rclpy.action import ActionServer
 from rclpy.node import Node
 import threading
 
@@ -67,12 +68,13 @@ def main(args=None):
 
     node = rclpy.create_node('minimal_action_server')
 
-    action_server = node.create_action_server(
-        'fibonacci', Fibonacci, node, execute_cb=execute_callback, handle_cancel=handle_cancel,
-        handle_goal=handle_goal)
+    action_server = ActionServer(
+        node, 'fibonacci', Fibonacci, node, execute_cb=execute_callback,
+        handle_cancel=handle_cancel, handle_goal=handle_goal)
 
     rclpy.spin(node)
 
+    action_server.destroy()
     node.destroy_node()
     rclpy.shutdown()
 
