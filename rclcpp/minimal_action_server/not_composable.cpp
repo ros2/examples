@@ -49,7 +49,7 @@ rclcpp_action::ResultResponse<Fibonacci::Result> execute(
   sequence.push_back(1);
   auto result_response = rclcpp_action::ResultResponse<Fibonacci::Result>();
 
-  while (rclcpp::ok())
+  for (int i = 1; (i < goal->order) && rclcpp::ok(); ++i)
   {
     // Check if there is a cancel request
     if (goal_handle->is_cancel_request())
@@ -60,7 +60,6 @@ rclcpp_action::ResultResponse<Fibonacci::Result> execute(
       return result_response;
     }
 
-    const int i = sequence.size() - 1;
     // Check if goal is done
     if (i > goal->order)
     {
