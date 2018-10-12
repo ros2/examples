@@ -16,6 +16,7 @@ from example_interfaces.action import Fibonacci
 
 import rclpy
 from rclpy.action import ActionServer
+from rclpy.action import GoalResponse
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.node import Node
 import threading
@@ -34,12 +35,12 @@ class MinimalActionServer(Node):
 
     def handle_cancel(self, goal):
         """Accepts or rejects a client request to cancel an action."""
-        goal.accept_cancel()
+        return GoalResponse.ACCEPT
 
     def handle_goal(self, goal):
         """Accepts or rejects a client request to begin an action."""
         # This server allows multiple goals in parallel
-        goal.accept()
+        return GoalResponse.ACCEPT
 
     async def execute_callback(self, goal):
         """Executes a goal."""

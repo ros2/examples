@@ -16,6 +16,7 @@ from example_interfaces.action import Fibonacci
 
 import rclpy
 from rclpy.action import ActionServer
+from rclpy.action import GoalResponse
 from rclpy.node import Node
 import threading
 
@@ -28,6 +29,8 @@ def handle_cancel(goal):
     """Accepts or rejects a client request to cancel an action."""
     with g_lock:
         goal.accept_cancel()
+        g_goal = goal
+        return GoalResponse.ACCEPT
 
 
 def handle_goal(goal):
@@ -35,8 +38,9 @@ def handle_goal(goal):
     with g_lock:
         # This server only allows one goal at a time
         if g_goal is None:
-            goal.accept()
             g_goal = goal
+            return GoalResponse.ACCEPT
+    return GoalResponse.REJECT
 
 
 async def execute_callback(goal):
