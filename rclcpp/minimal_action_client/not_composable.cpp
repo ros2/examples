@@ -16,6 +16,8 @@
 #include <memory>
 #include "example_interfaces/action/fibonacci.hpp"
 #include "rclcpp/rclcpp.hpp"
+// TODO(jacobperron): Remove this once it is included as part of 'rclcpp.hpp'
+#include "rclcpp_action/rclcpp_action.hpp"
 
 using Fibonacci = example_interfaces::action::Fibonacci;
 
@@ -24,7 +26,7 @@ int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("minimal_action_client");
-  auto action_client = node->create_action_client<Fibonacci>("fibonacci");
+  auto action_client = rclcpp_action::create_action_client<Fibonacci>(node, "fibonacci");
 
   // Populate a goal
   auto goal_msg = Fibonacci::Goal();
