@@ -36,7 +36,7 @@ def handle_goal(goal):
         # This server only allows one goal at a time
         if g_goal is not None:
             # Preempt existing goal
-            g_goal->cancel()
+            g_goal.cancel()
         g_goal = goal
     return GoalResponse.ACCEPT
 
