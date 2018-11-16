@@ -5,7 +5,7 @@
   <version>0.5.1</version>
   <description>Examples of minimal service clients using rclpy.</description>
 
-  <maintainer email="mikael@osrfoundation.org">Mikael Arguedas</maintainer>
+  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
   <license>Apache License 2.0</license>
 
   <exec_depend>example_interfaces</exec_depend>

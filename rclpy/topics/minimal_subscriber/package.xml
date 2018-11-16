@@ -4,7 +4,7 @@
   <name>examples_rclpy_minimal_subscriber</name>
   <version>0.5.1</version>
   <description>Examples of minimal subscribers using rclpy.</description>
-  <maintainer email="mikael@osrfoundation.org">Mikael Arguedas</maintainer>
+  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
   <license>Apache License 2.0</license>
 
   <exec_depend>rclpy</exec_depend>
