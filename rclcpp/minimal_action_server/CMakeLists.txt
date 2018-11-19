@@ -13,9 +13,13 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 
 add_executable(action_server_not_composable not_composable.cpp)
-ament_target_dependencies(action_server_not_composable rclcpp example_interfaces)
+ament_target_dependencies(action_server_not_composable
+  "rclcpp"
+  "rclcpp_action"
+  "example_interfaces")
 
 install(TARGETS action_server_not_composable
   DESTINATION lib/${PROJECT_NAME})
