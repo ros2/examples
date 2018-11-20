@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.0 (2018-11-20)
+------------------
+* Updated maintainer info. (`#218 <https://github.com/ros2/examples/issues/218>`_)
+* Contributors: Shane Loretz
+
 0.5.1 (2018-06-27)
 ------------------
 

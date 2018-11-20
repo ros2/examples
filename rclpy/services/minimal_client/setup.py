@@ -4,7 +4,7 @@ package_name = 'examples_rclpy_minimal_client'
 
 setup(
     name=package_name,
-    version='0.5.1',
+    version='0.6.0',
     packages=[],
     py_modules=[
         'client',

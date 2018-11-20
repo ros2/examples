@@ -2,6 +2,12 @@
 Changelog for package examples_rclcpp_minimal_composition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.0 (2018-11-20)
+------------------
+* Added library path environment hook. (`#215 <https://github.com/ros2/examples/issues/215>`_)
+* Added semicolons to all RCLCPP and RCUTILS macros. (`#214 <https://github.com/ros2/examples/issues/214>`_)
+* Contributors: Chris Lalancette, Steven! Ragnarök
+
 0.5.1 (2018-06-27)
 ------------------
 * make Mikael Arguedas the maintainer (`#212 <https://github.com/ros2/examples/issues/212>`_)
