@@ -5,8 +5,9 @@
   <version>0.5.1</version>
   <description>Minimalist examples of composing nodes in the same
   process</description>
-  <maintainer email="mikael@osrfoundation.org">Mikael Arguedas</maintainer>
+  <maintainer email="jacob@openrobotics.org">Jacob Perron</maintainer>
   <license>Apache License 2.0</license>
+  <author>Mikael Arguedas</author>
   <author>Morgan Quigley</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

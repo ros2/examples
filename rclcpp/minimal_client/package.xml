@@ -4,8 +4,9 @@
   <name>examples_rclcpp_minimal_client</name>
   <version>0.5.1</version>
   <description>Examples of minimal service clients</description>
-  <maintainer email="mikael@osrfoundation.org">Mikael Arguedas</maintainer>
+  <maintainer email="jacob@openrobotics.org">Jacob Perron</maintainer>
   <license>Apache License 2.0</license>
+  <author>Mikael Arguedas</author>
   <author>Morgan Quigley</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
