@@ -21,55 +21,51 @@
 
 using Fibonacci = example_interfaces::action::Fibonacci;
 using GoalHandleFibonacci = rclcpp_action::ServerGoalHandle<Fibonacci>;
-using ResultResponseFibonacci = rclcpp_action::ResultResponse<Fibonacci>;
 
-
-rclcpp_action::GoalResponseReturnCode handle_goal(
-  const std::shared_ptr<GoalHandleFibonacci> goal_handle)
+rclcpp_action::GoalResponse handle_goal(
+  std::array<uint8_t, 16> uuid, const std::shared_ptr<Fibonacci::Goal> goal)
 {
+  (void)uuid;
   // Let's reject sequences that are over 9000
-  if (goal_handle->getGoalMessage().order > 9000)
+  if (goal->order > 9000)
   {
-    return rclcpp_action::GoalResponseReturnCode::REJECT;
+    return rclcpp_action::GoalResponse::REJECT;
   }
-  return rclcpp_action::GoalResponseReturnCode::ACCEPT;
+  return rclcpp_action::GoalResponse::ACCEPT;
 }
 
-rclcpp_action::CancelResponseReturnCode handle_cancel(
+rclcpp_action::CancelResponse handle_cancel(
   const std::shared_ptr<GoalHandleFibonacci> goal_handle)
 {
-  return rclcpp_action::CancelResponseReturnCode::ACCEPT;
+  (void)goal_handle;
+  return rclcpp_action::CancelResponse::ACCEPT;
 }
 
-ResultResponseFibonacci execute(
+void execute(
   const std::shared_ptr<GoalHandleFibonacci> goal_handle)
 {
   rclcpp::Rate loop_rate(1);
-  const auto goal = goal_handle->getGoalMessage();
-  auto feedback = Fibonacci::Feedback();
-  auto& sequence = feedback.sequence;
+  const auto goal = goal_handle->get_goal();
+  Fibonacci::Feedback::SharedPtr feedback;
+  auto& sequence = feedback->sequence;
   sequence.push_back(0);
   sequence.push_back(1);
-  auto result_response = ResultResponseFibonacci();
+  Fibonacci::Result::SharedPtr result_response;
 
-  for (int i = 1; (i < goal.order) && rclcpp::ok(); ++i)
+  for (int i = 1; (i < goal->order) && rclcpp::ok(); ++i)
   {
     // Check if there is a cancel request
     if (goal_handle->is_cancel_request())
     {
-      result_response.response = rclcpp_action::ResultResponseReturnCode::CANCELED;
-      result_response.result.sequence = sequence;
-      result_response.message = "Canceling goal at clients request.";
-      return result_response;
+      result_response->sequence = sequence;
+      goal_handle->set_canceled(result_response);
     }
 
     // Check if goal is done
-    if (i > goal.order)
+    if (i > goal->order)
     {
-      result_response.response = rclcpp_action::ResultResponseReturnCode::SUCCEEDED;
-      result_response.result.sequence = sequence;
-      result_response.message = "Successfully computed Fibonacci sequence.";
-      return result_response;
+      result_response->sequence = sequence;
+      goal_handle->set_succeeded(result_response);
     }
     // Update sequence
     sequence.push_back(sequence[i] + sequence[i - 1]);
@@ -78,6 +74,12 @@ ResultResponseFibonacci execute(
 
     loop_rate.sleep();
   }
+}
+
+void handle_execute(const std::shared_ptr<GoalHandleFibonacci> goal_handle)
+{
+  // handle_execute needs to return quickly to avoid blocking the executor, so spin up a new thread
+  std::thread{execute, goal_handle}.detach();
 }
 
 int main(int argc, char ** argv)
@@ -94,8 +96,7 @@ int main(int argc, char ** argv)
     "fibonacci",
     handle_goal,
     handle_cancel,
-    execute,
-    rclcpp_action::StaticThreadPoolExecutePolicy(4));
+    handle_execute);
 
   rclcpp::spin(node);
 
