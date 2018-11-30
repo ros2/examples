@@ -25,6 +25,7 @@ using GoalHandleFibonacci = rclcpp_action::ServerGoalHandle<Fibonacci>;
 rclcpp_action::GoalResponse handle_goal(
   std::array<uint8_t, 16> uuid, const std::shared_ptr<Fibonacci::Goal> goal)
 {
+  RCLCPP_INFO(rclcpp::get_logger("server"), "Got goal request with order %d", goal->order);
   (void)uuid;
   // Let's reject sequences that are over 9000
   if (goal->order > 9000)
@@ -37,6 +38,7 @@ rclcpp_action::GoalResponse handle_goal(
 rclcpp_action::CancelResponse handle_cancel(
   const std::shared_ptr<GoalHandleFibonacci> goal_handle)
 {
+  RCLCPP_INFO(rclcpp::get_logger("server"), "Got request to cancel goal");
   (void)goal_handle;
   return rclcpp_action::CancelResponse::ACCEPT;
 }
@@ -44,13 +46,14 @@ rclcpp_action::CancelResponse handle_cancel(
 void execute(
   const std::shared_ptr<GoalHandleFibonacci> goal_handle)
 {
+  RCLCPP_INFO(rclcpp::get_logger("server"), "Executing goal");
   rclcpp::Rate loop_rate(1);
   const auto goal = goal_handle->get_goal();
-  Fibonacci::Feedback::SharedPtr feedback;
+  auto feedback = std::make_shared<Fibonacci::Feedback>();
   auto& sequence = feedback->sequence;
   sequence.push_back(0);
   sequence.push_back(1);
-  Fibonacci::Result::SharedPtr result_response;
+  auto result_response = std::make_shared<Fibonacci::Result>();
 
   for (int i = 1; (i < goal->order) && rclcpp::ok(); ++i)
   {
@@ -59,20 +62,23 @@ void execute(
     {
       result_response->sequence = sequence;
       goal_handle->set_canceled(result_response);
-    }
-
-    // Check if goal is done
-    if (i > goal->order)
-    {
-      result_response->sequence = sequence;
-      goal_handle->set_succeeded(result_response);
+      RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Canceled");
+      return;
     }
     // Update sequence
     sequence.push_back(sequence[i] + sequence[i - 1]);
     // Publish feedback
     goal_handle->publish_feedback(feedback);
+    RCLCPP_INFO(rclcpp::get_logger("server"), "Publish Feedback");
 
     loop_rate.sleep();
+  }
+
+  // Check if goal is done
+  if (rclcpp::ok()) {
+    result_response->sequence = sequence;
+    goal_handle->set_succeeded(result_response);
+    RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Suceeded");
   }
 }
 

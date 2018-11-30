@@ -26,27 +26,46 @@ int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("minimal_action_client");
-  auto action_client = rclcpp_action::create_action_client<Fibonacci>(node, "fibonacci");
+  auto action_client = rclcpp_action::create_client<Fibonacci>(node, "fibonacci");
 
   // Populate a goal
   auto goal_msg = Fibonacci::Goal();
   goal_msg.order = 10;
 
-  // Send goal and wait for result (registering feedback callback is optional)
-  auto goal_handle = action_client->async_send_goal(goal_msg);
-  if (rclcpp::spin_until_future_complete(node, goal_handle->result_future()) !=
+  RCLCPP_INFO(node->get_logger(), "Sending goal");
+  // Ask server to achieve some goal and wait until it's accepted
+  auto goal_handle_future = action_client->async_send_goal(goal_msg);
+  if (rclcpp::spin_until_future_complete(node, goal_handle_future) !=
     rclcpp::executor::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(node->get_logger(), "send goal call failed :(");
     return 1;
   }
 
-  auto result = goal_handle->result_future().get();
+  // TODO(sloretz) how to check if the goal was rejected?
+
+  // Wait for the server to be done with the goal
+  auto goal_handle = goal_handle_future.get();
+
+  auto result_future = goal_handle->async_result();
+
+  RCLCPP_INFO(node->get_logger(), "Waiting for result");
+  if (rclcpp::spin_until_future_complete(node, result_future) !=
+    rclcpp::executor::FutureReturnCode::SUCCESS)
+  {
+    RCLCPP_ERROR(node->get_logger(), "get result call failed :(");
+    return 1;
+  }
+
+  // TODO(sloretz) how to check status of result?
+  auto result = result_future.get();
+
   RCLCPP_INFO(node->get_logger(), "result received");
   for (auto number : result.sequence)
   {
     RCLCPP_INFO(node->get_logger(), "%" PRId64, number);
   }
+
   rclcpp::shutdown();
   return 0;
 }
