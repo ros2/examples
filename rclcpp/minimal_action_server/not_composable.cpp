@@ -32,7 +32,7 @@ rclcpp_action::GoalResponse handle_goal(
   {
     return rclcpp_action::GoalResponse::REJECT;
   }
-  return rclcpp_action::GoalResponse::ACCEPT;
+  return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
 }
 
 rclcpp_action::CancelResponse handle_cancel(
@@ -82,9 +82,9 @@ void execute(
   }
 }
 
-void handle_execute(const std::shared_ptr<GoalHandleFibonacci> goal_handle)
+void handle_accepted(const std::shared_ptr<GoalHandleFibonacci> goal_handle)
 {
-  // handle_execute needs to return quickly to avoid blocking the executor, so spin up a new thread
+  // this needs to return quickly to avoid blocking the executor, so spin up a new thread
   std::thread{execute, goal_handle}.detach();
 }
 
@@ -102,7 +102,7 @@ int main(int argc, char ** argv)
     "fibonacci",
     handle_goal,
     handle_cancel,
-    handle_execute);
+    handle_accepted);
 
   rclcpp::spin(node);
 
