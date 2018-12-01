@@ -44,6 +44,7 @@ int main(int argc, char ** argv)
   RCLCPP_INFO(g_node->get_logger(), "Sending goal");
   // Ask server to achieve some goal and wait until it's accepted
   auto goal_handle_future = action_client->async_send_goal(goal_msg, feedback_callback);
+
   if (rclcpp::spin_until_future_complete(g_node, goal_handle_future) !=
     rclcpp::executor::FutureReturnCode::SUCCESS)
   {
@@ -51,11 +52,15 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  // TODO(sloretz) how to check if the goal was rejected?
+  rclcpp_action::ClientGoalHandle<Fibonacci>::SharedPtr goal_handle;
+  try {
+    goal_handle = goal_handle_future.get();
+  } catch (rclcpp_action::exceptions::RejectedGoalError) {
+    RCLCPP_ERROR(g_node->get_logger(), "Goal was rejected by server");
+    return 1;
+  }
 
   // Wait for the server to be done with the goal
-  auto goal_handle = goal_handle_future.get();
-
   auto result_future = goal_handle->async_result();
 
   RCLCPP_INFO(g_node->get_logger(), "Waiting for result");

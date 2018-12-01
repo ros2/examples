@@ -42,11 +42,15 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  // TODO(sloretz) how to check if the goal was rejected?
+  rclcpp_action::ClientGoalHandle<Fibonacci>::SharedPtr goal_handle;
+  try {
+    goal_handle = goal_handle_future.get();
+  } catch (rclcpp_action::exceptions::RejectedGoalError) {
+    RCLCPP_ERROR(node->get_logger(), "Goal was rejected by server");
+    return 1;
+  }
 
   // Wait for the server to be done with the goal
-  auto goal_handle = goal_handle_future.get();
-
   auto result_future = goal_handle->async_result();
 
   RCLCPP_INFO(node->get_logger(), "Waiting for result");
