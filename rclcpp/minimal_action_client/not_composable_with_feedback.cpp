@@ -71,11 +71,24 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  // TODO(sloretz) how to check status of result?
-  auto result = result_future.get();
+  rclcpp_action::ClientGoalHandle<Fibonacci>::Result result = result_future.get();
+
+  switch(result.code) {
+    case rclcpp_action::ResultCode::SUCCEEDED:
+      break;
+    case rclcpp_action::ResultCode::ABORTED:
+      RCLCPP_ERROR(g_node->get_logger(), "Goal was aborted");
+      return 1;
+    case rclcpp_action::ResultCode::CANCELED:
+      RCLCPP_ERROR(g_node->get_logger(), "Goal was aborted");
+      return 1;
+    default:
+      RCLCPP_ERROR(g_node->get_logger(), "Unknown result code");
+      return 1;
+  }
 
   RCLCPP_INFO(g_node->get_logger(), "result received");
-  for (auto number : result.sequence)
+  for (auto number : result.response->sequence)
   {
     RCLCPP_INFO(g_node->get_logger(), "%" PRId64, number);
   }
