@@ -21,6 +21,12 @@ ament_target_dependencies(action_client_not_composable
   "rclcpp_action"
   "example_interfaces")
 
+add_executable(action_client_not_composable_with_cancel not_composable_with_cancel.cpp)
+ament_target_dependencies(action_client_not_composable_with_cancel
+  "rclcpp"
+  "rclcpp_action"
+  "example_interfaces")
+
 add_executable(action_client_not_composable_with_feedback not_composable_with_feedback.cpp)
 ament_target_dependencies(action_client_not_composable_with_feedback
   "rclcpp"
@@ -29,6 +35,7 @@ ament_target_dependencies(action_client_not_composable_with_feedback
 
 install(TARGETS
   action_client_not_composable
+  action_client_not_composable_with_cancel
   action_client_not_composable_with_feedback
   DESTINATION lib/${PROJECT_NAME})
 

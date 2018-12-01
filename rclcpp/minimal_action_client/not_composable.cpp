@@ -70,7 +70,7 @@ int main(int argc, char ** argv)
       RCLCPP_ERROR(node->get_logger(), "Goal was aborted");
       return 1;
     case rclcpp_action::ResultCode::CANCELED:
-      RCLCPP_ERROR(node->get_logger(), "Goal was aborted");
+      RCLCPP_ERROR(node->get_logger(), "Goal was canceled");
       return 1;
     default:
       RCLCPP_ERROR(node->get_logger(), "Unknown result code");

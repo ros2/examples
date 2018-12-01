@@ -26,18 +26,37 @@ int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("minimal_action_client");
-  auto action_client = rclcpp_action::create_action_client<Fibonacci>(node, "fibonacci");
+  auto action_client = rclcpp_action::create_client<Fibonacci>(node, "fibonacci");
 
   // Populate a goal
   auto goal_msg = Fibonacci::Goal();
   goal_msg.order = 10;
 
+  RCLCPP_INFO(node->get_logger(), "Sending goal");
   // Send goal and wait for result (registering feedback callback is optional)
-  auto goal_handle = action_client->async_send_goal(goal_msg);
-  auto wait_result = rclcpp::spin_until_future_complete
+  auto goal_handle_future = action_client->async_send_goal(goal_msg);
+  if (rclcpp::spin_until_future_complete(node, goal_handle_future) !=
+    rclcpp::executor::FutureReturnCode::SUCCESS)
+  {
+    RCLCPP_ERROR(node->get_logger(), "send goal call failed :(");
+    return 1;
+  }
+
+  rclcpp_action::ClientGoalHandle<Fibonacci>::SharedPtr goal_handle;
+  try {
+    goal_handle = goal_handle_future.get();
+  } catch (rclcpp_action::exceptions::RejectedGoalError) {
+    RCLCPP_ERROR(node->get_logger(), "Goal was rejected by server");
+    return 1;
+  }
+
+  // Wait for the server to be done with the goal
+  auto result_future = goal_handle->async_result();
+
+  auto wait_result = rclcpp::spin_until_future_complete(
     node,
-    goal_handle->result_future(),
-    std::chrono::duration<int64_t, std::milli>(3000));
+    result_future,
+    std::chrono::seconds(3));
 
   if (rclcpp::executor::FutureReturnCode::TIMEOUT == wait_result)
   {
@@ -51,9 +70,7 @@ int main(int argc, char ** argv)
       rclcpp::shutdown();
       return 1;
     }
-    RCLCPP_INFO(node->get_logger(), "goal canceled successfully");
-    rclcpp::shutdown();
-    return 0;
+    RCLCPP_INFO(node->get_logger(), "goal is being canceled");
   }
   else if (rclcpp::executor::FutureReturnCode::SUCCESS != wait_result)
   {
@@ -62,8 +79,29 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  auto result = goal_handle->result_future().get();
-  RCLCPP_INFO(node->get_logger(), "result received");
+  RCLCPP_INFO(node->get_logger(), "Waiting for result");
+  if (rclcpp::spin_until_future_complete(node, result_future) !=
+    rclcpp::executor::FutureReturnCode::SUCCESS)
+  {
+    RCLCPP_ERROR(node->get_logger(), "get result call failed :(");
+    return 1;
+  }
+
+  rclcpp_action::ClientGoalHandle<Fibonacci>::Result result = result_future.get();
+  switch(result.code) {
+    case rclcpp_action::ResultCode::SUCCEEDED:
+      break;
+    case rclcpp_action::ResultCode::ABORTED:
+      RCLCPP_ERROR(node->get_logger(), "Goal was aborted");
+      return 1;
+    case rclcpp_action::ResultCode::CANCELED:
+      RCLCPP_ERROR(node->get_logger(), "Goal was canceled");
+      return 1;
+    default:
+      RCLCPP_ERROR(node->get_logger(), "Unknown result code");
+      return 1;
+  }
+
   rclcpp::shutdown();
   return 0;
 }
