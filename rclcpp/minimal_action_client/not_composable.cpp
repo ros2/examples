@@ -42,10 +42,8 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  rclcpp_action::ClientGoalHandle<Fibonacci>::SharedPtr goal_handle;
-  try {
-    goal_handle = goal_handle_future.get();
-  } catch (rclcpp_action::exceptions::RejectedGoalError) {
+  rclcpp_action::ClientGoalHandle<Fibonacci>::SharedPtr goal_handle = goal_handle_future.get();
+  if (!goal_handle) {
     RCLCPP_ERROR(node->get_logger(), "Goal was rejected by server");
     return 1;
   }

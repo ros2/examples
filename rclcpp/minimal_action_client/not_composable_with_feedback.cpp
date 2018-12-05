@@ -23,12 +23,14 @@ using Fibonacci = example_interfaces::action::Fibonacci;
 rclcpp::Node::SharedPtr g_node = nullptr;
 
 
-void feedback_callback(rclcpp_action::ClientGoalHandle<Fibonacci>::SharedPtr, const Fibonacci::Feedback& feedback)
+void feedback_callback(
+  rclcpp_action::ClientGoalHandle<Fibonacci>::SharedPtr,
+  const std::shared_ptr<const Fibonacci::Feedback> feedback)
 {
   RCLCPP_INFO(
     g_node->get_logger(),
     "Next number in sequence received: %" PRId64,
-    feedback.sequence.back());
+    feedback->sequence.back());
 }
 
 int main(int argc, char ** argv)
@@ -52,10 +54,8 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  rclcpp_action::ClientGoalHandle<Fibonacci>::SharedPtr goal_handle;
-  try {
-    goal_handle = goal_handle_future.get();
-  } catch (rclcpp_action::exceptions::RejectedGoalError) {
+  rclcpp_action::ClientGoalHandle<Fibonacci>::SharedPtr goal_handle = goal_handle_future.get();
+  if (!goal_handle) {
     RCLCPP_ERROR(g_node->get_logger(), "Goal was rejected by server");
     return 1;
   }
