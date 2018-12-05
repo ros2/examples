@@ -23,7 +23,7 @@ using Fibonacci = example_interfaces::action::Fibonacci;
 using GoalHandleFibonacci = rclcpp_action::ServerGoalHandle<Fibonacci>;
 
 rclcpp_action::GoalResponse handle_goal(
-  std::array<uint8_t, 16> uuid, const std::shared_ptr<Fibonacci::Goal> goal)
+  const std::array<uint8_t, 16> & uuid, std::shared_ptr<const Fibonacci::Goal> goal)
 {
   RCLCPP_INFO(rclcpp::get_logger("server"), "Got goal request with order %d", goal->order);
   (void)uuid;
@@ -58,7 +58,7 @@ void execute(
   for (int i = 1; (i < goal->order) && rclcpp::ok(); ++i)
   {
     // Check if there is a cancel request
-    if (goal_handle->is_cancel_request())
+    if (goal_handle->is_canceling())
     {
       result_response->sequence = sequence;
       goal_handle->set_canceled(result_response);
