@@ -28,6 +28,11 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("minimal_action_client");
   auto action_client = rclcpp_action::create_client<Fibonacci>(node, "fibonacci");
 
+  if (!action_client->wait_for_action_server(std::chrono::seconds(20))) {
+    RCLCPP_ERROR(node->get_logger(), "Action server not available after waiting");
+    return 1;
+  }
+
   // Populate a goal
   auto goal_msg = Fibonacci::Goal();
   goal_msg.order = 10;
