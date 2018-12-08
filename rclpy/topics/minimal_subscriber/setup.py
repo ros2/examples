@@ -4,7 +4,7 @@ package_name = 'examples_rclpy_minimal_subscriber'
 
 setup(
     name=package_name,
-    version='0.6.0',
+    version='0.6.1',
     packages=[],
     py_modules=[
         'subscriber_old_school',
