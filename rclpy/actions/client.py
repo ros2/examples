@@ -19,35 +19,49 @@ from rclpy.action import ActionClient
 from rclpy.node import Node
 
 
-def feedback_cb(logger, feedback):
-    logger.info('got feedback {0}'.format(repr(feedback)))
+class MinimalActionClient(Node):
+
+    def __init__(self):
+        super().__init__('minimal_action_client')
+        self._action_client = ActionClient(self, Fibonacci, 'fibonacci')
+
+    def goal_response_callback(self, future):
+        goal_handle = future.result()
+        if not goal_handle.accepted:
+            self.get_logger().info('Action goal rejected {0}'.format(goal_handle))
+            return
+
+        self.get_logger().info('Action goal accepted {0}'.format(goal_handle))
+        self._get_result_future = self._action_client.get_result_async(goal_handle)
+        self._get_result_future.add_done_callback(self.get_result_callback)
+
+    def feedback_callback(self, feedback):
+        self.get_logger().info('Received feedback {0}'.format(feedback))
+
+    def get_result_callback(self, future):
+        self.get_logger().info('Received result {0}'.format(future.result()))
+
+    def send_goal(self):
+        goal_msg = Fibonacci.Goal()
+        goal_msg.order = 10
+
+        self._send_goal_future = self._action_client.send_goal_async(
+            goal_msg,
+            feedback_callback=self.feedback_callback)
+
+        self._send_goal_future.add_done_callback(self.goal_response_callback)
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    node = rclpy.create_node('minimal_action_client')
+    action_client = MinimalActionClient()
 
-    action_client = ActionClient(node, Fibonacci, 'fibonacci')
+    action_client.send_goal()
 
-    goal_msg = Fibonacci.Goal()
-    goal_msg.order = 10
+    rclpy.spin(action_client)
 
-    future = action_client.send_goal_async(
-        goal_msg, feedback_callback=lambda feedback: feedback_cb(node.get_logger(), feedback))
-
-    while rclpy.ok() and not future.done():
-        rclpy.spin_once(node)
-
-    if future.done():
-        if future.result() is not None:
-            node.get_logger().info(
-                'Action succeeded {0}'.format(repr(future.result())))
-        else:
-            node.get_logger().info(
-                'Action request failed {0}'.format(repr(future.exception())))
-
-    node.destroy_node()
+    action_client.destroy_node()
     rclpy.shutdown()
 
 
