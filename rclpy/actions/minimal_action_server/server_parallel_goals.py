@@ -27,36 +27,43 @@ class MinimalActionServer(Node):
     def __init__(self):
         super().__init__('minimal_action_server')
 
-        self.lock = threading.Lock()
-        self.action_server = ActionServer(
-            self, 'fibonacci', Fibonacci, node, execute_cb=self.execute_callback,
-            execute_cb_group=ReentrantCallbackGroup(),
-            handle_cancel=self.handle_cancel, handle_goal=self.handle_goal)
+        self._action_server = ActionServer(
+            self,
+            Fibonacci,
+            'fibonacci',
+            callback_group=ReentrantCallbackGroup(),
+            goal_callback=self.goal_callback,
+            cancel_callback=self.cancel_callback,
+            execute_callback=self.execute_callback)
 
-    def handle_cancel(self, goal):
-        """Accepts or rejects a client request to cancel an action."""
-        return GoalResponse.ACCEPT
+    def destroy(self):
+        self._action_server.destroy()
+        super().destroy_node()
 
-    def handle_goal(self, goal):
+    def goal_callback(self, goal):
         """Accepts or rejects a client request to begin an action."""
         # This server allows multiple goals in parallel
+        return GoalResponse.ACCEPT
+
+    def cancel_callback(self, goal):
+        """Accepts or rejects a client request to cancel an action."""
         return GoalResponse.ACCEPT
 
     async def execute_callback(self, goal):
         """Executes a goal."""
         feedback_msg = Fibonacci.Feedback()
 
-        # append the seeds for the fibonacci sequence
+        # Append the seeds for the Fibonacci sequence
         feedback_msg.sequence = [0, 1]
 
-        # start executing the action
+        # Start executing the action
         for i in range(1, goal.request.order):
             if goal.is_cancel_requested():
                 result = Fibonacci.Result()
                 result.response = GoalResponse.CANCELLED
                 return result
             feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1]))
-            # publish the feedback
+            # Publish the feedback
             goal.publish_feedback(feedback_msg)
 
             # Sleep for demonstration purposes
@@ -75,6 +82,7 @@ def main(args=None):
 
     rclpy.spin(minimal_action_server)
 
+    minimal_action_server.destroy()
     rclpy.shutdown()
 
 
