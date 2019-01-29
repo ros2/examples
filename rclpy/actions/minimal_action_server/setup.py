@@ -8,7 +8,8 @@ setup(
     packages=[],
     py_modules=[
         'server',
-        'server_parallel_goals'],
+        'server_not_composable',
+        'server_single_goal'],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -33,7 +34,8 @@ setup(
     entry_points={
         'console_scripts': [
             'server = server:main',
-            'server_parallel_goals = server_parallel_goals:main',
+            'server_not_composable = server_not_composable:main',
+            'server_single_goal = server_single_goal:main',
         ],
     },
 )
