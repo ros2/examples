@@ -1,15 +1,14 @@
 from setuptools import setup
 
-package_name = 'examples_rclpy_actions'
+package_name = 'examples_rclpy_minimal_action_client'
 
 setup(
     name=package_name,
-    version='0.1.0',
+    version='0.6.1',
     packages=[],
     py_modules=[
         'client',
-        'server',
-        'server_parallel_goals'],
+        'client_not_composable'],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -28,14 +27,13 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
-    description='Examples of action services and clients using rclpy.',
+    description='Examples of action clients using rclpy.',
     license='Apache License, Version 2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'client = server:main',
-            'server = server:main',
-            'server_parallel_goals = server_parallel_goals:main',
+            'client = client:main',
+            'client_not_composable = client_not_composable:main',
         ],
     },
 )
