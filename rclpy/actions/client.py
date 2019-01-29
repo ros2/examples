@@ -42,6 +42,8 @@ class MinimalActionClient(Node):
         self.get_logger().info('Received result {0}'.format(future.result()))
 
     def send_goal(self):
+        self.get_logger().info('Waiting for Action server...')
+        self._action_client.wait_for_server()
         goal_msg = Fibonacci.Goal()
         goal_msg.order = 10
 
