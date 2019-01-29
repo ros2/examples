@@ -17,21 +17,21 @@ from example_interfaces.action import Fibonacci
 import rclpy
 from rclpy.action import ActionServer
 from rclpy.action import GoalResponse
-from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.node import Node
 import threading
 
 
 class MinimalActionServer(Node):
+    """Minimal action server that processes one goal at a time."""
 
     def __init__(self):
         super().__init__('minimal_action_server')
-
+        self._goal = None
+        self._goal_lock = threading.Lock()
         self._action_server = ActionServer(
             self,
             Fibonacci,
             'fibonacci',
-            callback_group=ReentrantCallbackGroup(),
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback,
             execute_callback=self.execute_callback)
@@ -42,7 +42,12 @@ class MinimalActionServer(Node):
 
     def goal_callback(self, goal):
         """Accepts or rejects a client request to begin an action."""
-        # This server allows multiple goals in parallel
+        with self._goal_lock:
+            # This server only allows one goal at a time
+            if self._goal is not None:
+                # Preempt existing goal
+                self._goal.cancel()
+            self._goal = goal
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal):
@@ -50,7 +55,7 @@ class MinimalActionServer(Node):
         return GoalResponse.ACCEPT
 
     async def execute_callback(self, goal):
-        """Executes a goal."""
+        """Executes the goal."""
         feedback_msg = Fibonacci.Feedback()
 
         # Append the seeds for the Fibonacci sequence
@@ -69,6 +74,8 @@ class MinimalActionServer(Node):
             # Sleep for demonstration purposes
             asyncio.sleep(1)
 
+        with self._goal_lock:
+            self._goal = None
         result = Fibonacci.Result()
         result.result.sequence = feedback_msg.sequence
         result.response = GoalResponse.SUCCEEDED
@@ -78,11 +85,11 @@ class MinimalActionServer(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_action_server = MinimalActionServer()
+    action_server = MinimalActionServer()
 
-    rclpy.spin(minimal_action_server)
+    rclpy.spin(action_server)
 
-    minimal_action_server.destroy()
+    action_server.destroy()
     rclpy.shutdown()
 
 
