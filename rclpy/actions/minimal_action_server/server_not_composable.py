@@ -57,8 +57,8 @@ def main(args=None):
         node,
         Fibonacci,
         'fibonacci',
-        goal_callback=lambda g: return GoalResponse.ACCEPT,
-        cancel_callback=lambda g: return GoalResponse.ACCEPT,
+        goal_callback=lambda g: GoalResponse.ACCEPT,
+        cancel_callback=lambda g: GoalResponse.ACCEPT,
         execute_callback=execute_callback)
 
     rclpy.spin(node)
