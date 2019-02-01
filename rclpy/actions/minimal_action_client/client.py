@@ -32,7 +32,7 @@ class MinimalActionClient(Node):
             return
 
         self.get_logger().info('Action goal accepted {0}'.format(goal_handle))
-        self._get_result_future = self._action_client.get_result_async(goal_handle)
+        self._get_result_future = goal_handle.get_result_async()
         self._get_result_future.add_done_callback(self.get_result_callback)
 
     def feedback_callback(self, feedback):

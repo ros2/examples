@@ -43,7 +43,7 @@ def main(args=None):
 
     goal_handle = send_goal_future.result()
 
-    get_result_future = action_client.get_result_async(goal_handle)
+    get_result_future = goal_handle.get_result_async()
 
     rclpy.spin_until_future_complete(node, get_result_future)
 
