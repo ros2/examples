@@ -5,7 +5,7 @@ package_name = 'examples_rclpy_minimal_client'
 setup(
     name=package_name,
     version='0.6.1',
-    packages=['examples_rclpy_minimal_client'],
+    packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
