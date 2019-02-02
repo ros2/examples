@@ -5,11 +5,7 @@ package_name = 'examples_rclpy_minimal_publisher'
 setup(
     name=package_name,
     version='0.6.1',
-    packages=[],
-    py_modules=[
-        'publisher_old_school',
-        'publisher_local_function',
-        'publisher_member_function'],
+    packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -33,9 +29,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'publisher_old_school = publisher_old_school:main',
-            'publisher_local_function = publisher_local_function:main',
-            'publisher_member_function = publisher_member_function:main',
+            'publisher_old_school = examples_rclpy_minimal_publisher.publisher_old_school:main',
+            'publisher_local_function ='
+            ' examples_rclpy_minimal_publisher.publisher_local_function:main',
+            'publisher_member_function ='
+            ' examples_rclpy_minimal_publisher.publisher_member_function:main',
         ],
     },
 )
