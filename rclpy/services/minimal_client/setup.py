@@ -5,12 +5,7 @@ package_name = 'examples_rclpy_minimal_client'
 setup(
     name=package_name,
     version='0.6.1',
-    packages=[],
-    py_modules=[
-        'client',
-        'client_async',
-        'client_async_member_function',
-        'client_async_callback'],
+    packages=['examples_rclpy_minimal_client'],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -34,11 +29,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'client = client:main',
-            'client_async = client_async:main',
+            'client = examples_rclpy_minimal_client.client:main',
+            'client_async = examples_rclpy_minimal_client.client_async:main',
             'client_async_member_function ='
-            ' client_async_member_function:main',
-            'client_async_callback = client_async_callback:main',
+            ' examples_rclpy_minimal_client.client_async_member_function:main',
+            'client_async_callback = examples_rclpy_minimal_client.client_async_callback:main',
         ],
     },
 )
