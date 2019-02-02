@@ -5,11 +5,7 @@ package_name = 'examples_rclpy_minimal_subscriber'
 setup(
     name=package_name,
     version='0.6.1',
-    packages=[],
-    py_modules=[
-        'subscriber_old_school',
-        'subscriber_lambda',
-        'subscriber_member_function'],
+    packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -33,9 +29,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'subscriber_old_school = subscriber_old_school:main',
-            'subscriber_lambda = subscriber_lambda:main',
-            'subscriber_member_function = subscriber_member_function:main',
+            'subscriber_old_school ='
+            ' examples_rclpy_minimal_subscriber.subscriber_old_school:main',
+            'subscriber_lambda = examples_rclpy_minimal_subscriber.subscriber_lambda:main',
+            'subscriber_member_function ='
+            ' examples_rclpy_minimal_subscriber.subscriber_member_function:main',
         ],
     },
 )
