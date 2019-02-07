@@ -5,11 +5,7 @@ package_name = 'examples_rclpy_minimal_action_server'
 setup(
     name=package_name,
     version='0.6.1',
-    packages=[],
-    py_modules=[
-        'server',
-        'server_not_composable',
-        'server_single_goal'],
+    packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -33,9 +29,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'server = server:main',
-            'server_not_composable = server_not_composable:main',
-            'server_single_goal = server_single_goal:main',
+            'server = ' + package_name + '.server:main',
+            'server_not_composable = ' + package_name + '.server_not_composable:main',
+            'server_single_goal = ' + package_name + '.server_single_goal:main',
         ],
     },
 )
