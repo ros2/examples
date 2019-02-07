@@ -12,56 +12,78 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import time
+
 from example_interfaces.action import Fibonacci
 
 import rclpy
 from rclpy.action import ActionServer
-from rclpy.action import GoalResponse
+from rclpy.callback_groups import ReentrantCallbackGroup
+from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 
 
-async def execute_callback(goal):
-    """Executes the goal."""
-    feedback_msg = Fibonacci.Feedback()
+logger = None
 
-    # append the seeds for the fibonacci sequence
+
+async def execute_callback(goal_handle):
+    """Executes the goal."""
+    logger.info('Executing goal...')
+
+    # Append the seeds for the fibonacci sequence
+    feedback_msg = Fibonacci.Feedback()
     feedback_msg.sequence = [0, 1]
 
-    # start executing the action
-    for i in range(1, goal.request.order):
-        if goal.is_cancel_requested():
-            result = Fibonacci.Result()
-            result.response = GoalResponse.CANCELLED
-            return result
-        feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence([i-1]))
-        # publish the feedback
-        goal.publish_feedback(feedback_msg)
+    # Start executing the action
+    for i in range(1, goal_handle.request.order):
+        if goal_handle.is_cancel_requested:
+            goal_handle.set_canceled()
+            self.get_logger().info('Goal canceled')
+            return Fibonacci.Result()
+
+        # Update Fibonacci sequence
+        feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence[i-1])
+
+        logger.info('Publishing feedback: {0}'.format(feedback_msg.sequence))
+
+        # Publish feedback
+        goal_handle.publish_feedback(feedback_msg)
 
         # Sleep for demonstration purposes
-        asyncio.sleep(1)
+        time.sleep(1)
 
-    with g_lock:
-        g_goal = None
+    goal_handle.set_succeeded()
+
+    # Populate result message
     result = Fibonacci.Result()
-    result.result.sequence = feedback_msg.sequence
-    result.response = GoalResponse.SUCCEEDED
+    result.sequence = feedback_msg.sequence
+
+    logger.info('Returning result: {0}'.format(result.sequence))
+
     return result
 
 
 def main(args=None):
+    global logger
     rclpy.init(args=args)
 
     node = rclpy.create_node('minimal_action_server')
+    logger = node.get_logger()
 
+    # Use a ReentrantCallbackGroup to enable processing multiple goals concurrently
+    # Default goal callback accepts all goals
+    # Default cancel callback rejects cancel requests
     action_server = ActionServer(
         node,
         Fibonacci,
         'fibonacci',
-        goal_callback=lambda g: GoalResponse.ACCEPT,
-        cancel_callback=lambda g: GoalResponse.ACCEPT,
-        execute_callback=execute_callback)
+        execute_callback=execute_callback,
+        callback_group=ReentrantCallbackGroup())
 
-    rclpy.spin(node)
+    # Use a MultiThreadedExecutor to enable processing goals concurrently
+    executor = MultiThreadedExecutor()
+
+    rclpy.spin(node, executor=executor)
 
     action_server.destroy()
     node.destroy_node()
