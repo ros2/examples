@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.2 (2019-02-08)
+------------------
+* Updated documentation. (`#225 <https://github.com/ros2/examples/issues/225>`_)
+* Contributors: Dirk Thomas
+
 0.6.0 (2018-11-20)
 ------------------
 * Added semicolons to all RCLCPP and RCUTILS macros. (`#214 <https://github.com/ros2/examples/issues/214>`_)

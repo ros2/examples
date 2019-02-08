@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_composition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.2 (2019-02-08)
+------------------
+
 0.6.0 (2018-11-20)
 ------------------
 * Added library path environment hook. (`#215 <https://github.com/ros2/examples/issues/215>`_)
