@@ -49,18 +49,18 @@ void execute(
   RCLCPP_INFO(rclcpp::get_logger("server"), "Executing goal");
   rclcpp::Rate loop_rate(1);
   const auto goal = goal_handle->get_goal();
-  auto feedback = std::make_shared<Fibonacci::Feedback>();
-  auto& sequence = feedback->sequence;
+  auto feedback = std::make_shared<Fibonacci::Impl::FeedbackMessage>();
+  auto& sequence = feedback->feedback.sequence;
   sequence.push_back(0);
   sequence.push_back(1);
-  auto result_response = std::make_shared<Fibonacci::Result>();
+  auto result_response = std::make_shared<Fibonacci::Impl::GetResultService::Response>();
 
   for (int i = 1; (i < goal->order) && rclcpp::ok(); ++i)
   {
     // Check if there is a cancel request
     if (goal_handle->is_canceling())
     {
-      result_response->sequence = sequence;
+      result_response->result.sequence = sequence;
       goal_handle->set_canceled(result_response);
       RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Canceled");
       return;
@@ -76,7 +76,7 @@ void execute(
 
   // Check if goal is done
   if (rclcpp::ok()) {
-    result_response->sequence = sequence;
+    result_response->result.sequence = sequence;
     goal_handle->set_succeeded(result_response);
     RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Suceeded");
   }
