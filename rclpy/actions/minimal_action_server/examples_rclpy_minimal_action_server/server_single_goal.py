@@ -37,6 +37,7 @@ class MinimalActionServer(Node):
             'fibonacci',
             execute_callback=self.execute_callback,
             goal_callback=self.goal_callback,
+            handle_accepted_callback=self.handle_accepted_callback,
             cancel_callback=self.cancel_callback,
             callback_group=ReentrantCallbackGroup())
 
@@ -47,14 +48,18 @@ class MinimalActionServer(Node):
     def goal_callback(self, goal_request):
         """Accepts or rejects a client request to begin an action."""
         self.get_logger().info('Received goal request')
+        return GoalResponse.ACCEPT
+
+    def handle_accepted_callback(self, goal_handle):
         with self._goal_lock:
             # This server only allows one goal at a time
             if self._goal_handle is not None and self._goal_handle.is_active:
                 self.get_logger().info('Aborting previous goal')
                 # Abort the existing goal
                 self._goal_handle.set_aborted()
+            self._goal_handle = goal_handle
 
-        return GoalResponse.ACCEPT
+        goal_handle.execute()
 
     def cancel_callback(self, goal):
         """Accepts or rejects a client request to cancel an action."""
@@ -64,8 +69,6 @@ class MinimalActionServer(Node):
     def execute_callback(self, goal_handle):
         """Executes the goal."""
         self.get_logger().info('Executing goal...')
-        with self._goal_lock:
-            self._goal_handle = goal_handle
 
         # Append the seeds for the Fibonacci sequence
         feedback_msg = Fibonacci.Feedback()
