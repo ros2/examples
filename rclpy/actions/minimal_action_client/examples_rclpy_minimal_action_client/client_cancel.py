@@ -1,4 +1,4 @@
-# Copyright 2018 Open Source Robotics Foundation, Inc.
+# Copyright 2019 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,6 +51,8 @@ class MinimalActionClient(Node):
 
         # Cancel the timer
         self._timer.cancel()
+
+        rclpy.shutdown()
 
     def send_goal(self):
         self.get_logger().info('Waiting for action server...')
