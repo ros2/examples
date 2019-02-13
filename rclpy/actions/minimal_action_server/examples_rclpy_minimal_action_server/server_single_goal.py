@@ -54,7 +54,7 @@ class MinimalActionServer(Node):
                 # Abort the existing goal
                 self._goal_handle.set_aborted()
 
-        return GoalResponse.ACCEPT_AND_EXECUTE
+        return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal):
         """Accepts or rejects a client request to cancel an action."""

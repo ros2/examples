@@ -45,7 +45,7 @@ class MinimalActionServer(Node):
         """Accepts or rejects a client request to begin an action."""
         # This server allows multiple goals in parallel
         self.get_logger().info('Received goal request')
-        return GoalResponse.ACCEPT_AND_EXECUTE
+        return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
         """Accepts or rejects a client request to cancel an action."""
