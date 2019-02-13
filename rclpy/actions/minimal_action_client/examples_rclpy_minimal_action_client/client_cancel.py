@@ -28,6 +28,15 @@ class MinimalActionClient(Node):
         super().__init__('minimal_action_client')
         self._action_client = ActionClient(self, Fibonacci, 'fibonacci')
 
+    def cancel_done(self, future):
+        cancel_response = future.result()
+        if len(cancel_response.goals_canceling) > 0:
+            self.get_logger().info('Goal successfully canceled')
+        else:
+            self.get_logger().info('Goal failed to cancel')
+
+        rclpy.shutdown()
+
     def goal_response_callback(self, future):
         goal_handle = future.result()
         if not goal_handle.accepted:
@@ -47,12 +56,11 @@ class MinimalActionClient(Node):
     def timer_callback(self):
         self.get_logger().info('Canceling goal')
         # Cancel the goal
-        self._goal_handle.cancel_goal()
+        future = self._goal_handle.cancel_goal_async()
+        future.add_done_callback(self.cancel_done)
 
         # Cancel the timer
         self._timer.cancel()
-
-        rclpy.shutdown()
 
     def send_goal(self):
         self.get_logger().info('Waiting for action server...')
@@ -80,7 +88,6 @@ def main(args=None):
     rclpy.spin(action_client)
 
     action_client.destroy_node()
-    rclpy.shutdown()
 
 
 if __name__ == '__main__':
