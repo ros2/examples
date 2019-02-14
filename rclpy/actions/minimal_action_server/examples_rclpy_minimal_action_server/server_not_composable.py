@@ -17,13 +17,18 @@ import time
 from example_interfaces.action import Fibonacci
 
 import rclpy
-from rclpy.action import ActionServer
+from rclpy.action import ActionServer, CancelResponse
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 
 
 logger = None
+
+
+def cancel_callback(goal_handle):
+    logger.info('Received cancel request')
+    return CancelResponse.ACCEPT
 
 
 async def execute_callback(goal_handle):
@@ -38,7 +43,7 @@ async def execute_callback(goal_handle):
     for i in range(1, goal_handle.request.order):
         if goal_handle.is_cancel_requested:
             goal_handle.set_canceled()
-            self.get_logger().info('Goal canceled')
+            logger.info('Goal canceled')
             return Fibonacci.Result()
 
         # Update Fibonacci sequence
@@ -78,6 +83,7 @@ def main(args=None):
         Fibonacci,
         'fibonacci',
         execute_callback=execute_callback,
+        cancel_callback=cancel_callback,
         callback_group=ReentrantCallbackGroup())
 
     # Use a MultiThreadedExecutor to enable processing goals concurrently
