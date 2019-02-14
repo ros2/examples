@@ -48,7 +48,7 @@ class MinimalActionClient(Node):
         self.get_logger().info('Goal accepted :)')
 
         # Start a 3 second timer
-        self._timer = self.create_timer(3.0, self.timer_callback)
+        self._timer = self.create_timer(2.0, self.timer_callback)
 
     def feedback_callback(self, feedback):
         self.get_logger().info('Received feedback: {0}'.format(feedback.sequence))
