@@ -26,8 +26,7 @@ class Immutable
 {
 public:
   using type = ParameterType;
-
-  constexpr static const bool is_read_only = true;
+  using is_mutable = std::false_type;
 
   Immutable(
     rclcpp::node_interfaces::NodeParametersInterface * node_parameter_interface,
@@ -48,6 +47,12 @@ public:
     return node_parameter_interface_->get_parameter(name_).template get_value<ParameterType>();
   }
 
+  bool
+  get(rclcpp::Parameter & parameter) const
+  {
+    return node_parameter_interface_->get_parameter(name_, parameter);
+  }
+
 protected:
   rclcpp::node_interfaces::NodeParametersInterface *
   get_node_parameters_interface() const
@@ -64,7 +69,7 @@ template<typename ParameterType>
 class Mutable : public Immutable<ParameterType>
 {
 public:
-  constexpr static const bool is_read_only = false;
+  using is_mutable = std::true_type;
 
   Mutable(
     rclcpp::node_interfaces::NodeParametersInterface * node_parameter_interface,
@@ -80,13 +85,25 @@ public:
     });
   }
 
+  template<typename SetParameterType>
+  rcl_interfaces::msg::SetParametersResult
+  set(const SetParameterType & new_value, const std::nothrow_t &)
+  {
+    static_assert(
+      rclcpp::ParameterTypeHelper<ParameterType>::parameter_type ==
+        rclcpp::ParameterTypeHelper<SetParameterType>::parameter_type,
+      "incompatible type for declared parameter");
+    return this->get_node_parameters_interface()->set_parameters_atomically({
+      rclcpp::Parameter(this->get_name(), new_value),
+    });
+  }
+
+  template<typename SetParameterType>
   void
-  set(const ParameterType & new_value)
+  set(const SetParameterType & new_value)
   {
     const std::string & name = this->get_name();
-    auto result = this->get_node_parameters_interface()->set_parameters_atomically({
-      rclcpp::Parameter(name, new_value),
-    });
+    auto result = this->set(new_value, std::nothrow);
     if (!result.successful) {
       throw std::runtime_error("failed to set parameter '" + name + "': " + result.reason);
     }
@@ -131,7 +148,7 @@ template<
   typename ParameterType,
   typename StoragePolicy = Mutable<ParameterType>,
   typename InitializationPolicy = ParameterOptional>
-class DescribedParameter : public StoragePolicy
+class DescribedParameter : public StoragePolicy, public InitializationPolicy
 {
 public:
   template<typename NodeType>
@@ -147,8 +164,8 @@ public:
     static_assert(
       !InitializationPolicy::external_initialization_is_required::value,
       "a default parameter value is unused when an external initial parameter value is required");
-    this->get_node_parameters_interface()->create_parameter(
-      this->get_name(), rclcpp::ParameterValue(default_value), this->is_read_only);
+    this->get_node_parameters_interface()->declare_parameter(
+      this->get_name(), rclcpp::ParameterValue(default_value), !StoragePolicy::is_mutable::value);
   }
 
   template<typename NodeType>
@@ -165,8 +182,8 @@ public:
       InitializationPolicy::external_initialization_is_required::value,
       "a parameter with a fixed type no requirement to be set externally may "
       "not be unset, therefore a default value is required");
-    this->get_node_parameters_interface()->create_parameter(
-      this->get_name(), rclcpp::ParameterValue(), this->is_read_only);
+    this->get_node_parameters_interface()->declare_parameter(
+      this->get_name(), rclcpp::ParameterValue(), !StoragePolicy::is_mutable::value);
   }
 };
 
@@ -191,8 +208,8 @@ public:
     // data_(*this, "data", 3.14)  // compiler error, default value meaningless with external config
     data_(this, "data")
   {
-    rclcpp::Parameter not_set_param = not_set_param_.get();
-    if (not_set_param.get_type() != rclcpp::PARAMETER_NOT_SET) {
+    rclcpp::Parameter not_set_param;
+    if (not_set_param_.get(not_set_param)) {
       RCLCPP_ERROR(this->get_logger(), "parameter 'not_set_param' unexpectedly set");
     }
 
@@ -203,9 +220,13 @@ public:
       RCLCPP_INFO(this->get_logger(), ("failed to set 'ip_address': " + result.reason).c_str());
     }
     ip_address_.set("foo");
+    // compiler error:
+    // ip_address_.set(42);
+    //             ^
+    //             error: static_assert failed "incompatible type for declared parameter"
 
-    static_assert(!decltype(ip_address_)::is_read_only, "expected ip address to be mutable");
-    static_assert(decltype(port_)::is_read_only, "expected port to be read only");
+    static_assert(decltype(ip_address_)::is_mutable::value, "expected ip address to be mutable");
+    static_assert(!decltype(port_)::is_mutable::value, "expected port to be immutable");
 
     const int & port = port_.get();
     (void)port;
@@ -240,12 +261,14 @@ private:
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
+
   std::vector<rclcpp::Parameter> initial_parameter_values = {
     rclcpp::Parameter("ip_address", "10.0.0.1"),  // optional custom value
     rclcpp::Parameter("data", 3.14),  // runtime failure without, as it is a "required" parameter
   };
-  rclcpp::spin(std::make_shared<NodeWithParameters>(initial_parameter_values));
-  rclcpp::shutdown();
+  auto node = std::make_shared<NodeWithParameters>(initial_parameter_values);
+
+  rclcpp::spin(node);
 
   return 0;
 }
