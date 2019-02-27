@@ -49,8 +49,8 @@ void execute(
   RCLCPP_INFO(rclcpp::get_logger("server"), "Executing goal");
   rclcpp::Rate loop_rate(1);
   const auto goal = goal_handle->get_goal();
-  auto feedback = std::make_shared<Fibonacci::Impl::FeedbackMessage>();
-  auto& sequence = feedback->feedback.sequence;
+  auto feedback = std::make_shared<Fibonacci::Feedback>();
+  auto& sequence = feedback->sequence;
   sequence.push_back(0);
   sequence.push_back(1);
   auto result = std::make_shared<Fibonacci::Result>();
