@@ -32,6 +32,7 @@ setup(
             'server = ' + package_name + '.server:main',
             'server_defer = ' + package_name + '.server_defer:main',
             'server_not_composable = ' + package_name + '.server_not_composable:main',
+            'server_queue_goals = ' + package_name + '.server_queue_goals:main',
             'server_single_goal = ' + package_name + '.server_single_goal:main',
         ],
     },
