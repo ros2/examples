@@ -8,6 +8,8 @@
   <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
   <license>Apache License 2.0</license>
 
+  <author email="jacob@openrobotics.org">Jacob Perron</author>
+
   <exec_depend>example_interfaces</exec_depend>
   <exec_depend>rclpy</exec_depend>
 
