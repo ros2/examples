@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_minimal_service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.6.3 (2019-03-09)
+------------------
+
 0.6.2 (2019-02-08)
 ------------------
 * Modified examples to install entry point scripts into a package. (`#226 <https://github.com/ros2/examples/issues/226>`_)
