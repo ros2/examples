@@ -76,9 +76,9 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  rclcpp_action::ClientGoalHandle<Fibonacci>::Result result = result_future.get();
+  rclcpp_action::ClientGoalHandle<Fibonacci>::WrappedResult wrapped_result = result_future.get();
 
-  switch(result.code) {
+  switch(wrapped_result.code) {
     case rclcpp_action::ResultCode::SUCCEEDED:
       break;
     case rclcpp_action::ResultCode::ABORTED:
@@ -93,7 +93,7 @@ int main(int argc, char ** argv)
   }
 
   RCLCPP_INFO(g_node->get_logger(), "result received");
-  for (auto number : result.response->sequence)
+  for (auto number : wrapped_result.result->sequence)
   {
     RCLCPP_INFO(g_node->get_logger(), "%" PRId64, number);
   }

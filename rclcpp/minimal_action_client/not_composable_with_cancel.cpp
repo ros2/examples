@@ -90,8 +90,8 @@ int main(int argc, char ** argv)
     return 1;
   }
 
-  rclcpp_action::ClientGoalHandle<Fibonacci>::Result result = result_future.get();
-  switch(result.code) {
+  rclcpp_action::ClientGoalHandle<Fibonacci>::WrappedResult wrapped_result = result_future.get();
+  switch(wrapped_result.code) {
     case rclcpp_action::ResultCode::SUCCEEDED:
       break;
     case rclcpp_action::ResultCode::ABORTED:
