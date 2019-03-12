@@ -15,13 +15,21 @@ find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 
+add_executable(action_server_member_functions member_functions.cpp)
+ament_target_dependencies(action_server_member_functions
+  "rclcpp"
+  "rclcpp_action"
+  "example_interfaces")
+
 add_executable(action_server_not_composable not_composable.cpp)
 ament_target_dependencies(action_server_not_composable
   "rclcpp"
   "rclcpp_action"
   "example_interfaces")
 
-install(TARGETS action_server_not_composable
+install(TARGETS
+  action_server_not_composable
+  action_server_member_functions
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
