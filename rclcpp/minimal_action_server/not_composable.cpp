@@ -23,7 +23,7 @@ using Fibonacci = example_interfaces::action::Fibonacci;
 using GoalHandleFibonacci = rclcpp_action::ServerGoalHandle<Fibonacci>;
 
 rclcpp_action::GoalResponse handle_goal(
-  const std::array<uint8_t, 16> & uuid, std::shared_ptr<const Fibonacci::Goal> goal)
+  const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const Fibonacci::Goal> goal)
 {
   RCLCPP_INFO(rclcpp::get_logger("server"), "Got goal request with order %d", goal->order);
   (void)uuid;
