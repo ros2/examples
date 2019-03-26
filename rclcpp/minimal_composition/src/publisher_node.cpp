@@ -20,8 +20,8 @@
 
 using namespace std::chrono_literals;
 
-PublisherNode::PublisherNode()
-: Node("publisher_node"), count_(0)
+PublisherNode::PublisherNode(rclcpp::NodeOptions options)
+: Node("publisher_node", options), count_(0)
 {
   publisher_ = create_publisher<std_msgs::msg::String>("topic");
   timer_ = create_wall_timer(
@@ -36,6 +36,6 @@ void PublisherNode::on_timer()
   publisher_->publish(message);
 }
 
-#include "class_loader/register_macro.hpp"
+#include "rclcpp_components/register_node_macro.hpp"
 
-CLASS_LOADER_REGISTER_CLASS(PublisherNode, rclcpp::Node)
+RCLCPP_COMPONENTS_REGISTER_NODE(PublisherNode)

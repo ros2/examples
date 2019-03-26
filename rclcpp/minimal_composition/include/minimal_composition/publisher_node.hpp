@@ -15,6 +15,8 @@
 #ifndef MINIMAL_COMPOSITION__PUBLISHER_NODE_HPP_
 #define MINIMAL_COMPOSITION__PUBLISHER_NODE_HPP_
 
+#include <string>
+
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "minimal_composition/visibility.h"
@@ -22,7 +24,7 @@
 class PublisherNode : public rclcpp::Node
 {
 public:
-  MINIMAL_COMPOSITION_PUBLIC PublisherNode();
+  MINIMAL_COMPOSITION_PUBLIC PublisherNode(rclcpp::NodeOptions options);
 
 private:
   void on_timer();

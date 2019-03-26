@@ -11,8 +11,8 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
-find_package(class_loader REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 
 include_directories(include)
@@ -22,7 +22,7 @@ add_library(composition_nodes SHARED
             src/subscriber_node.cpp)
 target_compile_definitions(composition_nodes
   PRIVATE "MINIMAL_COMPOSITION_DLL")
-ament_target_dependencies(composition_nodes rclcpp std_msgs class_loader)
+ament_target_dependencies(composition_nodes rclcpp rclcpp_components std_msgs)
 
 # This package installs libraries without exporting them.
 # Export the library path to ensure that the installed libraries are available.

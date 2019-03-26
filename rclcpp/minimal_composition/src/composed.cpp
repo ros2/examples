@@ -21,8 +21,9 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::executors::SingleThreadedExecutor exec;
-  auto publisher_node = std::make_shared<PublisherNode>();
-  auto subscriber_node = std::make_shared<SubscriberNode>();
+  rclcpp::NodeOptions options;
+  auto publisher_node = std::make_shared<PublisherNode>(options);
+  auto subscriber_node = std::make_shared<SubscriberNode>(options);
   exec.add_node(publisher_node);
   exec.add_node(subscriber_node);
   exec.spin();
