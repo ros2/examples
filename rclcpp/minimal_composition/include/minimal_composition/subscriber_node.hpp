@@ -15,8 +15,6 @@
 #ifndef MINIMAL_COMPOSITION__SUBSCRIBER_NODE_HPP_
 #define MINIMAL_COMPOSITION__SUBSCRIBER_NODE_HPP_
 
-#include <string>
-
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "minimal_composition/visibility.h"
