@@ -16,16 +16,17 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-SubscriberNode::SubscriberNode()
-: Node("subscriber_node")
+SubscriberNode::SubscriberNode(rclcpp::NodeOptions options)
+: Node("subscriber_node", options)
 {
   subscription_ = create_subscription<std_msgs::msg::String>(
     "topic",
     [this](std_msgs::msg::String::UniquePtr msg) {
-    RCLCPP_INFO(this->get_logger(), "Subscriber: '%s'", msg->data.c_str());
-  });
+      RCLCPP_INFO(this->get_logger(), "Subscriber: '%s'", msg->data.c_str());
+    });
 }
 
-#include "class_loader/register_macro.hpp"
+#include "rclcpp_components/register_node_macro.hpp"
 
-CLASS_LOADER_REGISTER_CLASS(SubscriberNode, rclcpp::Node)
+RCLCPP_COMPONENTS_REGISTER_NODE(SubscriberNode)
+

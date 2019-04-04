@@ -22,7 +22,7 @@
 class SubscriberNode : public rclcpp::Node
 {
 public:
-  MINIMAL_COMPOSITION_PUBLIC SubscriberNode();
+  MINIMAL_COMPOSITION_PUBLIC SubscriberNode(rclcpp::NodeOptions options);
 
 private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;

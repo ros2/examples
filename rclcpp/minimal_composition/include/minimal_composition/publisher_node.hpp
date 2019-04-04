@@ -22,7 +22,7 @@
 class PublisherNode : public rclcpp::Node
 {
 public:
-  MINIMAL_COMPOSITION_PUBLIC PublisherNode();
+  MINIMAL_COMPOSITION_PUBLIC PublisherNode(rclcpp::NodeOptions options);
 
 private:
   void on_timer();
