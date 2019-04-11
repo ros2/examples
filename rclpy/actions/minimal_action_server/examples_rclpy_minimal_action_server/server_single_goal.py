@@ -83,7 +83,7 @@ class MinimalActionServer(Node):
                 return Fibonacci.Result()
 
             if goal_handle.is_cancel_requested:
-                goal_handle.cancel()
+                goal_handle.canceled()
                 self.get_logger().info('Goal canceled')
                 return Fibonacci.Result()
 
