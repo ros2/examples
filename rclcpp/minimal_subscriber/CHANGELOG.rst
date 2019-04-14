@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.0 (2019-04-14)
+------------------
+
 0.6.2 (2019-02-08)
 ------------------
 * Updated documentation. (`#225 <https://github.com/ros2/examples/issues/225>`_)

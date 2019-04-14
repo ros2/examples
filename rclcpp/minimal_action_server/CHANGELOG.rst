@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.0 (2019-04-14)
+------------------
+* Updated to use separated action types. (`#227 <https://github.com/ros2/examples/issues/227>`_)
+* Contributors: Dirk Thomas
+
 0.6.2 (2019-02-08)
 ------------------
 

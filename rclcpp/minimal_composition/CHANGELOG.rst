@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_composition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.0 (2019-04-14)
+------------------
+* Updated minimal_composition example for rclcpp_components. (`#232 <https://github.com/ros2/examples/issues/232>`_)
+* Contributors: Michael Carroll
+
 0.6.2 (2019-02-08)
 ------------------
 
