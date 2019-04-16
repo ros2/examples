@@ -42,7 +42,7 @@ async def execute_callback(goal_handle):
     # Start executing the action
     for i in range(1, goal_handle.request.order):
         if goal_handle.is_cancel_requested:
-            goal_handle.set_canceled()
+            goal_handle.canceled()
             logger.info('Goal canceled')
             return Fibonacci.Result()
 
@@ -57,7 +57,7 @@ async def execute_callback(goal_handle):
         # Sleep for demonstration purposes
         time.sleep(1)
 
-    goal_handle.set_succeeded()
+    goal_handle.succeed()
 
     # Populate result message
     result = Fibonacci.Result()

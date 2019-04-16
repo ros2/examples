@@ -61,7 +61,7 @@ void execute(
     if (goal_handle->is_canceling())
     {
       result->sequence = sequence;
-      goal_handle->set_canceled(result);
+      goal_handle->canceled(result);
       RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Canceled");
       return;
     }
@@ -77,7 +77,7 @@ void execute(
   // Check if goal is done
   if (rclcpp::ok()) {
     result->sequence = sequence;
-    goal_handle->set_succeeded(result);
+    goal_handle->succeed(result);
     RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Suceeded");
   }
 }
