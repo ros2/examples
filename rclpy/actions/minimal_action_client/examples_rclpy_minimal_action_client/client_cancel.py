@@ -51,7 +51,7 @@ class MinimalActionClient(Node):
         self._timer = self.create_timer(2.0, self.timer_callback)
 
     def feedback_callback(self, feedback):
-        self.get_logger().info('Received feedback: {0}'.format(feedback.sequence))
+        self.get_logger().info('Received feedback: {0}'.format(feedback.feedback.sequence))
 
     def timer_callback(self):
         self.get_logger().info('Canceling goal')

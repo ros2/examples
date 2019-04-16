@@ -38,12 +38,13 @@ class MinimalActionClient(Node):
         self._get_result_future.add_done_callback(self.get_result_callback)
 
     def feedback_callback(self, feedback):
-        self.get_logger().info('Received feedback: {0}'.format(feedback.sequence))
+        self.get_logger().info('Received feedback: {0}'.format(feedback.feedback.sequence))
 
     def get_result_callback(self, future):
-        status = future.result().action_status
+        result = future.result().result
+        status = future.result().status
         if status == GoalStatus.STATUS_SUCCEEDED:
-            self.get_logger().info('Goal succeeded! Result: {0}'.format(future.result().sequence))
+            self.get_logger().info('Goal succeeded! Result: {0}'.format(result.sequence))
         else:
             self.get_logger().info('Goal failed with status: {0}'.format(status))
 
