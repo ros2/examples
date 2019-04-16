@@ -78,7 +78,7 @@ void execute(
   if (rclcpp::ok()) {
     result->sequence = sequence;
     goal_handle->succeed(result);
-    RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Suceeded");
+    RCLCPP_INFO(rclcpp::get_logger("server"), "Goal Succeeded");
   }
 }
 
