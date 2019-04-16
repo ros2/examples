@@ -22,7 +22,7 @@ from rclpy.node import Node
 
 
 def feedback_cb(logger, feedback):
-    logger.info('Received feedback: {0}'.format(feedback.sequence))
+    logger.info('Received feedback: {0}'.format(feedback.feedback.sequence))
 
 
 def main(args=None):
@@ -61,10 +61,11 @@ def main(args=None):
 
     rclpy.spin_until_future_complete(node, get_result_future)
 
-    status = get_result_future.result().action_status
+    result = get_result_future.result().result
+    status = get_result_future.result().status
     if status == GoalStatus.STATUS_SUCCEEDED:
         node.get_logger().info(
-           'Goal succeeded! Result: {0}'.format(get_result_future.result().sequence))
+           'Goal succeeded! Result: {0}'.format(result.sequence))
     else:
         node.get_logger().info('Goal failed with status code: {0}'.format(status))
 
