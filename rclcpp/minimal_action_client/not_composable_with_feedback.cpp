@@ -50,7 +50,9 @@ int main(int argc, char ** argv)
 
   RCLCPP_INFO(g_node->get_logger(), "Sending goal");
   // Ask server to achieve some goal and wait until it's accepted
-  auto goal_handle_future = action_client->async_send_goal(goal_msg, feedback_callback);
+  auto send_goal_options = rclcpp_action::Client<Fibonacci>::SendGoalOptions();
+  send_goal_options.feedback_callback = feedback_callback;
+  auto goal_handle_future = action_client->async_send_goal(goal_msg, send_goal_options);
 
   if (rclcpp::spin_until_future_complete(g_node, goal_handle_future) !=
     rclcpp::executor::FutureReturnCode::SUCCESS)
