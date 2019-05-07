@@ -31,8 +31,8 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   g_node = rclcpp::Node::make_shared("minimal_subscriber");
-  auto subscription = g_node->create_subscription<std_msgs::msg::String>
-      ("topic", topic_callback);
+  auto subscription =
+    g_node->create_subscription<std_msgs::msg::String>("topic", 10, topic_callback);
   rclcpp::spin(g_node);
   rclcpp::shutdown();
   // TODO(clalancette): It would be better to remove both of these nullptr

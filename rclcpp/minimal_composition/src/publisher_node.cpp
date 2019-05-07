@@ -23,7 +23,7 @@ using namespace std::chrono_literals;
 PublisherNode::PublisherNode(rclcpp::NodeOptions options)
 : Node("publisher_node", options), count_(0)
 {
-  publisher_ = create_publisher<std_msgs::msg::String>("topic");
+  publisher_ = create_publisher<std_msgs::msg::String>("topic", 10);
   timer_ = create_wall_timer(
     500ms, std::bind(&PublisherNode::on_timer, this));
 }
