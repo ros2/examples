@@ -13,6 +13,8 @@
 // limitations under the License.
 
 #include <iostream>
+#include <memory>
+
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
@@ -26,8 +28,8 @@ public:
       "topic",
       10,
       [this](std_msgs::msg::String::UniquePtr msg) {
-      RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
-    });
+        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
+      });
   }
 
 private:

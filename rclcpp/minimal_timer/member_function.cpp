@@ -13,6 +13,8 @@
 // limitations under the License.
 
 #include <chrono>
+#include <memory>
+
 #include "rclcpp/rclcpp.hpp"
 
 using namespace std::chrono_literals;

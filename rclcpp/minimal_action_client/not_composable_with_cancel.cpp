@@ -61,8 +61,7 @@ int main(int argc, char ** argv)
     result_future,
     std::chrono::seconds(3));
 
-  if (rclcpp::executor::FutureReturnCode::TIMEOUT == wait_result)
-  {
+  if (rclcpp::executor::FutureReturnCode::TIMEOUT == wait_result) {
     RCLCPP_INFO(node->get_logger(), "canceling goal");
     // Cancel the goal since it is taking too long
     auto cancel_result_future = action_client->async_cancel_goal(goal_handle);
@@ -74,9 +73,7 @@ int main(int argc, char ** argv)
       return 1;
     }
     RCLCPP_INFO(node->get_logger(), "goal is being canceled");
-  }
-  else if (rclcpp::executor::FutureReturnCode::SUCCESS != wait_result)
-  {
+  } else if (rclcpp::executor::FutureReturnCode::SUCCESS != wait_result) {
     RCLCPP_ERROR(node->get_logger(), "failed to get result");
     rclcpp::shutdown();
     return 1;
@@ -91,7 +88,7 @@ int main(int argc, char ** argv)
   }
 
   rclcpp_action::ClientGoalHandle<Fibonacci>::WrappedResult wrapped_result = result_future.get();
-  switch(wrapped_result.code) {
+  switch (wrapped_result.code) {
     case rclcpp_action::ResultCode::SUCCEEDED:
       break;
     case rclcpp_action::ResultCode::ABORTED:
