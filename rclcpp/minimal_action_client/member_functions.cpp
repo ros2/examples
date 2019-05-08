@@ -27,7 +27,7 @@ public:
   using Fibonacci = example_interfaces::action::Fibonacci;
   using GoalHandleFibonacci = rclcpp_action::ClientGoalHandle<Fibonacci>;
 
-  MinimalActionClient(const rclcpp::NodeOptions & node_options = rclcpp::NodeOptions())
+  explicit MinimalActionClient(const rclcpp::NodeOptions & node_options = rclcpp::NodeOptions())
   : Node("minimal_action_client", node_options), goal_done_(false)
   {
     this->client_ptr_ = rclcpp_action::create_client<Fibonacci>(
@@ -108,7 +108,7 @@ private:
   void result_callback(const GoalHandleFibonacci::WrappedResult & result)
   {
     this->goal_done_ = true;
-    switch(result.code) {
+    switch (result.code) {
       case rclcpp_action::ResultCode::SUCCEEDED:
         break;
       case rclcpp_action::ResultCode::ABORTED:
