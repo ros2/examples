@@ -2,6 +2,13 @@
 Changelog for package examples_rclcpp_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.1 (2019-05-08)
+------------------
+* Avoid deprecated API's by providing history settings (`#240 <https://github.com/ros2/examples/issues/240>`_)
+* Add rclcpp action examples using member functions
+* Use options struct when action client sends a goal
+* Contributors: Jacob Perron, William Woodall
+
 0.7.0 (2019-04-14)
 ------------------
 * Updated to use separated action types. (`#227 <https://github.com/ros2/examples/issues/227>`_)

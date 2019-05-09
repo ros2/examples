@@ -2,6 +2,12 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.1 (2019-05-08)
+------------------
+* Avoid deprecated API's by providing history settings (`#240 <https://github.com/ros2/examples/issues/240>`_)
+* avoid deprecated publish signature (`#239 <https://github.com/ros2/examples/issues/239>`_)
+* Contributors: William Woodall
+
 0.7.0 (2019-04-14)
 ------------------
 

@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.1 (2019-05-08)
+------------------
+* Fix rclpy action client examples
+* Contributors: Jacob Perron
+
 0.7.0 (2019-04-14)
 ------------------
 * Added rclpy action examples. (`#222 <https://github.com/ros2/examples/issues/222>`_)

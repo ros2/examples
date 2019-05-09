@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_composition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.1 (2019-05-08)
+------------------
+* Avoid deprecated API's by providing history settings (`#240 <https://github.com/ros2/examples/issues/240>`_)
+* Contributors: William Woodall
+
 0.7.0 (2019-04-14)
 ------------------
 * Updated minimal_composition example for rclcpp_components. (`#232 <https://github.com/ros2/examples/issues/232>`_)

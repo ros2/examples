@@ -2,6 +2,14 @@
 Changelog for package examples_rclcpp_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.1 (2019-05-08)
+------------------
+* Avoid deprecated API's by providing history settings (`#240 <https://github.com/ros2/examples/issues/240>`_)
+* Add rclcpp action examples using member functions
+* fix typo in action server example (`#237 <https://github.com/ros2/examples/issues/237>`_)
+* Rename action state transitions (`#234 <https://github.com/ros2/examples/issues/234>`_)
+* Contributors: Jacob Perron, Karsten Knese, William Woodall
+
 0.7.0 (2019-04-14)
 ------------------
 * Updated to use separated action types. (`#227 <https://github.com/ros2/examples/issues/227>`_)
