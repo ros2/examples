@@ -25,7 +25,8 @@ class MinimalSubscriber(Node):
         self.subscription = self.create_subscription(
             String,
             'topic',
-            self.listener_callback)
+            self.listener_callback,
+            10)
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):

@@ -29,7 +29,7 @@ def main(args=None):
 
     node = rclpy.create_node('minimal_publisher')
 
-    publisher = node.create_publisher(String, 'topic')
+    publisher = node.create_publisher(String, 'topic', 10)
 
     msg = String()
 

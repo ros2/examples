@@ -30,7 +30,7 @@ class Talker(Node):
         # Calls Node.__init__('talker')
         super().__init__('talker')
         self.i = 0
-        self.pub = self.create_publisher(String, 'chatter')
+        self.pub = self.create_publisher(String, 'chatter', 10)
         # Create a timer that calls a callback every second. A timer is recommended for executing
         # periodic tasks because it does not block the main thread while it's waiting. This allows
         # an executor to do other work when mutliple nodes are run in the same process.

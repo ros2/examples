@@ -27,7 +27,7 @@ class DoubleTalker(Node):
         super().__init__('double_talker')
 
         self.i = 0
-        self.pub = self.create_publisher(String, 'chatter')
+        self.pub = self.create_publisher(String, 'chatter', 10)
 
         # This type of callback group only allows one callback to be executed at a time
         self.group = MutuallyExclusiveCallbackGroup()

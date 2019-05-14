@@ -23,7 +23,7 @@ def main(args=None):
     node = rclpy.create_node('minimal_subscriber')
 
     subscription = node.create_subscription(
-        String, 'topic', lambda msg: node.get_logger().info('I heard: "%s"' % msg.data))
+        String, 'topic', lambda msg: node.get_logger().info('I heard: "%s"' % msg.data), 10)
     subscription  # prevent unused variable warning
 
     rclpy.spin(node)

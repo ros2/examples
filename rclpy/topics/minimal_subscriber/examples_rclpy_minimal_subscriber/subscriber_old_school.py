@@ -31,7 +31,7 @@ def main(args=None):
 
     g_node = rclpy.create_node('minimal_subscriber')
 
-    subscription = g_node.create_subscription(String, 'topic', chatter_callback)
+    subscription = g_node.create_subscription(String, 'topic', chatter_callback, 10)
     subscription  # prevent unused variable warning
 
     while rclpy.ok():
