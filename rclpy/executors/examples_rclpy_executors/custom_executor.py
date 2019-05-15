@@ -27,7 +27,7 @@ class Estopper(Node):
 
     def __init__(self):
         super().__init__('estopper')
-        self.sub = self.create_subscription(String, 'estop', self.estop_callback)
+        self.sub = self.create_subscription(String, 'estop', self.estop_callback, 10)
 
     def estop_callback(self, msg):
         self.get_logger().info('I heard: "%s"' % msg.data)

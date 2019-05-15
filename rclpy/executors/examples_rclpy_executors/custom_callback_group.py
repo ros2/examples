@@ -83,7 +83,7 @@ class ThrottledTalker(Node):
     def __init__(self):
         super().__init__('intermittent_talker')
         self.i = 0
-        self.pub = self.create_publisher(String, 'chatter')
+        self.pub = self.create_publisher(String, 'chatter', 10)
         self.group = ThrottledCallbackGroup(self)
         # Timer triggers very quickly, but is part of a throttled group
         self.timer = self.create_timer(0.1, self.timer_callback, callback_group=self.group)
