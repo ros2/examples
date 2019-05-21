@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.2 (2019-05-20)
+------------------
+
 0.7.1 (2019-05-08)
 ------------------
 * Fix rclpy action client examples

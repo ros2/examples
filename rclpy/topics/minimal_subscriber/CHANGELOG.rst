@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.2 (2019-05-20)
+------------------
+* Fix deprecation warnings (`#241 <https://github.com/ros2/examples/issues/241>`_)
+* Contributors: Jacob Perron
+
 0.7.1 (2019-05-08)
 ------------------
 

@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.2 (2019-05-20)
+------------------
+
 0.7.1 (2019-05-08)
 ------------------
 * Rename action state transitions (`#234 <https://github.com/ros2/examples/issues/234>`_)
