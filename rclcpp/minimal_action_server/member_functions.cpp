@@ -97,7 +97,7 @@ private:
     if (rclcpp::ok()) {
       result->sequence = sequence;
       goal_handle->succeed(result);
-      RCLCPP_INFO(this->get_logger(), "Goal Suceeded");
+      RCLCPP_INFO(this->get_logger(), "Goal Succeeded");
     }
   }
 
