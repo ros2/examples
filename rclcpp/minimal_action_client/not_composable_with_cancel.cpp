@@ -54,7 +54,7 @@ int main(int argc, char ** argv)
   }
 
   // Wait for the server to be done with the goal
-  auto result_future = goal_handle->async_result();
+  auto result_future = action_client->async_get_result(goal_handle);
 
   auto wait_result = rclcpp::spin_until_future_complete(
     node,
