@@ -68,7 +68,7 @@ int main(int argc, char ** argv)
   }
 
   // Wait for the server to be done with the goal
-  auto result_future = goal_handle->async_result();
+  auto result_future = action_client->async_get_result(goal_handle);
 
   RCLCPP_INFO(g_node->get_logger(), "Waiting for result");
   if (rclcpp::spin_until_future_complete(g_node, result_future) !=
