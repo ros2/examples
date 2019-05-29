@@ -2,6 +2,14 @@
 Changelog for package examples_rclcpp_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.3 (2019-05-29)
+------------------
+* Use action client get result method (`#245 <https://github.com/ros2/examples/issues/245>`_)
+  Since a result callback is not provided when sending the goal, the goal handle is not "result aware"
+  and calling the action client method will make it so.
+  The behaviour was changed in https://github.com/ros2/rclcpp/pull/701.
+* Contributors: Jacob Perron
+
 0.7.2 (2019-05-20)
 ------------------
 
