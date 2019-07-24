@@ -35,12 +35,12 @@ endif()
 add_executable(composition_publisher src/standalone_publisher.cpp)
 target_link_libraries(composition_publisher composition_nodes)
 ament_target_dependencies(composition_publisher
-  rclcpp composition_nodes)
+  rclcpp)
 
 add_executable(composition_subscriber src/standalone_subscriber.cpp)
 target_link_libraries(composition_subscriber composition_nodes)
 ament_target_dependencies(composition_subscriber
-  rclcpp composition_nodes)
+  rclcpp)
 
 add_executable(composition_composed src/composed.cpp)
 target_link_libraries(composition_composed composition_nodes)
