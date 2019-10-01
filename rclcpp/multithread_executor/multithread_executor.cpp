@@ -83,31 +83,35 @@ public:
 
     // Each of these callback groups is basically a thread
     // Everything assigned to one of them gets bundled into the same thread
-    sub1_opt = rclcpp::SubscriptionOptions();
+    auto sub1_opt = rclcpp::SubscriptionOptions();
     sub1_opt.callback_group = callback_group_subscriber1_;
-    sub2_opt = rclcpp::SubscriptionOptions();
+    auto sub2_opt = rclcpp::SubscriptionOptions();
     sub2_opt.callback_group = callback_group_subscriber2_;
 
-    subscription1 = this->create_subscription<std_msgs::msg::String>("topic",
-        rclcpp::QoS(10),
-        // std::bind is sort of C++'s way of passing a function
-        // If you're used to function-passing, skip these comments
-        std::bind(
-          &DualThreadedNode::subscriber1_cb,  // First parameter is a reference to the function
-          this,   // What the function should be bound to
-          std::placeholders::_1),   // At this point we're not positive of all the
-                                    // parameters being passed
-                                    // So we just put a generic placeholder into the binder
-                                    // (since we know we need ONE parameter)
-        sub1_opt);                  // This is where we set the callback group.
-                                    // This subscription will run with callback group subscriber1
+    subscription1_ = this->create_subscription<std_msgs::msg::String>(
+      "topic",
+      rclcpp::QoS(10),
+      // std::bind is sort of C++'s way of passing a function
+      // If you're used to function-passing, skip these comments
+      std::bind(
+        &DualThreadedNode::subscriber1_cb,  // First parameter is a reference to the function
+        this,                               // What the function should be bound to
+        std::placeholders::_1),             // At this point we're not positive of all the
+                                            // parameters being passed
+                                            // So we just put a generic placeholder
+                                            // into the binder
+                                            // (since we know we need ONE parameter)
+      sub1_opt);                  // This is where we set the callback group.
+                                  // This subscription will run with callback group subscriber1
 
-    subscription2 = this->create_subscription<std_msgs::msg::String>("topic",
-        rclcpp::QoS(10),
-        std::bind(&DualThreadedNode::subscriber2_cb,
+    subscription2_ = this->create_subscription<std_msgs::msg::String>(
+      "topic",
+      rclcpp::QoS(10),
+      std::bind(
+        &DualThreadedNode::subscriber2_cb,
         this,
         std::placeholders::_1),
-        sub2_opt);
+      sub2_opt);
   }
 
 private:
@@ -171,10 +175,8 @@ private:
 
   rclcpp::callback_group::CallbackGroup::SharedPtr callback_group_subscriber1_;
   rclcpp::callback_group::CallbackGroup::SharedPtr callback_group_subscriber2_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription1;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription2;
-  rclcpp::SubscriptionOptions sub1_opt;
-  rclcpp::SubscriptionOptions sub2_opt;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription1_;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription2_;
 };
 
 int main(int argc, char * argv[])
@@ -184,8 +186,9 @@ int main(int argc, char * argv[])
   // You MUST use the MultiThreadedExecutor to use, well, multiple threads
   rclcpp::executors::MultiThreadedExecutor executor;
   auto pubnode = std::make_shared<PublisherNode>();
-  auto subnode = std::make_shared<DualThreadedNode>();  // This contains BOTH subscriber nodes. They will still run on different threads
-                                                        // One Node. Two Threads
+  auto subnode = std::make_shared<DualThreadedNode>();  // This contains BOTH subscriber callbacks.
+                                                        // They will still run on different threads
+                                                        // One Node. Two callbacks. Two Threads
   executor.add_node(pubnode);
   executor.add_node(subnode);
   executor.spin();
