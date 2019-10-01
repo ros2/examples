@@ -121,17 +121,8 @@ private:
    */
   std::string timing_string()
   {
-    time_t timer;
-    struct tm * tm_info;
-    struct tm tm_result;
-    char buffer[12];
-
-    time(&timer);
-    tm_info = localtime_r(&timer, &tm_result);
-
-    strftime(buffer, 12, "[%T]", tm_info);
-
-    return buffer;
+    rclcpp::Time time = this->now();
+    return std::to_string(time.nanoseconds());
   }
 
   /**
