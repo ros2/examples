@@ -23,6 +23,15 @@
 
 using namespace std::chrono_literals;
 
+/**
+ * A small convenience function for converting a thread ID to a string
+ */
+std::string string_thread_id()
+{
+  auto hashed = std::hash<std::thread::id>()(std::this_thread::get_id());
+  return std::to_string(hashed);
+}
+
 /* For this example, we will be creating a publishing node like the one in minimal_publisher.
  * We will have a single subscriber node running 2 threads. Each thread loops at different speeds, and
  * just repeats what it sees from the publisher to the screen.
@@ -126,25 +135,16 @@ private:
   }
 
   /**
-   * A small convenience function for converting a thread ID to a string
-   */
-  std::string string_thread_id(std::thread::id id)
-  {
-    auto hashed = std::hash<std::thread::id>()(id);
-    return std::to_string(hashed);
-  }
-
-  /**
    * Every time the Publisher publishes something, all subscribers to the topic get poked
    * This function gets called when Subscriber1 is poked (due to the std::bind we used when defining it)
    */
   void subscriber1_cb(const std_msgs::msg::String::SharedPtr msg)
   {
-    auto message_recieved_at = timing_string();
+    auto message_received_at = timing_string();
 
     // Extract current thread
-    auto thread_string = "THREAD " + string_thread_id(std::this_thread::get_id());
-    thread_string += " => Heard '%s' at " + message_recieved_at;  // Prep display message
+    auto thread_string = "THREAD " + string_thread_id();
+    thread_string += " => Heard '%s' at " + message_received_at;  // Prep display message
     RCLCPP_INFO(this->get_logger(), thread_string, msg->data.c_str());
   }
 
@@ -157,7 +157,7 @@ private:
     auto message_recieved_at = timing_string();
 
     // Extract current thread
-    auto thread_string = "THREAD " + string_thread_id(std::this_thread::get_id());
+    auto thread_string = "THREAD " + string_thread_id();
 
     // Prep display message
     thread_string += " => Heard '%s' at " + message_recieved_at;
