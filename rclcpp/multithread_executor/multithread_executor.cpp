@@ -10,13 +10,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <chrono>
-#include <condition_variable>
+#include <functional>
 #include <memory>
-#include <mutex>
-#include <string>
-#include <thread>
-#include <iostream>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -25,7 +20,7 @@ using namespace std::chrono_literals;
 
 /**
  * A small convenience function for converting a thread ID to a string
- */
+ **/
 std::string string_thread_id()
 {
   auto hashed = std::hash<std::thread::id>()(std::this_thread::get_id());
@@ -50,7 +45,7 @@ public:
         message.data = "Hello World! " + std::to_string(this->count_++);
 
         // Extract current thread
-        auto curr_thread = string_thread_id(std::this_thread::get_id());
+        auto curr_thread = string_thread_id();
 
         // Prep display message
         auto info_message = "\n<<THREAD " + curr_thread + ">> Publishing '%s'";
@@ -61,15 +56,6 @@ public:
   }
 
 private:
-  /**
-   * A small convenience function for converting a thread ID to a string
-   */
-  std::string string_thread_id(std::thread::id id)
-  {
-    auto hashed = std::hash<std::thread::id>()(id);
-    return std::to_string(hashed);
-  }
-
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
   size_t count_;
