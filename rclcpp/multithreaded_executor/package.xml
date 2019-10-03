@@ -1,13 +1,11 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
-  <name>examples_rclcpp_minimal_publisher</name>
+  <name>examples_rclcpp_multithreaded_executor</name>
   <version>0.8.0</version>
-  <description>Examples of minimal publisher nodes</description>
-  <maintainer email="jacob@openrobotics.org">Jacob Perron</maintainer>
+  <description>Package containing example of how to implement a multithreaded executor</description>
+  <maintainer email="jhassold@dcscorp.com">Jacob Hassold</maintainer>
   <license>Apache License 2.0</license>
-  <author>Mikael Arguedas</author>
-  <author>Morgan Quigley</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
@@ -18,7 +16,6 @@
   <exec_depend>std_msgs</exec_depend>
 
   <export>
-    <build_type>ament_cmake</build_type>
+     <build_type>ament_cmake</build_type>
   </export>
 </package>
-
