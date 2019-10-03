@@ -86,19 +86,22 @@ public:
     auto sub2_opt = rclcpp::SubscriptionOptions();
     sub2_opt.callback_group = callback_group_subscriber2_;
 
+    /* std::bind is sort of C++'s way of passing a function. If you're used to function-passing in
+     * C++, skip this comment section.
+     * 
+     * The first parameter (&DualThreadedNode::subscriber1_cb) is a reference to the function that
+     *   we want to have bound
+     * The second parameter (this) is what we are binding the function to
+     * The third parameter (std::placeholders::_1) is a generic placeholder. It represents a
+     *   parameter for DualThreadedNode::subscriber1_cb that will be passed at a later time
+     */
     subscription1_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
       rclcpp::QoS(10),
-      // std::bind is sort of C++'s way of passing a function
-      // If you're used to function-passing, skip these comments
       std::bind(
-        &DualThreadedNode::subscriber1_cb,  // First parameter is a reference to the function
-        this,                               // What the function should be bound to
-        std::placeholders::_1),             // At this point we're not positive of all the
-                                            // parameters being passed
-                                            // So we just put a generic placeholder
-                                            // into the binder
-                                            // (since we know we need ONE parameter)
+        &DualThreadedNode::subscriber1_cb,
+        this,
+        std::placeholders::_1),
       sub1_opt);                  // This is where we set the callback group.
                                   // This subscription will run with callback group subscriber1
 
