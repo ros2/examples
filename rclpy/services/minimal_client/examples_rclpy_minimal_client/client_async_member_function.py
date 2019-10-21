@@ -42,14 +42,15 @@ def main(args=None):
     while rclpy.ok():
         rclpy.spin_once(minimal_client)
         if minimal_client.future.done():
-            if minimal_client.future.result() is not None:
+            try:
                 response = minimal_client.future.result()
+            except Exception as e:
+                minimal_client.get_logger().info(
+                    'Service call failed %r' % (e,))
+            else:
                 minimal_client.get_logger().info(
                     'Result of add_two_ints: for %d + %d = %d' %
                     (minimal_client.req.a, minimal_client.req.b, response.sum))
-            else:
-                minimal_client.get_logger().info(
-                    'Service call failed %r' % (minimal_client.future.exception(),))
             break
 
     minimal_client.destroy_node()
