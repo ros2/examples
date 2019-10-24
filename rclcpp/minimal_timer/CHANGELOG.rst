@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_timer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.7.3 (2019-05-29)
 ------------------
 

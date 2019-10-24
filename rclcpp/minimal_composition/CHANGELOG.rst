@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_composition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.7.3 (2019-05-29)
 ------------------
 

@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.7.3 (2019-05-29)
 ------------------
 * Fix InvalidHandle exception in action client examples (`#246 <https://github.com/ros2/examples/issues/246>`_)
