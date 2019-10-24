@@ -2,8 +2,8 @@
 Changelog for package examples_rclpy_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.8.1 (2019-10-24)
+------------------
 * future.result() raises if it fails (`#253 <https://github.com/ros2/examples/issues/253>`_)
 * Contributors: Shane Loretz
 

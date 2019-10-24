@@ -2,7 +2,7 @@
 Changelog for package examples_rclcpp_multithreaded_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.8.1 (2019-10-24)
+------------------
 * Implemented Multithreaded Executor example (`#251 <https://github.com/ros2/examples/issues/251>`_)
 * Contributors: jhdcs
