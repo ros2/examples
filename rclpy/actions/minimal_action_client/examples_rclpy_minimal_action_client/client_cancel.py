@@ -19,7 +19,6 @@ import rclpy
 from rclpy.action import ActionClient
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.node import Node
-from rclpy.timer import WallTimer
 
 
 class MinimalActionClient(Node):
