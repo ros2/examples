@@ -43,7 +43,8 @@ int main(int argc, char * argv[])
     return 1;
   }
   auto result = result_future.get();
-  RCLCPP_INFO(node->get_logger(), "result of %" PRId64 " + %" PRId64 " = %" PRId64,
+  RCLCPP_INFO(
+    node->get_logger(), "result of %" PRId64 " + %" PRId64 " = %" PRId64,
     request->a, request->b, result->sum);
   rclcpp::shutdown();
   return 0;
