@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ament_flake8.main import main
+from ament_flake8.main import main_with_errors
 import pytest
 
 
@@ -20,5 +20,7 @@ import pytest
 @pytest.mark.linter
 def test_flake8():
     # Test is called from package root
-    rc = main(argv=['.'])
-    assert rc == 0, 'Found errors'
+    rc, errors = main_with_errors(argv=['.'])
+    assert rc == 0, \
+        'Found %d code style errors / warnings:\n' % len(errors) + \
+        '\n'.join(errors)
