@@ -29,9 +29,29 @@ int main(int argc, char * argv[])
     auto guard_condition = std::make_shared<rclcpp::GuardCondition>();
     auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
 
-    rclcpp::WaitSet wait_set({{guard_condition}});
+    rclcpp::WaitSet wait_set(std::vector<rclcpp::GuardCondition::SharedPtr>{guard_condition});
     wait_set.add_guard_condition(guard_condition2);
+
+    {
+      auto wait_result = wait_set.wait(std::chrono::seconds(1));
+      assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
+    }
+
     wait_set.remove_guard_condition(guard_condition2);
+
+    {
+      // still fails with timeout
+      auto wait_result = wait_set.wait(std::chrono::seconds(1));
+      assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
+    }
+
+    wait_set.remove_guard_condition(guard_condition);
+
+    {
+      // now fails (fast) with empty
+      auto wait_result = wait_set.wait(std::chrono::seconds(1));
+      assert(wait_result.kind() == rclcpp::WaitResultKind::Empty);
+    }
   }
 
   // StaticWaitSet example
@@ -39,12 +59,18 @@ int main(int argc, char * argv[])
     auto guard_condition = std::make_shared<rclcpp::GuardCondition>();
     auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
 
-    rclcpp::StaticWaitSet<1> static_wait_set({{guard_condition}});
+    rclcpp::StaticWaitSet<1> static_wait_set(
+      std::array<rclcpp::GuardCondition::SharedPtr, 1>{{guard_condition}});
     // Note: The following line will result in a compiler error, since the
     //   static storage policy prevents editing after construction.
     // static_wait_set.add_guard_condition(guard_condition2);
     // static_wait_set.remove_guard_condition(guard_condition2);
     (void)guard_condition2;
+
+    {
+      auto wait_result = static_wait_set.wait(std::chrono::seconds(1));
+      assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
+    }
   }
 
   // ThreadSafeWaitSet example
