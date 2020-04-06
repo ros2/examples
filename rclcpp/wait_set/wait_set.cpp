@@ -17,24 +17,42 @@
 // #include <thread>
 
 #include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  // auto node = std::make_shared<rclcpp::Node>("wait_set_example_node");
+  auto do_nothing = [](std_msgs::msg::String::UniquePtr){};
 
   // Normal WaitSet example
   {
+    auto node = std::make_shared<rclcpp::Node>("wait_set_example_node");
+    auto sub = node->create_subscription<std_msgs::msg::String>("~/chatter", 10, do_nothing);
+    rclcpp::SubscriptionOptions so;
+    so.use_intra_process_comm = rclcpp::IntraProcessSetting::Enable;
+    auto sub2 = node->create_subscription<std_msgs::msg::String>("~/chatter", 10, do_nothing, so);
     auto guard_condition = std::make_shared<rclcpp::GuardCondition>();
     auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
 
-    rclcpp::WaitSet wait_set(std::vector<rclcpp::GuardCondition::SharedPtr>{guard_condition});
+    rclcpp::WaitSet wait_set(
+      std::vector<rclcpp::SubscriptionBase::SharedPtr>{sub},
+      std::vector<rclcpp::GuardCondition::SharedPtr>{guard_condition});
+    wait_set.add_subscription(sub2);
     wait_set.add_guard_condition(guard_condition2);
 
     {
       auto wait_result = wait_set.wait(std::chrono::seconds(1));
       assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
+    }
+
+    guard_condition->trigger();
+
+    {
+      auto wait_result = wait_set.wait(std::chrono::seconds(1));
+      assert(wait_result.kind() == rclcpp::WaitResultKind::Ready);
+      assert(wait_result.get_wait_set().get_rcl_wait_set().guard_conditions[0] != nullptr);
+      assert(wait_result.get_wait_set().get_rcl_wait_set().guard_conditions[1] == nullptr);
     }
 
     wait_set.remove_guard_condition(guard_condition2);
@@ -48,6 +66,22 @@ int main(int argc, char * argv[])
     wait_set.remove_guard_condition(guard_condition);
 
     {
+      // still fails with timeout
+      auto wait_result = wait_set.wait(std::chrono::seconds(1));
+      assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
+    }
+
+    wait_set.remove_subscription(sub);
+
+    {
+      // still fails with timeout
+      auto wait_result = wait_set.wait(std::chrono::seconds(1));
+      assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
+    }
+
+    wait_set.remove_subscription(sub2);
+
+    {
       // now fails (fast) with empty
       auto wait_result = wait_set.wait(std::chrono::seconds(1));
       assert(wait_result.kind() == rclcpp::WaitResultKind::Empty);
@@ -59,8 +93,11 @@ int main(int argc, char * argv[])
     auto guard_condition = std::make_shared<rclcpp::GuardCondition>();
     auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
 
-    rclcpp::StaticWaitSet<1> static_wait_set(
-      std::array<rclcpp::GuardCondition::SharedPtr, 1>{{guard_condition}});
+    rclcpp::StaticWaitSet<0, 1, 0, 0> static_wait_set(
+      std::array<rclcpp::SubscriptionBase::SharedPtr, 0>{},
+      std::array<rclcpp::GuardCondition::SharedPtr, 1>{{guard_condition}},
+      std::array<rclcpp::TimerBase::SharedPtr, 0>{},
+      std::array<rclcpp::StaticWaitSet<0, 1, 0, 0>::WaitableEntry, 0>{});
     // Note: The following line will result in a compiler error, since the
     //   static storage policy prevents editing after construction.
     // static_wait_set.add_guard_condition(guard_condition2);
