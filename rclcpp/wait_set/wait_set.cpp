@@ -89,7 +89,7 @@ int main(int argc, char * argv[])
       assert(wait_result.kind() == rclcpp::WaitResultKind::Ready);
       assert(wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0] != nullptr);
       std_msgs::msg::String msg;
-      rmw_message_info_t msg_info;
+      rclcpp::MessageInfo msg_info;
       assert(sub->take(msg, msg_info));
       assert(msg.data == "test");
     }
