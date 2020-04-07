@@ -36,7 +36,7 @@ int main(int argc, char * argv[])
     auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
 
     rclcpp::WaitSet wait_set(
-      std::vector<rclcpp::SubscriptionBase::SharedPtr>{sub},
+      std::vector<rclcpp::WaitSet::SubscriptionEntry>{{sub}},
       std::vector<rclcpp::GuardCondition::SharedPtr>{guard_condition});
     wait_set.add_subscription(sub2);
     wait_set.add_guard_condition(guard_condition2);
@@ -53,6 +53,8 @@ int main(int argc, char * argv[])
       assert(wait_result.kind() == rclcpp::WaitResultKind::Ready);
       assert(wait_result.get_wait_set().get_rcl_wait_set().guard_conditions[0] != nullptr);
       assert(wait_result.get_wait_set().get_rcl_wait_set().guard_conditions[1] == nullptr);
+      assert(wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0] == nullptr);
+      assert(wait_result.get_wait_set().get_rcl_wait_set().subscriptions[1] == nullptr);
     }
 
     wait_set.remove_guard_condition(guard_condition2);
@@ -71,7 +73,7 @@ int main(int argc, char * argv[])
       assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
     }
 
-    wait_set.remove_subscription(sub);
+    wait_set.remove_subscription(sub2);
 
     {
       // still fails with timeout
@@ -79,7 +81,20 @@ int main(int argc, char * argv[])
       assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
     }
 
-    wait_set.remove_subscription(sub2);
+    auto pub = node->create_publisher<std_msgs::msg::String>("~/chatter", 1);
+    pub->publish(std_msgs::msg::String().set__data("test"));
+
+    {
+      auto wait_result = wait_set.wait(std::chrono::seconds(1));
+      assert(wait_result.kind() == rclcpp::WaitResultKind::Ready);
+      assert(wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0] != nullptr);
+      std_msgs::msg::String msg;
+      rmw_message_info_t msg_info;
+      assert(sub->take(msg, msg_info));
+      assert(msg.data == "test");
+    }
+
+    wait_set.remove_subscription(sub);
 
     {
       // now fails (fast) with empty
@@ -94,7 +109,7 @@ int main(int argc, char * argv[])
     auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
 
     rclcpp::StaticWaitSet<0, 1, 0, 0> static_wait_set(
-      std::array<rclcpp::SubscriptionBase::SharedPtr, 0>{},
+      std::array<rclcpp::StaticWaitSet<0, 1, 0, 0>::SubscriptionEntry, 0>{},
       std::array<rclcpp::GuardCondition::SharedPtr, 1>{{guard_condition}},
       std::array<rclcpp::TimerBase::SharedPtr, 0>{},
       std::array<rclcpp::StaticWaitSet<0, 1, 0, 0>::WaitableEntry, 0>{});
