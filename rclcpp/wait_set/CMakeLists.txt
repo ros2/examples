@@ -17,6 +17,9 @@ find_package(std_msgs REQUIRED)
 add_executable(wait_set wait_set.cpp)
 ament_target_dependencies(wait_set rclcpp std_msgs)
 
+add_executable(static_wait_set static_wait_set.cpp)
+ament_target_dependencies(static_wait_set rclcpp std_msgs)
+
 install(TARGETS
   wait_set
   DESTINATION lib/${PROJECT_NAME}
