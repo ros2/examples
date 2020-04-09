@@ -11,17 +11,23 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 add_executable(wait_set wait_set.cpp)
-ament_target_dependencies(wait_set rclcpp std_msgs)
+ament_target_dependencies(wait_set example_interfaces rclcpp std_msgs)
 
 add_executable(static_wait_set static_wait_set.cpp)
 ament_target_dependencies(static_wait_set rclcpp std_msgs)
 
+add_executable(thread_safe_wait_set thread_safe_wait_set.cpp)
+ament_target_dependencies(thread_safe_wait_set example_interfaces rclcpp std_msgs)
+
 install(TARGETS
   wait_set
+  static_wait_set
+  thread_safe_wait_set
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_package()

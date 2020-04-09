@@ -26,12 +26,6 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
 
   auto do_nothing = [](std_msgs::msg::String::UniquePtr){ assert(false); };
-  auto add_two_ints =
-    [](
-      const std::shared_ptr<rmw_request_id_t>,
-      const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request>,
-      const std::shared_ptr<example_interfaces::srv::AddTwoInts::Response>)
-    { assert(false); };
 
   auto node = std::make_shared<rclcpp::Node>("wait_set_example_node");
 
@@ -43,17 +37,8 @@ int main(int argc, char * argv[])
   so.use_intra_process_comm = rclcpp::IntraProcessSetting::Enable;
   auto sub2 = node->create_subscription<std_msgs::msg::String>("~/chatter", 10, do_nothing, so);
 
-  auto pub = node->create_publisher<std_msgs::msg::String>("~/chatter", 10);
-  rclcpp::PublisherOptions po;
-  po.use_intra_process_comm = rclcpp::IntraProcessSetting::Enable;
-  auto pub2 = node->create_publisher<std_msgs::msg::String>("~/chatter", 10, po);
-
-  auto client = node->create_client<example_interfaces::srv::AddTwoInts>("~/add_two_ints");
-  auto service =
-    node->create_service<example_interfaces::srv::AddTwoInts>("~/add_two_ints", add_two_ints);
-
-  rclcpp::WaitSet wait_set(
-    std::vector<rclcpp::WaitSet::SubscriptionEntry>{{sub}},
+  rclcpp::ThreadSafeWaitSet wait_set(
+    std::vector<rclcpp::ThreadSafeWaitSet::SubscriptionEntry>{{sub}},
     std::vector<rclcpp::GuardCondition::SharedPtr>{guard_condition});
   wait_set.add_subscription(sub2);
   wait_set.add_guard_condition(guard_condition2);
@@ -98,7 +83,7 @@ int main(int argc, char * argv[])
     assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
   }
 
-  // auto pub = node->create_publisher<std_msgs::msg::String>("~/chatter", 1);
+  auto pub = node->create_publisher<std_msgs::msg::String>("~/chatter", 1);
   pub->publish(std_msgs::msg::String().set__data("test"));
 
   {
@@ -114,9 +99,10 @@ int main(int argc, char * argv[])
   wait_set.remove_subscription(sub);
 
   {
-    // now fails (fast) with empty
+    // still will not fail, because thread-safe policy we are using adds its
+    // own guard condition and therefore it will never be empty
     auto wait_result = wait_set.wait(std::chrono::seconds(1));
-    assert(wait_result.kind() == rclcpp::WaitResultKind::Empty);
+    assert(wait_result.kind() == rclcpp::WaitResultKind::Timeout);
   }
 
   return 0;
