@@ -25,13 +25,13 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto do_nothing = [](std_msgs::msg::String::UniquePtr){ assert(false); };
+  auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
   auto add_two_ints =
     [](
-      const std::shared_ptr<rmw_request_id_t>,
-      const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request>,
-      const std::shared_ptr<example_interfaces::srv::AddTwoInts::Response>)
-    { assert(false); };
+    const std::shared_ptr<rmw_request_id_t>,
+    const std::shared_ptr<example_interfaces::srv::AddTwoInts::Request>,
+    const std::shared_ptr<example_interfaces::srv::AddTwoInts::Response>)
+    {assert(false);};
 
   auto node = std::make_shared<rclcpp::Node>("wait_set_example_node");
 
