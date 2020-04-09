@@ -26,11 +26,13 @@ int main(int argc, char * argv[])
   auto guard_condition = std::make_shared<rclcpp::GuardCondition>();
   auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
 
-  rclcpp::StaticWaitSet<0, 1, 0, 0> static_wait_set(
-    std::array<rclcpp::StaticWaitSet<0, 1, 0, 0>::SubscriptionEntry, 0>{},
+  rclcpp::StaticWaitSet<0, 1, 0, 0, 0, 0> static_wait_set(
+    std::array<rclcpp::StaticWaitSet<0, 1, 0, 0, 0, 0>::SubscriptionEntry, 0>{},
     std::array<rclcpp::GuardCondition::SharedPtr, 1>{{guard_condition}},
     std::array<rclcpp::TimerBase::SharedPtr, 0>{},
-    std::array<rclcpp::StaticWaitSet<0, 1, 0, 0>::WaitableEntry, 0>{});
+    std::array<rclcpp::ClientBase::SharedPtr, 0>{},
+    std::array<rclcpp::ServiceBase::SharedPtr, 0>{},
+    std::array<rclcpp::StaticWaitSet<0, 1, 0, 0, 0, 0>::WaitableEntry, 0>{});
   // Note: The following line will result in a compiler error, since the
   //   static storage policy prevents editing after construction.
   // static_wait_set.add_guard_condition(guard_condition2);
