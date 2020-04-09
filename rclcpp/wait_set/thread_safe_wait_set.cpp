@@ -25,7 +25,7 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto do_nothing = [](std_msgs::msg::String::UniquePtr){ assert(false); };
+  auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
 
   auto node = std::make_shared<rclcpp::Node>("wait_set_example_node");
 
