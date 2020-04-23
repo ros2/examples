@@ -75,9 +75,9 @@ public:
      * assign callbacks to them. They're also what the executor looks for when trying to run multiple threads
      */
     callback_group_subscriber1_ = this->create_callback_group(
-      rclcpp::callback_group::CallbackGroupType::MutuallyExclusive);
+      rclcpp::CallbackGroupType::MutuallyExclusive);
     callback_group_subscriber2_ = this->create_callback_group(
-      rclcpp::callback_group::CallbackGroupType::MutuallyExclusive);
+      rclcpp::CallbackGroupType::MutuallyExclusive);
 
     // Each of these callback groups is basically a thread
     // Everything assigned to one of them gets bundled into the same thread
@@ -153,8 +153,8 @@ private:
     RCLCPP_INFO(this->get_logger(), thread_string, msg->data.c_str());
   }
 
-  rclcpp::callback_group::CallbackGroup::SharedPtr callback_group_subscriber1_;
-  rclcpp::callback_group::CallbackGroup::SharedPtr callback_group_subscriber2_;
+  rclcpp::CallbackGroup::SharedPtr callback_group_subscriber1_;
+  rclcpp::CallbackGroup::SharedPtr callback_group_subscriber2_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription1_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription2_;
 };
