@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.9.0 (2020-04-30)
+------------------
+
 0.8.2 (2019-11-19)
 ------------------
 * Fix client_cancel example. (`#258 <https://github.com/ros2/examples/issues/258>`_)
