@@ -101,7 +101,7 @@ private:
   {
     RCLCPP_INFO(
       this->get_logger(),
-      "Next number in sequence received: %" PRId64,
+      "Next number in sequence received: %" PRId32,
       feedback->sequence.back());
   }
 
@@ -124,7 +124,7 @@ private:
 
     RCLCPP_INFO(this->get_logger(), "Result received");
     for (auto number : result.result->sequence) {
-      RCLCPP_INFO(this->get_logger(), "%" PRId64, number);
+      RCLCPP_INFO(this->get_logger(), "%" PRId32, number);
     }
   }
 };  // class MinimalActionClient

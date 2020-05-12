@@ -82,7 +82,7 @@ int main(int argc, char ** argv)
 
   RCLCPP_INFO(node->get_logger(), "result received");
   for (auto number : wrapped_result.result->sequence) {
-    RCLCPP_INFO(node->get_logger(), "%" PRId64, number);
+    RCLCPP_INFO(node->get_logger(), "%" PRId32, number);
   }
 
   rclcpp::shutdown();

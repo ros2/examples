@@ -29,7 +29,7 @@ void feedback_callback(
 {
   RCLCPP_INFO(
     g_node->get_logger(),
-    "Next number in sequence received: %" PRId64,
+    "Next number in sequence received: %" PRId32,
     feedback->sequence.back());
 }
 
@@ -96,7 +96,7 @@ int main(int argc, char ** argv)
 
   RCLCPP_INFO(g_node->get_logger(), "result received");
   for (auto number : wrapped_result.result->sequence) {
-    RCLCPP_INFO(g_node->get_logger(), "%" PRId64, number);
+    RCLCPP_INFO(g_node->get_logger(), "%" PRId32, number);
   }
 
   action_client.reset();
