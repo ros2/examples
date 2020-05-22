@@ -1,4 +1,4 @@
-# Copyright 2018 Open Source Robotics Foundation, Inc.
+# Copyright 2018-2020 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
+import threading
 import time
 
 from example_interfaces.action import Fibonacci
 
 import rclpy
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
+from rclpy.callback_groups import ReentrantCallbackGroup
+from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 
 
@@ -25,18 +29,35 @@ class MinimalActionServer(Node):
 
     def __init__(self):
         super().__init__('minimal_action_server')
+        self._goal_queue = collections.deque()
+        self._goal_queue_lock = threading.Lock()
+        self._current_goal = None
 
         self._action_server = ActionServer(
             self,
             Fibonacci,
             'fibonacci',
+            handle_accepted_callback=self.handle_accepted_callback,
             execute_callback=self.execute_callback,
             goal_callback=self.goal_callback,
-            cancel_callback=self.cancel_callback)
+            cancel_callback=self.cancel_callback,
+            callback_group=ReentrantCallbackGroup())
 
     def destroy(self):
         self._action_server.destroy()
         super().destroy_node()
+
+    def handle_accepted_callback(self, goal_handle):
+        """Starts or defers execution of an already accepted goal."""
+        with self._goal_queue_lock:
+            if self._current_goal is not None:
+                # Put incoming goal in the queue
+                self._goal_queue.append(goal_handle)
+                self.get_logger().info('Goal put in the queue')
+            else:
+                # Start goal execution right away
+                self._current_goal = goal_handle
+                self._current_goal.execute()
 
     def goal_callback(self, goal_request):
         """Accepts or rejects a client request to begin an action."""
@@ -61,8 +82,8 @@ class MinimalActionServer(Node):
             if goal_handle.is_cancel_requested:
                 goal_handle.canceled()
                 self.get_logger().info('Goal canceled')
-                return Fibonacci.Result()
-
+                result = Fibonacci.Result()
+                break
             # Update Fibonacci sequence
             feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence[i-1])
 
@@ -73,14 +94,24 @@ class MinimalActionServer(Node):
 
             # Sleep for demonstration purposes
             time.sleep(1)
+        else:
+            goal_handle.succeed()
 
-        goal_handle.succeed()
+            # Populate result message
+            result = Fibonacci.Result()
+            result.sequence = feedback_msg.sequence
 
-        # Populate result message
-        result = Fibonacci.Result()
-        result.sequence = feedback_msg.sequence
+            self.get_logger().info('Returning result: {0}'.format(result.sequence))
 
-        self.get_logger().info('Returning result: {0}'.format(result.sequence))
+        with self._goal_queue_lock:
+            try:
+                # Start execution of the next goal in the queue.
+                self._current_goal = self._goal_queue.popleft()
+                self.get_logger().info('Next goal pulled from the queue')
+                self._current_goal.execute()
+            except IndexError:
+                # No goal in the queue.
+                self._current_goal = None
 
         return result
 
@@ -90,8 +121,9 @@ def main(args=None):
 
     minimal_action_server = MinimalActionServer()
 
-    # The default SingleThreadedExecutor causes the action server to process goals sequentially
-    rclpy.spin(minimal_action_server)
+    executor = MultiThreadedExecutor()
+
+    rclpy.spin(minimal_action_server, executor=executor)
 
     minimal_action_server.destroy()
     rclpy.shutdown()
