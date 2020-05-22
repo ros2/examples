@@ -71,50 +71,53 @@ class MinimalActionServer(Node):
 
     def execute_callback(self, goal_handle):
         """Executes a goal."""
-        self.get_logger().info('Executing goal...')
+        try:
+            self.get_logger().info('Executing goal...')
 
-        # Append the seeds for the Fibonacci sequence
-        feedback_msg = Fibonacci.Feedback()
-        feedback_msg.sequence = [0, 1]
+            # Append the seeds for the Fibonacci sequence
+            feedback_msg = Fibonacci.Feedback()
+            feedback_msg.sequence = [0, 1]
 
-        # Start executing the action
-        for i in range(1, goal_handle.request.order):
-            if goal_handle.is_cancel_requested:
-                goal_handle.canceled()
-                self.get_logger().info('Goal canceled')
-                result = Fibonacci.Result()
-                break
-            # Update Fibonacci sequence
-            feedback_msg.sequence.append(feedback_msg.sequence[i] + feedback_msg.sequence[i-1])
+            # Start executing the action
+            for i in range(1, goal_handle.request.order):
+                if goal_handle.is_cancel_requested:
+                    goal_handle.canceled()
+                    self.get_logger().info('Goal canceled')
+                    return Fibonacci.Result()
 
-            self.get_logger().info('Publishing feedback: {0}'.format(feedback_msg.sequence))
+                # Update Fibonacci sequence
+                feedback_msg.sequence.append(
+                    feedback_msg.sequence[i] + feedback_msg.sequence[i-1])
 
-            # Publish the feedback
-            goal_handle.publish_feedback(feedback_msg)
+                self.get_logger().info(
+                    'Publishing feedback: {0}'.format(feedback_msg.sequence))
 
-            # Sleep for demonstration purposes
-            time.sleep(1)
-        else:
+                # Publish the feedback
+                goal_handle.publish_feedback(feedback_msg)
+
+                # Sleep for demonstration purposes
+                time.sleep(1)
+
             goal_handle.succeed()
 
             # Populate result message
             result = Fibonacci.Result()
             result.sequence = feedback_msg.sequence
 
-            self.get_logger().info('Returning result: {0}'.format(result.sequence))
+            self.get_logger().info(
+                'Returning result: {0}'.format(result.sequence))
 
-        with self._goal_queue_lock:
-            try:
-                # Start execution of the next goal in the queue.
-                self._current_goal = self._goal_queue.popleft()
-                self.get_logger().info('Next goal pulled from the queue')
-                self._current_goal.execute()
-            except IndexError:
-                # No goal in the queue.
-                self._current_goal = None
-
-        return result
-
+            return result
+        finally:
+            with self._goal_queue_lock:
+                try:
+                    # Start execution of the next goal in the queue.
+                    self._current_goal = self._goal_queue.popleft()
+                    self.get_logger().info('Next goal pulled from the queue')
+                    self._current_goal.execute()
+                except IndexError:
+                    # No goal in the queue.
+                    self._current_goal = None
 
 def main(args=None):
     rclpy.init(args=args)
