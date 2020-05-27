@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.9.1 (2020-05-26)
+------------------
+
 0.9.0 (2020-04-30)
 ------------------
 * Restructure rclcpp folders (`#264 <https://github.com/ros2/examples/issues/264>`_)

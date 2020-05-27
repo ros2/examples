@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.9.1 (2020-05-26)
+------------------
+
 0.9.0 (2020-04-30)
 ------------------
 * avoid new deprecations (`#267 <https://github.com/ros2/examples/issues/267>`_)

@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.9.1 (2020-05-26)
+------------------
+* Fix server_queue_goals.py example (`#272 <https://github.com/ros2/examples/issues/272>`_)
+* Contributors: Michel Hidalgo
+
 0.9.0 (2020-04-30)
 ------------------
 
