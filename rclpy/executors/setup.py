@@ -34,6 +34,7 @@ setup(
             'composed = examples_rclpy_executors.composed:main',
             'custom_executor = examples_rclpy_executors.custom_executor:main',
             'custom_callback_group = examples_rclpy_executors.custom_callback_group:main',
+            'publish_pointcloud = examples_rclpy_executors.publish_pointcloud:main',
         ],
     },
 )
