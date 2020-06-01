@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_multithreaded_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.9.2 (2020-06-01)
+------------------
+
 0.9.1 (2020-05-26)
 ------------------
 * Initialized count in examples_rclcpp_multithreaded_executor (`#269 <https://github.com/ros2/examples/issues/269>`_)
