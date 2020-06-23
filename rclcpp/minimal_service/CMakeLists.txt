@@ -20,4 +20,9 @@ ament_target_dependencies(service_main rclcpp example_interfaces)
 install(TARGETS service_main
   DESTINATION lib/${PROJECT_NAME})
 
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+endif()
+
 ament_package()

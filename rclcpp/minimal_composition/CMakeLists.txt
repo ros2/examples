@@ -28,8 +28,7 @@ ament_target_dependencies(composition_nodes rclcpp rclcpp_components std_msgs)
 # Export the library path to ensure that the installed libraries are available.
 if(NOT WIN32)
   ament_environment_hooks(
-    "${ament_cmake_package_templates_ENVIRONMENT_HOOK_LIBRARY_PATH}"
-    )
+    "${ament_cmake_package_templates_ENVIRONMENT_HOOK_LIBRARY_PATH}")
 endif()
 
 add_executable(composition_publisher src/standalone_publisher.cpp)
@@ -57,5 +56,10 @@ install(TARGETS
   composition_subscriber
   composition_composed
   DESTINATION lib/${PROJECT_NAME})
+
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
 ament_package()
