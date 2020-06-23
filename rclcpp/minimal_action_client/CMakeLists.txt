@@ -39,6 +39,11 @@ ament_target_dependencies(action_client_not_composable_with_feedback
   "rclcpp_action"
   "example_interfaces")
 
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+endif()
+
 install(TARGETS
   action_client_member_functions
   action_client_not_composable
