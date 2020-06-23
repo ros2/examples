@@ -2,6 +2,17 @@
 Changelog for package examples_rclpy_minimal_service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.9.2 (2020-06-01)
+------------------
+
+0.9.1 (2020-05-26)
+------------------
+
+0.9.0 (2020-04-30)
+------------------
+* more verbose test_flake8 error messages (same as `ros2/launch_ros#135 <https://github.com/ros2/launch_ros/issues/135>`_)
+* Contributors: Dirk Thomas
+
 0.8.2 (2019-11-19)
 ------------------
 

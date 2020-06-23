@@ -41,7 +41,7 @@ int main(int argc, char ** argv)
   // Ask server to achieve some goal and wait until it's accepted
   auto goal_handle_future = action_client->async_send_goal(goal_msg);
   if (rclcpp::spin_until_future_complete(node, goal_handle_future) !=
-    rclcpp::executor::FutureReturnCode::SUCCESS)
+    rclcpp::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(node->get_logger(), "send goal call failed :(");
     return 1;
@@ -58,7 +58,7 @@ int main(int argc, char ** argv)
 
   RCLCPP_INFO(node->get_logger(), "Waiting for result");
   if (rclcpp::spin_until_future_complete(node, result_future) !=
-    rclcpp::executor::FutureReturnCode::SUCCESS)
+    rclcpp::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(node->get_logger(), "get result call failed :(");
     return 1;
@@ -82,7 +82,7 @@ int main(int argc, char ** argv)
 
   RCLCPP_INFO(node->get_logger(), "result received");
   for (auto number : wrapped_result.result->sequence) {
-    RCLCPP_INFO(node->get_logger(), "%" PRId64, number);
+    RCLCPP_INFO(node->get_logger(), "%" PRId32, number);
   }
 
   rclcpp::shutdown();

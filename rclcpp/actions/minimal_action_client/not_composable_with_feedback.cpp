@@ -29,7 +29,7 @@ void feedback_callback(
 {
   RCLCPP_INFO(
     g_node->get_logger(),
-    "Next number in sequence received: %" PRId64,
+    "Next number in sequence received: %" PRId32,
     feedback->sequence.back());
 }
 
@@ -55,7 +55,7 @@ int main(int argc, char ** argv)
   auto goal_handle_future = action_client->async_send_goal(goal_msg, send_goal_options);
 
   if (rclcpp::spin_until_future_complete(g_node, goal_handle_future) !=
-    rclcpp::executor::FutureReturnCode::SUCCESS)
+    rclcpp::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(g_node->get_logger(), "send goal call failed :(");
     return 1;
@@ -72,7 +72,7 @@ int main(int argc, char ** argv)
 
   RCLCPP_INFO(g_node->get_logger(), "Waiting for result");
   if (rclcpp::spin_until_future_complete(g_node, result_future) !=
-    rclcpp::executor::FutureReturnCode::SUCCESS)
+    rclcpp::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(g_node->get_logger(), "get result call failed :(");
     return 1;
@@ -96,7 +96,7 @@ int main(int argc, char ** argv)
 
   RCLCPP_INFO(g_node->get_logger(), "result received");
   for (auto number : wrapped_result.result->sequence) {
-    RCLCPP_INFO(g_node->get_logger(), "%" PRId64, number);
+    RCLCPP_INFO(g_node->get_logger(), "%" PRId32, number);
   }
 
   action_client.reset();

@@ -2,6 +2,19 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.9.2 (2020-06-01)
+------------------
+* Catch possible exception from spin_some (`#266 <https://github.com/ros2/examples/issues/266>`_) (`#270 <https://github.com/ros2/examples/issues/270>`_)
+* Contributors: Tomoya Fujita
+
+0.9.1 (2020-05-26)
+------------------
+
+0.9.0 (2020-04-30)
+------------------
+* Restructure rclcpp folders (`#264 <https://github.com/ros2/examples/issues/264>`_)
+* Contributors: Marya Belanger
+
 0.8.2 (2019-11-19)
 ------------------
 

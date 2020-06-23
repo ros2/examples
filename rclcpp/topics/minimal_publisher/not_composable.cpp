@@ -36,8 +36,15 @@ int main(int argc, char * argv[])
   while (rclcpp::ok()) {
     message.data = "Hello, world! " + std::to_string(publish_count++);
     RCLCPP_INFO(node->get_logger(), "Publishing: '%s'", message.data.c_str());
-    publisher->publish(message);
-    rclcpp::spin_some(node);
+    try {
+      publisher->publish(message);
+      rclcpp::spin_some(node);
+    } catch (const rclcpp::exceptions::RCLError &e) {
+      RCLCPP_ERROR(
+        node->get_logger(),
+        "unexpectedly failed with %s",
+        e.what());
+    }
     loop_rate.sleep();
   }
   rclcpp::shutdown();
