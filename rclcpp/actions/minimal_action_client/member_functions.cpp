@@ -62,7 +62,6 @@ public:
     if (!this->client_ptr_->wait_for_action_server(std::chrono::seconds(10))) {
       RCLCPP_ERROR(this->get_logger(), "Action server not available after waiting");
       this->goal_done_ = true;
-      return;
     }
 
     auto goal_msg = Fibonacci::Goal();
@@ -113,13 +112,10 @@ private:
         break;
       case rclcpp_action::ResultCode::ABORTED:
         RCLCPP_ERROR(this->get_logger(), "Goal was aborted");
-        return;
       case rclcpp_action::ResultCode::CANCELED:
         RCLCPP_ERROR(this->get_logger(), "Goal was canceled");
-        return;
       default:
         RCLCPP_ERROR(this->get_logger(), "Unknown result code");
-        return;
     }
 
     RCLCPP_INFO(this->get_logger(), "Result received");

@@ -82,7 +82,6 @@ private:
         result->sequence = sequence;
         goal_handle->canceled(result);
         RCLCPP_INFO(this->get_logger(), "Goal Canceled");
-        return;
       }
       // Update sequence
       sequence.push_back(sequence[i] + sequence[i - 1]);
