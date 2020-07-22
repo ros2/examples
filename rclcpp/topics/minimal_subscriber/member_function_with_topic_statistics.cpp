@@ -24,7 +24,7 @@ class MinimalSubscriberWithTopicStatistics : public rclcpp::Node
 {
 public:
   MinimalSubscriberWithTopicStatistics()
-    : Node("minimal_subscriber_with_topic_statistics")
+  : Node("minimal_subscriber_with_topic_statistics")
   {
     // manually enable topic statistics via options
     auto options = rclcpp::SubscriptionOptions();
@@ -37,8 +37,8 @@ public:
     // options.topic_stats_options.publish_topic = "/topic_statistics"
 
     auto callback = [this](std_msgs::msg::String::SharedPtr msg) {
-      this->topic_callback(msg);
-    };
+        this->topic_callback(msg);
+      };
 
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "topic", 10, callback, options);
