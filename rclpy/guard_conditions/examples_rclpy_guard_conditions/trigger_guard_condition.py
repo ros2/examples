@@ -12,39 +12,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import threading
-import time
-
 import rclpy
-from rclpy.executors import GuardCondition
 
 
 def main(args=None):
 
     rclpy.init(args=args)
-    node = rclpy.create_node('DemoGuardCondition')
+    node = rclpy.create_node('snake_case')
     executor = rclpy.executors.SingleThreadedExecutor()
     executor.add_node(node)
 
     def guard_condition_callback():
-        node.get_logger().info('called the guard conditions callback')
+        rclpy.shutdown()
+        node.get_logger().info('guard callback called shutdown')
 
-    def delay_triggering_guard_condition(guard_condition: GuardCondition, delay_in_seconds: int):
-        time.sleep(delay_in_seconds)
-        node.get_logger().info('triggering guard condition')
+    def timer_callback():
         guard_condition.trigger()
+        node.get_logger().info('timer callback triggered guard condition')
 
+    node.create_timer(timer_period_sec=2, callback=timer_callback)
     guard_condition = node.create_guard_condition(guard_condition_callback)
 
-    delay_in_seconds: float = 5.0
-    while True:
-        # start a thread that will trigger the guard condition after a delay
-        thread = threading.Thread(
-            target=delay_triggering_guard_condition,
-            args=(guard_condition, delay_in_seconds))
-        thread.start()
-
-        # `spin_once` will block until the guard condition is triggered
+    while rclpy.ok():
+        # First loop: `spin_once` waits for timer to be ready, then calls
+        #   the timer's callback, which triggers the guard condition.
+        # Second loop: The guard condition is ready so it's callback is
+        #   called. The callback calls shutdown, so the loop doesn't run
+        #   again and the program exits.
         node.get_logger().info("waiting for 'spin_once' to finish...")
         executor.spin_once()
         node.get_logger().info("...'spin_once' finished!\n")
