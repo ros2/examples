@@ -18,7 +18,7 @@ import rclpy
 def main(args=None):
 
     rclpy.init(args=args)
-    node = rclpy.create_node('snake_case')
+    node = rclpy.create_node('demo_guard_condition')
     executor = rclpy.executors.SingleThreadedExecutor()
     executor.add_node(node)
 
