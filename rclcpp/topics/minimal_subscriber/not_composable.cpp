@@ -35,11 +35,5 @@ int main(int argc, char * argv[])
     g_node->create_subscription<std_msgs::msg::String>("topic", 10, topic_callback);
   rclcpp::spin(g_node);
   rclcpp::shutdown();
-  // TODO(clalancette): It would be better to remove both of these nullptr
-  // assignments and let the destructors handle it, but we can't because of
-  // https://github.com/eProsima/Fast-RTPS/issues/235 .  Once that is fixed
-  // we should probably look at removing these two assignments.
-  subscription = nullptr;
-  g_node = nullptr;
   return 0;
 }
