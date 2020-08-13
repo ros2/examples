@@ -48,7 +48,7 @@ class MinimalActionServer(Node):
         super().destroy_node()
 
     def handle_accepted_callback(self, goal_handle):
-        """Starts or defers execution of an already accepted goal."""
+        """Start or defer execution of an already accepted goal."""
         with self._goal_queue_lock:
             if self._current_goal is not None:
                 # Put incoming goal in the queue
@@ -60,17 +60,17 @@ class MinimalActionServer(Node):
                 self._current_goal.execute()
 
     def goal_callback(self, goal_request):
-        """Accepts or rejects a client request to begin an action."""
+        """Accept or reject a client request to begin an action."""
         self.get_logger().info('Received goal request')
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
-        """Accepts or rejects a client request to cancel an action."""
+        """Accept or reject a client request to cancel an action."""
         self.get_logger().info('Received cancel request')
         return CancelResponse.ACCEPT
 
     def execute_callback(self, goal_handle):
-        """Executes a goal."""
+        """Execute a goal."""
         try:
             self.get_logger().info('Executing goal...')
 
@@ -118,6 +118,7 @@ class MinimalActionServer(Node):
                 except IndexError:
                     # No goal in the queue.
                     self._current_goal = None
+
 
 def main(args=None):
     rclpy.init(args=args)

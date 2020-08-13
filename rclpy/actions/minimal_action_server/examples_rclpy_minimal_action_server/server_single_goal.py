@@ -46,7 +46,7 @@ class MinimalActionServer(Node):
         super().destroy_node()
 
     def goal_callback(self, goal_request):
-        """Accepts or rejects a client request to begin an action."""
+        """Accept or reject a client request to begin an action."""
         self.get_logger().info('Received goal request')
         return GoalResponse.ACCEPT
 
@@ -62,12 +62,12 @@ class MinimalActionServer(Node):
         goal_handle.execute()
 
     def cancel_callback(self, goal):
-        """Accepts or rejects a client request to cancel an action."""
+        """Accept or reject a client request to cancel an action."""
         self.get_logger().info('Received cancel request')
         return CancelResponse.ACCEPT
 
     def execute_callback(self, goal_handle):
-        """Executes the goal."""
+        """Execute the goal."""
         self.get_logger().info('Executing goal...')
 
         # Append the seeds for the Fibonacci sequence
