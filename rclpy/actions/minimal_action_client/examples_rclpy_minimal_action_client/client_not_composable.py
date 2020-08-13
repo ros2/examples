@@ -18,7 +18,6 @@ from example_interfaces.action import Fibonacci
 
 import rclpy
 from rclpy.action import ActionClient
-from rclpy.node import Node
 
 
 def feedback_cb(logger, feedback):

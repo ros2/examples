@@ -20,7 +20,6 @@ import rclpy
 from rclpy.action import ActionServer, CancelResponse
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
-from rclpy.node import Node
 
 
 logger = None
@@ -32,7 +31,7 @@ def cancel_callback(goal_handle):
 
 
 async def execute_callback(goal_handle):
-    """Executes the goal."""
+    """Execute the goal."""
     logger.info('Executing goal...')
 
     # Append the seeds for the fibonacci sequence
