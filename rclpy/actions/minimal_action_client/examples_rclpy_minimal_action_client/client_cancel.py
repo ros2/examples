@@ -12,14 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from action_msgs.msg import GoalStatus
 from example_interfaces.action import Fibonacci
 
 import rclpy
 from rclpy.action import ActionClient
-from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.node import Node
-from rclpy.timer import WallTimer
 
 
 class MinimalActionClient(Node):
