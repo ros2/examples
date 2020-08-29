@@ -85,7 +85,6 @@ class MinimalActionServer(Node):
         return result
 
 
-
 def main(args=None):
     rclpy.init(args=args)
 
