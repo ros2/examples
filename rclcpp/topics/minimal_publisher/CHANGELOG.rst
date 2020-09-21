@@ -2,6 +2,12 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Make sure to include what you use in all examples. (`#284 <https://github.com/ros2/examples/issues/284>`_)
+* Added common linters (`#265 <https://github.com/ros2/examples/issues/265>`_)
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette
+
 0.9.2 (2020-06-01)
 ------------------
 * Catch possible exception from spin_some (`#266 <https://github.com/ros2/examples/issues/266>`_) (`#270 <https://github.com/ros2/examples/issues/270>`_)

@@ -2,6 +2,13 @@
 Changelog for package examples_rclcpp_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update goal response callback signature (`#291 <https://github.com/ros2/examples/issues/291>`_)
+* Make sure to include what you use in all examples. (`#284 <https://github.com/ros2/examples/issues/284>`_)
+* Added common linters (`#265 <https://github.com/ros2/examples/issues/265>`_)
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Jacob Perron
+
 0.9.2 (2020-06-01)
 ------------------
 
