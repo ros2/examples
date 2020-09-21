@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_minimal_timer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.10.0 (2020-09-21)
+-------------------
 * Added common linters (`#265 <https://github.com/ros2/examples/issues/265>`_)
 * Contributors: Alejandro Hernández Cordero
 

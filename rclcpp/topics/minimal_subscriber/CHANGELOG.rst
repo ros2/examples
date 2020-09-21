@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.10.0 (2020-09-21)
+-------------------
 * Make sure to include what you use in all examples. (`#284 <https://github.com/ros2/examples/issues/284>`_)
 * Remove a TODO in the not_composable demo. (`#285 <https://github.com/ros2/examples/issues/285>`_)
 * Add Topic Statistics Example (`#281 <https://github.com/ros2/examples/issues/281>`_)

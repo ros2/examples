@@ -4,7 +4,7 @@ package_name = 'examples_rclpy_executors'
 
 setup(
     name=package_name,
-    version='0.9.2',
+    version='0.10.0',
     packages=['examples_rclpy_executors'],
     data_files=[
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
