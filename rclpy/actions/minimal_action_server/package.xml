@@ -4,7 +4,7 @@
   <name>examples_rclpy_minimal_action_server</name>
   <version>0.10.0</version>
   <description>Examples of minimal action servers using rclpy.</description>
-
+  <maintainer email="mabel@openrobotics.org">Mabel Zhang</maintainer>
   <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
   <license>Apache License 2.0</license>
 
