@@ -4,10 +4,12 @@
   <name>examples_rclcpp_minimal_subscriber</name>
   <version>0.10.0</version>
   <description>Examples of minimal subscribers</description>
-  <maintainer email="jacob@openrobotics.org">Jacob Perron</maintainer>
+  <maintainer email="mabel@openrobotics.org">Mabel Zhang</maintainer>
+  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
   <license>Apache License 2.0</license>
   <author>Mikael Arguedas</author>
   <author>Morgan Quigley</author>
+  <author email="jacob@openrobotics.org">Jacob Perron</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
