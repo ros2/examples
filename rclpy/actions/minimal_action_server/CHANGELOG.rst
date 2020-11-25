@@ -2,6 +2,14 @@
 Changelog for package examples_rclpy_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.7.5 (2020-11-24)
+------------------
+* Add missing linting tests. (`#287 <https://github.com/ros2/examples/issues/287>`_)
+* Contributors: Allison Thackston
+
+0.7.4 (2019-08-01)
+------------------
+
 0.7.3 (2019-05-29)
 ------------------
 
