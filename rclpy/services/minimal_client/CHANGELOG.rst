@@ -2,8 +2,8 @@
 Changelog for package examples_rclpy_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.10.1 (2020-12-10)
+-------------------
 * Update maintainers (`#292 <https://github.com/ros2/examples/issues/292>`_)
 * Contributors: Shane Loretz
 
