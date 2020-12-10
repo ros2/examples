@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update maintainers (`#292 <https://github.com/ros2/examples/issues/292>`_)
+* Contributors: Shane Loretz
+
 0.10.0 (2020-09-21)
 -------------------
 * Update goal response callback signature (`#291 <https://github.com/ros2/examples/issues/291>`_)

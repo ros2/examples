@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update maintainers (`#292 <https://github.com/ros2/examples/issues/292>`_)
+* Contributors: Shane Loretz
+
 0.10.0 (2020-09-21)
 -------------------
 * Make sure to include what you use in all examples. (`#284 <https://github.com/ros2/examples/issues/284>`_)

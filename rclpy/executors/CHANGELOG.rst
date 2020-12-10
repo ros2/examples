@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_executors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update maintainers (`#292 <https://github.com/ros2/examples/issues/292>`_)
+* Contributors: Shane Loretz
+
 0.10.0 (2020-09-21)
 -------------------
 
