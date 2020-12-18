@@ -52,8 +52,9 @@ public:
         auto curr_thread = string_thread_id();
 
         // Prep display message
-        auto info_message = "\n<<THREAD " + curr_thread + ">> Publishing '%s'";
-        RCLCPP_INFO(this->get_logger(), info_message, message.data.c_str());
+        RCLCPP_INFO(
+          this->get_logger(), "\n<<THREAD %s>> Publishing '%s'",
+          curr_thread.c_str(), message.data.c_str());
         this->publisher_->publish(message);
       };
     timer_ = this->create_wall_timer(500ms, timer_callback);
@@ -133,9 +134,9 @@ private:
     auto message_received_at = timing_string();
 
     // Extract current thread
-    auto thread_string = "THREAD " + string_thread_id();
-    thread_string += " => Heard '%s' at " + message_received_at;  // Prep display message
-    RCLCPP_INFO(this->get_logger(), thread_string, msg->data.c_str());
+    RCLCPP_INFO(
+      this->get_logger(), "THREAD %s => Heard '%s' at %s",
+      string_thread_id().c_str(), msg->data.c_str(), message_received_at.c_str());
   }
 
   /**
@@ -146,12 +147,10 @@ private:
   {
     auto message_received_at = timing_string();
 
-    // Extract current thread
-    auto thread_string = "THREAD " + string_thread_id();
-
     // Prep display message
-    thread_string += " => Heard '%s' at " + message_received_at;
-    RCLCPP_INFO(this->get_logger(), thread_string, msg->data.c_str());
+    RCLCPP_INFO(
+      this->get_logger(), "THREAD %s => Heard '%s' at %s",
+      string_thread_id().c_str(), msg->data.c_str(), message_received_at.c_str());
   }
 
   rclcpp::CallbackGroup::SharedPtr callback_group_subscriber1_;
