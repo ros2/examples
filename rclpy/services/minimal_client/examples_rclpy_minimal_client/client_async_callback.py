@@ -37,14 +37,10 @@ def main(args=None):
             req.a = 41
             req.b = 1
             future = cli.call_async(req)
-            try:
-                result = await future
-            except Exception as e:
-                node.get_logger().info('Service call failed %r' % (e,))
-            else:
-                node.get_logger().info(
-                    'Result of add_two_ints: for %d + %d = %d' %
-                    (req.a, req.b, result.sum))
+            result = await future
+            node.get_logger().info(
+                'Result of add_two_ints: for %d + %d = %d' %
+                (req.a, req.b, result.sum))
         finally:
             did_get_result = True
 
