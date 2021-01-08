@@ -31,14 +31,10 @@ def main(args=None):
     future = cli.call_async(req)
     rclpy.spin_until_future_complete(node, future)
 
-    try:
-        result = future.result()
-    except Exception as e:
-        node.get_logger().info('Service call failed %r' % (e,))
-    else:
-        node.get_logger().info(
-            'Result of add_two_ints: for %d + %d = %d' %
-            (req.a, req.b, result.sum))
+    result = future.result()
+    node.get_logger().info(
+        'Result of add_two_ints: for %d + %d = %d' %
+        (req.a, req.b, result.sum))
 
     node.destroy_node()
     rclpy.shutdown()
