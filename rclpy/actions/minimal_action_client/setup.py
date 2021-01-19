@@ -32,6 +32,7 @@ setup(
             'client = ' + package_name + '.client:main',
             'client_cancel = ' + package_name + '.client_cancel:main',
             'client_not_composable = ' + package_name + '.client_not_composable:main',
+            'client_asyncio = ' + package_name + '.client_asyncio:main',
         ],
     },
 )
