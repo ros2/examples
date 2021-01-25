@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_multithreaded_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.10.2 (2021-01-25)
+-------------------
 * Use `char *` in logging macros (`#295 <https://github.com/ros2/examples/issues/295>`_)
 * Contributors: Audrow Nash
 
