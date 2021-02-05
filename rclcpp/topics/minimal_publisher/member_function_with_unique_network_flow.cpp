@@ -33,7 +33,7 @@ public:
   {
     // Enable unique network flow via options
     auto options_1 = rclcpp::PublisherOptions();
-    options_1.unique_network_flow = true;
+    options_1.require_unique_network_flow = RMW_UNIQUE_NETWORK_FLOW_STRICTLY_REQUIRED;
     publisher_1_ = this->create_publisher<std_msgs::msg::String>("topic_1", 10, options_1);
     timer_1_ = this->create_wall_timer(
       500ms, std::bind(&MinimalPublisherWithUniqueNetworkFlow::timer_1_callback, this));

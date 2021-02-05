@@ -33,7 +33,7 @@ public:
   {
     // Enable unique network flow via options
     auto options_1 = rclcpp::SubscriptionOptions();
-    options_1.unique_network_flow = true;
+    options_1.require_unique_network_flow = RMW_UNIQUE_NETWORK_FLOW_STRICTLY_REQUIRED;
 
     subscription_1_ = this->create_subscription<std_msgs::msg::String>(
       "topic_1", 10, std::bind(
