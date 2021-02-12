@@ -67,15 +67,15 @@ async def spinning(node):
         await asyncio.sleep(0.001)
 
 
-async def run(args=None, loop=None):
-    if loop is None:
-        loop = asyncio.get_event_loop()
+async def run(args, loop):
+
+    logger = rclpy.logging.get_logger('minimal_action_client')
 
     # init ros2
     rclpy.init(args=args)
 
     # create node
-    action_client = MinimalActionClient()
+    action_client = MinimalActionClientAsyncIO()
 
     # start spinning
     spin_task = loop.create_task(spinning(action_client))
@@ -89,15 +89,15 @@ async def run(args=None, loop=None):
     wait_future = asyncio.wait([my_task1, my_task2])
     # run event loop
     finished, unfinished = await wait_future
-    print('unfinished:', len(unfinished))
+    logger.info(f'unfinished: {len(unfinished)}')
     for task in finished:
-        print('result {} and status flag {}'.format(*task.result()))
+        logger.info('result {} and status flag {}'.format(*task.result()))
 
     # Sequence
     result, status = await loop.create_task(action_client.send_goal())
-    print('A) result {} and status flag {}'.format(result, status))
+    logger.info(f'A) result {result} and status flag {status}')
     result, status = await loop.create_task(action_client.send_goal())
-    print('B) result {} and status flag {}'.format(result, status))
+    logger.info(f'B) result {result} and status flag {status}')
 
     # cancel spinning task
     spin_task.cancel()
