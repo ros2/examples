@@ -1,4 +1,4 @@
-# Copyright 2018 Open Source Robotics Foundation, Inc.
+# Copyright 2021 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@ from rclpy.action import ActionClient
 from rclpy.node import Node
 
 
-class MinimalActionClient(Node):
+class MinimalActionClientAsyncIO(Node):
 
     def __init__(self):
-        super().__init__('minimal_action_client')
+        super().__init__('minimal_action_client_asyncio')
         self._action_client = ActionClient(self, Fibonacci, 'fibonacci')
 
     def feedback_callback(self, feedback):
@@ -99,7 +99,7 @@ async def run(args=None, loop=None):
     result, status = await loop.create_task(action_client.send_goal())
     print('B) result {} and status flag {}'.format(result, status))
 
-    # cancle spinning task
+    # cancel spinning task
     spin_task.cancel()
     try:
         await spin_task
