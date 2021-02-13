@@ -14,7 +14,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
-include_directories(include src)
+include_directories(include)
 
 add_executable(ping_node_only src/main.cpp src/examples_rclcpp_cbg_executor/ping_node.cpp)
 target_compile_definitions(ping_node_only PRIVATE ADD_PING_NODE=1)
@@ -31,7 +31,10 @@ ament_target_dependencies(ping_and_pong_node rclcpp std_msgs)
 install(TARGETS ping_node_only pong_node_only ping_and_pong_node
   DESTINATION lib/${PROJECT_NAME}
 )
-
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()

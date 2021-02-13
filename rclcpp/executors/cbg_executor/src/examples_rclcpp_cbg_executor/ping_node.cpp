@@ -19,7 +19,7 @@
 #include <functional>
 #include <memory>
 
-#include <examples_rclcpp_cbg_executor/utilities.hpp>
+#include "./utilities.hpp"
 
 namespace examples_rclcpp_cbg_executor
 {
@@ -30,7 +30,7 @@ PingNode::PingNode()
   using std::placeholders::_1;
   using std_msgs::msg::Int32;
 
-  declare_parameter<double>("ping_period", 0.01);
+  this->declare_parameter<double>("ping_period", 0.01);
   std::chrono::nanoseconds ping_period = get_nanos_from_secs_parameter(this, "ping_period");
 
   ping_timer_ = this->create_wall_timer(ping_period, std::bind(&PingNode::send_ping, this));
@@ -62,7 +62,7 @@ void PingNode::low_pong_received(const std_msgs::msg::Int32::SharedPtr msg)
   rtt_data_[msg->data].low_received_ = now();
 }
 
-void PingNode::print_statistics()
+void PingNode::print_statistics() const
 {
   size_t ping_count = rtt_data_.size();
 
@@ -70,7 +70,7 @@ void PingNode::print_statistics()
   size_t low_pong_count = 0;
   rclcpp::Duration high_rtt_sum(0, 0);
   rclcpp::Duration low_rtt_sum(0, 0);
-  for (const auto entry : rtt_data_) {
+  for (const auto & entry : rtt_data_) {
     if (entry.high_received_.nanoseconds() >= entry.sent_.nanoseconds()) {
       ++high_pong_count;
       high_rtt_sum = high_rtt_sum + (entry.high_received_ - entry.sent_);

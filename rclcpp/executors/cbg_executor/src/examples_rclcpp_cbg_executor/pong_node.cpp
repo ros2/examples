@@ -19,7 +19,7 @@
 #include <chrono>
 #include <memory>
 
-#include "examples_rclcpp_cbg_executor/utilities.hpp"
+#include "./utilities.hpp"
 
 namespace examples_rclcpp_cbg_executor
 {
@@ -75,14 +75,14 @@ void PongNode::low_ping_received(const std_msgs::msg::Int32::SharedPtr msg)
 void PongNode::burn_cpu_cycles(std::chrono::nanoseconds duration)
 {
   if (duration > std::chrono::nanoseconds::zero()) {
-    auto endTime = get_current_thread_time() + duration;
+    auto end_time = get_current_thread_time() + duration;
     int x = 0;
-    bool doAgain = true;
-    while (doAgain) {
+    bool do_again = true;
+    while (do_again) {
       while (x != std::rand() && x % 1000 != 0) {
         x++;
       }
-      doAgain = (get_current_thread_time() < endTime);
+      do_again = (get_current_thread_time() < end_time);
     }
   }
 }

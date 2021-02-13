@@ -42,7 +42,7 @@ public:
 
   virtual ~PingNode() = default;
 
-  void print_statistics();
+  void print_statistics() const;
 
 private:
   rclcpp::TimerBase::SharedPtr ping_timer_;
