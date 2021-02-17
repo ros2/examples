@@ -19,10 +19,16 @@
 #include <string>
 #include <thread>
 
-#ifndef _WIN32  // i.e., POSIX platform.
-#include <pthread.h>
-#else  // i.e., Windows platform.
+#ifdef _WIN32  // i.e., Windows platform.
 #include <windows.h>
+#elif __APPLE__  // i.e., macOS platform.
+#include <pthread.h>
+#include <mach/mach_port.h>
+#include <mach/mach_time.h>
+#include <mach/thread_act.h>
+#include <mach/thread_policy.h>
+#else  // i.e., Linux platform.
+#include <pthread.h>
 #endif
 
 #include <rclcpp/rclcpp.hpp>
@@ -54,7 +60,24 @@ template<typename T>
 bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_id)
 {
   bool success = true;
-#ifndef _WIN32  // i.e., POSIX platform.
+#ifdef _WIN32  // i.e., Windows platform.
+  success &= (SetThreadPriority(native_handle, (priority == ThreadPriority::HIGH) ? 1 : -1) != 0);
+  if (cpu_id >= 0) {
+    DWORD_PTR cpuset = 1;
+    cpuset <<= cpu_id;
+    success &= (SetThreadAffinityMask(native_handle, cpuset) != 0);
+  }
+#elif __APPLE__  // i.e., macOS platform.
+  thread_port_t mach_thread = pthread_mach_thread_np(native_handle);
+  thread_precedence_policy_data_t precedence_policy;
+  precedence_policy.importance = (priority == ThreadPriority::HIGH) ? 1 : -1);
+  success &= (thread_policy_set(mach_thread, THREAD_PRECEDENCE_POLICY, reinterpret_cast<thread_policy_t>&precedence_policy, THREAD_PRECEDENCE_POLICY_COUNT) == KERN_SUCCESS);
+  if (cpu_id >= 0) {
+    thread_affinity_policy_data_t affinity_policy;
+    affinity_policy.affinity_tag = cpu_id;
+    success &= (thread_policy_set(mach_thread, THREAD_AFFINITY_POLICY, reinterpret_cast<thread_policy_t>&affinity_policy, THREAD_AFFINITY_POLICY_COUNT) == KERN_SUCCESS);
+  }
+#else  // i.e., Linux platform.
   sched_param params;
   int policy;
   success &= (pthread_getschedparam(native_handle, &policy, &params) == 0);
@@ -72,13 +95,6 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
     CPU_SET(cpu_id, &cpuset);
     success &= (pthread_setaffinity_np(native_handle, sizeof(cpu_set_t), &cpuset) == 0);
   }
-#else  // i.e., Windows platform.
-  success &= (SetThreadPriority(native_handle, (priority == ThreadPriority::HIGH) ? 1 : -1) != 0);
-  if (cpu_id >= 0) {
-    DWORD_PTR cpuset = 1;
-    cpuset <<= cpu_id;
-    success &= (SetThreadAffinityMask(native_handle, cpuset) != 0);
-  }
 #endif
   return success;
 }
@@ -95,13 +111,7 @@ inline bool configure_thread(std::thread & thread, ThreadPriority priority, int 
 template<typename T>
 std::chrono::nanoseconds get_native_thread_time(T native_handle)
 {
-#ifndef _WIN32  // i.e., POSIX platform.
-  clockid_t id;
-  pthread_getcpuclockid(native_handle, &id);
-  timespec spec;
-  clock_gettime(id, &spec);
-  return std::chrono::seconds{spec.tv_sec} + std::chrono::nanoseconds{spec.tv_nsec};
-#else  // i.e., Windows platform.
+#ifdef _WIN32  // i.e., Windows platform.
   FILETIME creation_filetime;
   FILETIME exit_filetime;
   FILETIME kernel_filetime;
@@ -117,6 +127,24 @@ std::chrono::nanoseconds get_native_thread_time(T native_handle)
   std::chrono::nanoseconds t(100);  // Unit in FILETIME is 100ns.
   t *= (kernel_time.QuadPart + user_time.QuadPart);
   return t;
+#elif __APPLE__  // i.e., macOS platform.
+  thread_port_t mach_thread = pthread_mach_thread_np(native_handle);
+  thread_basic_info_data_t info;
+  mach_msg_type_number_t count = THREAD_BASIC_INFO_COUNT;
+  std::chrono::nanoseconds t(0);
+  if (thread_info(mach_thread, THREAD_BASIC_INFO, reinterpret_cast<thread_info_t>(&info), &count) == KERN_SUCCESS) {
+    t += std::chrono::seconds(info.user_time.seconds);
+    t += std::chrono::microseconds(info.user_time.microseconds);
+    t += std::chrono::seconds(info.system_time.seconds);
+    t += std::chrono::microseconds(info.system_time.microseconds);
+  }
+  return t;
+#else  // i.e., Linux platform.
+  clockid_t id;
+  pthread_getcpuclockid(native_handle, &id);
+  timespec spec;
+  clock_gettime(id, &spec);
+  return std::chrono::seconds{spec.tv_sec} + std::chrono::nanoseconds{spec.tv_nsec};
 #endif
 }
 
@@ -131,10 +159,12 @@ inline std::chrono::nanoseconds get_thread_time(std::thread & thread)
 /// This allows measuring the execution time of this thread.
 inline std::chrono::nanoseconds get_current_thread_time()
 {
-#ifndef _WIN32  // i.e., POSIX platform.
-  return get_native_thread_time(pthread_self());
-#else  // i.e., Windows platform.
+#ifdef _WIN32  // i.e., Windows platform.
   return get_native_thread_time(GetCurrentThread());
+#elif __APPLE__  // i.e., macOS platform.
+
+#else  // i.e., Linux platform.
+  return get_native_thread_time(pthread_self());
 #endif
 }
 
