@@ -70,12 +70,20 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
 #elif __APPLE__  // i.e., macOS platform.
   thread_port_t mach_thread = pthread_mach_thread_np(native_handle);
   thread_precedence_policy_data_t precedence_policy;
-  precedence_policy.importance = (priority == ThreadPriority::HIGH) ? 1 : -1);
-  success &= (thread_policy_set(mach_thread, THREAD_PRECEDENCE_POLICY, reinterpret_cast<thread_policy_t>&precedence_policy, THREAD_PRECEDENCE_POLICY_COUNT) == KERN_SUCCESS);
+  precedence_policy.importance = (priority == ThreadPriority::HIGH) ? 1 : -1;
+  success &=
+    (thread_policy_set(
+      mach_thread, THREAD_PRECEDENCE_POLICY,
+      reinterpret_cast<thread_policy_t>&precedence_policy,
+      THREAD_PRECEDENCE_POLICY_COUNT) == KERN_SUCCESS);
   if (cpu_id >= 0) {
     thread_affinity_policy_data_t affinity_policy;
     affinity_policy.affinity_tag = cpu_id;
-    success &= (thread_policy_set(mach_thread, THREAD_AFFINITY_POLICY, reinterpret_cast<thread_policy_t>&affinity_policy, THREAD_AFFINITY_POLICY_COUNT) == KERN_SUCCESS);
+    success &=
+      (thread_policy_set(
+        mach_thread, THREAD_AFFINITY_POLICY,
+        reinterpret_cast<thread_policy_t>&affinity_policy,
+        THREAD_AFFINITY_POLICY_COUNT) == KERN_SUCCESS);
   }
 #else  // i.e., Linux platform.
   sched_param params;
@@ -132,7 +140,10 @@ std::chrono::nanoseconds get_native_thread_time(T native_handle)
   thread_basic_info_data_t info;
   mach_msg_type_number_t count = THREAD_BASIC_INFO_COUNT;
   std::chrono::nanoseconds t(0);
-  if (thread_info(mach_thread, THREAD_BASIC_INFO, reinterpret_cast<thread_info_t>(&info), &count) == KERN_SUCCESS) {
+  if (thread_info(
+      mach_thread, THREAD_BASIC_INFO, reinterpret_cast<thread_info_t>(&info),
+      &count) == KERN_SUCCESS)
+  {
     t += std::chrono::seconds(info.user_time.seconds);
     t += std::chrono::microseconds(info.user_time.microseconds);
     t += std::chrono::seconds(info.system_time.seconds);
