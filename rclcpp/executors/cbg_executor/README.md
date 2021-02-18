@@ -29,12 +29,12 @@ ros2 run examples_rclcpp_cbg_executor ping_and_pong_node
 Example of a typical output - note the zero pongs received on the low prio path:
 
 ```
-[INFO] [..] [ping_node]: Running experiment from now on for 10 s ...
+[INFO] [..] [pong_node]: Running experiment from now on for 10 s ...
 [INFO] [..] [ping_node]: High prio path: Sent 985 pings, received 982 pongs.
 [INFO] [..] [ping_node]: High prio path: Average RTT is 28.8 ms.
 [INFO] [..] [ping_node]: Low prio path: Sent 985 pings, received 0 pongs.
-[INFO] [..] [ping_node]: High priority executor thread ran for 9979 ms.
-[INFO] [..] [ping_node]: Low priority executor thread ran for 10 ms.
+[INFO] [..] [pong_node]: High priority executor thread ran for 9979 ms.
+[INFO] [..] [pong_node]: Low priority executor thread ran for 10 ms.
 ```
 
 Running the two nodes in separate processes:

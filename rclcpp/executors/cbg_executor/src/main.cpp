@@ -57,7 +57,6 @@ int main(int argc, char * argv[])
 #ifdef ADD_PING_NODE
   auto ping_node = std::make_shared<PingNode>();
   high_prio_executor.add_node(ping_node);
-  rclcpp::Logger logger = ping_node->get_logger();
 #endif
 
 #ifdef ADD_PONG_NODE
@@ -66,9 +65,12 @@ int main(int argc, char * argv[])
     pong_node->get_high_prio_callback_group(), pong_node->get_node_base_interface());
   low_prio_executor.add_callback_group(
     pong_node->get_low_prio_callback_group(), pong_node->get_node_base_interface());
-#ifndef ADD_PING_NODE
-  rclcpp::Logger logger = pong_node->get_logger();
 #endif
+
+#ifdef ADD_PONG_NODE
+  rclcpp::Logger logger = pong_node->get_logger();
+#else
+  rclcpp::Logger logger = ping_node->get_logger();
 #endif
 
   std::thread high_prio_thread([&]() {
@@ -109,6 +111,7 @@ int main(int argc, char * argv[])
   ping_node->print_statistics();
 #endif
 
+#ifdef ADD_PONG_NODE
   // Print CPU times.
   int64_t high_prio_thread_duration_ms = std::chrono::duration_cast<milliseconds>(
     high_prio_thread_end - high_prio_thread_begin).count();
@@ -121,6 +124,7 @@ int main(int argc, char * argv[])
   if (!areThreadPriosSet) {
     RCLCPP_WARN(logger, "Again, thread priorities were not configured correctly!");
   }
+#endif
 
   return 0;
 }
