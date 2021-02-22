@@ -94,7 +94,7 @@ int main(int argc, char * argv[])
   }
 
   RCLCPP_INFO(
-    logger, "Running experiment from now on for %ld s ...", EXPERIMENT_DURATION.count());
+    logger, "Running experiment from now on for %lld s ...", EXPERIMENT_DURATION.count());
 
   std::this_thread::sleep_for(EXPERIMENT_DURATION);
 
@@ -118,12 +118,17 @@ int main(int argc, char * argv[])
   int64_t low_prio_thread_duration_ms = std::chrono::duration_cast<milliseconds>(
     low_prio_thread_end - low_prio_thread_begin).count();
   RCLCPP_INFO(
-    logger, "High priority executor thread ran for %ld ms.", high_prio_thread_duration_ms);
+    logger, "High priority executor thread ran for %lld ms.", high_prio_thread_duration_ms);
   RCLCPP_INFO(
-    logger, "Low priority executor thread ran for %ld ms.", low_prio_thread_duration_ms);
+    logger, "Low priority executor thread ran for %lld ms.", low_prio_thread_duration_ms);
   if (!areThreadPriosSet) {
     RCLCPP_WARN(logger, "Again, thread priorities were not configured correctly!");
   }
+#else
+  (void) high_prio_thread_begin;
+  (void) low_prio_thread_begin;
+  (void) high_prio_thread_end;
+  (void) low_prio_thread_end;
 #endif
 
   return 0;

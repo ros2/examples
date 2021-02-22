@@ -74,7 +74,7 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
   success &=
     (thread_policy_set(
       mach_thread, THREAD_PRECEDENCE_POLICY,
-      reinterpret_cast<thread_policy_t>&precedence_policy,
+      reinterpret_cast<thread_policy_t>(&precedence_policy),
       THREAD_PRECEDENCE_POLICY_COUNT) == KERN_SUCCESS);
   if (cpu_id >= 0) {
     thread_affinity_policy_data_t affinity_policy;
@@ -82,7 +82,7 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
     success &=
       (thread_policy_set(
         mach_thread, THREAD_AFFINITY_POLICY,
-        reinterpret_cast<thread_policy_t>&affinity_policy,
+        reinterpret_cast<thread_policy_t>(&affinity_policy),
         THREAD_AFFINITY_POLICY_COUNT) == KERN_SUCCESS);
   }
 #else  // i.e., Linux platform.
@@ -173,7 +173,7 @@ inline std::chrono::nanoseconds get_current_thread_time()
 #ifdef _WIN32  // i.e., Windows platform.
   return get_native_thread_time(GetCurrentThread());
 #elif __APPLE__  // i.e., macOS platform.
-
+  return get_native_thread_time(pthread_self());
 #else  // i.e., Linux platform.
   return get_native_thread_time(pthread_self());
 #endif
