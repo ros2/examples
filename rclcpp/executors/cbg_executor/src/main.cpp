@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ctime>
+#include <cinttypes>
 #include <cstdlib>
+#include <ctime>
 
 #include <chrono>
 #include <functional>
@@ -23,8 +24,8 @@
 #include <thread>
 #include <vector>
 
-#include <rclcpp/executor.hpp>
-#include <rclcpp/rclcpp.hpp>
+#include "rclcpp/executor.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 #include "examples_rclcpp_cbg_executor/ping_node.hpp"
 #include "examples_rclcpp_cbg_executor/pong_node.hpp"
@@ -94,7 +95,7 @@ int main(int argc, char * argv[])
   }
 
   RCLCPP_INFO(
-    logger, "Running experiment from now on for %lld s ...", EXPERIMENT_DURATION.count());
+    logger, "Running experiment from now on for %" PRId64 " s ...", EXPERIMENT_DURATION.count());
 
   std::this_thread::sleep_for(EXPERIMENT_DURATION);
 
@@ -118,9 +119,9 @@ int main(int argc, char * argv[])
   int64_t low_prio_thread_duration_ms = std::chrono::duration_cast<milliseconds>(
     low_prio_thread_end - low_prio_thread_begin).count();
   RCLCPP_INFO(
-    logger, "High priority executor thread ran for %lld ms.", high_prio_thread_duration_ms);
+    logger, "High priority executor thread ran for %" PRId64 " ms.", high_prio_thread_duration_ms);
   RCLCPP_INFO(
-    logger, "Low priority executor thread ran for %lld ms.", low_prio_thread_duration_ms);
+    logger, "Low priority executor thread ran for %" PRId64 " ms.", low_prio_thread_duration_ms);
   if (!areThreadPriosSet) {
     RCLCPP_WARN(logger, "Again, thread priorities were not configured correctly!");
   }
