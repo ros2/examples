@@ -29,12 +29,13 @@ ros2 run examples_rclcpp_cbg_executor ping_pong
 Example of a typical output - note the zero pongs received on the low prio path:
 
 ```
-[INFO] [..] [pong_node]: Running experiment from now on for 10 s ...
-[INFO] [..] [ping_node]: High prio path: Sent 985 pings, received 982 pongs.
-[INFO] [..] [ping_node]: High prio path: Average RTT is 28.8 ms.
-[INFO] [..] [ping_node]: Low prio path: Sent 985 pings, received 0 pongs.
-[INFO] [..] [pong_node]: High priority executor thread ran for 9979 ms.
-[INFO] [..] [pong_node]: Low priority executor thread ran for 10 ms.
+[INFO] [..] [pong_node]: Running experiment from now on for 10s ...
+[INFO] [..] [ping_node]: Both paths: Sent out 982 of configured 1000 pings, i.e. 98%.
+[INFO] [..] [ping_node]: High prio path: Received 980 pongs, i.e. for 99% of the pings.
+[INFO] [..] [ping_node]: High prio path: Average RTT is 17.2ms.
+[INFO] [..] [ping_node]: Low prio path: Received 0 pongs, i.e. for 0% of the pings.
+[INFO] [..] [pong_node]: High priority executor thread ran for 9995ms.
+[INFO] [..] [pong_node]: Low priority executor thread ran for 0ms.
 ```
 
 Running the two nodes in separate processes:
@@ -73,10 +74,11 @@ With these values, about (0.033s - 0.025s) / 0.010s = 80% of the ping messages o
 
 ```
 ...
-[INFO] [..] [ping_node]: High prio path: Sent 302 pings, received 301 pongs.
-[INFO] [..] [ping_node]: High prio path: Average RTT is 25.5 ms.
-[INFO] [..] [ping_node]: Low prio path: Sent 302 pings, received 228 pongs.
-[INFO] [..] [ping_node]: Low prio path: Average RTT is 200.7 ms.
+[INFO] [..] [ping_node]: Both paths: Sent out 303 of configured 303 pings, i.e. 100%.
+[INFO] [..] [ping_node]: High prio path: Received 302 pongs, i.e. for 99% of the pings.
+[INFO] [..] [ping_node]: High prio path: Average RTT is 25.2ms.
+[INFO] [..] [ping_node]: Low prio path: Received 231 pongs, i.e. for 76% of the pings.
+[INFO] [..] [ping_node]: Low prio path: Average RTT is 196.1ms.
 ...
 ```
 

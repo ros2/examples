@@ -40,7 +40,7 @@ namespace examples_rclcpp_cbg_executor
 
 /// Retrieves the value of the given seconds parameter in std::chrono nanoseconds.
 inline std::chrono::nanoseconds get_nanos_from_secs_parameter(
-  rclcpp::Node * node,
+  const rclcpp::Node * node,
   const std::string & name)
 {
   double seconds = 0.0;
@@ -56,8 +56,11 @@ enum class ThreadPriority
   HIGH
 };
 
-/// Sets the priority of the given thread to max or min priority (in the SCHED_FIFO real-time
-/// policy) and pins the thread to the given cpu (if cpu_id >= 0).
+/// Sets the priority of the given native thread to max or min as given.
+/// The exact priority value depends on the operating system. On Linux,
+/// this requires elevated privileges.
+/// Furthermore, if a non-negative CPU id is given, the thread is pinned
+/// to that CPU.
 template<typename T>
 bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_id)
 {
@@ -71,26 +74,29 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
   }
 #elif __APPLE__  // i.e., macOS platform.
   thread_port_t mach_thread = pthread_mach_thread_np(native_handle);
-  auto ret = thread_suspend(mach_thread);
-  //std::this_thread::sleep_for(std::chrono::seconds(1));
-  success &= (ret == KERN_SUCCESS);
   thread_precedence_policy_data_t precedence_policy;
   precedence_policy.importance = (priority == ThreadPriority::HIGH) ? 1 : 0;
-  ret = thread_policy_set(
+  kern_return_t ret = thread_policy_set(
     mach_thread, THREAD_PRECEDENCE_POLICY,
     reinterpret_cast<thread_policy_t>(&precedence_policy),
     THREAD_PRECEDENCE_POLICY_COUNT);
   success &= (ret == KERN_SUCCESS);
   if (cpu_id >= 0) {
+    // Pinning requires the thread to be suspended.
+    ret = thread_suspend(mach_thread);
+    success &= (ret == KERN_SUCCESS);
+    // Wait a few milliseconds until thread is really suspended.
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     thread_affinity_policy_data_t affinity_policy;
     affinity_policy.affinity_tag = cpu_id;
-    auto ret = thread_policy_set(
+    ret = thread_policy_set(
       mach_thread, THREAD_AFFINITY_POLICY,
       reinterpret_cast<thread_policy_t>(&affinity_policy),
       THREAD_AFFINITY_POLICY_COUNT);
     success &= (ret == KERN_SUCCESS);
+    ret = thread_resume(mach_thread);
+    success &= (ret == KERN_SUCCESS);
   }
-  thread_resume(mach_thread);
 #else  // i.e., Linux platform.
   sched_param params;
   int policy;
@@ -101,7 +107,6 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
     params.sched_priority = sched_get_priority_min(SCHED_FIFO);
   }
   success &= (pthread_setschedparam(native_handle, SCHED_FIFO, &params) == 0);
-
   if (cpu_id >= 0) {
     cpu_set_t cpuset;
     CPU_ZERO(&cpuset);
@@ -112,8 +117,11 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
   return success;
 }
 
-/// Sets the priority of the given thread to max or min priority (in the SCHED_FIFO real-time
-/// policy) and pins the thread to the given cpu (if cpu_id >= 0).
+/// Sets the priority of the given thread to max or min as given. The exact
+/// scheduler priority depends on the operating system. On Linux, this
+/// requires elevated privileges.
+/// Furthermore, if a non-negative CPU id is given, the thread is pinned
+/// to that CPU.
 inline bool configure_thread(std::thread & thread, ThreadPriority priority, int cpu_id)
 {
   return configure_native_thread(thread.native_handle(), priority, cpu_id);

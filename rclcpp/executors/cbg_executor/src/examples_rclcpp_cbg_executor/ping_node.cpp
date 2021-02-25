@@ -15,7 +15,6 @@
 #include "examples_rclcpp_cbg_executor/ping_node.hpp"
 
 #include <algorithm>
-#include <chrono>
 #include <functional>
 #include <memory>
 
@@ -62,7 +61,7 @@ void PingNode::low_pong_received(const std_msgs::msg::Int32::SharedPtr msg)
   rtt_data_[msg->data].low_received_ = now();
 }
 
-void PingNode::print_statistics() const
+void PingNode::print_statistics(std::chrono::seconds experiment_duration) const
 {
   size_t ping_count = rtt_data_.size();
 
@@ -81,20 +80,25 @@ void PingNode::print_statistics() const
     }
   }
 
+  std::chrono::nanoseconds ping_period = get_nanos_from_secs_parameter(this, "ping_period");
+  size_t ideal_ping_count = experiment_duration / ping_period;
   RCLCPP_INFO(
-    get_logger(), "High prio path: Sent %zu pings, received %zu pongs.", ping_count,
-    high_pong_count);
+    get_logger(), "Both paths: Sent out %zu of configured %ld pings, i.e. %zu%%.",
+    ping_count, ideal_ping_count, 100 * ping_count / ideal_ping_count);
+  RCLCPP_INFO(
+    get_logger(), "High prio path: Received %zu pongs, i.e. for %zu%% of the pings.",
+    high_pong_count, 100 * high_pong_count / ping_count);
   if (high_pong_count > 0) {
     double high_rtt_avg = (high_rtt_sum.seconds() * 1000.0 / high_pong_count);
-    RCLCPP_INFO(get_logger(), "High prio path: Average RTT is %3.1f ms.", high_rtt_avg);
+    RCLCPP_INFO(get_logger(), "High prio path: Average RTT is %3.1fms.", high_rtt_avg);
   }
 
   RCLCPP_INFO(
-    get_logger(), "Low prio path: Sent %zu pings, received %zu pongs.", ping_count,
-    low_pong_count);
+    get_logger(), "Low prio path: Received %zu pongs, i.e. for %zu%% of the pings.",
+    low_pong_count, 100 * low_pong_count / ping_count);
   if (low_pong_count > 0) {
     double low_rtt_avg = (low_rtt_sum.seconds() * 1000.0 / low_pong_count);
-    RCLCPP_INFO(get_logger(), "Low prio path: Average RTT is %3.1f ms.", low_rtt_avg);
+    RCLCPP_INFO(get_logger(), "Low prio path: Average RTT is %3.1fms.", low_rtt_avg);
   }
 }
 

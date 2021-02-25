@@ -15,6 +15,7 @@
 #ifndef EXAMPLES_RCLCPP_CBG_EXECUTOR__PING_NODE_HPP_
 #define EXAMPLES_RCLCPP_CBG_EXECUTOR__PING_NODE_HPP_
 
+#include <chrono>
 #include <memory>
 #include <string>
 #include <utility>
@@ -42,7 +43,7 @@ public:
 
   virtual ~PingNode() = default;
 
-  void print_statistics() const;
+  void print_statistics(std::chrono::seconds experiment_duration) const;
 
 private:
   rclcpp::TimerBase::SharedPtr ping_timer_;
