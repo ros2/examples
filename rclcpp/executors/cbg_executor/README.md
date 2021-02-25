@@ -23,7 +23,7 @@ Running the two nodes in one process:
 ```bash
 sudo bash
 source /opt/ros/[ROS_DISTRO]/setup.bash
-ros2 run examples_rclcpp_cbg_executor ping_and_pong_node
+ros2 run examples_rclcpp_cbg_executor ping_pong
 ```
 
 Example of a typical output - note the zero pongs received on the low prio path:
@@ -42,13 +42,13 @@ Running the two nodes in separate processes:
 ```bash
 sudo bash
 source /opt/ros/[ROS_DISTRO]/setup.bash
-ros2 run examples_rclcpp_cbg_executor ping_node_only
+ros2 run examples_rclcpp_cbg_executor ping
 ```
 
 ```bash
 sudo bash
 source /opt/ros/[ROS_DISTRO]/setup.bash
-ros2 run examples_rclcpp_cbg_executor pong_node_only
+ros2 run examples_rclcpp_cbg_executor pong
 ```
 
 The two processes should be started simultaneously as the experiment runtime is just 10 seconds.
@@ -66,7 +66,7 @@ The default values are 0.01 seconds for all three parameters.
 Example for changing the values on the command line:
 
 ```bash
-ros2 run examples_rclcpp_cbg_executor ping_and_pong_node --ros-args -p ping_period:=0.033 -p high_busyloop:=0.025
+ros2 run examples_rclcpp_cbg_executor ping_pong --ros-args -p ping_period:=0.033 -p high_busyloop:=0.025
 ```
 
 With these values, about (0.033s - 0.025s) / 0.010s = 80% of the ping messages on the low prio path should be processed and answered by a pong message:

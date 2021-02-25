@@ -58,24 +58,13 @@ int main(int argc, char * argv[])
   rclcpp::executors::SingleThreadedExecutor high_prio_executor;
   rclcpp::executors::SingleThreadedExecutor low_prio_executor;
 
-#ifdef ADD_PING_NODE
-  auto ping_node = std::make_shared<PingNode>();
-  high_prio_executor.add_node(ping_node);
-#endif
-
-#ifdef ADD_PONG_NODE
   auto pong_node = std::make_shared<PongNode>();
   high_prio_executor.add_callback_group(
     pong_node->get_high_prio_callback_group(), pong_node->get_node_base_interface());
   low_prio_executor.add_callback_group(
     pong_node->get_low_prio_callback_group(), pong_node->get_node_base_interface());
-#endif
 
-#ifdef ADD_PONG_NODE
   rclcpp::Logger logger = pong_node->get_logger();
-#else
-  rclcpp::Logger logger = ping_node->get_logger();
-#endif
 
   int cpu_id = 0;
 
@@ -126,11 +115,6 @@ int main(int argc, char * argv[])
   high_prio_thread.join();
   low_prio_thread.join();
 
-#ifdef ADD_PING_NODE
-  ping_node->print_statistics();
-#endif
-
-#ifdef ADD_PONG_NODE
   // Print CPU times.
   int64_t high_prio_thread_duration_ms = std::chrono::duration_cast<milliseconds>(
     high_prio_thread_end - high_prio_thread_begin).count();
@@ -140,12 +124,6 @@ int main(int argc, char * argv[])
     logger, "High priority executor thread ran for %" PRId64 " ms.", high_prio_thread_duration_ms);
   RCLCPP_INFO(
     logger, "Low priority executor thread ran for %" PRId64 " ms.", low_prio_thread_duration_ms);
-#else
-  (void) high_prio_thread_begin;
-  (void) low_prio_thread_begin;
-  (void) high_prio_thread_end;
-  (void) low_prio_thread_end;
-#endif
 
   return 0;
 }
