@@ -80,14 +80,18 @@ int main(int argc, char * argv[])
   // set its priority and CPU affinity - others might require root rights.
   auto high_prio_thread = std::thread(
     [&]() {
-      std::unique_lock<std::mutex> lk(cv_m);
-      cv.wait(lk);
+      {
+        std::unique_lock<std::mutex> lk(cv_m);
+        cv.wait(lk);
+      }
       high_prio_executor.spin();
     });
   auto low_prio_thread = std::thread(
     [&]() {
-      std::unique_lock<std::mutex> lk(cv_m);
-      cv.wait(lk);
+      {
+        std::unique_lock<std::mutex> lk(cv_m);
+        cv.wait(lk);
+      }
       low_prio_executor.spin();
     });
   bool ret = configure_thread(high_prio_thread, ThreadPriority::HIGH, cpu_id);
