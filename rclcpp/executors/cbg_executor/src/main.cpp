@@ -17,9 +17,11 @@
 #include <ctime>
 
 #include <chrono>
+#include <condition_variable>
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <thread>
 #include <vector>
@@ -42,9 +44,10 @@ using examples_rclcpp_cbg_executor::configure_thread;
 using examples_rclcpp_cbg_executor::get_thread_time;
 using examples_rclcpp_cbg_executor::ThreadPriority;
 
-/// The main function composes the Ping and Pong node (depending on the arguments)
-/// and runs the experiment. See README.md for a simple architecture diagram.
-/// Here: rt = real-time = high scheduler priority and be = best-effort = low scheduler priority.
+// The main function composes the Ping and Pong node (depending on the arguments)
+// and runs the experiment.
+// See README.md for a simple architecture diagram.
+// Here: rt = real-time = high scheduler priority and be = best-effort = low scheduler priority.
 int main(int argc, char * argv[])
 {
   const std::chrono::seconds EXPERIMENT_DURATION = 10s;
@@ -74,25 +77,40 @@ int main(int argc, char * argv[])
   rclcpp::Logger logger = ping_node->get_logger();
 #endif
 
-  std::thread high_prio_thread([&]() {
+  int cpu_id = 0;
+
+  std::mutex cv_m;
+  std::condition_variable cv;
+
+  // We instantiate two threads here, but have to suspend them right ahead in order to
+  // configure the threads.
+  // Platforms like OSX require the thread to the detached from any CPU before one can
+  // set its priority and CPU affinity - others might require root rights.
+  auto high_prio_thread = std::thread([&]() {
+      std::unique_lock<std::mutex> lk(cv_m);
+      cv.wait(lk);
       high_prio_executor.spin();
     });
-  bool areThreadPriosSet = configure_thread(high_prio_thread, ThreadPriority::HIGH, 0);
-
-  std::thread low_prio_thread([&]() {
+  auto low_prio_thread = std::thread([&]() {
+      std::unique_lock<std::mutex> lk(cv_m);
+      cv.wait(lk);
       low_prio_executor.spin();
     });
-  areThreadPriosSet &= configure_thread(low_prio_thread, ThreadPriority::LOW, 0);
+  bool ret = configure_thread(high_prio_thread, ThreadPriority::HIGH, cpu_id);
+  if (!ret) {
+    RCLCPP_WARN(logger, "failed to configure high priority thread, are you root?");
+  }
+  ret = configure_thread(low_prio_thread, ThreadPriority::LOW, cpu_id);
+  if (!ret) {
+    RCLCPP_WARN(logger, "failed to configure low priority thread, are you root?");
+  }
+  // We've configured the threads, let's actually start the threads
+  cv.notify_all();
 
-  // Creating the threads immediately started them. Therefore, get start CPU time of each
-  // thread now.
+  // Creating the threads immediately started them.
+  // Therefore, get start CPU time of each thread now.
   nanoseconds high_prio_thread_begin = get_thread_time(high_prio_thread);
   nanoseconds low_prio_thread_begin = get_thread_time(low_prio_thread);
-
-  if (!areThreadPriosSet) {
-    RCLCPP_WARN(logger, "Thread priorities are not configured correctly!");
-    RCLCPP_WARN(logger, "Are you root (sudo)? Experiment is performed anyway.");
-  }
 
   RCLCPP_INFO(
     logger, "Running experiment from now on for %" PRId64 " s ...", EXPERIMENT_DURATION.count());
@@ -122,9 +140,6 @@ int main(int argc, char * argv[])
     logger, "High priority executor thread ran for %" PRId64 " ms.", high_prio_thread_duration_ms);
   RCLCPP_INFO(
     logger, "Low priority executor thread ran for %" PRId64 " ms.", low_prio_thread_duration_ms);
-  if (!areThreadPriosSet) {
-    RCLCPP_WARN(logger, "Again, thread priorities were not configured correctly!");
-  }
 #else
   (void) high_prio_thread_begin;
   (void) low_prio_thread_begin;

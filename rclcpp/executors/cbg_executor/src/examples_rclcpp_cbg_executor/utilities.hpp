@@ -23,10 +23,12 @@
 #include <windows.h>
 #elif __APPLE__  // i.e., macOS platform.
 #include <pthread.h>
+#include <mach/mach_init.h>
 #include <mach/mach_port.h>
 #include <mach/mach_time.h>
 #include <mach/thread_act.h>
 #include <mach/thread_policy.h>
+#include <sys/sysctl.h>
 #else  // i.e., Linux platform.
 #include <pthread.h>
 #endif
@@ -70,20 +72,20 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
 #elif __APPLE__  // i.e., macOS platform.
   thread_port_t mach_thread = pthread_mach_thread_np(native_handle);
   thread_precedence_policy_data_t precedence_policy;
-  precedence_policy.importance = (priority == ThreadPriority::HIGH) ? 1 : -1;
-  success &=
-    (thread_policy_set(
+  precedence_policy.importance = (priority == ThreadPriority::HIGH) ? 1 : 0;
+  auto ret = thread_policy_set(
       mach_thread, THREAD_PRECEDENCE_POLICY,
       reinterpret_cast<thread_policy_t>(&precedence_policy),
-      THREAD_PRECEDENCE_POLICY_COUNT) == KERN_SUCCESS);
+      THREAD_PRECEDENCE_POLICY_COUNT);
+  success &= (ret == KERN_SUCCESS);
   if (cpu_id >= 0) {
     thread_affinity_policy_data_t affinity_policy;
     affinity_policy.affinity_tag = cpu_id;
-    success &=
-      (thread_policy_set(
+    auto ret = thread_policy_set(
         mach_thread, THREAD_AFFINITY_POLICY,
         reinterpret_cast<thread_policy_t>(&affinity_policy),
-        THREAD_AFFINITY_POLICY_COUNT) == KERN_SUCCESS);
+        THREAD_AFFINITY_POLICY_COUNT);
+    success &= (ret == KERN_SUCCESS);
   }
 #else  // i.e., Linux platform.
   sched_param params;
@@ -94,7 +96,6 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
   } else {
     params.sched_priority = sched_get_priority_min(SCHED_FIFO);
   }
-
   success &= (pthread_setschedparam(native_handle, SCHED_FIFO, &params) == 0);
 
   if (cpu_id >= 0) {
