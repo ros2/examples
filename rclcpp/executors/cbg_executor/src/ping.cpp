@@ -70,17 +70,10 @@ int main(int argc, char * argv[])
     RCLCPP_WARN(logger, "Failed to configure high priority thread, are you root?");
   }
 
-  // Creating the thread immediately started it.
-  // Therefore, get start CPU time of the thread now.
-  nanoseconds high_prio_thread_begin = get_thread_time(high_prio_thread);
-
   const std::chrono::seconds EXPERIMENT_DURATION = 10s;
   RCLCPP_INFO(
     logger, "Running experiment from now on for %" PRId64 "s ...", EXPERIMENT_DURATION.count());
   std::this_thread::sleep_for(EXPERIMENT_DURATION);
-
-  // Get end CPU time of the thread ...
-  nanoseconds high_prio_thread_end = get_thread_time(high_prio_thread);
 
   // ... and stop the experiment.
   rclcpp::shutdown();
