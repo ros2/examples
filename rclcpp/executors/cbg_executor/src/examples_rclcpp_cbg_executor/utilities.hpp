@@ -71,9 +71,12 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
   }
 #elif __APPLE__  // i.e., macOS platform.
   thread_port_t mach_thread = pthread_mach_thread_np(native_handle);
+  auto ret = thread_suspend(mach_thread);
+  //std::this_thread::sleep_for(std::chrono::seconds(1));
+  success &= (ret == KERN_SUCCESS);
   thread_precedence_policy_data_t precedence_policy;
   precedence_policy.importance = (priority == ThreadPriority::HIGH) ? 1 : 0;
-  auto ret = thread_policy_set(
+  ret = thread_policy_set(
     mach_thread, THREAD_PRECEDENCE_POLICY,
     reinterpret_cast<thread_policy_t>(&precedence_policy),
     THREAD_PRECEDENCE_POLICY_COUNT);
@@ -87,6 +90,7 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
       THREAD_AFFINITY_POLICY_COUNT);
     success &= (ret == KERN_SUCCESS);
   }
+  thread_resume(mach_thread);
 #else  // i.e., Linux platform.
   sched_param params;
   int policy;
