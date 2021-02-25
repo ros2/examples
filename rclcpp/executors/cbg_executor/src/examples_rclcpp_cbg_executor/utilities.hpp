@@ -74,17 +74,17 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
   thread_precedence_policy_data_t precedence_policy;
   precedence_policy.importance = (priority == ThreadPriority::HIGH) ? 1 : 0;
   auto ret = thread_policy_set(
-      mach_thread, THREAD_PRECEDENCE_POLICY,
-      reinterpret_cast<thread_policy_t>(&precedence_policy),
-      THREAD_PRECEDENCE_POLICY_COUNT);
+    mach_thread, THREAD_PRECEDENCE_POLICY,
+    reinterpret_cast<thread_policy_t>(&precedence_policy),
+    THREAD_PRECEDENCE_POLICY_COUNT);
   success &= (ret == KERN_SUCCESS);
   if (cpu_id >= 0) {
     thread_affinity_policy_data_t affinity_policy;
     affinity_policy.affinity_tag = cpu_id;
     auto ret = thread_policy_set(
-        mach_thread, THREAD_AFFINITY_POLICY,
-        reinterpret_cast<thread_policy_t>(&affinity_policy),
-        THREAD_AFFINITY_POLICY_COUNT);
+      mach_thread, THREAD_AFFINITY_POLICY,
+      reinterpret_cast<thread_policy_t>(&affinity_policy),
+      THREAD_AFFINITY_POLICY_COUNT);
     success &= (ret == KERN_SUCCESS);
   }
 #else  // i.e., Linux platform.

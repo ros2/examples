@@ -75,12 +75,14 @@ int main(int argc, char * argv[])
   // configure the threads.
   // Platforms like OSX require the thread to the detached from any CPU before one can
   // set its priority and CPU affinity - others might require root rights.
-  auto high_prio_thread = std::thread([&]() {
+  auto high_prio_thread = std::thread(
+    [&]() {
       std::unique_lock<std::mutex> lk(cv_m);
       cv.wait(lk);
       high_prio_executor.spin();
     });
-  auto low_prio_thread = std::thread([&]() {
+  auto low_prio_thread = std::thread(
+    [&]() {
       std::unique_lock<std::mutex> lk(cv_m);
       cv.wait(lk);
       low_prio_executor.spin();
