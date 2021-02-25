@@ -89,3 +89,7 @@ The Ping Node and the Pong Node are implemented in two classes `PingNode` (see [
 The Ping and Pong nodes, the two executors, etc. are composed and configured in the `main(..)` function of [main.cpp](src/main.cpp). This function also starts and ends the experiment for a duration of 10 seconds and prints out the throughput and round trip time (RTT) statistics.
 
 The demo also runs on Windows, where the two threads are prioritized as *above normal* and *below normal*, respectively, which does not require elevated privileges. When running the demo on Linux without sudo privileges, a warning is shown but the execution is not stopped.
+
+## Known issues
+
+On macOS the core pinning failed silently in our experiments. Please see the function `configure_native_thread(..)` in [utilities.hpp](src/examples_rclcpp_cbg_executor/utilities.hpp) for details.

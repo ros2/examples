@@ -89,6 +89,9 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     thread_affinity_policy_data_t affinity_policy;
     affinity_policy.affinity_tag = cpu_id;
+    // In our experiments, the following call did not work although it
+    // returned KERN_SUCCESS. If somebody knows how to fix this, please
+    // open a pull request!
     ret = thread_policy_set(
       mach_thread, THREAD_AFFINITY_POLICY,
       reinterpret_cast<thread_policy_t>(&affinity_policy),
