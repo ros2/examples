@@ -25,33 +25,35 @@
 
 using namespace std::chrono_literals;
 
-class MinimalPublisherWithUniqueNetworkFlow : public rclcpp::Node
+class MinimalPublisherWithUniqueNetworkFlowEndpoints : public rclcpp::Node
 {
 public:
-  MinimalPublisherWithUniqueNetworkFlow()
-  : Node("minimal_publisher_with_unique_network_flow"), count_1_(0), count_2_(0)
+  MinimalPublisherWithUniqueNetworkFlowEndpoints()
+  : Node("minimal_publisher_with_unique_network_flow_endpoints"), count_1_(0), count_2_(0)
   {
-    // Enable unique network flow via options
+    // Create publisher with unique network flow endpoints
+    // Enable unique network flow endpoints via options
     auto options_1 = rclcpp::PublisherOptions();
-    options_1.require_unique_network_flow = RMW_UNIQUE_NETWORK_FLOW_STRICTLY_REQUIRED;
+    options_1.require_unique_network_flow_endpoints =
+      RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_OPTIONALLY_REQUIRED;
     publisher_1_ = this->create_publisher<std_msgs::msg::String>("topic_1", 10, options_1);
     timer_1_ = this->create_wall_timer(
-      500ms, std::bind(&MinimalPublisherWithUniqueNetworkFlow::timer_1_callback, this));
+      500ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_1_callback, this));
 
-    // Unique network flow is disabled by default
+    // Create publisher without unique network flow endpoints
+    // Unique network flow endpoints are disabled in default options
     auto options_2 = rclcpp::PublisherOptions();
     publisher_2_ = this->create_publisher<std_msgs::msg::String>("topic_2", 10);
     timer_2_ = this->create_wall_timer(
-      1000ms, std::bind(&MinimalPublisherWithUniqueNetworkFlow::timer_2_callback, this));
+      1000ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_2_callback, this));
 
-    // Print network flows and check for uniqueness
-    auto network_flows_1 = publisher_1_->get_network_flow();
-    auto network_flows_2 = publisher_2_->get_network_flow();
-    print_network_flows(network_flows_1);
-    print_network_flows(network_flows_2);
-    if (!are_network_flows_unique(network_flows_1, network_flows_2)) {
-      RCLCPP_ERROR(this->get_logger(), "Network flows across publishers are not unique");
-    }
+    // Get network flow endpoints
+    auto network_flow_endpoints_1 = publisher_1_->get_network_flow_endpoints();
+    auto network_flow_endpoints_2 = publisher_2_->get_network_flow_endpoints();
+
+    // Print network flow endpoints
+    print_network_flow_endpoints(network_flow_endpoints_1);
+    print_network_flow_endpoints(network_flow_endpoints_2);
   }
 
 private:
@@ -73,35 +75,24 @@ private:
       this->get_logger(), "Publishing: '%s'", message.data.c_str());
     publisher_2_->publish(message);
   }
-  /// Compare network flows
-  /*
-   * Compare two network flows
-   * \return false if network flows are not unique true otherwise
-   */
-  bool are_network_flows_unique(
-    const std::vector<rclcpp::NetworkFlow> & network_flows_1,
-    const std::vector<rclcpp::NetworkFlow> & network_flows_2) const
-  {
-    if (network_flows_1.size() > 0 && network_flows_2.size() > 0) {
-      for (auto network_flow_1 : network_flows_1) {
-        for (auto network_flow_2 : network_flows_2) {
-          if (network_flow_1 == network_flow_2) {
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
-  /// Print network flows
-  void print_network_flows(const std::vector<rclcpp::NetworkFlow> & network_flows) const
+  /// Print network flow endpoints in JSON-like format
+  void print_network_flow_endpoints(
+    const std::vector<rclcpp::NetworkFlowEndpoint> & network_flow_endpoints) const
   {
     std::ostringstream stream;
-    for (auto network_flow : network_flows) {
-      stream << network_flow << ", ";
+    stream << "{\"networkFlowEndpoints\": [";
+    bool comma_skip = true;
+    for (auto network_flow_endpoint : network_flow_endpoints) {
+      if (comma_skip) {
+        comma_skip = false;
+      } else {
+        stream << ",";
+      }
+      stream << network_flow_endpoint;
     }
+    stream << "]}";
     RCLCPP_INFO(
-      this->get_logger(), "Publisher created with network flows: '%s'",
+      this->get_logger(), "%s",
       stream.str().c_str());
   }
   rclcpp::TimerBase::SharedPtr timer_1_;
@@ -115,7 +106,7 @@ private:
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<MinimalPublisherWithUniqueNetworkFlow>());
+  rclcpp::spin(std::make_shared<MinimalPublisherWithUniqueNetworkFlowEndpoints>());
   rclcpp::shutdown();
   return 0;
 }
