@@ -31,43 +31,51 @@ public:
   MinimalSubscriberWithUniqueNetworkFlowEndpoints()
   : Node("minimal_subscriber_with_unique_network_flow_endpoints")
   {
-    // Create subscription with unique network flow endpoints
-    // Enable unique network flow endpoints via options
-    auto options_1 = rclcpp::SubscriptionOptions();
-    options_1.require_unique_network_flow_endpoints =
-      RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_STRICTLY_REQUIRED;
+    try {
+      // Create subscription with unique network flow endpoints
+      // Enable unique network flow endpoints via options
+      // Since option is strict, expect exception
+      auto options_1 = rclcpp::SubscriptionOptions();
+      options_1.require_unique_network_flow_endpoints =
+        RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_STRICTLY_REQUIRED;
 
-    subscription_1_ = this->create_subscription<std_msgs::msg::String>(
-      "topic_1", 10, std::bind(
-        &MinimalSubscriberWithUniqueNetworkFlowEndpoints::topic_1_callback, this,
-        _1), options_1);
+      subscription_1_ = this->create_subscription<std_msgs::msg::String>(
+        "topic_1", 10, std::bind(
+          &MinimalSubscriberWithUniqueNetworkFlowEndpoints::topic_1_callback, this,
+          _1), options_1);
 
-    // Create subscription without unique network flow endpoints
-    // Unique network flow endpoints are disabled by default
-    auto options_2 = rclcpp::SubscriptionOptions();
-    subscription_2_ = this->create_subscription<std_msgs::msg::String>(
-      "topic_2", 10, std::bind(
-        &MinimalSubscriberWithUniqueNetworkFlowEndpoints::topic_2_callback, this,
-        _1), options_2);
+      // Create subscription without unique network flow endpoints
+      // Unique network flow endpoints are disabled by default
+      auto options_2 = rclcpp::SubscriptionOptions();
+      subscription_2_ = this->create_subscription<std_msgs::msg::String>(
+        "topic_2", 10, std::bind(
+          &MinimalSubscriberWithUniqueNetworkFlowEndpoints::topic_2_callback, this,
+          _1), options_2);
 
-    // Get network flow endpoints
-    auto network_flow_endpoints_1 = subscription_1_->get_network_flow_endpoints();
-    auto network_flow_endpoints_2 = subscription_2_->get_network_flow_endpoints();
+      // Get network flow endpoints
+      auto network_flow_endpoints_1 = subscription_1_->get_network_flow_endpoints();
+      auto network_flow_endpoints_2 = subscription_2_->get_network_flow_endpoints();
 
-    // Check if network flow endpoints are unique
-    for (auto network_flow_endpoint_1 : network_flow_endpoints_1) {
-      for (auto network_flow_endpoint_2 : network_flow_endpoints_2) {
-        if (network_flow_endpoint_1 == network_flow_endpoint_2) {
-          RCLCPP_ERROR(
-            this->get_logger(), "Network flow endpoints across subscriptions are not unique");
-          break;
+      // Check if network flow endpoints are unique
+      for (auto network_flow_endpoint_1 : network_flow_endpoints_1) {
+        for (auto network_flow_endpoint_2 : network_flow_endpoints_2) {
+          if (network_flow_endpoint_1 == network_flow_endpoint_2) {
+            RCLCPP_ERROR(
+              this->get_logger(), "Network flow endpoints across subscriptions are not unique");
+            break;
+          }
         }
       }
-    }
 
-    // Print network flow endpoints
-    print_network_flow_endpoints(network_flow_endpoints_1);
-    print_network_flow_endpoints(network_flow_endpoints_2);
+      // Print network flow endpoints
+      print_network_flow_endpoints(network_flow_endpoints_1);
+      print_network_flow_endpoints(network_flow_endpoints_2);
+    } catch (const rclcpp::exceptions::RCLError & e) {
+      RCLCPP_ERROR(
+        this->get_logger(),
+        "Error: %s",
+        e.what());
+    }
   }
 
 private:
