@@ -27,11 +27,12 @@ int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
   g_node = std::make_shared<rclcpp::Node>("minimal_service");
-  rclcpp::Service<AddTwoInts>::SharedPtr server = g_node->create_service_async<AddTwoInts>("add_two_ints",
+  auto server = g_node->create_service<AddTwoInts>("add_two_ints",
     [&](
       const std::shared_ptr<rmw_request_id_t> request_header,
       const std::shared_ptr<AddTwoInts::Request> request,
-      const std::shared_ptr<AddTwoInts::Response> response)
+      const std::shared_ptr<AddTwoInts::Response> response,
+      rclcpp::Service<AddTwoInts>* pService) // async when we received service pointer in the callback
     {
 
       std::thread t([=](){
@@ -49,7 +50,7 @@ int main(int argc, char ** argv)
           g_node->get_logger(),
           "request: %" PRId64 " + %" PRId64, request->a, request->b);
         response->sum = request->a + request->b;
-        server->send_response(*request_header, *response);
+        pService->send_response(*request_header, *response);
       });
       t.detach();
     }
