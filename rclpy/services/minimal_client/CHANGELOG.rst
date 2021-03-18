@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.10.3 (2021-03-18)
+-------------------
+
 0.10.2 (2021-01-25)
 -------------------
 * Remove bare exception catching (`#299 <https://github.com/ros2/examples/issues/299>`_)

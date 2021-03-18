@@ -4,7 +4,7 @@ package_name = 'examples_rclpy_pointcloud_publisher'
 
 setup(
     name=package_name,
-    version='0.0.1',
+    version='0.10.3',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
