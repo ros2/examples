@@ -104,7 +104,7 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
     ret = thread_resume(mach_thread);
     success &= (ret == KERN_SUCCESS);
   }
-#elif __QNXNTO__ // i.e., QNX platform
+#elif __QNXNTO__  // i.e., QNX platform
   sched_param params;
   int policy;
   success &= (pthread_getschedparam(native_handle, &policy, &params) == 0);
@@ -122,11 +122,11 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
     }
     // run_mask is a bit mask to set which cpu a thread runs on
     // where each bit corresponds to a cpu core
-    long run_mask = 0x01;
+    int64_t run_mask = 0x01;
     run_mask <<= cpu_id;
 
     // Function used to change thread affinity of thread associated with native_handle
-    if (ThreadCtlExt(0, native_handle, _NTO_TCTL_RUNMASK, (void *)run_mask) == -1) {
+    if (ThreadCtlExt(0, native_handle, _NTO_TCTL_RUNMASK, reinterpret_cast<void*>(run_mask)) == -1) {
       success &= 0;
     } else {
       success &= 1;
