@@ -128,7 +128,7 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
     // Function used to change thread affinity of thread associated with native_handle
     if (ThreadCtlExt(
         0, native_handle, _NTO_TCTL_RUNMASK,
-        reinterpret_cast<void*>(run_mask)) == -1)
+        reinterpret_cast<void *>(run_mask)) == -1)
     {
       success &= 0;
     } else {
