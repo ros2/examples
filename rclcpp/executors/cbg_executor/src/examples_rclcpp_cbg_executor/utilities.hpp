@@ -30,7 +30,11 @@
 #include <mach/thread_policy.h>
 #include <sys/sysctl.h>
 #else  // i.e., Linux platform.
-#include <pthread.h>
+  #ifdef __QNXNTO__
+    #include <sys/neutrino.h>
+    #include <sys/syspage.h>
+  #endif
+  #include <pthread.h>
 #endif
 
 #include <rclcpp/rclcpp.hpp>
@@ -99,6 +103,37 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
     success &= (ret == KERN_SUCCESS);
     ret = thread_resume(mach_thread);
     success &= (ret == KERN_SUCCESS);
+  }
+#elif __QNXNTO__  // i.e., QNX platform
+  sched_param params;
+  int policy;
+  success &= (pthread_getschedparam(native_handle, &policy, &params) == 0);
+  if (priority == ThreadPriority::HIGH) {
+    params.sched_priority = sched_get_priority_max(SCHED_FIFO);
+  } else {
+    params.sched_priority = sched_get_priority_min(SCHED_FIFO);
+  }
+  success &= (pthread_setschedparam(native_handle, SCHED_FIFO, &params) == 0);
+  if (cpu_id >= 0) {
+    // Cannot set the runmask if cpu id is greater than or equal to the number of cpus
+    // so will immediate return
+    if (cpu_id >= _syspage_ptr->num_cpu) {
+      return 0;
+    }
+    // run_mask is a bit mask to set which cpu a thread runs on
+    // where each bit corresponds to a cpu core
+    int64_t run_mask = 0x01;
+    run_mask <<= cpu_id;
+
+    // Function used to change thread affinity of thread associated with native_handle
+    if (ThreadCtlExt(
+        0, native_handle, _NTO_TCTL_RUNMASK,
+        reinterpret_cast<void *>(run_mask)) == -1)
+    {
+      success &= 0;
+    } else {
+      success &= 1;
+    }
   }
 #else  // i.e., Linux platform.
   sched_param params;
