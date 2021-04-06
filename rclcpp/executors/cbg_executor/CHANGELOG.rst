@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_cbg_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.11.0 (2021-04-06)
+-------------------
 * Support for cbg_executor package on QNX (`#305 <https://github.com/ros2/examples/issues/305>`_)
 * Contributors: joshua-qnx
 
