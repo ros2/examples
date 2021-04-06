@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.10.3 (2021-03-18)
 -------------------
 
