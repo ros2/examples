@@ -71,8 +71,8 @@ int main(int argc, char * argv[])
   }
 
   const std::chrono::seconds EXPERIMENT_DURATION = 10s;
-  RCLCPP_INFO(
-    logger, "Running experiment from now on for %" PRId64 "s ...", EXPERIMENT_DURATION.count());
+  RCLCPP_INFO_STREAM(
+    logger, "Running experiment from now on for " << EXPERIMENT_DURATION.count() << " seconds ...");
   std::this_thread::sleep_for(EXPERIMENT_DURATION);
 
   // ... and stop the experiment.
