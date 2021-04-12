@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_cbg_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix clang warnings about type mismatches. (`#309 <https://github.com/ros2/examples/issues/309>`_)
+* Contributors: Chris Lalancette
+
 0.11.0 (2021-04-06)
 -------------------
 * Support for cbg_executor package on QNX (`#305 <https://github.com/ros2/examples/issues/305>`_)

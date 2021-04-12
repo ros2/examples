@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.11.0 (2021-04-06)
 -------------------
 
