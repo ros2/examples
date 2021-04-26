@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_pointcloud_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use underscores instead of dashes in setup.cfg (`#310 <https://github.com/ros2/examples/issues/310>`_)
+* Contributors: Ivan Santiago Paunovic
+
 0.11.1 (2021-04-12)
 -------------------
 
