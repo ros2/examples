@@ -1,4 +1,4 @@
-// Copyright 2016 Open Source Robotics Foundation, Inc.
+// Copyright 2021 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,11 @@
 #include "std_msgs/msg/string.hpp"
 
 using std::placeholders::_1;
+
+/* Normally a TypeAdapter specialization like this would go in a header
+ * and be reused by the publisher and subscriber rather than copy-pasted
+ * like this. We chose to include this here because it makes this example
+ * more "self-contained". */
 
 template<>
 struct rclcpp::TypeAdapter<std::string, std_msgs::msg::String>
@@ -49,6 +54,8 @@ struct rclcpp::TypeAdapter<std::string, std_msgs::msg::String>
   }
 };
 
+/* In this example, a subscriber uses a type adapter to use a `std::string`
+ * in place of a `std_msgs::msg::String` in the subscription's callback. */
 
 class MinimalSubscriber : public rclcpp::Node
 {
@@ -63,9 +70,9 @@ public:
   }
 
 private:
-  void topic_callback(const std::shared_ptr<std::string> msg) const
+  void topic_callback(const std::string & msg) const
   {
-    RCLCPP_INFO(this->get_logger(), "I heard: '%s'", (*msg).c_str());
+    RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg.c_str());
   }
   rclcpp::Subscription<MyAdaptedType>::SharedPtr subscription_;
 };

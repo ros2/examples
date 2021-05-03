@@ -1,4 +1,4 @@
-// Copyright 2016 Open Source Robotics Foundation, Inc.
+// Copyright 2021 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,6 +23,11 @@
 #include "std_msgs/msg/string.hpp"
 
 using namespace std::chrono_literals;
+
+/* Normally a TypeAdapter specialization like this would go in a header
+ * and be reused by the publisher and subscriber rather than copy-pasted
+ * like this. We chose to include this here because it makes this example
+ * more "self-contained". */
 
 template<>
 struct rclcpp::TypeAdapter<std::string, std_msgs::msg::String>
@@ -50,9 +55,9 @@ struct rclcpp::TypeAdapter<std::string, std_msgs::msg::String>
   }
 };
 
-
-/* This example creates a subclass of Node and uses std::bind() to register a
- * member function as a callback from the timer. */
+/* In this example, a publisher uses a type adapter to use a `std::string`
+ * in place of a `std_msgs::msg::String` in the argument expected by
+ * publish the method. */
 
 class MinimalPublisher : public rclcpp::Node
 {
