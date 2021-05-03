@@ -57,7 +57,8 @@ struct rclcpp::TypeAdapter<std::string, std_msgs::msg::String>
 
 /* In this example, a publisher uses a type adapter to use a `std::string`
  * in place of a `std_msgs::msg::String` in the argument expected by
- * publish the method. */
+ * the publish method. Note that publish will also work with a
+ * `std_msgs::msg::String` argument. */
 
 class MinimalPublisher : public rclcpp::Node
 {
