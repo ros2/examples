@@ -43,7 +43,6 @@ public:
 
       // Create publisher without unique network flow endpoints
       // Unique network flow endpoints are disabled in default options
-      auto options_2 = rclcpp::PublisherOptions();
       publisher_2_ = this->create_publisher<std_msgs::msg::String>("topic_2", 10);
       timer_2_ = this->create_wall_timer(
         1000ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_2_callback, this));
