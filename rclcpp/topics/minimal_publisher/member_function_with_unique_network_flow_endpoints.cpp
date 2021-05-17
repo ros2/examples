@@ -31,22 +31,22 @@ public:
   MinimalPublisherWithUniqueNetworkFlowEndpoints()
   : Node("minimal_publisher_with_unique_network_flow_endpoints"), count_1_(0), count_2_(0)
   {
+    // Create publisher with unique network flow endpoints
+    // Enable unique network flow endpoints via options
+    auto options_1 = rclcpp::PublisherOptions();
+    options_1.require_unique_network_flow_endpoints =
+      RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_OPTIONALLY_REQUIRED;
+    publisher_1_ = this->create_publisher<std_msgs::msg::String>("topic_1", 10, options_1);
+    timer_1_ = this->create_wall_timer(
+      500ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_1_callback, this));
+
+    // Create publisher without unique network flow endpoints
+    // Unique network flow endpoints are disabled in default options
+    publisher_2_ = this->create_publisher<std_msgs::msg::String>("topic_2", 10);
+    timer_2_ = this->create_wall_timer(
+      1000ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_2_callback, this));
+
     try {
-      // Create publisher with unique network flow endpoints
-      // Enable unique network flow endpoints via options
-      auto options_1 = rclcpp::PublisherOptions();
-      options_1.require_unique_network_flow_endpoints =
-        RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_OPTIONALLY_REQUIRED;
-      publisher_1_ = this->create_publisher<std_msgs::msg::String>("topic_1", 10, options_1);
-      timer_1_ = this->create_wall_timer(
-        500ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_1_callback, this));
-
-      // Create publisher without unique network flow endpoints
-      // Unique network flow endpoints are disabled in default options
-      publisher_2_ = this->create_publisher<std_msgs::msg::String>("topic_2", 10);
-      timer_2_ = this->create_wall_timer(
-        1000ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_2_callback, this));
-
       // Get network flow endpoints
       auto network_flow_endpoints_1 = publisher_1_->get_network_flow_endpoints();
       auto network_flow_endpoints_2 = publisher_2_->get_network_flow_endpoints();
