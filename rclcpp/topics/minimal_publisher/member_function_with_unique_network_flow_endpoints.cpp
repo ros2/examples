@@ -46,6 +46,7 @@ public:
     timer_2_ = this->create_wall_timer(
       1000ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_2_callback, this));
 
+    // Catch an exception if implementation does not support get_network_flow_endpoints.
     try {
       // Get network flow endpoints
       auto network_flow_endpoints_1 = publisher_1_->get_network_flow_endpoints();
@@ -55,10 +56,8 @@ public:
       print_network_flow_endpoints(network_flow_endpoints_1);
       print_network_flow_endpoints(network_flow_endpoints_2);
     } catch (const rclcpp::exceptions::RCLError & e) {
-      RCLCPP_ERROR(
-        this->get_logger(),
-        "Error: %s",
-        e.what());
+      RCLCPP_INFO(
+        this->get_logger(), "%s", e.what());
     }
   }
 
