@@ -42,18 +42,23 @@ public:
 
     // Create publisher without unique network flow endpoints
     // Unique network flow endpoints are disabled in default options
-    auto options_2 = rclcpp::PublisherOptions();
     publisher_2_ = this->create_publisher<std_msgs::msg::String>("topic_2", 10);
     timer_2_ = this->create_wall_timer(
       1000ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_2_callback, this));
 
-    // Get network flow endpoints
-    auto network_flow_endpoints_1 = publisher_1_->get_network_flow_endpoints();
-    auto network_flow_endpoints_2 = publisher_2_->get_network_flow_endpoints();
+    // Catch an exception if implementation does not support get_network_flow_endpoints.
+    try {
+      // Get network flow endpoints
+      auto network_flow_endpoints_1 = publisher_1_->get_network_flow_endpoints();
+      auto network_flow_endpoints_2 = publisher_2_->get_network_flow_endpoints();
 
-    // Print network flow endpoints
-    print_network_flow_endpoints(network_flow_endpoints_1);
-    print_network_flow_endpoints(network_flow_endpoints_2);
+      // Print network flow endpoints
+      print_network_flow_endpoints(network_flow_endpoints_1);
+      print_network_flow_endpoints(network_flow_endpoints_2);
+    } catch (const rclcpp::exceptions::RCLError & e) {
+      RCLCPP_INFO(
+        this->get_logger(), "%s", e.what());
+    }
   }
 
 private:
