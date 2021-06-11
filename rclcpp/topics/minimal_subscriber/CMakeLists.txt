@@ -32,6 +32,9 @@ ament_target_dependencies(subscriber_member_function_with_unique_network_flow_en
 add_executable(subscriber_not_composable not_composable.cpp)
 ament_target_dependencies(subscriber_not_composable rclcpp std_msgs)
 
+add_executable(waitset waitset.cpp)
+ament_target_dependencies(waitset rclcpp std_msgs)
+
 install(TARGETS
   subscriber_lambda
   subscriber_member_function
@@ -39,6 +42,7 @@ install(TARGETS
   subscriber_member_function_with_type_adapter
   subscriber_member_function_with_unique_network_flow_endpoints
   subscriber_not_composable
+  waitset
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

@@ -24,10 +24,19 @@ ament_target_dependencies(static_wait_set rclcpp std_msgs)
 add_executable(thread_safe_wait_set thread_safe_wait_set.cpp)
 ament_target_dependencies(thread_safe_wait_set example_interfaces rclcpp std_msgs)
 
+add_executable(waitset_example_main waitset_example_main.cpp)
+ament_target_dependencies(waitset_example_main rclcpp std_msgs)
+
+add_executable(waitset_example_main_loop waitset_example_main_loop.cpp)
+ament_target_dependencies(waitset_example_main_loop rclcpp std_msgs)
+
+
 install(TARGETS
   wait_set
   static_wait_set
   thread_safe_wait_set
+  waitset_example_main
+  waitset_example_main_loop
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_package()
