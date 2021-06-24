@@ -1,5 +1,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
+#include <random>
 
 int32_t main(const int32_t argc, char ** const argv)
 {
@@ -39,8 +40,33 @@ int32_t main(const int32_t argc, char ** const argv)
   const auto pub3 =
     publisher_node.create_publisher<std_msgs::msg::String>("a33", qos);
 
+  std::vector<std::function<void()>> random_publisher;
+  random_publisher.emplace_back(([&](){pub1->publish(msg1);}));
+  random_publisher.emplace_back(([&](){pub2->publish(msg2);}));
+  random_publisher.emplace_back(([&](){pub3->publish(msg3);}));
+  auto thread = std::thread([&random_publisher, &publisher_node]() {
+    auto count{0};
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine e(seed);
+    std::vector<int> indexes{0, 1, 2};
+    std::vector<std::string> msgs{"A", "B", "C"};
+    while (rclcpp::ok()) {
+      std::shuffle (indexes.begin(), indexes.end(), e);
+      RCLCPP_INFO(publisher_node.get_logger(), "%s%s%s",
+                  msgs[indexes.at(0)].c_str(),
+                  msgs[indexes.at(1)].c_str(),
+                  msgs[indexes.at(2)].c_str());
+      random_publisher.at(indexes.at(0))();
+      random_publisher.at(indexes.at(1))();
+      random_publisher.at(indexes.at(2))();
+      ++count;
+      std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    }
+  });
+  /*
   auto thread = std::thread(
       [msg1, pub1, msg2, pub2, msg3, pub3, &publisher_node]() {
+
         auto count{0};
         while (rclcpp::ok()) {
 
@@ -66,6 +92,7 @@ int32_t main(const int32_t argc, char ** const argv)
           std::this_thread::sleep_for(std::chrono::milliseconds(2500));
         }
       });
+      */
 /*
   auto thread1 = std::thread(
     [msg1, pub1, &publisher_node]() {
