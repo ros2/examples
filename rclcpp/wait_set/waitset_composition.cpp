@@ -12,107 +12,118 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/string.hpp>
+#include <chrono>
+#include <cstdio>
+#include <memory>
+#include <utility>
+#include <iostream>
+
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
-/* This example creates a node with three publishers, three subscriptions and one-off timer. The
- * node will use a wait-set to trigger the timer, publish the messages and handle the received
- * data */
+class Talker : public rclcpp::Node
+{
+public:
+  Talker()
+      : Node("talker"), count_(0)
+  {
+    publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
+    auto timer_callback =
+        [this]() -> void {
+          auto message = std_msgs::msg::String();
+          message.data = "Hello, world! " + std::to_string(this->count_++);
+          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+          this->publisher_->publish(message);
+        };
+    timer_ = this->create_wall_timer(500ms, timer_callback);
+  }
 
-int32_t main(const int32_t argc, char ** const argv)
+private:
+  rclcpp::TimerBase::SharedPtr timer_;
+  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+  size_t count_;
+};
+
+class Listener : public rclcpp::Node
+{
+public:
+  Listener()
+      : Node("listener")
+  {
+    subscription_executor_ = this->create_subscription<std_msgs::msg::String>(
+        "topic",
+        10,
+        [this](std_msgs::msg::String::UniquePtr msg) {
+          RCLCPP_INFO(this->get_logger(), "I heard: '%s' (executor)", msg->data.c_str());
+        });
+
+    // creates a subscription which is not automatically added to an executor
+    rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
+        rclcpp::CallbackGroupType::MutuallyExclusive, false);
+
+    auto options = rclcpp::SubscriptionOptions();
+    options.callback_group = cb_group_waitset;
+    auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
+    subscription_waitset_ = this->create_subscription<std_msgs::msg::String>(
+        "topic",
+        10,
+        do_nothing,
+        options);
+  }
+
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr get_subscription() const {
+    return subscription_waitset_;
+  }
+
+private:
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_executor_;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_waitset_;
+};
+
+int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto node = std::make_shared<rclcpp::Node>("wait_set_example_node");
-  auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
+  // Create an executor that will be responsible for execution of callbacks for a set of nodes.
+  // All callbacks will be called except the subscription which as explicitly excluded from it
+  rclcpp::executors::SingleThreadedExecutor exec;
 
-  auto sub1 = node->create_subscription<std_msgs::msg::String>("a11", 1, do_nothing);
-  auto sub2 = node->create_subscription<std_msgs::msg::String>("a22", 1, do_nothing);
-  auto sub3 = node->create_subscription<std_msgs::msg::String>("a33", 1, do_nothing);
-
-  std_msgs::msg::String msg1, msg2, msg3;
-  msg1.data = "Hello, world!";
-  msg2.data = "Hello, world!";
-  msg3.data = "Hello, world!";
-
-  const auto pub1 =
-      node->create_publisher<std_msgs::msg::String>("a11", 1);
-  const auto pub2 =
-      node->create_publisher<std_msgs::msg::String>("a22", 1);
-  const auto pub3 =
-      node->create_publisher<std_msgs::msg::String>("a33", 1);
-
-  rclcpp::TimerBase::SharedPtr one_off_timer;
-  auto timer_callback = [msg1, msg2, msg3, pub1, pub2, pub3, one_off_timer, node]() {
-    RCLCPP_INFO(node->get_logger(), "Publishing msg1: %s", msg1.data.c_str());
-    RCLCPP_INFO(node->get_logger(), "Publishing msg2: %s", msg2.data.c_str());
-    RCLCPP_INFO(node->get_logger(), "Publishing msg3: %s", msg3.data.c_str());
-    pub1->publish(msg1);
-    pub2->publish(msg2);
-    pub3->publish(msg3);
-    // disable the timer after the first call
-    one_off_timer->cancel();
-  };
-
-  // Use a timer to schedule one-off message publishing.
-  // Note in this case the callback won't be triggered automatically. It is up to the user to
-  // the user to trigger it manually inside the wait-set loop.
-  one_off_timer = node->create_wall_timer(1s, timer_callback);
+  auto talker = std::make_shared<Talker>();
+  exec.add_node(talker);
+  auto listener = std::make_shared<Listener>();
+  exec.add_node(listener);
 
   rclcpp::WaitSet wait_set;
-  wait_set.add_subscription(sub1);
-  wait_set.add_subscription(sub2);
-  wait_set.add_subscription(sub3);
-  wait_set.add_timer(one_off_timer);
+  wait_set.add_subscription(listener->get_subscription());
 
-  auto num_recv = std::size_t();
-  while (num_recv < 3U) {
-    // Waiting up to 5s for a sample to arrive.
+  auto thread = std::thread([&exec]() {
+    // spin will block until work comes in, execute work as it becomes available, and keep blocking.
+    // It will only be interrupted by Ctrl-C.
+    exec.spin();
+  });
+
+  while (rclcpp::ok()) {
+    // Waiting up to 5s for a message to arrive
     const auto wait_result = wait_set.wait(std::chrono::seconds(5));
 
     if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-
-      if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
-        // we execute manually the timer callback
-        one_off_timer->execute_callback();
-      } else {
-        if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
-          std_msgs::msg::String msg;
-          rclcpp::MessageInfo msg_info;
-          if (sub1->take(msg, msg_info)) {
-            ++num_recv;
-            RCLCPP_INFO(node->get_logger(), "msg1 data: %s", msg.data.c_str());
-          }
+      if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
+        std_msgs::msg::String msg;
+        rclcpp::MessageInfo msg_info;
+        if (listener->get_subscription()->take(msg, msg_info)) {
+          RCLCPP_INFO(listener->get_logger(), "I heard: '%s' (waitset)", msg.data.c_str());
         }
-
-        if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[1U]) {
-          std_msgs::msg::String msg;
-          rclcpp::MessageInfo msg_info;
-          if (sub2->take(msg, msg_info)) {
-            ++num_recv;
-            RCLCPP_INFO(node->get_logger(), "msg2 data: %s", msg.data.c_str());
-          }
-        }
-
-        if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[2U]) {
-          std_msgs::msg::String msg;
-          rclcpp::MessageInfo msg_info;
-          if (sub3->take(msg, msg_info)) {
-            ++num_recv;
-            RCLCPP_INFO(node->get_logger(), "msg3 data: %s", msg.data.c_str());
-          }
-        }
-        RCLCPP_INFO(node->get_logger(), "Number of messages already got: %zu of 3", num_recv);
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-      RCLCPP_INFO(node->get_logger(), "No message received after 5s.");
+      RCLCPP_INFO(listener->get_logger(), "No message received after 5s.");
     } else {
-      RCLCPP_INFO(node->get_logger(), "Wait-set failed.");
+      RCLCPP_INFO(listener->get_logger(), "Wait-set failed.");
     }
   }
-  RCLCPP_INFO(node->get_logger(), "Got all messages!");
 
+  rclcpp::shutdown();
+  thread.join();
   return 0;
 }
