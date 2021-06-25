@@ -38,23 +38,23 @@ int32_t main(const int32_t argc, char ** const argv)
   msg3.data = "Hello, world!";
 
   const auto pub1 =
-    node->create_publisher<std_msgs::msg::String>("a11", 1);
+      node->create_publisher<std_msgs::msg::String>("a11", 1);
   const auto pub2 =
-    node->create_publisher<std_msgs::msg::String>("a22", 1);
+      node->create_publisher<std_msgs::msg::String>("a22", 1);
   const auto pub3 =
-    node->create_publisher<std_msgs::msg::String>("a33", 1);
+      node->create_publisher<std_msgs::msg::String>("a33", 1);
 
   rclcpp::TimerBase::SharedPtr one_off_timer;
   auto timer_callback = [msg1, msg2, msg3, pub1, pub2, pub3, one_off_timer, node]() {
-      RCLCPP_INFO(node->get_logger(), "Publishing msg1: %s", msg1.data.c_str());
-      RCLCPP_INFO(node->get_logger(), "Publishing msg2: %s", msg2.data.c_str());
-      RCLCPP_INFO(node->get_logger(), "Publishing msg3: %s", msg3.data.c_str());
-      pub1->publish(msg1);
-      pub2->publish(msg2);
-      pub3->publish(msg3);
-      // disable the timer after the first call
-      one_off_timer->cancel();
-    };
+    RCLCPP_INFO(node->get_logger(), "Publishing msg1: %s", msg1.data.c_str());
+    RCLCPP_INFO(node->get_logger(), "Publishing msg2: %s", msg2.data.c_str());
+    RCLCPP_INFO(node->get_logger(), "Publishing msg3: %s", msg3.data.c_str());
+    pub1->publish(msg1);
+    pub2->publish(msg2);
+    pub3->publish(msg3);
+    // disable the timer after the first call
+    one_off_timer->cancel();
+  };
 
   // Use a timer to schedule one-off message publishing.
   // Note in this case the callback won't be triggered automatically. It is up to the user to
