@@ -42,7 +42,7 @@ public:
     rclcpp::WaitSet wait_set;
     wait_set.add_subscription(subscription_);
     while (rclcpp::ok()) {
-      const auto wait_result = wait_set.wait();
+      const auto wait_result = wait_set.wait(std::chrono::milliseconds(500));
       if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
         if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
           std_msgs::msg::String msg;
@@ -65,12 +65,13 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
   auto node = std::make_shared<MinimalSubscriber>();
 
+
   // Option 1: loop in main
   auto sub = node->get_subscription();
   rclcpp::WaitSet wait_set;
   wait_set.add_subscription(sub);
   while (rclcpp::ok()) {
-    const auto wait_result = wait_set.wait();
+    const auto wait_result = wait_set.wait(std::chrono::milliseconds(500));
     if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
       if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
         std_msgs::msg::String msg;
@@ -86,7 +87,6 @@ int main(int argc, char * argv[])
   // Option 2: run node
   // node->run();
 
-  // rclcpp::spin();
   rclcpp::shutdown();
   return 0;
 }
