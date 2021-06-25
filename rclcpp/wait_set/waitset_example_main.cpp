@@ -18,8 +18,8 @@
 using namespace std::chrono_literals;
 
 /* This example creates a node with three publishers, three subscriptions and one-off timer. The
- * node will use a wait-set to trigger the timer, publish the messages and handle the received
- * data */
+ * node will use a wait-set based loop to trigger the timer, publish the messages and handle the
+ * received data */
 
 int32_t main(const int32_t argc, char ** const argv)
 {
@@ -44,8 +44,11 @@ int32_t main(const int32_t argc, char ** const argv)
   const auto pub3 =
     node->create_publisher<std_msgs::msg::String>("a33", 1);
 
+  // Use a timer to schedule one-off message publishing.
+  // Note in this case the callback won't be triggered automatically. It is up to the user to
+  // the user to trigger it manually inside the wait-set loop.
   rclcpp::TimerBase::SharedPtr one_off_timer;
-  auto timer_callback = [msg1, msg2, msg3, pub1, pub2, pub3, one_off_timer, node]() {
+  auto timer_callback = [&]() {
       RCLCPP_INFO(node->get_logger(), "Publishing msg1: %s", msg1.data.c_str());
       RCLCPP_INFO(node->get_logger(), "Publishing msg2: %s", msg2.data.c_str());
       RCLCPP_INFO(node->get_logger(), "Publishing msg3: %s", msg3.data.c_str());
@@ -56,9 +59,6 @@ int32_t main(const int32_t argc, char ** const argv)
       one_off_timer->cancel();
     };
 
-  // Use a timer to schedule one-off message publishing.
-  // Note in this case the callback won't be triggered automatically. It is up to the user to
-  // the user to trigger it manually inside the wait-set loop.
   one_off_timer = node->create_wall_timer(1s, timer_callback);
 
   rclcpp::WaitSet wait_set;
@@ -73,7 +73,6 @@ int32_t main(const int32_t argc, char ** const argv)
     const auto wait_result = wait_set.wait(std::chrono::seconds(5));
 
     if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-
       if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
         // we execute manually the timer callback
         one_off_timer->execute_callback();
