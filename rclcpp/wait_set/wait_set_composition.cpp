@@ -116,13 +116,13 @@ int main(int argc, char * argv[])
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;
         if (listener->get_subscription()->take(msg, msg_info)) {
-          RCLCPP_INFO(listener->get_logger(), "I heard: '%s' (waitset)", msg.data.c_str());
+          RCLCPP_INFO(listener->get_logger(), "I heard: '%s' (wait-set)", msg.data.c_str());
         }
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-      RCLCPP_ERROR(listener->get_logger(), "No message received after 5s.");
-    } else {
-      RCLCPP_ERROR(listener->get_logger(), "Wait-set failed.");
+      if (rclcpp::ok()) {
+        RCLCPP_ERROR(listener->get_logger(), "Wait-set failed with timeout");
+      }
     }
   }
 

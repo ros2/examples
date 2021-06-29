@@ -25,7 +25,7 @@ int32_t main(const int32_t argc, char ** const argv)
 {
   rclcpp::init(argc, argv);
 
-  auto node = std::make_shared<rclcpp::Node>("wait_set_example_node");
+  auto node = std::make_shared<rclcpp::Node>("wait_set_listener");
   auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
 
   auto sub1 = node->create_subscription<std_msgs::msg::String>("topicA", 1, do_nothing);
@@ -74,9 +74,7 @@ int32_t main(const int32_t argc, char ** const argv)
 
   auto num_recv = std::size_t();
   while (num_recv < 3U) {
-    // Waiting up to 5s for a sample to arrive.
-    const auto wait_result = wait_set.wait(std::chrono::seconds(5));
-
+    const auto wait_result = wait_set.wait(2s);
     if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
       if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
         // we execute manually the timer callback
@@ -111,9 +109,9 @@ int32_t main(const int32_t argc, char ** const argv)
         RCLCPP_INFO(node->get_logger(), "Number of messages already got: %zu of 3", num_recv);
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-      RCLCPP_ERROR(node->get_logger(), "No message received after 5s.");
-    } else {
-      RCLCPP_ERROR(node->get_logger(), "Wait-set failed.");
+      if (rclcpp::ok()) {
+        RCLCPP_ERROR(node->get_logger(), "Wait-set failed with timeout");
+      }
     }
   }
   RCLCPP_INFO(node->get_logger(), "Got all messages!");

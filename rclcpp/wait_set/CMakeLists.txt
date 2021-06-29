@@ -30,6 +30,9 @@ ament_target_dependencies(wait_set_example rclcpp std_msgs)
 add_executable(wait_set_random_order wait_set_random_order.cpp)
 ament_target_dependencies(wait_set_random_order rclcpp std_msgs)
 
+add_executable(executor_random_order executor_random_order.cpp)
+ament_target_dependencies(executor_random_order rclcpp std_msgs)
+
 add_executable(wait_set_different_rates_topics wait_set_different_rates_topics.cpp)
 ament_target_dependencies(wait_set_different_rates_topics rclcpp std_msgs)
 
@@ -42,6 +45,7 @@ install(TARGETS
   thread_safe_wait_set
   wait_set_example
   wait_set_random_order
+  executor_random_order
   wait_set_different_rates_topics
   wait_set_composition
   DESTINATION lib/${PROJECT_NAME}

@@ -53,7 +53,7 @@ int32_t main(const int32_t argc, char ** const argv)
 {
   rclcpp::init(argc, argv);
 
-  auto node = std::make_shared<rclcpp::Node>("waitset_node");
+  auto node = std::make_shared<rclcpp::Node>("wait_set_listener");
   auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
 
   auto sub1 = node->create_subscription<std_msgs::msg::String>("topicA", 10, do_nothing);
@@ -75,9 +75,7 @@ int32_t main(const int32_t argc, char ** const argv)
   auto publisher_thread = std::thread([&exec]() {exec.spin();});
 
   while (rclcpp::ok()) {
-    // Waiting up to 5s for a message to arrive
-    const auto wait_result = wait_set.wait(std::chrono::seconds(5));
-
+    const auto wait_result = wait_set.wait(3s);
     if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
       bool sub2_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[1U];
       bool sub3_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[2U];
@@ -98,7 +96,7 @@ int32_t main(const int32_t argc, char ** const argv)
             handled_data.append(msg1.data);
           }
           handled_data.append(msg2.data);
-          RCLCPP_INFO(node->get_logger(), "Handle topic A and B: %s", handled_data.c_str());
+          RCLCPP_INFO(node->get_logger(), "I heard: %s", handled_data.c_str());
         } else {
           RCLCPP_ERROR(node->get_logger(), "An invalid message from topic B was received.");
         }
@@ -109,15 +107,15 @@ int32_t main(const int32_t argc, char ** const argv)
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;
         if (sub3->take(msg, msg_info)) {
-          RCLCPP_INFO(node->get_logger(), "Handle topic C: %s", msg.data.c_str());
+          RCLCPP_INFO(node->get_logger(), "I heard: %s", msg.data.c_str());
         } else {
           RCLCPP_ERROR(node->get_logger(), "An invalid message from topic C was received.");
         }
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-      RCLCPP_ERROR(node->get_logger(), "No message received after 5s.");
-    } else {
-      RCLCPP_ERROR(node->get_logger(), "Wait-set failed.");
+      if (rclcpp::ok()) {
+        RCLCPP_ERROR(node->get_logger(), "Wait-set failed with timeout");
+      }
     }
   }
 
