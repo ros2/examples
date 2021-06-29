@@ -52,8 +52,7 @@ public:
     while (rclcpp::ok()) {
       std::shuffle(publish_order.begin(), publish_order.end(), e);
       RCLCPP_INFO(
-        this->get_logger(), "%zu %s%s%s",
-        count_,
+        this->get_logger(), "Publishing: %s%s%s",
         msgs_data[publish_order.at(0)].c_str(),
         msgs_data[publish_order.at(1)].c_str(),
         msgs_data[publish_order.at(2)].c_str());
@@ -77,12 +76,13 @@ int32_t main(const int32_t argc, char ** const argv)
   rclcpp::init(argc, argv);
 
   auto node = std::make_shared<rclcpp::Node>("waitset_node");
-  auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
-  size_t count{0U};
+  auto print_msg = [&node](std_msgs::msg::String::UniquePtr msg) {
+    RCLCPP_INFO(node->get_logger(), "I heard: %s", msg->data.c_str());
+  };
 
-  auto sub1 = node->create_subscription<std_msgs::msg::String>("topicA", 10, do_nothing);
-  auto sub2 = node->create_subscription<std_msgs::msg::String>("topicB", 10, do_nothing);
-  auto sub3 = node->create_subscription<std_msgs::msg::String>("topicC", 10, do_nothing);
+  auto sub1 = node->create_subscription<std_msgs::msg::String>("topicA", 10, print_msg);
+  auto sub2 = node->create_subscription<std_msgs::msg::String>("topicB", 10, print_msg);
+  auto sub3 = node->create_subscription<std_msgs::msg::String>("topicC", 10, print_msg);
 
   rclcpp::WaitSet wait_set({{sub1}, {sub2}, {sub3}});
 
@@ -105,25 +105,22 @@ int32_t main(const int32_t argc, char ** const argv)
       bool handle_condition = sub1_has_data && sub2_has_data && sub3_has_data;
 
       if (handle_condition) {
-        std_msgs::msg::String msg1;
-        std_msgs::msg::String msg2;
-        std_msgs::msg::String msg3;
+        std_msgs::msg::String msg1, msg2, msg3;
         rclcpp::MessageInfo msg_info;
 
-        // the receiving order is not relevant, the messages are taken in a user-defined order
-        bool msg1_is_valid = sub1->take(msg1, msg_info);
-        bool msg2_is_valid = sub2->take(msg2, msg_info);
-        bool msg3_is_valid = sub3->take(msg3, msg_info);
-
-        // we process all the messages only if all are valid
-        if (msg1_is_valid && msg2_is_valid && msg3_is_valid) {
-          RCLCPP_INFO(
-            node->get_logger(), "%zu %s%s%s", count, msg1.data.c_str(),
-            msg2.data.c_str(), msg3.data.c_str());
-        } else {
-          RCLCPP_ERROR(node->get_logger(), "An invalid message was received.");
+        // the messages are taken and handled in a user-defined order
+        if (sub1->take(msg1, msg_info)) {
+          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg1);
+          sub1->handle_message(type_erased_msg, msg_info);
         }
-        ++count;
+        if (sub2->take(msg2, msg_info)) {
+          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg2);
+          sub2->handle_message(type_erased_msg, msg_info);
+        }
+        if (sub3->take(msg3, msg_info)) {
+          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg3);
+          sub3->handle_message(type_erased_msg, msg_info);
+        }
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
       RCLCPP_ERROR(node->get_logger(), "No message received after 5s.");
