@@ -21,11 +21,11 @@
  * handled is defined deterministically directly by the user in the code. That is, in this example
  * we always take and process the data in the same order  A, B, C regardless of the arrival order.
  */
-class RandomPublisher : public rclcpp::Node
+class Talker : public rclcpp::Node
 {
 public:
-  RandomPublisher()
-  : Node("random_publisher"),
+  Talker()
+  : Node("talker"),
     pub1_(this->create_publisher<std_msgs::msg::String>("topicA", 10)),
     pub2_(this->create_publisher<std_msgs::msg::String>("topicB", 10)),
     pub3_(this->create_publisher<std_msgs::msg::String>("topicC", 10)),
@@ -36,30 +36,22 @@ public:
   void run()
   {
     std_msgs::msg::String msg1, msg2, msg3;
-    std::vector<std::function<void()>> publisher_functions;
-    std::vector<std::string> msgs_data{"A", "B", "C"};
-    std::vector<int> publish_order{0, 1, 2};
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine e(seed);
-
-    msg1.data = msgs_data.at(0U);
-    msg2.data = msgs_data.at(1U);
-    msg3.data = msgs_data.at(2U);
-    publisher_functions.emplace_back(([this, msg1]() {pub1_->publish(msg1);}));
-    publisher_functions.emplace_back(([this, msg2]() {pub2_->publish(msg2);}));
-    publisher_functions.emplace_back(([this, msg3]() {pub3_->publish(msg3);}));
+    msg1.data = "A";
+    msg2.data = "B";
+    msg3.data = "C";
 
     while (rclcpp::ok()) {
-      std::shuffle(publish_order.begin(), publish_order.end(), e);
-      RCLCPP_INFO(
-        this->get_logger(), "%zu %s%s%s",
-        count_,
-        msgs_data[publish_order.at(0)].c_str(),
-        msgs_data[publish_order.at(1)].c_str(),
-        msgs_data[publish_order.at(2)].c_str());
-      publisher_functions.at(publish_order.at(0))();
-      publisher_functions.at(publish_order.at(1))();
-      publisher_functions.at(publish_order.at(2))();
+      RCLCPP_INFO(this->get_logger(), "Publishing msg1: %s", msg1.data.c_str());
+      pub1_->publish(msg1);
+      if ( (count_ % 4) == 0) {
+        RCLCPP_INFO(this->get_logger(), "Publishing msg3: %s", msg3.data.c_str());
+        pub3_->publish(msg3);
+      }
+
+      if ( (count_ % 2) == 0) {
+        RCLCPP_INFO(this->get_logger(), "Publishing msg2: %s", msg2.data.c_str());
+        pub2_->publish(msg2);
+      }
       ++count_;
       std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     }
@@ -87,7 +79,7 @@ int32_t main(const int32_t argc, char ** const argv)
   rclcpp::WaitSet wait_set({{sub1}, {sub2}, {sub3}});
 
   // Creates a random publisher and starts publishing in another thread
-  RandomPublisher publisher_node;
+  Talker publisher_node;
   auto publisher_thread = std::thread([&publisher_node]() {publisher_node.run();});
 
   while (rclcpp::ok()) {
@@ -95,16 +87,8 @@ int32_t main(const int32_t argc, char ** const argv)
     const auto wait_result = wait_set.wait(std::chrono::seconds(5));
 
     if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-      bool sub1_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U];
       bool sub2_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[1U];
-      bool sub3_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[2U];
-
-      // We will handle all the messages when all subscriptions have received data.
-      // Note we could use just one subscription or a combination of conditions to trigger data
-      // handling.
-      bool handle_condition = sub1_has_data && sub2_has_data && sub3_has_data;
-
-      if (handle_condition) {
+      if (sub2_has_data) {
         std_msgs::msg::String msg1;
         std_msgs::msg::String msg2;
         std_msgs::msg::String msg3;
@@ -116,13 +100,17 @@ int32_t main(const int32_t argc, char ** const argv)
         bool msg3_is_valid = sub3->take(msg3, msg_info);
 
         // we process all the messages only if all are valid
-        if (msg1_is_valid && msg2_is_valid && msg3_is_valid) {
+        if (msg1_is_valid && msg2_is_valid) {
           RCLCPP_INFO(
-            node->get_logger(), "%zu %s%s%s", count, msg1.data.c_str(),
-            msg2.data.c_str(), msg3.data.c_str());
+            node->get_logger(), "Handle: %s%s", msg1.data.c_str(),
+            msg2.data.c_str());
         } else {
           RCLCPP_INFO(node->get_logger(), "An invalid message was received.");
         }
+        if (msg3_is_valid) {
+          RCLCPP_INFO(node->get_logger(), "Handle: %s", msg3.data.c_str());
+        }
+
         ++count;
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {

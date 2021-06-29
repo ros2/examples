@@ -28,9 +28,9 @@ int32_t main(const int32_t argc, char ** const argv)
   auto node = std::make_shared<rclcpp::Node>("wait_set_example_node");
   auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
 
-  auto sub1 = node->create_subscription<std_msgs::msg::String>("a11", 1, do_nothing);
-  auto sub2 = node->create_subscription<std_msgs::msg::String>("a22", 1, do_nothing);
-  auto sub3 = node->create_subscription<std_msgs::msg::String>("a33", 1, do_nothing);
+  auto sub1 = node->create_subscription<std_msgs::msg::String>("topicA", 1, do_nothing);
+  auto sub2 = node->create_subscription<std_msgs::msg::String>("topicB", 1, do_nothing);
+  auto sub3 = node->create_subscription<std_msgs::msg::String>("topicC", 1, do_nothing);
 
   std_msgs::msg::String msg1, msg2, msg3;
   msg1.data = "Hello, world!";
@@ -38,11 +38,11 @@ int32_t main(const int32_t argc, char ** const argv)
   msg3.data = "Hello, world!";
 
   const auto pub1 =
-    node->create_publisher<std_msgs::msg::String>("a11", 1);
+    node->create_publisher<std_msgs::msg::String>("topicA", 1);
   const auto pub2 =
-    node->create_publisher<std_msgs::msg::String>("a22", 1);
+    node->create_publisher<std_msgs::msg::String>("topicB", 1);
   const auto pub3 =
-    node->create_publisher<std_msgs::msg::String>("a33", 1);
+    node->create_publisher<std_msgs::msg::String>("topicC", 1);
 
   // Use a timer to schedule one-off message publishing.
   // Note in this case the callback won't be triggered automatically. It is up to the user to
@@ -61,11 +61,16 @@ int32_t main(const int32_t argc, char ** const argv)
 
   one_off_timer = node->create_wall_timer(1s, timer_callback);
 
+  /*
+  // Option 1: add entities after construction
   rclcpp::WaitSet wait_set;
   wait_set.add_subscription(sub1);
   wait_set.add_subscription(sub2);
   wait_set.add_subscription(sub3);
   wait_set.add_timer(one_off_timer);
+  */
+  // Option 2: add entities in the constructor
+  rclcpp::WaitSet wait_set({{{sub1}, {sub2}, {sub3}}}, {}, {one_off_timer});
 
   auto num_recv = std::size_t();
   while (num_recv < 3U) {

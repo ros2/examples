@@ -27,16 +27,16 @@ class Talker : public rclcpp::Node
 {
 public:
   Talker()
-      : Node("talker"), count_(0)
+  : Node("talker"), count_(0)
   {
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     auto timer_callback =
-        [this]() -> void {
-          auto message = std_msgs::msg::String();
-          message.data = "Hello, world! " + std::to_string(this->count_++);
-          RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-          this->publisher_->publish(message);
-        };
+      [this]() -> void {
+        auto message = std_msgs::msg::String();
+        message.data = "Hello, world! " + std::to_string(this->count_++);
+        RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+        this->publisher_->publish(message);
+      };
     timer_ = this->create_wall_timer(500ms, timer_callback);
   }
 
@@ -50,30 +50,31 @@ class Listener : public rclcpp::Node
 {
 public:
   Listener()
-      : Node("listener")
+  : Node("listener")
   {
     subscription_executor_ = this->create_subscription<std_msgs::msg::String>(
-        "topic",
-        10,
-        [this](std_msgs::msg::String::UniquePtr msg) {
-          RCLCPP_INFO(this->get_logger(), "I heard: '%s' (executor)", msg->data.c_str());
-        });
+      "topic",
+      10,
+      [this](std_msgs::msg::String::UniquePtr msg) {
+        RCLCPP_INFO(this->get_logger(), "I heard: '%s' (executor)", msg->data.c_str());
+      });
 
     // creates a subscription which is not automatically added to an executor
     rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
-        rclcpp::CallbackGroupType::MutuallyExclusive, false);
+      rclcpp::CallbackGroupType::MutuallyExclusive, false);
 
     auto options = rclcpp::SubscriptionOptions();
     options.callback_group = cb_group_waitset;
     auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
     subscription_waitset_ = this->create_subscription<std_msgs::msg::String>(
-        "topic",
-        10,
-        do_nothing,
-        options);
+      "topic",
+      10,
+      do_nothing,
+      options);
   }
 
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr get_subscription() const {
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr get_subscription() const
+  {
     return subscription_waitset_;
   }
 
@@ -87,7 +88,7 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
 
   // Create an executor that will be responsible for execution of callbacks for a set of nodes.
-  // All callbacks will be called except the subscription which as explicitly excluded from it
+  // All callbacks will be called except the subscription which was explicitly excluded from it
   rclcpp::executors::SingleThreadedExecutor exec;
 
   auto talker = std::make_shared<Talker>();
@@ -95,14 +96,16 @@ int main(int argc, char * argv[])
   auto listener = std::make_shared<Listener>();
   exec.add_node(listener);
 
-  rclcpp::WaitSet wait_set;
-  wait_set.add_subscription(listener->get_subscription());
+  // Create a static wait-set that will wait on the subscription that will excluded from the
+  // default executor callback group
+  rclcpp::StaticWaitSet<1, 0, 0, 0, 0, 0> wait_set({{{listener->get_subscription()}}});
 
-  auto thread = std::thread([&exec]() {
-    // spin will block until work comes in, execute work as it becomes available, and keep blocking.
-    // It will only be interrupted by Ctrl-C.
-    exec.spin();
-  });
+  auto thread = std::thread(
+    [&exec]() {
+      // spin will block until work comes in, execute work as it becomes available, and keep blocking.
+      // It will only be interrupted by Ctrl-C.
+      exec.spin();
+    });
 
   while (rclcpp::ok()) {
     // Waiting up to 5s for a message to arrive
