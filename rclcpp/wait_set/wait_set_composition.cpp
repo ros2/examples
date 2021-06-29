@@ -120,9 +120,9 @@ int main(int argc, char * argv[])
         }
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-      RCLCPP_INFO(listener->get_logger(), "No message received after 5s.");
+      RCLCPP_ERROR(listener->get_logger(), "No message received after 5s.");
     } else {
-      RCLCPP_INFO(listener->get_logger(), "Wait-set failed.");
+      RCLCPP_ERROR(listener->get_logger(), "Wait-set failed.");
     }
   }
 

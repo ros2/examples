@@ -100,7 +100,7 @@ int32_t main(const int32_t argc, char ** const argv)
           handled_data.append(msg2.data);
           RCLCPP_INFO(node->get_logger(), "Handle topic A and B: %s", handled_data.c_str());
         } else {
-          RCLCPP_INFO(node->get_logger(), "An invalid message from topic B was received.");
+          RCLCPP_ERROR(node->get_logger(), "An invalid message from topic B was received.");
         }
       }
 
@@ -111,13 +111,13 @@ int32_t main(const int32_t argc, char ** const argv)
         if (sub3->take(msg, msg_info)) {
           RCLCPP_INFO(node->get_logger(), "Handle topic C: %s", msg.data.c_str());
         } else {
-          RCLCPP_INFO(node->get_logger(), "An invalid message from topic C was received.");
+          RCLCPP_ERROR(node->get_logger(), "An invalid message from topic C was received.");
         }
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-      RCLCPP_INFO(node->get_logger(), "No message received after 5s.");
+      RCLCPP_ERROR(node->get_logger(), "No message received after 5s.");
     } else {
-      RCLCPP_INFO(node->get_logger(), "Wait-set failed.");
+      RCLCPP_ERROR(node->get_logger(), "Wait-set failed.");
     }
   }
 

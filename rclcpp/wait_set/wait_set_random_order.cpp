@@ -121,14 +121,14 @@ int32_t main(const int32_t argc, char ** const argv)
             node->get_logger(), "%zu %s%s%s", count, msg1.data.c_str(),
             msg2.data.c_str(), msg3.data.c_str());
         } else {
-          RCLCPP_INFO(node->get_logger(), "An invalid message was received.");
+          RCLCPP_ERROR(node->get_logger(), "An invalid message was received.");
         }
         ++count;
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-      RCLCPP_INFO(node->get_logger(), "No message received after 5s.");
+      RCLCPP_ERROR(node->get_logger(), "No message received after 5s.");
     } else {
-      RCLCPP_INFO(node->get_logger(), "Wait-set failed.");
+      RCLCPP_ERROR(node->get_logger(), "Wait-set failed.");
     }
   }
 

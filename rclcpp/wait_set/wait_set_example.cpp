@@ -111,9 +111,9 @@ int32_t main(const int32_t argc, char ** const argv)
         RCLCPP_INFO(node->get_logger(), "Number of messages already got: %zu of 3", num_recv);
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-      RCLCPP_INFO(node->get_logger(), "No message received after 5s.");
+      RCLCPP_ERROR(node->get_logger(), "No message received after 5s.");
     } else {
-      RCLCPP_INFO(node->get_logger(), "Wait-set failed.");
+      RCLCPP_ERROR(node->get_logger(), "Wait-set failed.");
     }
   }
   RCLCPP_INFO(node->get_logger(), "Got all messages!");
