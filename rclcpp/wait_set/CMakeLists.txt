@@ -30,6 +30,9 @@ ament_target_dependencies(waitset_example_main rclcpp std_msgs)
 add_executable(waitset_example_main_loop waitset_example_main_loop.cpp)
 ament_target_dependencies(waitset_example_main_loop rclcpp std_msgs)
 
+add_executable(waitset_different_rates_topics waitset_different_rates_topics.cpp)
+ament_target_dependencies(waitset_different_rates_topics rclcpp std_msgs)
+
 add_executable(waitset_composition waitset_composition.cpp)
 ament_target_dependencies(waitset_composition rclcpp std_msgs)
 
@@ -39,6 +42,7 @@ install(TARGETS
   thread_safe_wait_set
   waitset_example_main
   waitset_example_main_loop
+  waitset_different_rates_topics
   waitset_composition
   DESTINATION lib/${PROJECT_NAME}
 )

@@ -16,52 +16,37 @@
 #include <std_msgs/msg/string.hpp>
 #include <random>
 
-/* For this example, we will be creating a publishing node with three publishers which will
- * publish the topics A, B, C in random order each time. The order in which the messages are
- * handled is defined deterministically directly by the user in the code. That is, in this example
- * we always take and process the data in the same order  A, B, C regardless of the arrival order.
+using namespace std::chrono_literals;
+
+/* For this example, we will be creating three talkers publishing the topics A, B, C at a different
+ * rate. The messages are handled by a wait-set loop which handles topics A and B on a topic B
+ * message arrival and topic C separately.
  */
+
 class Talker : public rclcpp::Node
 {
 public:
-  Talker()
-  : Node("talker"),
-    pub1_(this->create_publisher<std_msgs::msg::String>("topicA", 10)),
-    pub2_(this->create_publisher<std_msgs::msg::String>("topicB", 10)),
-    pub3_(this->create_publisher<std_msgs::msg::String>("topicC", 10)),
-    count_(0U)
+  Talker(
+    const std::string & node_name,
+    const std::string & topic_name,
+    const std::string & message_data,
+    std::chrono::nanoseconds period)
+  : Node(node_name)
   {
-  }
-
-  void run()
-  {
-    std_msgs::msg::String msg1, msg2, msg3;
-    msg1.data = "A";
-    msg2.data = "B";
-    msg3.data = "C";
-
-    while (rclcpp::ok()) {
-      RCLCPP_INFO(this->get_logger(), "Publishing msg1: %s", msg1.data.c_str());
-      pub1_->publish(msg1);
-      if ( (count_ % 4) == 0) {
-        RCLCPP_INFO(this->get_logger(), "Publishing msg3: %s", msg3.data.c_str());
-        pub3_->publish(msg3);
-      }
-
-      if ( (count_ % 2) == 0) {
-        RCLCPP_INFO(this->get_logger(), "Publishing msg2: %s", msg2.data.c_str());
-        pub2_->publish(msg2);
-      }
-      ++count_;
-      std::this_thread::sleep_for(std::chrono::milliseconds(2500));
-    }
+    publisher_ = this->create_publisher<std_msgs::msg::String>(topic_name, 10);
+    auto timer_callback =
+      [this, message_data]() -> void {
+        auto message = std_msgs::msg::String();
+        message.data = message_data;
+        RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
+        this->publisher_->publish(message);
+      };
+    timer_ = this->create_wall_timer(period, timer_callback);
   }
 
 private:
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub1_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub2_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub3_;
-  size_t count_;
+  rclcpp::TimerBase::SharedPtr timer_;
+  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
 };
 
 int32_t main(const int32_t argc, char ** const argv)
@@ -70,7 +55,6 @@ int32_t main(const int32_t argc, char ** const argv)
 
   auto node = std::make_shared<rclcpp::Node>("waitset_node");
   auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
-  size_t count{0U};
 
   auto sub1 = node->create_subscription<std_msgs::msg::String>("topicA", 10, do_nothing);
   auto sub2 = node->create_subscription<std_msgs::msg::String>("topicB", 10, do_nothing);
@@ -78,9 +62,17 @@ int32_t main(const int32_t argc, char ** const argv)
 
   rclcpp::WaitSet wait_set({{sub1}, {sub2}, {sub3}});
 
-  // Creates a random publisher and starts publishing in another thread
-  Talker publisher_node;
-  auto publisher_thread = std::thread([&publisher_node]() {publisher_node.run();});
+  // Creates three talkers publishing in topics A, B, and C with different publishing rates
+  auto talkerA = std::make_shared<Talker>("TalkerA", "topicA", "A", 1500ms);
+  auto talkerB = std::make_shared<Talker>("TalkerB", "topicB", "B", 2000ms);
+  auto talkerC = std::make_shared<Talker>("TalkerC", "topicC", "C", 3000ms);
+
+  // Create an executor to spin the talkers in a separate thread
+  rclcpp::executors::SingleThreadedExecutor exec;
+  exec.add_node(talkerA);
+  exec.add_node(talkerB);
+  exec.add_node(talkerC);
+  auto publisher_thread = std::thread([&exec]() {exec.spin();});
 
   while (rclcpp::ok()) {
     // Waiting up to 5s for a message to arrive
@@ -88,30 +80,39 @@ int32_t main(const int32_t argc, char ** const argv)
 
     if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
       bool sub2_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[1U];
+      bool sub3_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[2U];
+
+      // topics A and B and handled together, but only on a topic B message arrival
       if (sub2_has_data) {
         std_msgs::msg::String msg1;
         std_msgs::msg::String msg2;
-        std_msgs::msg::String msg3;
         rclcpp::MessageInfo msg_info;
+        std::string handled_data;
 
-        // the receiving order is not relevant, the messages are taken in a user-defined order
-        bool msg1_is_valid = sub1->take(msg1, msg_info);
-        bool msg2_is_valid = sub2->take(msg2, msg_info);
-        bool msg3_is_valid = sub3->take(msg3, msg_info);
-
-        // we process all the messages only if all are valid
-        if (msg1_is_valid && msg2_is_valid) {
-          RCLCPP_INFO(
-            node->get_logger(), "Handle: %s%s", msg1.data.c_str(),
-            msg2.data.c_str());
+        // this simulates a case where topics A and B must be handled together
+        // since topic A is published at a faster rate we expect to have multiple messages in queue
+        // depending on the application we may want to take the latest one, take all, etc
+        if (sub2->take(msg2, msg_info)) {
+          // take all the messages received from topic A
+          while (sub1->take(msg1, msg_info)) {
+            handled_data.append(msg1.data);
+          }
+          handled_data.append(msg2.data);
+          RCLCPP_INFO(node->get_logger(), "Handle topic A and B: %s", handled_data.c_str());
         } else {
-          RCLCPP_INFO(node->get_logger(), "An invalid message was received.");
+          RCLCPP_INFO(node->get_logger(), "An invalid message from topic B was received.");
         }
-        if (msg3_is_valid) {
-          RCLCPP_INFO(node->get_logger(), "Handle: %s", msg3.data.c_str());
-        }
+      }
 
-        ++count;
+      // topics C is handled independently
+      if (sub3_has_data) {
+        std_msgs::msg::String msg;
+        rclcpp::MessageInfo msg_info;
+        if (sub3->take(msg, msg_info)) {
+          RCLCPP_INFO(node->get_logger(), "Handle topic C: %s", msg.data.c_str());
+        } else {
+          RCLCPP_INFO(node->get_logger(), "An invalid message from topic C was received.");
+        }
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
       RCLCPP_INFO(node->get_logger(), "No message received after 5s.");
