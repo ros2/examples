@@ -12,11 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/string.hpp>
+#ifndef RCLCPP__WAIT_SET__RANDOM_TALKER_HPP_
+#define RCLCPP__WAIT_SET__RANDOM_TALKER_HPP_
+
+#include <vector>
 #include <random>
 
-using namespace std::chrono_literals;
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 
 class RandomTalker : public rclcpp::Node
 {
@@ -54,7 +57,7 @@ public:
         std::shuffle(publish_functions_.begin(), publish_functions_.end(), rand_engine_);
         for (const auto & f : publish_functions_) {f();}
       };
-    timer_ = this->create_wall_timer(1s, timer_callback);
+    timer_ = this->create_wall_timer(std::chrono::seconds(1), timer_callback);
   }
 
 private:
@@ -65,3 +68,4 @@ private:
   std::vector<std::function<void()>> publish_functions_;
   std::default_random_engine rand_engine_;
 };
+#endif  // RCLCPP__WAIT_SET__RANDOM_TALKER_HPP_

@@ -100,12 +100,7 @@ int main(int argc, char * argv[])
   // default executor callback group
   rclcpp::StaticWaitSet<1, 0, 0, 0, 0, 0> wait_set({{{listener->get_subscription()}}});
 
-  auto thread = std::thread(
-    [&exec]() {
-      // spin will block until work comes in, execute work as it becomes available, and keep blocking.
-      // It will only be interrupted by Ctrl-C.
-      exec.spin();
-    });
+  auto thread = std::thread([&exec]() {exec.spin();});
 
   while (rclcpp::ok()) {
     // Waiting up to 5s for a message to arrive

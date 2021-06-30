@@ -12,9 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/string.hpp>
+#ifndef RCLCPP__WAIT_SET__RANDOM_LISTENER_HPP_
+#define RCLCPP__WAIT_SET__RANDOM_LISTENER_HPP_
+
+#include <vector>
 #include <random>
+
+#include "rclcpp/rclcpp.hpp"
+#include "std_msgs/msg/string.hpp"
 
 class Listener : public rclcpp::Node
 {
@@ -42,3 +47,4 @@ private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub2_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub3_;
 };
+#endif  // RCLCPP__WAIT_SET__RANDOM_LISTENER_HPP_
