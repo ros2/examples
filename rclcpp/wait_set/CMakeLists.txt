@@ -24,8 +24,8 @@ ament_target_dependencies(static_wait_set rclcpp std_msgs)
 add_executable(thread_safe_wait_set thread_safe_wait_set.cpp)
 ament_target_dependencies(thread_safe_wait_set example_interfaces rclcpp std_msgs)
 
-add_executable(wait_set_example wait_set_example.cpp)
-ament_target_dependencies(wait_set_example rclcpp std_msgs)
+add_executable(wait_set_topics_and_timer wait_set_topics_and_timer.cpp)
+ament_target_dependencies(wait_set_topics_and_timer rclcpp std_msgs)
 
 add_executable(wait_set_random_order wait_set_random_order.cpp)
 ament_target_dependencies(wait_set_random_order rclcpp std_msgs)
@@ -33,21 +33,21 @@ ament_target_dependencies(wait_set_random_order rclcpp std_msgs)
 add_executable(executor_random_order executor_random_order.cpp)
 ament_target_dependencies(executor_random_order rclcpp std_msgs)
 
-add_executable(wait_set_different_rates_topics wait_set_different_rates_topics.cpp)
-ament_target_dependencies(wait_set_different_rates_topics rclcpp std_msgs)
+add_executable(wait_set_topics_with_different wait_set_topics_with_different.cpp)
+ament_target_dependencies(wait_set_topics_with_different rclcpp std_msgs)
 
-add_executable(wait_set_composition wait_set_composition.cpp)
-ament_target_dependencies(wait_set_composition rclcpp std_msgs)
+add_executable(wait_set_and_executor_composition wait_set_and_executor_composition.cpp)
+ament_target_dependencies(wait_set_and_executor_composition rclcpp std_msgs)
 
 install(TARGETS
   wait_set
   static_wait_set
   thread_safe_wait_set
-  wait_set_example
+  wait_set_topics_and_timer
   wait_set_random_order
   executor_random_order
-  wait_set_different_rates_topics
-  wait_set_composition
+  wait_set_topics_with_different
+  wait_set_and_executor_composition
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_package()
