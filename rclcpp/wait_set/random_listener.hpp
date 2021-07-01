@@ -30,7 +30,7 @@ public:
   : Node("random_listener")
   {
     auto print_msg = [this](std_msgs::msg::String::UniquePtr msg) {
-        RCLCPP_INFO(this->get_logger(), "I heard: %s", msg->data.c_str());
+        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       };
     sub1_ = this->create_subscription<std_msgs::msg::String>("topicA", 10, print_msg);
     sub2_ = this->create_subscription<std_msgs::msg::String>("topicB", 10, print_msg);

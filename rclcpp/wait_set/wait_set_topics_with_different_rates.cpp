@@ -100,7 +100,7 @@ int32_t main(const int32_t argc, char ** const argv)
             handled_data.append(msg1.data);
           }
           handled_data.append(msg2.data);
-          RCLCPP_INFO(node->get_logger(), "I heard: %s", handled_data.c_str());
+          RCLCPP_INFO(node->get_logger(), "I heard: '%s'", handled_data.c_str());
         } else {
           RCLCPP_ERROR(node->get_logger(), "An invalid message from topic B was received.");
         }
@@ -111,7 +111,7 @@ int32_t main(const int32_t argc, char ** const argv)
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;
         if (sub3->take(msg, msg_info)) {
-          RCLCPP_INFO(node->get_logger(), "I heard: %s", msg.data.c_str());
+          RCLCPP_INFO(node->get_logger(), "I heard: '%s'", msg.data.c_str());
         } else {
           RCLCPP_ERROR(node->get_logger(), "An invalid message from topic C was received.");
         }

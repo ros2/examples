@@ -33,8 +33,8 @@ ament_target_dependencies(wait_set_random_order rclcpp std_msgs)
 add_executable(executor_random_order executor_random_order.cpp)
 ament_target_dependencies(executor_random_order rclcpp std_msgs)
 
-add_executable(wait_set_topics_with_different wait_set_topics_with_different.cpp)
-ament_target_dependencies(wait_set_topics_with_different rclcpp std_msgs)
+add_executable(wait_set_topics_with_different_rates wait_set_topics_with_different_rates.cpp)
+ament_target_dependencies(wait_set_topics_with_different_rates rclcpp std_msgs)
 
 add_executable(wait_set_and_executor_composition wait_set_and_executor_composition.cpp)
 ament_target_dependencies(wait_set_and_executor_composition rclcpp std_msgs)
@@ -46,7 +46,7 @@ install(TARGETS
   wait_set_topics_and_timer
   wait_set_random_order
   executor_random_order
-  wait_set_topics_with_different
+  wait_set_topics_with_different_rates
   wait_set_and_executor_composition
   DESTINATION lib/${PROJECT_NAME}
 )

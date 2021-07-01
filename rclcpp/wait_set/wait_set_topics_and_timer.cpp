@@ -51,9 +51,9 @@ int32_t main(const int32_t argc, char ** const argv)
   // the user to trigger it manually inside the wait-set loop.
   rclcpp::TimerBase::SharedPtr one_off_timer;
   auto timer_callback = [&]() {
-      RCLCPP_INFO(node->get_logger(), "Publishing msg1: %s", msg1.data.c_str());
-      RCLCPP_INFO(node->get_logger(), "Publishing msg2: %s", msg2.data.c_str());
-      RCLCPP_INFO(node->get_logger(), "Publishing msg3: %s", msg3.data.c_str());
+      RCLCPP_INFO(node->get_logger(), "Publishing msg1: '%s'", msg1.data.c_str());
+      RCLCPP_INFO(node->get_logger(), "Publishing msg2: '%s'", msg2.data.c_str());
+      RCLCPP_INFO(node->get_logger(), "Publishing msg3: '%s'", msg3.data.c_str());
       pub1->publish(msg1);
       pub2->publish(msg2);
       pub3->publish(msg3);
@@ -87,7 +87,7 @@ int32_t main(const int32_t argc, char ** const argv)
           rclcpp::MessageInfo msg_info;
           if (sub1->take(msg, msg_info)) {
             ++num_recv;
-            RCLCPP_INFO(node->get_logger(), "msg1 data: %s", msg.data.c_str());
+            RCLCPP_INFO(node->get_logger(), "msg1 data: '%s'", msg.data.c_str());
           }
         }
 
@@ -96,7 +96,7 @@ int32_t main(const int32_t argc, char ** const argv)
           rclcpp::MessageInfo msg_info;
           if (sub2->take(msg, msg_info)) {
             ++num_recv;
-            RCLCPP_INFO(node->get_logger(), "msg2 data: %s", msg.data.c_str());
+            RCLCPP_INFO(node->get_logger(), "msg2 data: '%s'", msg.data.c_str());
           }
         }
 
@@ -105,7 +105,7 @@ int32_t main(const int32_t argc, char ** const argv)
           rclcpp::MessageInfo msg_info;
           if (sub3->take(msg, msg_info)) {
             ++num_recv;
-            RCLCPP_INFO(node->get_logger(), "msg3 data: %s", msg.data.c_str());
+            RCLCPP_INFO(node->get_logger(), "msg3 data: '%s'", msg.data.c_str());
           }
         }
         RCLCPP_INFO(node->get_logger(), "Number of messages already got: %zu of 3", num_recv);
