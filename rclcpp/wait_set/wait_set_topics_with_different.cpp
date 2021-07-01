@@ -85,18 +85,17 @@ int32_t main(const int32_t argc, char ** const argv)
       bool sub2_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[1U];
       bool sub3_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[2U];
 
-      // topics A and B and handled together, but only on a topic B message arrival
+      // topic B is used as a trigger condition for topic A and B data handling
       if (sub2_has_data) {
         std_msgs::msg::String msg1;
         std_msgs::msg::String msg2;
         rclcpp::MessageInfo msg_info;
         std::string handled_data;
 
-        // this simulates a case where topics A and B must be handled together
-        // since topic A is published at a faster rate we expect to have multiple messages in queue
-        // depending on the application we may want to take the latest one, take all, etc
         if (sub2->take(msg2, msg_info)) {
           // take all the messages received from topic A
+          // since topic A is published at a faster rate we expect to take multiple messages
+
           while (sub1->take(msg1, msg_info)) {
             handled_data.append(msg1.data);
           }

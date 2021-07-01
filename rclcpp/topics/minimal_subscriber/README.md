@@ -5,6 +5,8 @@ This package contains a few different strategies for creating nodes which receiv
  * `member_function.cpp` uses a C++ member function callback
  * `not_composable.cpp` uses a global function callback without a Node subclass
  * `waitset.cpp` uses a `rclcpp::waitset` to wait and poll for data 
+ * `waitset_time_triggered.cpp` uses a `rclcpp::waitset` and a timer to poll 
+   for data periodically
 
 Note that `not_composable.cpp` instantiates a `rclcpp::Node` _without_ subclassing it.
 This was the typical usage model in ROS 1, but this style of coding is not compatible with composing multiple nodes into a single process.

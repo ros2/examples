@@ -18,6 +18,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+using namespace std::chrono_literals;
+
 class MinimalSubscriber : public rclcpp::Node
 {
 public:
@@ -26,31 +28,36 @@ public:
   {
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
-      10,
+      1,
       [this](std_msgs::msg::String::UniquePtr msg) {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       });
-  }
-
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr get_subscription() const
-  {
-    return subscription_;
+    // add timer to directly take a message if available
+    auto timer_callback = [this]() -> void {
+      std_msgs::msg::String msg;
+      rclcpp::MessageInfo msg_info;
+      if (subscription_->take(msg, msg_info)) {
+        std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
+        subscription_->handle_message(type_erased_msg, msg_info);
+      } else {
+        RCLCPP_INFO(this->get_logger(), "No message available");
+      }
+    };
+    timer_ = create_wall_timer(500ms, timer_callback);
+    wait_set_.add_timer(timer_);
   }
 
   void run()
   {
-    rclcpp::WaitSet wait_set;
-    wait_set.add_subscription(subscription_);
     while (rclcpp::ok()) {
-      const auto wait_result = wait_set.wait(std::chrono::milliseconds(500));
+      const auto wait_result = wait_set_.wait(510ms);
       if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-        if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
-          std_msgs::msg::String msg;
-          rclcpp::MessageInfo msg_info;
-          if (subscription_->take(msg, msg_info)) {
-            std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
-            subscription_->handle_message(type_erased_msg, msg_info);
-          }
+        if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
+          timer_->execute_callback();
+        }
+      } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
+        if (rclcpp::ok()) {
+          RCLCPP_ERROR(this->get_logger(), "Wait-set failed with timeout");
         }
       }
     }
@@ -58,35 +65,15 @@ public:
 
 private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+  rclcpp::TimerBase::SharedPtr timer_;
+  rclcpp::WaitSet wait_set_;
 };
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   auto node = std::make_shared<MinimalSubscriber>();
-
-
-  // Option 1: loop in main
-  auto sub = node->get_subscription();
-  rclcpp::WaitSet wait_set;
-  wait_set.add_subscription(sub);
-  while (rclcpp::ok()) {
-    const auto wait_result = wait_set.wait(std::chrono::milliseconds(500));
-    if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-      if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
-        std_msgs::msg::String msg;
-        rclcpp::MessageInfo msg_info;
-        if (sub->take(msg, msg_info)) {
-          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
-          sub->handle_message(type_erased_msg, msg_info);
-        }
-      }
-    }
-  }
-
-  // Option 2: run node
-  // node->run();
-
+  node->run();
   rclcpp::shutdown();
   return 0;
 }
