@@ -17,7 +17,12 @@ find_package(rclcpp REQUIRED)
 add_executable(client_not_composable not_composable.cpp)
 ament_target_dependencies(client_not_composable rclcpp example_interfaces)
 
-install(TARGETS client_not_composable
+add_executable(client_member_function member_function.cpp)
+ament_target_dependencies(client_member_function rclcpp example_interfaces)
+
+install(TARGETS
+  client_not_composable
+  client_member_function
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

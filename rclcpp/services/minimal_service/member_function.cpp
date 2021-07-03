@@ -23,6 +23,9 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using example_interfaces::srv::AddTwoInts;
 
+/* This example creates a subclass of Node and uses std::bind() to register a
+ * member function as a callback from the server. */
+
 class MinimalService : public rclcpp::Node
 {
 public:
