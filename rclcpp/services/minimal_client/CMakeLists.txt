@@ -14,15 +14,19 @@ find_package(ament_cmake REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 
-add_executable(client_not_composable not_composable.cpp)
-ament_target_dependencies(client_not_composable rclcpp example_interfaces)
+add_executable(client_lambda lambda.cpp)
+ament_target_dependencies(client_lambda rclcpp example_interfaces)
 
 add_executable(client_member_function member_function.cpp)
 ament_target_dependencies(client_member_function rclcpp example_interfaces)
 
+add_executable(client_not_composable not_composable.cpp)
+ament_target_dependencies(client_not_composable rclcpp example_interfaces)
+
 install(TARGETS
-  client_not_composable
+  client_lambda
   client_member_function
+  client_not_composable
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

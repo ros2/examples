@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include <cinttypes>
-#include <functional>
 #include <memory>
 
 #include "example_interfaces/srv/add_two_ints.hpp"

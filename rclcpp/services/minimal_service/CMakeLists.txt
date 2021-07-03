@@ -25,8 +25,8 @@ ament_target_dependencies(service_not_composable rclcpp example_interfaces)
 
 install(TARGETS
   service_lambda
-  service_not_composable
   service_member_function
+  service_not_composable
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
