@@ -14,10 +14,10 @@ find_package(ament_cmake REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 
-add_executable(client_main main.cpp)
-ament_target_dependencies(client_main rclcpp example_interfaces)
+add_executable(client_not_composable not_composable.cpp)
+ament_target_dependencies(client_not_composable rclcpp example_interfaces)
 
-install(TARGETS client_main
+install(TARGETS client_not_composable
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)

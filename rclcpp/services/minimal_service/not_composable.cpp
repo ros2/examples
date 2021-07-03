@@ -21,6 +21,11 @@
 using AddTwoInts = example_interfaces::srv::AddTwoInts;
 rclcpp::Node::SharedPtr g_node = nullptr;
 
+/* We do not recommend this style anymore, because composition of multiple
+ * nodes in the same executable is not possible. Please see one of the subclass
+ * examples for the "new" recommended styles. This example is only included
+ * for completeness because it is similar to "classic" standalone ROS nodes. */
+
 void handle_service(
   const std::shared_ptr<rmw_request_id_t> request_header,
   const std::shared_ptr<AddTwoInts::Request> request,
