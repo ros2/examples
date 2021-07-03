@@ -13,36 +13,43 @@
 // limitations under the License.
 
 #include <cinttypes>
+#include <functional>
 #include <memory>
 
 #include "example_interfaces/srv/add_two_ints.hpp"
 #include "rclcpp/rclcpp.hpp"
 
+using std::placeholders::_1;
+using std::placeholders::_2;
 using example_interfaces::srv::AddTwoInts;
-rclcpp::Node::SharedPtr g_node = nullptr;
 
-/* We do not recommend this style anymore, because composition of multiple
- * nodes in the same executable is not possible. Please see one of the subclass
- * examples for the "new" recommended styles. This example is only included
- * for completeness because it is similar to "classic" standalone ROS nodes. */
-
-void handle_service(
-  const AddTwoInts::Request::SharedPtr request,
-  AddTwoInts::Response::SharedPtr response)
+class MinimalService : public rclcpp::Node
 {
-  RCLCPP_INFO(
-    g_node->get_logger(),
-    "request: %" PRId64 " + %" PRId64, request->a, request->b);
-  response->sum = request->a + request->b;
-}
+public:
+  MinimalService()
+  : Node("minimal_service")
+  {
+    server_ = this->create_service<AddTwoInts>(
+      "add_two_ints", std::bind(&MinimalService::service_callback, this, _1, _2));
+  }
 
-int main(int argc, char ** argv)
+private:
+  void service_callback(
+    const AddTwoInts::Request::SharedPtr request,
+    AddTwoInts::Response::SharedPtr response) const
+  {
+    RCLCPP_INFO(
+      this->get_logger(),
+      "request: %" PRId64 " + %" PRId64, request->a, request->b);
+    response->sum = request->a + request->b;
+  }
+  rclcpp::Service<AddTwoInts>::SharedPtr server_;
+};
+
+int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  g_node = rclcpp::Node::make_shared("minimal_service");
-  auto server = g_node->create_service<AddTwoInts>("add_two_ints", handle_service);
-  rclcpp::spin(g_node);
+  rclcpp::spin(std::make_shared<MinimalService>());
   rclcpp::shutdown();
-  g_node = nullptr;
   return 0;
 }
