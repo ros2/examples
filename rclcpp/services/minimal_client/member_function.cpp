@@ -30,7 +30,7 @@ class MinimalClient : public rclcpp::Node
 {
 public:
   MinimalClient()
-  : Node("minimal_service")
+  : Node("minimal_client")
   {
     client_ = this->create_client<AddTwoInts>("add_two_ints");
     while (!client_->wait_for_service(1s)) {

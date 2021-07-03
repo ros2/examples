@@ -17,6 +17,10 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+/* This example creates a subclass of Node and uses a fancy C++11 lambda
+ * function to shorten the callback syntax, at the expense of making the
+ * code somewhat more difficult to understand at first glance. */
+
 class MinimalSubscriber : public rclcpp::Node
 {
 public:
@@ -26,7 +30,7 @@ public:
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
       10,
-      [this](std_msgs::msg::String::UniquePtr msg) {
+      [this](const std_msgs::msg::String::SharedPtr msg) {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       });
   }
