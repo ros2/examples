@@ -12,17 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cassert>
 #include <memory>
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto node = std::make_shared<rclcpp::Node>("static_wait_set_example_node");
+  auto node = std::make_shared<rclcpp::Node>("wait_set_example_node");
 
   auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
   auto sub1 = node->create_subscription<std_msgs::msg::String>("~/chatter", 10, do_nothing);
@@ -31,37 +33,40 @@ int main(int argc, char * argv[])
   auto guard_condition1 = std::make_shared<rclcpp::GuardCondition>();
   auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
 
-  rclcpp::StaticWaitSet<2, 2, 0, 0, 0, 0> static_wait_set(
-    std::array<rclcpp::StaticWaitSet<2, 2, 0, 0, 0, 0>::SubscriptionEntry, 2>{{{sub1}, {sub2}}},
-    std::array<rclcpp::GuardCondition::SharedPtr, 2>{{{guard_condition1}, {guard_condition2}}},
-    std::array<rclcpp::TimerBase::SharedPtr, 0>{},
-    std::array<rclcpp::ClientBase::SharedPtr, 0>{},
-    std::array<rclcpp::ServiceBase::SharedPtr, 0>{},
-    std::array<rclcpp::StaticWaitSet<2, 2, 0, 0, 0, 0>::WaitableEntry, 0>{});
+  // FIXME: removing sub if it was added in the ctor leads to a failure
+  // terminate called after throwing an instance of 'std::runtime_error'
+  //  what():  waitable not in wait set
+  rclcpp::WaitSet wait_set(
+      // std::vector<rclcpp::WaitSet::SubscriptionEntry>{{sub}},
+      {},
+      std::vector<rclcpp::GuardCondition::SharedPtr>{guard_condition1});
+
+  wait_set.add_subscription(sub1); // FIXME: add it in the ctor
+  wait_set.add_subscription(sub2);
+  wait_set.add_guard_condition(guard_condition2);
 
   auto wait_and_print_results = [&]() {
       RCLCPP_INFO(node->get_logger(), "Waiting...");
-      auto wait_result = static_wait_set.wait(std::chrono::seconds(1));
+      auto wait_result = wait_set.wait(std::chrono::seconds(1));
       if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-        int guard_conditions_num = static_wait_set.get_rcl_wait_set().size_of_guard_conditions;
-        int subscriptions_num = static_wait_set.get_rcl_wait_set().size_of_subscriptions;
+        int guard_conditions_num = wait_set.get_rcl_wait_set().size_of_guard_conditions;
+        int subscriptions_num = wait_set.get_rcl_wait_set().size_of_subscriptions;
 
-        for (int i = 0; i < guard_conditions_num; i++) {
+        for (int i=0; i<guard_conditions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().guard_conditions[i]) {
-            RCLCPP_INFO(node->get_logger(), "guard_condition %d triggered", i + 1);
+            RCLCPP_INFO(node->get_logger(), "guard_condition %d triggered", i+1);
           }
         }
-        for (int i = 0; i < subscriptions_num; i++) {
+        for (int i=0; i<subscriptions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[i]) {
-            RCLCPP_INFO(node->get_logger(), "subscription %d triggered", i + 1);
+            RCLCPP_INFO(node->get_logger(), "subscription %d triggered", i+1);
             std_msgs::msg::String msg;
             rclcpp::MessageInfo msg_info;
             if (sub_vector.at(i)->take(msg, msg_info)) {
-              RCLCPP_INFO(
-                node->get_logger(),
-                "subscription %d: I heard '%s'", i + 1, msg.data.c_str());
+              RCLCPP_INFO(node->get_logger(),
+                          "subscription %d: I heard '%s'", i+1, msg.data.c_str());
             } else {
-              RCLCPP_INFO(node->get_logger(), "subscription %d: No message", i + 1);
+              RCLCPP_INFO(node->get_logger(), "subscription %d: No message", i+1);
             }
           }
         }
@@ -88,8 +93,19 @@ int main(int argc, char * argv[])
   pub->publish(std_msgs::msg::String().set__data("test"));
   wait_and_print_results();
 
-  // Note the static wait-set does not allow adding or removing entities dynamically.
-  // It will result in a compilation error.
+  RCLCPP_INFO(node->get_logger(), "Action: Guard condition 1 removed");
+  RCLCPP_INFO(node->get_logger(), "Action: Guard condition 2 removed");
+  wait_set.remove_guard_condition(guard_condition1);
+  wait_set.remove_guard_condition(guard_condition2);
+  wait_and_print_results();
+
+  RCLCPP_INFO(node->get_logger(), "Action: Subscription 2 removed");
+  wait_set.remove_subscription(sub2);
+  wait_and_print_results();
+
+  RCLCPP_INFO(node->get_logger(), "Action: Subscription 1 removed");
+  wait_set.remove_subscription(sub1);
+  wait_and_print_results();
 
   return 0;
 }
