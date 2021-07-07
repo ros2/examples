@@ -42,7 +42,7 @@ public:
           std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
           subscription_->handle_message(type_erased_msg, msg_info);
         } else {
-          RCLCPP_INFO(this->get_logger(), "No message available");
+          RCLCPP_WARN(this->get_logger(), "No message available");
         }
       };
     timer_ = create_wall_timer(500ms, timer_callback);

@@ -57,7 +57,7 @@ public:
         }
       } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
         if (rclcpp::ok()) {
-          RCLCPP_ERROR(this->get_logger(), "Timeout. No message received after given wait-time");
+          RCLCPP_WARN(this->get_logger(), "Timeout. No message received after given wait-time");
         }
       }
     }
