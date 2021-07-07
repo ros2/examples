@@ -24,10 +24,9 @@ using namespace std::chrono_literals;
 
 /* For this example, we will be creating a talker node with three publishers which will
  * publish the topics A, B, C in random order each time. The order in which the messages are
- * handled is defined deterministically directly by the user in the code using a wait-set based
- * loop. That is, in this example we always take and process the data in the same order  A, B, C
- * regardless of the arrival order.
- */
+ * handled is defined deterministically by the user in the code using a wait-set based loop.
+ * That is, in this example we always take and process the data in the same order  A, B, C
+ * regardless of the arrival order. */
 
 int32_t main(const int32_t argc, char ** const argv)
 {
@@ -56,19 +55,14 @@ int32_t main(const int32_t argc, char ** const argv)
       if (sub1_has_data && sub2_has_data && sub3_has_data) {
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;
-
-        // the messages are taken and handled in a user-defined order
-        if (subscriptions.at(0)->take(msg, msg_info)) {
-          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
-          subscriptions.at(0)->handle_message(type_erased_msg, msg_info);
-        }
-        if (subscriptions.at(1)->take(msg, msg_info)) {
-          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
-          subscriptions.at(1)->handle_message(type_erased_msg, msg_info);
-        }
-        if (subscriptions.at(2)->take(msg, msg_info)) {
-          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
-          subscriptions.at(2)->handle_message(type_erased_msg, msg_info);
+        const int subscriptions_num = wait_set.get_rcl_wait_set().size_of_subscriptions;
+        for (int i = 0; i < subscriptions_num; i++) {
+          if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[i]) {
+            if (subscriptions.at(i)->take(msg, msg_info)) {
+              std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
+              subscriptions.at(i)->handle_message(type_erased_msg, msg_info);
+            }
+          }
         }
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {

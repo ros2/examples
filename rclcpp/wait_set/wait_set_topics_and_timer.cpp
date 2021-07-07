@@ -48,7 +48,7 @@ int32_t main(const int32_t argc, char ** const argv)
 
   // Use a timer to schedule one-off message publishing.
   // Note in this case the callback won't be triggered automatically. It is up to the user to
-  // the user to trigger it manually inside the wait-set loop.
+  // trigger it manually inside the wait-set loop.
   rclcpp::TimerBase::SharedPtr one_off_timer;
   auto timer_callback = [&]() {
       RCLCPP_INFO(node->get_logger(), "Publishing msg1: '%s'", msg1.data.c_str());
@@ -63,46 +63,32 @@ int32_t main(const int32_t argc, char ** const argv)
 
   one_off_timer = node->create_wall_timer(1s, timer_callback);
 
-  /*
-  // Option 1: add entities after construction
-  rclcpp::WaitSet wait_set;
-  wait_set.add_subscription(sub1);
-  wait_set.add_subscription(sub2);
-  wait_set.add_subscription(sub3);
-  wait_set.add_timer(one_off_timer);
-  */
-  // Option 2: add entities in the constructor
   rclcpp::WaitSet wait_set({{{sub1}, {sub2}, {sub3}}}, {}, {one_off_timer});
 
+  // Loop waiting on the wait-set until 3 messages are received
   auto num_recv = std::size_t();
   while (num_recv < 3U) {
     const auto wait_result = wait_set.wait(2s);
     if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
       if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
-        // we execute manually the timer callback
+        // The timer callback is executed manually here
         one_off_timer->execute_callback();
       } else {
+        std_msgs::msg::String msg;
+        rclcpp::MessageInfo msg_info;
         if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
-          std_msgs::msg::String msg;
-          rclcpp::MessageInfo msg_info;
           if (sub1->take(msg, msg_info)) {
             ++num_recv;
             RCLCPP_INFO(node->get_logger(), "msg1 data: '%s'", msg.data.c_str());
           }
         }
-
         if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[1U]) {
-          std_msgs::msg::String msg;
-          rclcpp::MessageInfo msg_info;
           if (sub2->take(msg, msg_info)) {
             ++num_recv;
             RCLCPP_INFO(node->get_logger(), "msg2 data: '%s'", msg.data.c_str());
           }
         }
-
         if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[2U]) {
-          std_msgs::msg::String msg;
-          rclcpp::MessageInfo msg_info;
           if (sub3->take(msg, msg_info)) {
             ++num_recv;
             RCLCPP_INFO(node->get_logger(), "msg3 data: '%s'", msg.data.c_str());

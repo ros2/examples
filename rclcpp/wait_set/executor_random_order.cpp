@@ -35,7 +35,7 @@ int32_t main(const int32_t argc, char ** const argv)
   // Note the order of execution would be deterministic if both nodes are spun in the same
   // executor (A, B, C). This is because the publishing happens always before the subscription
   // handling and the executor handles the messages in the order in which the subscriptions were
-  // created. Using difference threads the handling order depends on the message arrival and
+  // created. Using different threads the handling order depends on the message arrival and
   // type of messages available.
   auto thread = std::thread([]() {rclcpp::spin(std::make_shared<RandomTalker>());});
   rclcpp::spin(std::make_shared<Listener>());

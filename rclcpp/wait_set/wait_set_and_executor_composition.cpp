@@ -96,12 +96,14 @@ int main(int argc, char * argv[])
   auto listener = std::make_shared<Listener>();
   exec.add_node(listener);
 
-  // Create a static wait-set that will wait on the subscription that will excluded from the
+  // Create a static wait-set that will wait on the subscription excluded from the
   // default executor callback group
   rclcpp::StaticWaitSet<1, 0, 0, 0, 0, 0> wait_set({{{listener->get_subscription()}}});
 
+  // Run the executor in a separate thread
   auto thread = std::thread([&exec]() {exec.spin();});
 
+  // Run the wait-set loop in the main thread
   while (rclcpp::ok()) {
     // Waiting up to 5s for a message to arrive
     const auto wait_result = wait_set.wait(std::chrono::seconds(5));

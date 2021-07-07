@@ -23,10 +23,10 @@
 
 using namespace std::chrono_literals;
 
-/* For this example, we will be creating three talkers publishing the topics A, B, C at a different
- * rate. The messages are handled by a wait-set loop which handles topics A and B on a topic B
- * message arrival and topic C separately.
- */
+/* For this example, we will be creating three talkers publishing the topics A, B, C at different
+ * rates. The messages are handled by a wait-set loop which handles topics A and B together on a
+ * using topic B as trigger condition. Topic C is handled independently using the topic C
+ * itself as a trigger condition. */
 
 class Talker : public rclcpp::Node
 {
@@ -41,7 +41,7 @@ public:
     publisher_ = this->create_publisher<std_msgs::msg::String>(topic_name, 10);
     auto timer_callback =
       [this, message_data]() -> void {
-        auto message = std_msgs::msg::String();
+        std_msgs::msg::String message;
         message.data = message_data;
         RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
         this->publisher_->publish(message);
@@ -67,7 +67,7 @@ int32_t main(const int32_t argc, char ** const argv)
 
   rclcpp::WaitSet wait_set({{sub1}, {sub2}, {sub3}});
 
-  // Creates three talkers publishing in topics A, B, and C with different publishing rates
+  // Create three talkers publishing in topics A, B, and C with different publishing rates
   auto talkerA = std::make_shared<Talker>("TalkerA", "topicA", "A", 1500ms);
   auto talkerB = std::make_shared<Talker>("TalkerB", "topicB", "B", 2000ms);
   auto talkerC = std::make_shared<Talker>("TalkerC", "topicC", "C", 3000ms);
@@ -85,7 +85,8 @@ int32_t main(const int32_t argc, char ** const argv)
       bool sub2_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[1U];
       bool sub3_has_data = wait_result.get_wait_set().get_rcl_wait_set().subscriptions[2U];
 
-      // topic B is used as a trigger condition for topic A and B data handling
+      // topic A and B handling
+      // Note only topic B is used as a trigger condition
       if (sub2_has_data) {
         std_msgs::msg::String msg1;
         std_msgs::msg::String msg2;
@@ -93,9 +94,7 @@ int32_t main(const int32_t argc, char ** const argv)
         std::string handled_data;
 
         if (sub2->take(msg2, msg_info)) {
-          // take all the messages received from topic A
           // since topic A is published at a faster rate we expect to take multiple messages
-
           while (sub1->take(msg1, msg_info)) {
             handled_data.append(msg1.data);
           }
@@ -106,7 +105,7 @@ int32_t main(const int32_t argc, char ** const argv)
         }
       }
 
-      // topics C is handled independently
+      // topic C handling
       if (sub3_has_data) {
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;

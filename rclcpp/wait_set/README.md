@@ -1,7 +1,4 @@
-# rclcpp examples
-
-This directory contains many examples of how to do common tasks with rclcpp.
-The intent is that this material will be easy to cop# Minimal rclcpp wait-set cookbook recipes
+# Minimal rclcpp wait-set cookbook recipes
 
 This package contains a few different strategies for creating nodes which use `rclcpp::waitset`
 to wait and handle ROS entities, that is, subscribers, timers, clients, services, guard

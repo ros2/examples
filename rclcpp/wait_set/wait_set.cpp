@@ -37,11 +37,11 @@ int main(int argc, char * argv[])
   // terminate called after throwing an instance of 'std::runtime_error'
   //  what():  waitable not in wait set
   rclcpp::WaitSet wait_set(
-      // std::vector<rclcpp::WaitSet::SubscriptionEntry>{{sub}},
-      {},
-      std::vector<rclcpp::GuardCondition::SharedPtr>{guard_condition1});
+    // std::vector<rclcpp::WaitSet::SubscriptionEntry>{{sub}},
+    {},
+    std::vector<rclcpp::GuardCondition::SharedPtr>{guard_condition1});
 
-  wait_set.add_subscription(sub1); // FIXME: add it in the ctor
+  wait_set.add_subscription(sub1);  // FIXME: add it in the ctor
   wait_set.add_subscription(sub2);
   wait_set.add_guard_condition(guard_condition2);
 
@@ -52,21 +52,22 @@ int main(int argc, char * argv[])
         int guard_conditions_num = wait_set.get_rcl_wait_set().size_of_guard_conditions;
         int subscriptions_num = wait_set.get_rcl_wait_set().size_of_subscriptions;
 
-        for (int i=0; i<guard_conditions_num; i++) {
+        for (int i = 0; i < guard_conditions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().guard_conditions[i]) {
-            RCLCPP_INFO(node->get_logger(), "guard_condition %d triggered", i+1);
+            RCLCPP_INFO(node->get_logger(), "guard_condition %d triggered", i + 1);
           }
         }
-        for (int i=0; i<subscriptions_num; i++) {
+        for (int i = 0; i < subscriptions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[i]) {
-            RCLCPP_INFO(node->get_logger(), "subscription %d triggered", i+1);
+            RCLCPP_INFO(node->get_logger(), "subscription %d triggered", i + 1);
             std_msgs::msg::String msg;
             rclcpp::MessageInfo msg_info;
             if (sub_vector.at(i)->take(msg, msg_info)) {
-              RCLCPP_INFO(node->get_logger(),
-                          "subscription %d: I heard '%s'", i+1, msg.data.c_str());
+              RCLCPP_INFO(
+                node->get_logger(),
+                "subscription %d: I heard '%s'", i + 1, msg.data.c_str());
             } else {
-              RCLCPP_INFO(node->get_logger(), "subscription %d: No message", i+1);
+              RCLCPP_INFO(node->get_logger(), "subscription %d: No message", i + 1);
             }
           }
         }
