@@ -20,6 +20,9 @@
 
 using namespace std::chrono_literals;
 
+/* This example creates a subclass of Node and uses a wait-set based loop and polls periodically
+ * for messages in a timer callback using a wait-set based loop. */
+
 class MinimalSubscriber : public rclcpp::Node
 {
 public:
@@ -32,17 +35,16 @@ public:
       [this](std_msgs::msg::String::UniquePtr msg) {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       });
-    // add timer to directly take a message if available
     auto timer_callback = [this]() -> void {
-      std_msgs::msg::String msg;
-      rclcpp::MessageInfo msg_info;
-      if (subscription_->take(msg, msg_info)) {
-        std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
-        subscription_->handle_message(type_erased_msg, msg_info);
-      } else {
-        RCLCPP_INFO(this->get_logger(), "No message available");
-      }
-    };
+        std_msgs::msg::String msg;
+        rclcpp::MessageInfo msg_info;
+        if (subscription_->take(msg, msg_info)) {
+          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
+          subscription_->handle_message(type_erased_msg, msg_info);
+        } else {
+          RCLCPP_INFO(this->get_logger(), "No message available");
+        }
+      };
     timer_ = create_wall_timer(500ms, timer_callback);
     wait_set_.add_timer(timer_);
   }
@@ -50,7 +52,8 @@ public:
   void run()
   {
     while (rclcpp::ok()) {
-      const auto wait_result = wait_set_.wait(510ms);
+      // Wait for the timer event to trigger. Set a 1 ms margin to trigger a timeout.
+      const auto wait_result = wait_set_.wait(501ms);
       if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
         if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
           timer_->execute_callback();

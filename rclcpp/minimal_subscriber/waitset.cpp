@@ -18,6 +18,9 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
+/* This example creates a subclass of Node and uses a wait-set based loop to wait and handle
+ * messages from the subscriber */
+
 class MinimalSubscriber : public rclcpp::Node
 {
 public:
@@ -30,6 +33,7 @@ public:
       [this](std_msgs::msg::String::UniquePtr msg) {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       });
+    wait_set_.add_subscription(subscription_);
   }
 
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr get_subscription() const
@@ -39,10 +43,9 @@ public:
 
   void run()
   {
-    rclcpp::WaitSet wait_set;
-    wait_set.add_subscription(subscription_);
     while (rclcpp::ok()) {
-      const auto wait_result = wait_set.wait(std::chrono::milliseconds(500));
+      // Wait for the subscriber event to trigger. Set a 1 ms margin to trigger a timeout.
+      const auto wait_result = wait_set_.wait(std::chrono::milliseconds(501));
       if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
         if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
           std_msgs::msg::String msg;
@@ -52,41 +55,24 @@ public:
             subscription_->handle_message(type_erased_msg, msg_info);
           }
         }
+      } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
+        if (rclcpp::ok()) {
+          RCLCPP_ERROR(this->get_logger(), "Timeout. No message received after given wait-time");
+        }
       }
     }
   }
 
 private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+  rclcpp::WaitSet wait_set_;
 };
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   auto node = std::make_shared<MinimalSubscriber>();
-
-
-  // Option 1: loop in main
-  auto sub = node->get_subscription();
-  rclcpp::WaitSet wait_set;
-  wait_set.add_subscription(sub);
-  while (rclcpp::ok()) {
-    const auto wait_result = wait_set.wait(std::chrono::milliseconds(500));
-    if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-      if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
-        std_msgs::msg::String msg;
-        rclcpp::MessageInfo msg_info;
-        if (sub->take(msg, msg_info)) {
-          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
-          sub->handle_message(type_erased_msg, msg_info);
-        }
-      }
-    }
-  }
-
-  // Option 2: run node
-  // node->run();
-
+  node->run();
   rclcpp::shutdown();
   return 0;
 }
