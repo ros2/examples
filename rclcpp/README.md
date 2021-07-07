@@ -4,6 +4,13 @@ This package contains a few different strategies for creating nodes which use `r
 to wait and handle ROS entities, that is, subscribers, timers, clients, services, guard 
 conditions and waitables.
 
+
+* `wait_set.cpp`: Simple example showing how to use the default wait-set with a dynamic
+  storage policy and a sequential (no thread-safe) synchronization policy.
+* `static_wait_set.cpp`: Simple example showing how to use the static wait-set with a static 
+  storage policy.
+* `thread_safe_wait_set.cpp`: Simple example showing how to use the static wait-set with a 
+  thread-safe synchronization policy.
 * `wait_set_topics_and_timer.cpp`: Simple example using multiple subscriptions, 
   publishers, and a timer.
 * `wait_set_random_order.cpp`: An example showing user-defined 
