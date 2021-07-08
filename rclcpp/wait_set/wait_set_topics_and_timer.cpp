@@ -19,7 +19,7 @@
 
 using namespace std::chrono_literals;
 
-/* This example creates a node with three publishers, three subscriptions and one-off timer. The
+/* This example creates a node with three publishers, three subscriptions and a one-off timer. The
  * node will use a wait-set based loop to trigger the timer, publish the messages and handle the
  * received data */
 
