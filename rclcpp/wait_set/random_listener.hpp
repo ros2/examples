@@ -21,12 +21,12 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-class Listener : public rclcpp::Node
+class RandomListener : public rclcpp::Node
 {
   using subscription_list = std::vector<rclcpp::Subscription<std_msgs::msg::String>::SharedPtr>;
 
 public:
-  Listener()
+  RandomListener()
   : Node("random_listener")
   {
     auto print_msg = [this](std_msgs::msg::String::UniquePtr msg) {

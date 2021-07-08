@@ -32,8 +32,8 @@ int32_t main(const int32_t argc, char ** const argv)
 {
   rclcpp::init(argc, argv);
 
-  auto listener = std::make_shared<Listener>();
-  auto subscriptions = listener->get_subscriptions();
+  auto random_listener = std::make_shared<RandomListener>();
+  auto subscriptions = random_listener->get_subscriptions();
 
   // Create a wait-set and add the subscriptions
   rclcpp::WaitSet wait_set;
@@ -67,7 +67,7 @@ int32_t main(const int32_t argc, char ** const argv)
       }
     } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
       if (rclcpp::ok()) {
-        RCLCPP_ERROR(listener->get_logger(), "Wait-set failed with timeout");
+        RCLCPP_ERROR(random_listener->get_logger(), "Wait-set failed with timeout");
       }
     }
   }
