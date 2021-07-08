@@ -4,7 +4,7 @@ This package contains a few different strategies for creating nodes which receiv
  * `lambda.cpp` uses a C++11 lambda function
  * `member_function.cpp` uses a C++ member function callback
  * `not_composable.cpp` uses a global function callback without a Node subclass
- * `waitset.cpp` uses a `rclcpp::waitset` to wait and poll for data 
+ * `waitset.cpp` uses a `rclcpp::WaitSet` to wait and poll for data 
  * `waitset_time_triggered.cpp` uses a `rclcpp::waitset` and a timer to poll 
    for data periodically
 
