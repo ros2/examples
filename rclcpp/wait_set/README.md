@@ -20,4 +20,3 @@ conditions and waitables.
   `SingleThreadedExecutor` and a wait-set.
 * `wait_set_topics_with_different_rate.cpp`: An example showing how to use a custom trigger
   condition to handle topics with different topic rates.
-  and-paste into your own projects.
