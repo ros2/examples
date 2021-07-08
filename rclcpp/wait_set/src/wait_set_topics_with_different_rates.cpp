@@ -18,9 +18,6 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-#include "random_listener.hpp"
-#include "random_talker.hpp"
-
 using namespace std::chrono_literals;
 
 /* For this example, we will be creating three talkers publishing the topics A, B, C at different

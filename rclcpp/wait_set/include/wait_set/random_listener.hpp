@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCLCPP__WAIT_SET__RANDOM_LISTENER_HPP_
-#define RCLCPP__WAIT_SET__RANDOM_LISTENER_HPP_
+#ifndef WAIT_SET__RANDOM_LISTENER_HPP_
+#define WAIT_SET__RANDOM_LISTENER_HPP_
 
 #include <vector>
 #include <random>
@@ -47,4 +47,4 @@ private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub2_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub3_;
 };
-#endif  // RCLCPP__WAIT_SET__RANDOM_LISTENER_HPP_
+#endif  // WAIT_SET__RANDOM_LISTENER_HPP_

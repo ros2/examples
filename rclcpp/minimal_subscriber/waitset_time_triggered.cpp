@@ -56,10 +56,15 @@ public:
       };
     timer_ = create_wall_timer(500ms, timer_callback, cb_group_waitset);
     wait_set_.add_timer(timer_);
-    thread_ = std::thread([this]() -> void {run_waitset_loo();});
+    thread_ = std::thread([this]() -> void {spin_wait_set();});
   }
 
-  void run_waitset_loo()
+  ~MinimalSubscriber()
+  {
+    thread_.join();
+  }
+
+  void spin_wait_set()
   {
     while (rclcpp::ok()) {
       // Wait for the timer event to trigger. Set a 1 ms margin to trigger a timeout.

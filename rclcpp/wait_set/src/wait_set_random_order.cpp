@@ -17,8 +17,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-#include "random_listener.hpp"
-#include "random_talker.hpp"
+#include "wait_set/random_listener.hpp"
+#include "wait_set/random_talker.hpp"
 
 using namespace std::chrono_literals;
 

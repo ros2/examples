@@ -41,10 +41,15 @@ public:
       subscription_callback,
       options);
     wait_set_.add_subscription(subscription_);
-    thread_ = std::thread([this]() -> void {run_waitset_loo();});
+    thread_ = std::thread([this]() -> void {spin_wait_set();});
   }
 
-  void run_waitset_loo()
+  ~MinimalSubscriber()
+  {
+    thread_.join();
+  }
+
+  void spin_wait_set()
   {
     while (rclcpp::ok()) {
       // Wait for the subscriber event to trigger. Set a 1 ms margin to trigger a timeout.

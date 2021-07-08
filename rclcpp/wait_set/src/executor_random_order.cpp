@@ -17,8 +17,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-#include "random_listener.hpp"
-#include "random_talker.hpp"
+#include "wait_set/random_listener.hpp"
+#include "wait_set/random_talker.hpp"
 
 /* For this example, we will be creating a talker node with three publishers which will
  * publish the topics A, B, C in random order each time. In this case the messages are handled
@@ -38,7 +38,7 @@ int32_t main(const int32_t argc, char ** const argv)
   // created. Using different threads the handling order depends on the message arrival and
   // type of messages available.
   auto thread = std::thread([]() {rclcpp::spin(std::make_shared<RandomTalker>());});
-  rclcpp::spin(std::make_shared<Listener>());
+  rclcpp::spin(std::make_shared<RandomListener>());
 
   rclcpp::shutdown();
   thread.join();

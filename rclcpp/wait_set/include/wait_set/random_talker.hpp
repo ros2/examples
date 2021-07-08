@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RCLCPP__WAIT_SET__RANDOM_TALKER_HPP_
-#define RCLCPP__WAIT_SET__RANDOM_TALKER_HPP_
+#ifndef WAIT_SET__RANDOM_TALKER_HPP_
+#define WAIT_SET__RANDOM_TALKER_HPP_
 
 #include <vector>
 #include <random>
@@ -68,4 +68,4 @@ private:
   std::vector<std::function<void()>> publish_functions_;
   std::default_random_engine rand_engine_;
 };
-#endif  // RCLCPP__WAIT_SET__RANDOM_TALKER_HPP_
+#endif  // WAIT_SET__RANDOM_TALKER_HPP_
