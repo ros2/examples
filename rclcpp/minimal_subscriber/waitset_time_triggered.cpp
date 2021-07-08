@@ -29,12 +29,21 @@ public:
   MinimalSubscriber()
   : Node("minimal_subscriber")
   {
+    rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
+      rclcpp::CallbackGroupType::MutuallyExclusive, false);
+
+    auto options = rclcpp::SubscriptionOptions();
+    options.callback_group = cb_group_waitset;
+    auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
+        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
+      };
+
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
-      1,
-      [this](std_msgs::msg::String::UniquePtr msg) {
-        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
-      });
+      10,
+      subscription_callback,
+      options);
+
     auto timer_callback = [this]() -> void {
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;
@@ -45,11 +54,12 @@ public:
           RCLCPP_WARN(this->get_logger(), "No message available");
         }
       };
-    timer_ = create_wall_timer(500ms, timer_callback);
+    timer_ = create_wall_timer(500ms, timer_callback, cb_group_waitset);
     wait_set_.add_timer(timer_);
+    thread_ = std::thread([this]() -> void {run_waitset_loo();});
   }
 
-  void run()
+  void run_waitset_loo()
   {
     while (rclcpp::ok()) {
       // Wait for the timer event to trigger. Set a 1 ms margin to trigger a timeout.
@@ -70,13 +80,13 @@ private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::WaitSet wait_set_;
+  std::thread thread_;
 };
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<MinimalSubscriber>();
-  node->run();
+  rclcpp::spin(std::make_shared<MinimalSubscriber>());
   rclcpp::shutdown();
   return 0;
 }

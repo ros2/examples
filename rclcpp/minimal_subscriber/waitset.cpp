@@ -27,21 +27,24 @@ public:
   MinimalSubscriber()
   : Node("minimal_subscriber")
   {
+    rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
+      rclcpp::CallbackGroupType::MutuallyExclusive, false);
+    auto options = rclcpp::SubscriptionOptions();
+    options.callback_group = cb_group_waitset;
+    auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
+        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
+      };
+
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
       10,
-      [this](std_msgs::msg::String::UniquePtr msg) {
-        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
-      });
+      subscription_callback,
+      options);
     wait_set_.add_subscription(subscription_);
+    thread_ = std::thread([this]() -> void {run_waitset_loo();});
   }
 
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr get_subscription() const
-  {
-    return subscription_;
-  }
-
-  void run()
+  void run_waitset_loo()
   {
     while (rclcpp::ok()) {
       // Wait for the subscriber event to trigger. Set a 1 ms margin to trigger a timeout.
@@ -66,13 +69,13 @@ public:
 private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
   rclcpp::WaitSet wait_set_;
+  std::thread thread_;
 };
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<MinimalSubscriber>();
-  node->run();
+  rclcpp::spin(std::make_shared<MinimalSubscriber>());
   rclcpp::shutdown();
   return 0;
 }
