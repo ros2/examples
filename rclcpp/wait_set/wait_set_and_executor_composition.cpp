@@ -52,35 +52,55 @@ public:
   Listener()
   : Node("listener")
   {
-    subscription_executor_ = this->create_subscription<std_msgs::msg::String>(
+    auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
+      RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
+    };
+    sub1_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
       10,
-      [this](std_msgs::msg::String::UniquePtr msg) {
-        RCLCPP_INFO(this->get_logger(), "I heard: '%s' (executor)", msg->data.c_str());
-      });
+      subscription_callback
+      );
 
-    // creates a subscription which is not automatically added to an executor
     rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
       rclcpp::CallbackGroupType::MutuallyExclusive, false);
-
     auto options = rclcpp::SubscriptionOptions();
     options.callback_group = cb_group_waitset;
-    auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
-    subscription_waitset_ = this->create_subscription<std_msgs::msg::String>(
+    sub2_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
       10,
-      do_nothing,
+      subscription_callback,
       options);
+    wait_set_.add_subscription(sub2_);
+    thread_ = std::thread([this]() -> void {spin_wait_set();});
   }
 
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr get_subscription() const
+  void spin_wait_set()
   {
-    return subscription_waitset_;
+    while (rclcpp::ok()) {
+      // Waiting up to 5s for a message to arrive
+      const auto wait_result = wait_set_.wait(std::chrono::seconds(5));
+      if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
+        if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
+          std_msgs::msg::String msg;
+          rclcpp::MessageInfo msg_info;
+          if (sub2_->take(msg, msg_info)) {
+            std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
+            sub2_->handle_message(type_erased_msg, msg_info);
+          }
+        }
+      } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
+        if (rclcpp::ok()) {
+          RCLCPP_ERROR(this->get_logger(), "Wait-set failed with timeout");
+        }
+      }
+    }
   }
 
 private:
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_executor_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_waitset_;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub1_;
+  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub2_;
+  rclcpp::WaitSet wait_set_;
+  std::thread thread_;
 };
 
 int main(int argc, char * argv[])
@@ -96,34 +116,8 @@ int main(int argc, char * argv[])
   auto listener = std::make_shared<Listener>();
   exec.add_node(listener);
 
-  // Create a static wait-set that will wait on the subscription excluded from the
-  // default executor callback group
-  rclcpp::StaticWaitSet<1, 0, 0, 0, 0, 0> wait_set({{{listener->get_subscription()}}});
-
-  // Run the executor in a separate thread
-  auto thread = std::thread([&exec]() {exec.spin();});
-
-  // Run the wait-set loop in the main thread
-  while (rclcpp::ok()) {
-    // Waiting up to 5s for a message to arrive
-    const auto wait_result = wait_set.wait(std::chrono::seconds(5));
-
-    if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-      if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
-        std_msgs::msg::String msg;
-        rclcpp::MessageInfo msg_info;
-        if (listener->get_subscription()->take(msg, msg_info)) {
-          RCLCPP_INFO(listener->get_logger(), "I heard: '%s' (wait-set)", msg.data.c_str());
-        }
-      }
-    } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-      if (rclcpp::ok()) {
-        RCLCPP_ERROR(listener->get_logger(), "Wait-set failed with timeout");
-      }
-    }
-  }
+  exec.spin();
 
   rclcpp::shutdown();
-  thread.join();
   return 0;
 }
