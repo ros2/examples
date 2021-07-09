@@ -30,8 +30,6 @@ int32_t main(const int32_t argc, char ** const argv)
 {
   rclcpp::init(argc, argv);
 
-  // We run the talker and the listener in different threads to simulate inter-process
-  // communications.
   // Note the order of execution would be deterministic if both nodes are spun in the same
   // executor (A, B, C). This is because the publishing happens always before the subscription
   // handling and the executor handles the messages in the order in which the subscriptions were
