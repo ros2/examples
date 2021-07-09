@@ -4,10 +4,9 @@ This package contains a few different strategies for creating nodes which receiv
  * `lambda.cpp` uses a C++11 lambda function
  * `member_function.cpp` uses a C++ member function callback
  * `not_composable.cpp` uses a global function callback without a Node subclass
- * `wait_set.cpp` uses a `rclcpp::WaitSet` to wait and poll for data 
- * `wait_set.cpp` uses a `rclcpp::StaticWaitSet` to wait and poll for data 
- * `wait_set_time_triggered.cpp` uses a `rclcpp::Waitset` and a timer to poll 
-   for data periodically
+ * `wait_set.cpp` uses a `rclcpp::WaitSet` to wait and poll for data
+ * `static_wait_set.cpp` uses a `rclcpp::StaticWaitSet` to wait and poll for data
+ * `wait_set_time_triggered.cpp` uses a `rclcpp::Waitset` and a timer to poll for data periodically
 
 Note that `not_composable.cpp` instantiates a `rclcpp::Node` _without_ subclassing it.
 This was the typical usage model in ROS 1, but this style of coding is not compatible with composing multiple nodes into a single process.
