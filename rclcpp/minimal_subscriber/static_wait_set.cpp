@@ -49,7 +49,9 @@ public:
 
   ~MinimalSubscriber()
   {
-    thread_.join();
+    if (thread_.joinable()) {
+      thread_.join();
+    }
   }
 
   void spin_wait_set()

@@ -23,7 +23,7 @@ class Listener : public rclcpp::Node
 {
 public:
   WAIT_SET_PUBLIC explicit Listener(rclcpp::NodeOptions options);
-  WAIT_SET_PUBLIC ~Listener();
+  WAIT_SET_PUBLIC ~Listener() override;
 
 private:
   void spin_wait_set();

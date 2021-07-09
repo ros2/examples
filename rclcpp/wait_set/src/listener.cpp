@@ -51,7 +51,9 @@ Listener::Listener(rclcpp::NodeOptions options)
 
 Listener::~Listener()
 {
-  thread_.join();
+  if (thread_.joinable()) {
+    thread_.join();
+  }
 }
 
 void Listener::spin_wait_set()
