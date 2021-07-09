@@ -18,7 +18,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-/* This example creates a subclass of Node and uses a wait-set based loop to wait and handle
+/* This example creates a subclass of Node and uses static a wait-set based loop to wait and handle
  * messages from the subscriber */
 
 class MinimalSubscriber : public rclcpp::Node
@@ -40,7 +40,10 @@ public:
       10,
       subscription_callback,
       options);
-    wait_set_.add_subscription(subscription_);
+
+    wait_set_ptr_ = std::make_shared<rclcpp::StaticWaitSet<1, 0, 0, 0, 0, 0>>(
+      std::array<rclcpp::StaticWaitSet<1, 0, 0, 0, 0, 0>::SubscriptionEntry, 1>{{{subscription_}}});
+
     thread_ = std::thread([this]() -> void {spin_wait_set();});
   }
 
@@ -53,7 +56,7 @@ public:
   {
     while (rclcpp::ok()) {
       // Wait for the subscriber event to trigger. Set a 1 ms margin to trigger a timeout.
-      const auto wait_result = wait_set_.wait(std::chrono::milliseconds(501));
+      const auto wait_result = wait_set_ptr_->wait(std::chrono::milliseconds(501));
       if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
         if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
           std_msgs::msg::String msg;
@@ -73,7 +76,7 @@ public:
 
 private:
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
-  rclcpp::WaitSet wait_set_;
+  std::shared_ptr<rclcpp::StaticWaitSet<1, 0, 0, 0, 0, 0>> wait_set_ptr_;
   std::thread thread_;
 };
 

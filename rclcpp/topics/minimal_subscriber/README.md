@@ -5,6 +5,7 @@ This package contains a few different strategies for creating nodes which receiv
  * `member_function.cpp` uses a C++ member function callback
  * `not_composable.cpp` uses a global function callback without a Node subclass
  * `wait_set.cpp` uses a `rclcpp::WaitSet` to wait and poll for data 
+ * `wait_set.cpp` uses a `rclcpp::StaticWaitSet` to wait and poll for data 
  * `wait_set_time_triggered.cpp` uses a `rclcpp::Waitset` and a timer to poll 
    for data periodically
 

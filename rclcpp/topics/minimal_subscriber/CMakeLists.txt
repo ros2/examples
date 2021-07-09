@@ -35,6 +35,9 @@ ament_target_dependencies(subscriber_not_composable rclcpp std_msgs)
 add_executable(subscriber_wait_set wait_set.cpp)
 ament_target_dependencies(subscriber_wait_set rclcpp std_msgs)
 
+add_executable(subscriber_static_wait_set static_wait_set.cpp)
+ament_target_dependencies(subscriber_static_wait_set rclcpp std_msgs)
+
 add_executable(subscriber_wait_set_time_triggered wait_set_time_triggered.cpp)
 ament_target_dependencies(subscriber_wait_set_time_triggered rclcpp std_msgs)
 
@@ -46,6 +49,7 @@ install(TARGETS
   subscriber_member_function_with_unique_network_flow_endpoints
   subscriber_not_composable
   subscriber_wait_set
+  subscriber_static_wait_set
   subscriber_wait_set_time_triggered
   DESTINATION lib/${PROJECT_NAME})
 
