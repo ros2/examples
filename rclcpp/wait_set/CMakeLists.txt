@@ -19,16 +19,14 @@ find_package(std_msgs REQUIRED)
 include_directories(include)
 
 add_library(talker SHARED src/talker.cpp)
-target_compile_definitions(talker PRIVATE "COMPOSITION_BUILDING_DLL")
-ament_target_dependencies(talker "rclcpp" "rclcpp_components" "std_msgs")
-rclcpp_components_register_nodes(talker "wait_set::Talker")
-set(node_plugins "${node_plugins}wait_set::Talker;$<TARGET_FILE:talker>\n")
+target_compile_definitions(talker PRIVATE WAIT_SET_DLL)
+ament_target_dependencies(talker rclcpp rclcpp_components std_msgs)
+rclcpp_components_register_nodes(talker Talker)
 
 add_library(listener SHARED src/listener.cpp)
-target_compile_definitions(listener PRIVATE "COMPOSITION_BUILDING_DLL")
-ament_target_dependencies(listener "rclcpp" "rclcpp_components" "std_msgs")
-rclcpp_components_register_nodes(listener "wait_set::Listener")
-set(node_plugins "${node_plugins}wait_set::Listener;$<TARGET_FILE:listener>\n")
+target_compile_definitions(listener PRIVATE WAIT_SET_DLL)
+ament_target_dependencies(listener rclcpp rclcpp_components std_msgs)
+rclcpp_components_register_nodes(listener Listener)
 
 add_executable(wait_set src/wait_set.cpp)
 ament_target_dependencies(wait_set example_interfaces rclcpp std_msgs)
@@ -53,7 +51,7 @@ ament_target_dependencies(wait_set_topics_with_different_rates rclcpp std_msgs)
 
 add_executable(wait_set_composed src/wait_set_composed.cpp)
 target_link_libraries(wait_set_composed talker listener)
-ament_target_dependencies(wait_set_composed "rclcpp")
+ament_target_dependencies(wait_set_composed rclcpp)
 
 install(TARGETS
   wait_set
