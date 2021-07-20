@@ -15,3 +15,10 @@ Thus, it is no longer the recommended style for ROS 2.
 All of these nodes do the same thing: they create a node called `minimal_subscriber` and subscribe to a topic named `topic` which is of datatype `std_msgs/String`.
 When a message arrives on that topic, the node prints it to the screen.
 We provide multiple examples of different coding styles which achieve this behavior in order to demonstrate that there are many ways to do this in ROS 2.
+
+The following examples `wait_set.cpp`, `static_wait_set.cpp` and `wait_set_time_triggered.cpp` 
+show how to use a subscription in a node using a `rclcpp` wait-set. This is not a common use case 
+in ROS 2 so this is not the recommended strategy to use by-default. This strategy makes sense 
+in some specific situations, for example when the developer needs to have more control over 
+callback order execution, create custom triggering conditions or use the timeouts provided by the 
+wait-sets.   
