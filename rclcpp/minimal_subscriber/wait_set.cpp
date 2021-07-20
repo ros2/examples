@@ -18,8 +18,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 
-/* This example creates a subclass of Node and uses a wait-set based loop to wait and handle
- * messages from the subscriber */
+/* This example creates a subclass of Node and uses a wait-set based loop to wait on
+ * a subscription to have messages available and then handles them manually without an executor */
 
 class MinimalSubscriber : public rclcpp::Node
 {
