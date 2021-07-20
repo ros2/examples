@@ -20,7 +20,7 @@
 
 using namespace std::chrono_literals;
 
-/* This example creates a subclass of Node and uses a wait-set based loop and polls periodically
+/* This example creates a subclass of Node and uses a wait-set based loop to periodically poll
  * for messages in a timer callback using a wait-set based loop. */
 
 class MinimalSubscriber : public rclcpp::Node
