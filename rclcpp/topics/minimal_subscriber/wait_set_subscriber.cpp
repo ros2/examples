@@ -24,13 +24,13 @@
 class WaitSetSubscriber : public rclcpp::Node
 {
 public:
-  WaitSetSubscriber()
-  : Node("wait_set_subscriber")
+  explicit WaitSetSubscriber(rclcpp::NodeOptions options)
+  : Node("wait_set_subscriber", options)
   {
     rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
       rclcpp::CallbackGroupType::MutuallyExclusive, false);
-    auto options = rclcpp::SubscriptionOptions();
-    options.callback_group = cb_group_waitset;
+    auto subscription_options = rclcpp::SubscriptionOptions();
+    subscription_options.callback_group = cb_group_waitset;
     auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       };
@@ -39,7 +39,7 @@ public:
       "topic",
       10,
       subscription_callback,
-      options);
+      subscription_options);
     wait_set_.add_subscription(subscription_);
     thread_ = std::thread([this]() -> void {spin_wait_set();});
   }
@@ -84,10 +84,6 @@ private:
   std::thread thread_;
 };
 
-int main(int argc, char * argv[])
-{
-  rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<WaitSetSubscriber>());
-  rclcpp::shutdown();
-  return 0;
-}
+#include "rclcpp_components/register_node_macro.hpp"
+
+RCLCPP_COMPONENTS_REGISTER_NODE(WaitSetSubscriber)

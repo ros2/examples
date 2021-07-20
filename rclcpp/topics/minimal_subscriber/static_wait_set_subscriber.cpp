@@ -26,16 +26,16 @@ class StaticWaitSetSubscriber : public rclcpp::Node
   using MyStaticWaitSet = rclcpp::StaticWaitSet<1, 0, 0, 0, 0, 0>;
 
 public:
-  StaticWaitSetSubscriber()
-  : Node("static_wait_set_subscriber"),
+  explicit StaticWaitSetSubscriber(rclcpp::NodeOptions options)
+  : Node("static_wait_set_subscriber", options),
     subscription_(
       [this]()
       {
         // create subscription with a callback-group not added to the executor
         rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
           rclcpp::CallbackGroupType::MutuallyExclusive, false);
-        auto options = rclcpp::SubscriptionOptions();
-        options.callback_group = cb_group_waitset;
+        auto subscription_options = rclcpp::SubscriptionOptions();
+        subscription_options.callback_group = cb_group_waitset;
         auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
           RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
         };
@@ -43,7 +43,7 @@ public:
           "topic",
           10,
           subscription_callback,
-          options);
+          subscription_options);
       } ()
     ),
     wait_set_(std::array<MyStaticWaitSet::SubscriptionEntry, 1>{{{subscription_}}}),
@@ -91,10 +91,6 @@ private:
   std::thread thread_;
 };
 
-int main(int argc, char * argv[])
-{
-  rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<StaticWaitSetSubscriber>());
-  rclcpp::shutdown();
-  return 0;
-}
+#include "rclcpp_components/register_node_macro.hpp"
+
+RCLCPP_COMPONENTS_REGISTER_NODE(StaticWaitSetSubscriber)

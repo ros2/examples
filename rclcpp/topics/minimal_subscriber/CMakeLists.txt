@@ -12,6 +12,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 
 add_executable(subscriber_lambda lambda.cpp)
@@ -32,14 +33,28 @@ ament_target_dependencies(subscriber_member_function_with_unique_network_flow_en
 add_executable(subscriber_not_composable not_composable.cpp)
 ament_target_dependencies(subscriber_not_composable rclcpp std_msgs)
 
-add_executable(wait_set_subscriber wait_set_subscriber.cpp)
-ament_target_dependencies(wait_set_subscriber rclcpp std_msgs)
+add_library(wait_set_subscriber SHARED wait_set_subscriber.cpp)
+target_compile_definitions(wait_set_subscriber PRIVATE WAIT_SET_DLL)
+ament_target_dependencies(wait_set_subscriber rclcpp rclcpp_components std_msgs)
+rclcpp_components_register_nodes(wait_set_subscriber WaitSetSubscriber)
 
-add_executable(static_wait_set_subscriber static_wait_set_subscriber.cpp)
-ament_target_dependencies(static_wait_set_subscriber rclcpp std_msgs)
+add_library(static_wait_set_subscriber SHARED static_wait_set_subscriber.cpp)
+target_compile_definitions(static_wait_set_subscriber PRIVATE WAIT_SET_DLL)
+ament_target_dependencies(static_wait_set_subscriber rclcpp rclcpp_components std_msgs)
+rclcpp_components_register_nodes(static_wait_set_subscriber StaticWaitSetSubscriber)
 
-add_executable(time_triggered_wait_set_subscriber time_triggered_wait_set_subscriber.cpp)
-ament_target_dependencies(time_triggered_wait_set_subscriber rclcpp std_msgs)
+add_library(time_triggered_wait_set_subscriber SHARED time_triggered_wait_set_subscriber.cpp)
+target_compile_definitions(time_triggered_wait_set_subscriber PRIVATE WAIT_SET_DLL)
+ament_target_dependencies(time_triggered_wait_set_subscriber rclcpp rclcpp_components std_msgs)
+rclcpp_components_register_nodes(time_triggered_wait_set_subscriber TimeTriggeredWaitSetSubscriber)
+
+install(TARGETS
+    wait_set_subscriber
+    time_triggered_wait_set_subscriber
+    static_wait_set_subscriber
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin)
 
 install(TARGETS
   subscriber_lambda
@@ -48,9 +63,6 @@ install(TARGETS
   subscriber_member_function_with_type_adapter
   subscriber_member_function_with_unique_network_flow_endpoints
   subscriber_not_composable
-  wait_set_subscriber
-  static_wait_set_subscriber
-  time_triggered_wait_set_subscriber
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
