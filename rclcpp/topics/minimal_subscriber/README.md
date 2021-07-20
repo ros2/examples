@@ -4,9 +4,10 @@ This package contains a few different strategies for creating nodes which receiv
  * `lambda.cpp` uses a C++11 lambda function
  * `member_function.cpp` uses a C++ member function callback
  * `not_composable.cpp` uses a global function callback without a Node subclass
- * `wait_set.cpp` uses a `rclcpp::WaitSet` to wait and poll for data
- * `static_wait_set.cpp` uses a `rclcpp::StaticWaitSet` to wait and poll for data
- * `wait_set_time_triggered.cpp` uses a `rclcpp::Waitset` and a timer to poll for data periodically
+ * `wait_set_subscriber.cpp` uses a `rclcpp::WaitSet` to wait and poll for data
+ * `static_wait_set_subscriber.cpp` uses a `rclcpp::StaticWaitSet` to wait and poll for data
+ * `time_triggered_wait_set_subscriber.cpp` uses a `rclcpp::Waitset` and a timer to poll for data
+   periodically
 
 Note that `not_composable.cpp` instantiates a `rclcpp::Node` _without_ subclassing it.
 This was the typical usage model in ROS 1, but this style of coding is not compatible with composing multiple nodes into a single process.
@@ -16,9 +17,9 @@ All of these nodes do the same thing: they create a node called `minimal_subscri
 When a message arrives on that topic, the node prints it to the screen.
 We provide multiple examples of different coding styles which achieve this behavior in order to demonstrate that there are many ways to do this in ROS 2.
 
-The following examples `wait_set.cpp`, `static_wait_set.cpp` and `wait_set_time_triggered.cpp` 
-show how to use a subscription in a node using a `rclcpp` wait-set. This is not a common use case 
-in ROS 2 so this is not the recommended strategy to use by-default. This strategy makes sense 
-in some specific situations, for example when the developer needs to have more control over 
-callback order execution, create custom triggering conditions or use the timeouts provided by the 
-wait-sets.   
+The following examples `wait_set_subscriber.cpp`, `static_wait_set_subscriber.cpp` and 
+`time_triggered_wait_set_subscriber.cpp` show how to use a subscription in a node using a `rclcpp` 
+wait-set. This is not a common use case  in ROS 2 so this is not the recommended strategy to 
+use by-default. This strategy makes sense in some specific situations, for example when the 
+developer needs to have more control over callback order execution, to create custom triggering 
+conditions or to use the timeouts provided by the  wait-sets.   

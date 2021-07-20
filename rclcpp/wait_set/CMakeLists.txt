@@ -54,6 +54,14 @@ target_link_libraries(wait_set_composed talker listener)
 ament_target_dependencies(wait_set_composed rclcpp)
 
 install(TARGETS
+    talker
+    listener
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+
+install(TARGETS
   wait_set
   static_wait_set
   thread_safe_wait_set

@@ -37,13 +37,11 @@ public:
     auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       };
-
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
       10,
       subscription_callback,
       subscription_options);
-
     auto timer_callback = [this]() -> void {
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;

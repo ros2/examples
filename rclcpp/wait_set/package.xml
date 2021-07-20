@@ -18,6 +18,7 @@
 
   <exec_depend>example_interfaces</exec_depend>
   <exec_depend>rclcpp</exec_depend>
+  <exec_depend>rclcpp_components</exec_depend>
   <exec_depend>std_msgs</exec_depend>
 
   <export>
