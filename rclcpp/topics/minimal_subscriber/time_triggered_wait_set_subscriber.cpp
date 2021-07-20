@@ -23,11 +23,11 @@ using namespace std::chrono_literals;
 /* This example creates a subclass of Node and uses a wait-set based loop to periodically poll
  * for messages in a timer callback using a wait-set based loop. */
 
-class MinimalSubscriber : public rclcpp::Node
+class TimeTriggeredWaitSetSubscriber : public rclcpp::Node
 {
 public:
-  MinimalSubscriber()
-  : Node("minimal_subscriber")
+  TimeTriggeredWaitSetSubscriber()
+  : Node("time_triggered_wait_set_subscriber")
   {
     rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
       rclcpp::CallbackGroupType::MutuallyExclusive, false);
@@ -59,7 +59,7 @@ public:
     thread_ = std::thread([this]() -> void {spin_wait_set();});
   }
 
-  ~MinimalSubscriber()
+  ~TimeTriggeredWaitSetSubscriber()
   {
     thread_.join();
   }
@@ -69,14 +69,21 @@ public:
     while (rclcpp::ok()) {
       // Wait for the timer event to trigger. Set a 1 ms margin to trigger a timeout.
       const auto wait_result = wait_set_.wait(501ms);
-      if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-        if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
-          timer_->execute_callback();
-        }
-      } else if (wait_result.kind() == rclcpp::WaitResultKind::Timeout) {
-        if (rclcpp::ok()) {
-          RCLCPP_ERROR(this->get_logger(), "Wait-set failed with timeout");
-        }
+      switch (wait_result.kind()) {
+        case rclcpp::WaitResultKind::Ready:
+          {
+            if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
+              timer_->execute_callback();
+            }
+            break;
+          }
+        case rclcpp::WaitResultKind::Timeout:
+          if (rclcpp::ok()) {
+            RCLCPP_WARN(this->get_logger(), "Timeout. No message received after given wait-time");
+          }
+          break;
+        default:
+          RCLCPP_ERROR(this->get_logger(), "Error. Wait-set failed.");
       }
     }
   }
@@ -91,7 +98,7 @@ private:
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<MinimalSubscriber>());
+  rclcpp::spin(std::make_shared<TimeTriggeredWaitSetSubscriber>());
   rclcpp::shutdown();
   return 0;
 }
