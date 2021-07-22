@@ -21,12 +21,18 @@ include_directories(include)
 add_library(talker SHARED src/talker.cpp)
 target_compile_definitions(talker PRIVATE WAIT_SET_DLL)
 ament_target_dependencies(talker rclcpp rclcpp_components std_msgs)
-rclcpp_components_register_nodes(talker Talker)
+rclcpp_components_register_node(
+    talker
+    PLUGIN "Talker"
+    EXECUTABLE wait_set_talker)
 
 add_library(listener SHARED src/listener.cpp)
 target_compile_definitions(listener PRIVATE WAIT_SET_DLL)
 ament_target_dependencies(listener rclcpp rclcpp_components std_msgs)
-rclcpp_components_register_nodes(listener Listener)
+rclcpp_components_register_node(
+    listener
+    PLUGIN "Listener"
+    EXECUTABLE wait_set_listener)
 
 add_executable(wait_set src/wait_set.cpp)
 ament_target_dependencies(wait_set example_interfaces rclcpp std_msgs)

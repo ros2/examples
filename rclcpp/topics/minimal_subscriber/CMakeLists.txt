@@ -33,22 +33,27 @@ ament_target_dependencies(subscriber_member_function_with_unique_network_flow_en
 add_executable(subscriber_not_composable not_composable.cpp)
 ament_target_dependencies(subscriber_not_composable rclcpp std_msgs)
 
-add_library(wait_set_subscriber SHARED wait_set_subscriber.cpp)
-ament_target_dependencies(wait_set_subscriber rclcpp rclcpp_components std_msgs)
-rclcpp_components_register_nodes(wait_set_subscriber WaitSetSubscriber)
 
-add_library(static_wait_set_subscriber SHARED static_wait_set_subscriber.cpp)
-ament_target_dependencies(static_wait_set_subscriber rclcpp rclcpp_components std_msgs)
-rclcpp_components_register_nodes(static_wait_set_subscriber StaticWaitSetSubscriber)
+add_library(wait_set_subscriber_library SHARED
+    wait_set_subscriber.cpp
+    static_wait_set_subscriber.cpp
+    time_triggered_wait_set_subscriber.cpp)
+ament_target_dependencies(wait_set_subscriber_library rclcpp rclcpp_components std_msgs)
 
-add_library(time_triggered_wait_set_subscriber SHARED time_triggered_wait_set_subscriber.cpp)
-ament_target_dependencies(time_triggered_wait_set_subscriber rclcpp rclcpp_components std_msgs)
-rclcpp_components_register_nodes(time_triggered_wait_set_subscriber TimeTriggeredWaitSetSubscriber)
+rclcpp_components_register_node(wait_set_subscriber_library
+    PLUGIN "WaitSetSubscriber"
+    EXECUTABLE wait_set_subscriber)
+
+rclcpp_components_register_node(wait_set_subscriber_library
+    PLUGIN "StaticWaitSetSubscriber"
+    EXECUTABLE static_wait_set_subscriber)
+
+rclcpp_components_register_node(wait_set_subscriber_library
+    PLUGIN "TimeTriggeredWaitSetSubscriber"
+    EXECUTABLE time_triggered_wait_set_subscriber)
 
 install(TARGETS
-    wait_set_subscriber
-    time_triggered_wait_set_subscriber
-    static_wait_set_subscriber
+    wait_set_subscriber_library
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin)
