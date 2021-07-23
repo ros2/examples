@@ -55,8 +55,8 @@ int32_t main(const int32_t argc, char ** const argv)
       if (sub1_has_data && sub2_has_data && sub3_has_data) {
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;
-        const int subscriptions_num = wait_set.get_rcl_wait_set().size_of_subscriptions;
-        for (int i = 0; i < subscriptions_num; i++) {
+        const size_t subscriptions_num = wait_set.get_rcl_wait_set().size_of_subscriptions;
+        for (size_t i = 0; i < subscriptions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[i]) {
             if (subscriptions.at(i)->take(msg, msg_info)) {
               std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);

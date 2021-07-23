@@ -15,8 +15,9 @@
 #ifndef WAIT_SET__RANDOM_TALKER_HPP_
 #define WAIT_SET__RANDOM_TALKER_HPP_
 
-#include <vector>
+#include <cstdlib>
 #include <random>
+#include <vector>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -29,7 +30,9 @@ public:
     pub1_(this->create_publisher<std_msgs::msg::String>("topicA", 10)),
     pub2_(this->create_publisher<std_msgs::msg::String>("topicB", 10)),
     pub3_(this->create_publisher<std_msgs::msg::String>("topicC", 10)),
-    rand_engine_(std::chrono::system_clock::now().time_since_epoch().count())
+    rand_engine_(static_cast<std::default_random_engine::result_type>(
+      std::abs(std::chrono::system_clock::now().time_since_epoch().count())
+    ))
   {
     publish_functions_.emplace_back(
       ([this]() {
