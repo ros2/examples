@@ -36,13 +36,13 @@ PongNode::PongNode()
     "high_ping", rclcpp::SensorDataQoS(),
     std::bind(&PongNode::high_ping_received, this, _1));
 
-  auto second_cb_group = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-  assert(second_cb_group == get_low_prio_callback_group());
+  low_prio_callback_group_ = this->create_callback_group(
+    rclcpp::CallbackGroupType::MutuallyExclusive);
 
   declare_parameter<double>("low_busyloop", 0.01);
   low_pong_publisher_ = this->create_publisher<Int32>("low_pong", rclcpp::SensorDataQoS());
   rclcpp::SubscriptionOptionsWithAllocator<std::allocator<void>> options;
-  options.callback_group = second_cb_group;
+  options.callback_group = low_prio_callback_group_;
   low_ping_subscription_ = this->create_subscription<Int32>(
     "low_ping", rclcpp::SensorDataQoS(),
     std::bind(&PongNode::low_ping_received, this, _1), options);
@@ -50,12 +50,12 @@ PongNode::PongNode()
 
 rclcpp::CallbackGroup::SharedPtr PongNode::get_high_prio_callback_group()
 {
-  return get_callback_groups()[0].lock();  // ... the default callback group.
+  return get_node_base_interface()->get_default_callback_group();  // the default callback group.
 }
 
 rclcpp::CallbackGroup::SharedPtr PongNode::get_low_prio_callback_group()
 {
-  return get_callback_groups()[1].lock();  // ... the second callback group created in the ctor.
+  return low_prio_callback_group_;  // the second callback group created in the ctor.
 }
 
 void PongNode::high_ping_received(const std_msgs::msg::Int32::SharedPtr msg)
