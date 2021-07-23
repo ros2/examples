@@ -37,6 +37,8 @@ public:
   rclcpp::CallbackGroup::SharedPtr get_low_prio_callback_group();
 
 private:
+  rclcpp::CallbackGroup::SharedPtr low_prio_callback_group_;
+
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr high_ping_subscription_;
   rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr high_pong_publisher_;
   void high_ping_received(const std_msgs::msg::Int32::SharedPtr msg);
