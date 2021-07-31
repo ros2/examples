@@ -43,25 +43,25 @@ int main(int argc, char * argv[])
       RCLCPP_INFO(node->get_logger(), "Waiting...");
       auto wait_result = static_wait_set.wait(std::chrono::seconds(1));
       if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
-        int guard_conditions_num = static_wait_set.get_rcl_wait_set().size_of_guard_conditions;
-        int subscriptions_num = static_wait_set.get_rcl_wait_set().size_of_subscriptions;
+        size_t guard_conditions_num = static_wait_set.get_rcl_wait_set().size_of_guard_conditions;
+        size_t subscriptions_num = static_wait_set.get_rcl_wait_set().size_of_subscriptions;
 
-        for (int i = 0; i < guard_conditions_num; i++) {
+        for (size_t i = 0; i < guard_conditions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().guard_conditions[i]) {
-            RCLCPP_INFO(node->get_logger(), "guard_condition %d triggered", i + 1);
+            RCLCPP_INFO(node->get_logger(), "guard_condition %zu triggered", i + 1);
           }
         }
-        for (int i = 0; i < subscriptions_num; i++) {
+        for (size_t i = 0; i < subscriptions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[i]) {
-            RCLCPP_INFO(node->get_logger(), "subscription %d triggered", i + 1);
+            RCLCPP_INFO(node->get_logger(), "subscription %zu triggered", i + 1);
             std_msgs::msg::String msg;
             rclcpp::MessageInfo msg_info;
             if (sub_vector.at(i)->take(msg, msg_info)) {
               RCLCPP_INFO(
                 node->get_logger(),
-                "subscription %d: I heard '%s'", i + 1, msg.data.c_str());
+                "subscription %zu: I heard '%s'", i + 1, msg.data.c_str());
             } else {
-              RCLCPP_INFO(node->get_logger(), "subscription %d: No message", i + 1);
+              RCLCPP_INFO(node->get_logger(), "subscription %zu: No message", i + 1);
             }
           }
         }
