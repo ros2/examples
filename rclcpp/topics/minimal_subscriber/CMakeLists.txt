@@ -12,6 +12,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 
 add_executable(subscriber_lambda lambda.cpp)
@@ -31,6 +32,31 @@ ament_target_dependencies(subscriber_member_function_with_unique_network_flow_en
 
 add_executable(subscriber_not_composable not_composable.cpp)
 ament_target_dependencies(subscriber_not_composable rclcpp std_msgs)
+
+
+add_library(wait_set_subscriber_library SHARED
+    wait_set_subscriber.cpp
+    static_wait_set_subscriber.cpp
+    time_triggered_wait_set_subscriber.cpp)
+ament_target_dependencies(wait_set_subscriber_library rclcpp rclcpp_components std_msgs)
+
+rclcpp_components_register_node(wait_set_subscriber_library
+    PLUGIN "WaitSetSubscriber"
+    EXECUTABLE wait_set_subscriber)
+
+rclcpp_components_register_node(wait_set_subscriber_library
+    PLUGIN "StaticWaitSetSubscriber"
+    EXECUTABLE static_wait_set_subscriber)
+
+rclcpp_components_register_node(wait_set_subscriber_library
+    PLUGIN "TimeTriggeredWaitSetSubscriber"
+    EXECUTABLE time_triggered_wait_set_subscriber)
+
+install(TARGETS
+    wait_set_subscriber_library
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin)
 
 install(TARGETS
   subscriber_lambda
