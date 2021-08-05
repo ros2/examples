@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.12.0 (2021-08-05)
+-------------------
+
 0.11.2 (2021-04-26)
 -------------------
 * Use underscores instead of dashes in setup.cfg (`#310 <https://github.com/ros2/examples/issues/310>`_)

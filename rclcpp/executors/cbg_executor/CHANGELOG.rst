@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_cbg_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.12.0 (2021-08-05)
+-------------------
+* Remove use of get_callback_groups(). (`#320 <https://github.com/ros2/examples/issues/320>`_)
+* Contributors: Chris Lalancette
+
 0.11.2 (2021-04-26)
 -------------------
 

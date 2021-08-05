@@ -2,6 +2,12 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.12.0 (2021-08-05)
+-------------------
+* Add wait set examples (`#315 <https://github.com/ros2/examples/issues/315>`_)
+* Add type adaption example (`#300 <https://github.com/ros2/examples/issues/300>`_)
+* Contributors: Audrow Nash, carlossvg
+
 0.11.2 (2021-04-26)
 -------------------
 

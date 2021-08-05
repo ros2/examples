@@ -2,6 +2,12 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.12.0 (2021-08-05)
+-------------------
+* Add try&catch statement to unique network flow publisher example (`#313 <https://github.com/ros2/examples/issues/313>`_)
+* Add type adaption example (`#300 <https://github.com/ros2/examples/issues/300>`_)
+* Contributors: Audrow Nash, Tomoya Fujita
+
 0.11.2 (2021-04-26)
 -------------------
 
