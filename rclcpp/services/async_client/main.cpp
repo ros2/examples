@@ -71,7 +71,8 @@ public:
     return true;
   }
 
-  void queue_async_request(int64_t a, int64_t b)
+  void
+  queue_async_request(int64_t a, int64_t b)
   {
     auto request = std::make_shared<AddTwoInts::Request>();
     request->a = a;
