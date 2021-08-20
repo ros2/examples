@@ -129,7 +129,7 @@ private:
    * Every time the Publisher publishes something, all subscribers to the topic get poked
    * This function gets called when Subscriber1 is poked (due to the std::bind we used when defining it)
    */
-  void subscriber1_cb(const std_msgs::msg::String::SharedPtr msg)
+  void subscriber1_cb(const std_msgs::msg::String::ConstSharedPtr msg)
   {
     auto message_received_at = timing_string();
 
@@ -143,7 +143,7 @@ private:
    * This function gets called when Subscriber2 is poked
    * Since it's running on a separate thread than Subscriber 1, it will run at (more-or-less) the same time!
    */
-  void subscriber2_cb(const std_msgs::msg::String::SharedPtr msg)
+  void subscriber2_cb(const std_msgs::msg::String::ConstSharedPtr msg)
   {
     auto message_received_at = timing_string();
 

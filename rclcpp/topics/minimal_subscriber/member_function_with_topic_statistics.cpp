@@ -36,7 +36,7 @@ public:
     // configure the topic name (default '/statistics')
     // options.topic_stats_options.publish_topic = "/topic_statistics"
 
-    auto callback = [this](std_msgs::msg::String::SharedPtr msg) {
+    auto callback = [this](std_msgs::msg::String::ConstSharedPtr msg) {
         this->topic_callback(msg);
       };
 
@@ -45,7 +45,7 @@ public:
   }
 
 private:
-  void topic_callback(const std_msgs::msg::String::SharedPtr msg) const
+  void topic_callback(const std_msgs::msg::String::ConstSharedPtr msg) const
   {
     RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
   }
