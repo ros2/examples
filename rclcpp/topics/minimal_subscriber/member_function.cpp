@@ -31,7 +31,7 @@ public:
   }
 
 private:
-  void topic_callback(const std_msgs::msg::String::SharedPtr msg) const
+  void topic_callback(const std_msgs::msg::String::ConstSharedPtr msg) const
   {
     RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
   }

@@ -52,10 +52,10 @@ private:
   void send_ping();
 
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr high_pong_subscription_;
-  void high_pong_received(const std_msgs::msg::Int32::SharedPtr msg);
+  void high_pong_received(const std_msgs::msg::Int32::ConstSharedPtr msg);
 
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr low_pong_subscription_;
-  void low_pong_received(const std_msgs::msg::Int32::SharedPtr msg);
+  void low_pong_received(const std_msgs::msg::Int32::ConstSharedPtr msg);
 
   std::vector<RTTData> rtt_data_;
 };

@@ -51,12 +51,12 @@ void PingNode::send_ping()
   low_ping_publisher_->publish(msg);
 }
 
-void PingNode::high_pong_received(const std_msgs::msg::Int32::SharedPtr msg)
+void PingNode::high_pong_received(const std_msgs::msg::Int32::ConstSharedPtr msg)
 {
   rtt_data_[msg->data].high_received_ = now();
 }
 
-void PingNode::low_pong_received(const std_msgs::msg::Int32::SharedPtr msg)
+void PingNode::low_pong_received(const std_msgs::msg::Int32::ConstSharedPtr msg)
 {
   rtt_data_[msg->data].low_received_ = now();
 }
