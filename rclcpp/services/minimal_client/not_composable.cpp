@@ -19,14 +19,20 @@
 #include "example_interfaces/srv/add_two_ints.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-using AddTwoInts = example_interfaces::srv::AddTwoInts;
+using namespace std::chrono_literals;
+using example_interfaces::srv::AddTwoInts;
+
+/* We do not recommend this style anymore, because composition of multiple
+ * nodes in the same executable is not possible. Please see one of the subclass
+ * examples for the "new" recommended styles. This example is only included
+ * for completeness because it is similar to "classic" standalone ROS nodes. */
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("minimal_client");
   auto client = node->create_client<AddTwoInts>("add_two_ints");
-  while (!client->wait_for_service(std::chrono::seconds(1))) {
+  while (!client->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
       RCLCPP_ERROR(node->get_logger(), "client interrupted while waiting for service to appear.");
       return 1;
@@ -43,10 +49,10 @@ int main(int argc, char * argv[])
     RCLCPP_ERROR(node->get_logger(), "service call failed :(");
     return 1;
   }
-  auto result = result_future.get();
+  auto response = result_future.get();
   RCLCPP_INFO(
     node->get_logger(), "result of %" PRId64 " + %" PRId64 " = %" PRId64,
-    request->a, request->b, result->sum);
+    request->a, request->b, response->sum);
   rclcpp::shutdown();
   return 0;
 }

@@ -12,46 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <chrono>
+#include <cinttypes>
 #include <memory>
-#include <string>
 
+#include "example_interfaces/srv/add_two_ints.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
 
-using namespace std::chrono_literals;
+using std::placeholders::_1;
+using std::placeholders::_2;
+using example_interfaces::srv::AddTwoInts;
 
 /* This example creates a subclass of Node and uses std::bind() to register a
- * member function as a callback from the timer. */
+ * member function as a callback from the server. */
 
-class MinimalPublisher : public rclcpp::Node
+class MinimalService : public rclcpp::Node
 {
 public:
-  MinimalPublisher()
-  : Node("minimal_publisher"), count_(0)
+  MinimalService()
+  : Node("minimal_service")
   {
-    publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
-    timer_ = this->create_wall_timer(
-      500ms, std::bind(&MinimalPublisher::timer_callback, this));
+    server_ = this->create_service<AddTwoInts>(
+      "add_two_ints", std::bind(&MinimalService::service_callback, this, _1, _2));
   }
 
 private:
-  void timer_callback()
+  void service_callback(
+    const AddTwoInts::Request::SharedPtr request,
+    AddTwoInts::Response::SharedPtr response) const
   {
-    auto message = std_msgs::msg::String();
-    message.data = "Hello, world! " + std::to_string(count_++);
-    RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-    publisher_->publish(message);
+    RCLCPP_INFO(
+      this->get_logger(),
+      "request: %" PRId64 " + %" PRId64, request->a, request->b);
+    response->sum = request->a + request->b;
   }
-  rclcpp::TimerBase::SharedPtr timer_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
-  size_t count_;
+  rclcpp::Service<AddTwoInts>::SharedPtr server_;
 };
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<MinimalPublisher>());
+  rclcpp::spin(std::make_shared<MinimalService>());
   rclcpp::shutdown();
   return 0;
 }
