@@ -41,6 +41,7 @@ int main(int argc, char * argv[])
     rclcpp::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(node->get_logger(), "service call failed :(");
+    client->remove_pending_request(result_future);
     return 1;
   }
   auto result = result_future.get();
