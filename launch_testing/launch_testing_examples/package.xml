@@ -2,10 +2,13 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>launch_testing_examples</name>
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="aditya050995@gmail.com">aditya</maintainer>
-  <license>TODO: License declaration</license>
+  <version>0.12.0</version>
+  <description>Examples of simple launch tests</description>
+  <maintainer email="mabel@openrobotics.org">Mabel Zhang</maintainer>
+  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
+  <license>Apache License 2.0</license>
+
+  <author email="aditya.pande@openrobotics.org">Aditya Pande</author>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
