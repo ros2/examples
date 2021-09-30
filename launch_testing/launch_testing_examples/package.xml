@@ -19,6 +19,7 @@
   <test_depend>launch_testing</test_depend>
   <test_depend>rclpy</test_depend>
   <test_depend>std_msgs</test_depend>
+  <test_depend>demo_nodes_cpp</test_depend>
 
   <export>
     <build_type>ament_python</build_type>
