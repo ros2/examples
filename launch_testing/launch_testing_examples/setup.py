@@ -14,7 +14,7 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='aditya',
-    maintainer_email='aditya050995@gmail.com',
+    maintainer_email='aditya.pande@openrobotics.org',
     description='Examples of simple launch tests',
     license='Apache License 2.0',
     tests_require=['pytest'],
