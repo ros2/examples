@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from threading import Event
-from threading import Thread
 import unittest
 
 import launch
@@ -21,9 +19,8 @@ import launch.actions
 import launch_ros.actions
 import launch_testing.actions
 import launch_testing.markers
+from launch_testing_ros import WaitForTopics
 import pytest
-import rclpy
-from rclpy.node import Node
 from std_msgs.msg import String
 
 
@@ -42,33 +39,6 @@ def generate_test_description():
 
 class TestFixture(unittest.TestCase):
 
-    def test_check_if_msgs_published(self, proc_output):
-        rclpy.init()
-        node = MakeTestNode('test_node')
-        node.start_subscriber()
-        msgs_received_flag = node.msg_event_object.wait(timeout=5.0)
-        assert msgs_received_flag, 'Did not receive msgs !'
-        rclpy.shutdown()
-
-
-class MakeTestNode(Node):
-
-    def __init__(self, name='test_node'):
-        super().__init__(name)
-        self.msg_event_object = Event()
-
-    def start_subscriber(self):
-        # Create a subscriber
-        self.subscription = self.create_subscription(
-            String,
-            'chatter',
-            self.subscriber_callback,
-            10
-        )
-
-        # Add a spin thread
-        self.ros_spin_thread = Thread(target=lambda node: rclpy.spin(node), args=(self,))
-        self.ros_spin_thread.start()
-
-    def subscriber_callback(self, data):
-        self.msg_event_object.set()
+    def test_check_if_msgs_published(self):
+        with WaitForTopics([('chatter', String)], timeout=5.0):
+            print('Topic received messages !')

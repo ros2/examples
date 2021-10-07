@@ -46,22 +46,17 @@ class TestFixture(unittest.TestCase):
 
     def test_node_start(self, proc_output):
         rclpy.init()
-        node = MakeTestNode('test_node')
-        assert node.wait_for_node('demo_node_1', 8.0), 'Node not found !'
+        node = Node('test_node')
+        assert wait_for_node(node, 'demo_node_1', 8.0), 'Node not found !'
         rclpy.shutdown()
 
 
-class MakeTestNode(Node):
+def wait_for_node(dummy_node, node_name, timeout=8.0):
+    start = time.time()
+    flag = False
+    print('Waiting for node...')
+    while time.time() - start < timeout and not flag:
+        flag = node_name in dummy_node.get_node_names()
+        time.sleep(0.1)
 
-    def __init__(self, name='test_node'):
-        super().__init__(name)
-
-    def wait_for_node(self, node_name, timeout=8.0):
-        start = time.time()
-        flag = False
-        print('Waiting for node...')
-        while time.time() - start < timeout and not flag:
-            flag = node_name in self.get_node_names()
-            time.sleep(0.1)
-
-        return flag
+    return flag
