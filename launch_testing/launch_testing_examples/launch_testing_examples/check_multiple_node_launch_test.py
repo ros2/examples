@@ -75,8 +75,9 @@ class TestFixture(unittest.TestCase):
         rclpy.init()
         node = DummyNode('test_node')
         time.sleep(3)
-        assert node.wait_for_nodes(node_list, 8.0), 'Nodes not found !'
+        result = node.wait_for_nodes(node_list, 8.0)
         rclpy.shutdown()
+        assert result, 'Nodes not found!'
 
 
 @launch_testing.post_shutdown_test()
