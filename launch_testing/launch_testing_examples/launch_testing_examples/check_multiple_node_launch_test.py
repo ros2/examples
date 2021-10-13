@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+
 import sys
 import time
 import unittest
@@ -32,8 +32,6 @@ import yaml
 @pytest.mark.launch_test
 @launch_testing.markers.keep_alive
 def generate_test_description():
-    path_to_test = os.path.dirname(__file__)
-
     # Default number of nodes to be launched
     n = 5
     for item in sys.argv[::-1]:
@@ -47,10 +45,9 @@ def generate_test_description():
     for i in range(n):
         node_list.append(
             launch_ros.actions.Node(
-                executable=sys.executable,
-                arguments=[os.path.join(path_to_test, 'talker.py')],
-                additional_env={'PYTHONUNBUFFERED': '1'},
-                name='demo_node_' + str(i),
+                executable='talker',
+                package='demo_nodes_cpp',
+                name='demo_node_' + str(i)
             )
         )
         node_names.append('demo_node_' + str(i))
