@@ -103,7 +103,7 @@ class WaitForNodes:
 
     # Method 2, using the 'with' keyword
     def method_2():
-        with WaitForNodes(['foo', 'bar'], timeout=5.0) as wait_for_ndoes:
+        with WaitForNodes(['foo', 'bar'], timeout=5.0) as wait_for_nodes:
             assert wait_for_nodes.get_nodes_not_found() == set()
             print('Nodes found!')
     """
