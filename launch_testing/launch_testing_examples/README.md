@@ -20,11 +20,19 @@ We delay the launch by 5 seconds, and wait for the node to start with a timeout 
 ### `check_multiple_node_launch_test.py`
 
 ```sh
-launch_test test/examples/check_multiple_node_launch_test.py number_of_nodes:=10
+launch_test test/examples/check_multiple_node_launch_test.py
 ```
 
-This test launches multiple nodes, specified by the ``number_of_nodes`` command line parameter.
-It then records them to a ``rosbag2`` file, and checks if the nodes were launched correctly, and that the bag file recorded some messages.
+This test launches multiple nodes, and checks if they were launched successfully using the ``WaitForNodes`` utility.
+
+### `record_rosbag_launch_test.py`
+
+```sh
+launch_test test/examples/record_rosbag_launch_test.py
+```
+
+This test launches a ``talker`` node, records the topics to a ``rosbag`` and makes sure that the messages were recorded successfuly,
+then deletes the bag file.
 
 ### `check_msgs_launch_test.py`
 
