@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add example of how to prune old requests in client API (`#322 <https://github.com/ros2/examples/issues/322>`_)
+* Contributors: Ivan Santiago Paunovic
+
 0.12.0 (2021-08-05)
 -------------------
 

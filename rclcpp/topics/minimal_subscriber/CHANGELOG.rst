@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix deprecated subscriber callbacks (`#323 <https://github.com/ros2/examples/issues/323>`_)
+* Contributors: Abrar Rahman Protyasha
+
 0.12.0 (2021-08-05)
 -------------------
 * Add wait set examples (`#315 <https://github.com/ros2/examples/issues/315>`_)

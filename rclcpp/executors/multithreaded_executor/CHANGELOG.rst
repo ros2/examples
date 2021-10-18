@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_multithreaded_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix deprecated subscriber callbacks (`#323 <https://github.com/ros2/examples/issues/323>`_)
+* Contributors: Abrar Rahman Protyasha
+
 0.12.0 (2021-08-05)
 -------------------
 
