@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_async_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.13.0 (2021-10-18)
+-------------------
 * Add example of how to prune old requests in client API (`#322 <https://github.com/ros2/examples/issues/322>`_)
 * Contributors: Ivan Santiago Paunovic
 

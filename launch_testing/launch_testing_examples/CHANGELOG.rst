@@ -2,8 +2,8 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.13.0 (2021-10-18)
+-------------------
 * Reverted WaitForTopics utility usage (`#326 <https://github.com/ros2/examples/issues/326>`_)
 * Moved examples (`#324 <https://github.com/ros2/examples/issues/324>`_)
 * Contributors: Aditya Pande
