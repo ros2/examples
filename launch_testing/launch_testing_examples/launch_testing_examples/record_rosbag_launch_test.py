@@ -61,8 +61,8 @@ class TestFixtureAfterShutdown(unittest.TestCase):
 
     def test_rosbag_record(self, rosbag_dir):
         """Check if the rosbag2 recording was successful."""
-        with open(rosbag_dir + '/metadata.yaml', 'r') as stream:
-            metadata = yaml.safe_load(stream)
+        with open(rosbag_dir + '/metadata.yaml', 'r') as file:
+            metadata = yaml.safe_load(file)
             assert metadata['rosbag2_bagfile_information']['message_count'] > 0
             print('The following topics received messages:')
             for item in metadata['rosbag2_bagfile_information']['topics_with_message_count']:

@@ -32,7 +32,7 @@ from rclpy.node import Node
 @launch_testing.markers.keep_alive
 def generate_test_description():
     # Default number of nodes to be launched
-    n = 2
+    n = 3
     node_list = []
     node_names = []
 
