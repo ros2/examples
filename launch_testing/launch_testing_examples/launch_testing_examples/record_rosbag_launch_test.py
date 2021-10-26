@@ -49,7 +49,7 @@ def generate_test_description():
     return launch.LaunchDescription(node_list), {'rosbag_dir': rosbag_dir}
 
 
-class TestFixture(unittest.TestCase):
+class DelayShutdown(unittest.TestCase):
 
     def test_delay(self):
         """Delay the shutdown of processes so that rosbag can record some messages."""

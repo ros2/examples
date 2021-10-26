@@ -32,12 +32,11 @@ from rclpy.node import Node
 @launch_testing.markers.keep_alive
 def generate_test_description():
     # Default number of nodes to be launched
-    n = 3
-    node_list = []
+    launch_actions = []
     node_names = []
 
-    for i in range(n):
-        node_list.append(
+    for i in range(3):
+        launch_actions.append(
             launch_ros.actions.Node(
                 executable='talker',
                 package='demo_nodes_cpp',
@@ -46,16 +45,14 @@ def generate_test_description():
         )
         node_names.append('demo_node_' + str(i))
 
-    node_list.append(launch_testing.actions.ReadyToTest())
-    return launch.LaunchDescription(node_list), {'node_list': node_names}
+    launch_actions.append(launch_testing.actions.ReadyToTest())
+    return launch.LaunchDescription(launch_actions), {'node_list': node_names}
 
 
-class TestFixture(unittest.TestCase):
+class CheckMultipleNodesLaunched(unittest.TestCase):
 
     def test_nodes_successful(self, node_list):
         """Check if all the nodes were launched correctly."""
-        time.sleep(1.0)
-
         # Method 1
         wait_for_nodes_1 = WaitForNodes(node_list, timeout=5.0)
         assert wait_for_nodes_1.wait()
@@ -67,9 +64,8 @@ class TestFixture(unittest.TestCase):
             print('All nodes were found !')
             assert wait_for_nodes_2.get_nodes_not_found() == set()
 
-    def test_nodes_unsuccessful(self, node_list):
+    def test_node_does_not_exist(self, node_list):
         """Insert a invalid node name that should not exist."""
-        time.sleep(1.0)
         invalid_node_list = node_list + ['invalid_node']
 
         # Method 1

@@ -19,7 +19,6 @@
   <test_depend>launch_testing</test_depend>
   <test_depend>launch_testing_ros</test_depend>
   <test_depend>rclpy</test_depend>
-  <test_depend>ros2cli</test_depend>
   <test_depend>ros2bag</test_depend>
   <test_depend>rosbag2_transport</test_depend>
   <test_depend>std_msgs</test_depend>
