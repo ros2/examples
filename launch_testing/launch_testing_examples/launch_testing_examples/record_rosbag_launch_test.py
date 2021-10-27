@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+import os
 import shutil
 import tempfile
 import time
@@ -31,7 +32,7 @@ import yaml
 @pytest.mark.launch_test
 @launch_testing.markers.keep_alive
 def generate_test_description():
-    rosbag_dir = tempfile.mkdtemp() + '/test_bag'
+    rosbag_dir = os.path.join(tempfile.mkdtemp(), 'test_bag')
 
     node_list = [
         launch_ros.actions.Node(
@@ -63,7 +64,7 @@ class TestFixtureAfterShutdown(unittest.TestCase):
 
     def test_rosbag_record(self, rosbag_dir):
         """Check if the rosbag2 recording was successful."""
-        with open(rosbag_dir + '/metadata.yaml', 'r') as file:
+        with open(os.path.join(rosbag_dir, 'metadata.yaml'), 'r') as file:
             metadata = yaml.safe_load(file)
             assert metadata['rosbag2_bagfile_information']['message_count'] > 0
             print('The following topics received messages:')
@@ -77,4 +78,4 @@ class TestFixtureAfterShutdown(unittest.TestCase):
     def tearDownClass(cls):
         """Delete the rosbag directory."""
         print('Deleting ', cls.rosbag_dir)
-        shutil.rmtree(cls.rosbag_dir.replace('/test_bag', ''))
+        shutil.rmtree(cls.rosbag_dir.replace('test_bag', ''))
