@@ -59,6 +59,8 @@ class DelayShutdown(unittest.TestCase):
 @launch_testing.post_shutdown_test()
 class TestFixtureAfterShutdown(unittest.TestCase):
 
+    rosbag_dir = None
+
     def test_rosbag_record(self, rosbag_dir):
         """Check if the rosbag2 recording was successful."""
         with open(rosbag_dir + '/metadata.yaml', 'r') as file:
@@ -69,5 +71,10 @@ class TestFixtureAfterShutdown(unittest.TestCase):
                 print(item['topic_metadata']['name'], 'recieved ', item['message_count'],
                       ' messages')
 
-        # Delete the rosbag directory
-        shutil.rmtree(rosbag_dir.replace('/test_bag', ''))
+        TestFixtureAfterShutdown.rosbag_dir = rosbag_dir
+
+    @classmethod
+    def tearDownClass(cls):
+        """Delete the rosbag directory."""
+        print('Deleting ', cls.rosbag_dir)
+        shutil.rmtree(cls.rosbag_dir.replace('/test_bag', ''))
