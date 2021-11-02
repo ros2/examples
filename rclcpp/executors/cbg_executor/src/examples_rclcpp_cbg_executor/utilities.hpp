@@ -15,9 +15,13 @@
 #ifndef EXAMPLES_RCLCPP_CBG_EXECUTOR__UTILITIES_HPP_
 #define EXAMPLES_RCLCPP_CBG_EXECUTOR__UTILITIES_HPP_
 
+#include <cmath>
+
 #include <chrono>
+#include <functional>
 #include <string>
 #include <thread>
+#include <vector>
 
 #ifdef _WIN32  // i.e., Windows platform.
 #include <windows.h>
@@ -228,6 +232,24 @@ inline std::chrono::nanoseconds get_current_thread_time()
 #else  // i.e., Linux platform.
   return get_native_thread_time(pthread_self());
 #endif
+}
+
+/// Calculates the average of the given vector of doubles.
+inline double calc_average(const std::vector<double> & v)
+{
+  double avg = std::accumulate(v.begin(), v.end(), 0.0, std::plus<double>()) / v.size();
+  return avg;
+}
+
+/// Calculates the standard deviation of the given vector of doubles.
+inline double calc_std_deviation(const std::vector<double> & v)
+{
+  double mean = calc_average(v);
+  double sum_squares = 0.0;
+  for (const double d : v) {
+    sum_squares += (d - mean) * (d - mean);
+  }
+  return std::sqrt(sum_squares / v.size());
 }
 
 }  // namespace examples_rclcpp_cbg_executor

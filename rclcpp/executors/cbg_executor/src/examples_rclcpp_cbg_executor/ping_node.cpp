@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <functional>
 #include <memory>
+#include <vector>
 
 #include "./utilities.hpp"
 
@@ -65,18 +66,15 @@ void PingNode::print_statistics(std::chrono::seconds experiment_duration) const
 {
   size_t ping_count = rtt_data_.size();
 
-  size_t high_pong_count = 0;
-  size_t low_pong_count = 0;
-  rclcpp::Duration high_rtt_sum(0, 0);
-  rclcpp::Duration low_rtt_sum(0, 0);
+  std::vector<double> high_rtts;
+  std::vector<double> low_rtts;
+
   for (const auto & entry : rtt_data_) {
     if (entry.high_received_.nanoseconds() >= entry.sent_.nanoseconds()) {
-      ++high_pong_count;
-      high_rtt_sum = high_rtt_sum + (entry.high_received_ - entry.sent_);
+      high_rtts.push_back((entry.high_received_ - entry.sent_).seconds());
     }
     if (entry.low_received_.nanoseconds() >= entry.sent_.nanoseconds()) {
-      ++low_pong_count;
-      low_rtt_sum = low_rtt_sum + (entry.low_received_ - entry.sent_);
+      low_rtts.push_back((entry.low_received_ - entry.sent_).seconds());
     }
   }
 
@@ -87,18 +85,22 @@ void PingNode::print_statistics(std::chrono::seconds experiment_duration) const
     ping_count, ideal_ping_count, 100 * ping_count / ideal_ping_count);
   RCLCPP_INFO(
     get_logger(), "High prio path: Received %zu pongs, i.e. for %zu%% of the pings.",
-    high_pong_count, 100 * high_pong_count / ping_count);
-  if (high_pong_count > 0) {
-    double high_rtt_avg = (high_rtt_sum.seconds() * 1000.0 / high_pong_count);
+    high_rtts.size(), 100 * high_rtts.size() / ping_count);
+  if (!high_rtts.empty()) {
+    double high_rtt_avg = calc_average(high_rtts) * 1000.0;
     RCLCPP_INFO(get_logger(), "High prio path: Average RTT is %3.1fms.", high_rtt_avg);
+    double high_rtt_jitter = calc_std_deviation(high_rtts) * 1000.0;
+    RCLCPP_INFO(get_logger(), "High prio path: Jitter of RTT is %5.3fms.", high_rtt_jitter);
   }
 
   RCLCPP_INFO(
     get_logger(), "Low prio path: Received %zu pongs, i.e. for %zu%% of the pings.",
-    low_pong_count, 100 * low_pong_count / ping_count);
-  if (low_pong_count > 0) {
-    double low_rtt_avg = (low_rtt_sum.seconds() * 1000.0 / low_pong_count);
+    low_rtts.size(), 100 * low_rtts.size() / ping_count);
+  if (!low_rtts.empty()) {
+    double low_rtt_avg = calc_average(low_rtts) * 1000.0;
     RCLCPP_INFO(get_logger(), "Low prio path: Average RTT is %3.1fms.", low_rtt_avg);
+    double low_rtt_jitter = calc_std_deviation(low_rtts) * 1000.0;
+    RCLCPP_INFO(get_logger(), "Low prio path: Jitter of RTT is %5.3fms.", low_rtt_jitter);
   }
 }
 
