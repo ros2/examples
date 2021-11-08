@@ -4,10 +4,11 @@
   <name>examples_rclcpp_minimal_action_server</name>
   <version>0.13.0</version>
   <description>Minimal action server examples</description>
-  <maintainer email="mabel@openrobotics.org">Mabel Zhang</maintainer>
   <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
+  <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
   <license>Apache License 2.0</license>
   <author email="jacob@openrobotics.org">Jacob Perron</author>
+  <author email="mabel@openrobotics.org">Mabel Zhang</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
