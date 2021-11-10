@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 
 from examples_rclpy_executors.listener import Listener
 from examples_rclpy_executors.talker import Talker
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.executors import SingleThreadedExecutor
 
 
@@ -38,9 +40,12 @@ def main(args=None):
             executor.shutdown()
             listener.destroy_node()
             talker.destroy_node()
-
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
     finally:
-        rclpy.shutdown()
+        rclpy.try_shutdown()
 
 
 if __name__ == '__main__':

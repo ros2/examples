@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from std_msgs.msg import String
 
@@ -49,9 +52,13 @@ def main(args=None):
     try:
         listener = Listener()
         rclpy.spin(listener)
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
     finally:
+        rclpy.try_shutdown()
         listener.destroy_node()
-        rclpy.shutdown()
 
 
 if __name__ == '__main__':

@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 import threading
 
 import rclpy
 from rclpy.callback_groups import CallbackGroup
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from std_msgs.msg import String
 
@@ -101,9 +103,13 @@ def main(args=None):
     try:
         talker = ThrottledTalker()
         rclpy.spin(talker)
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
     finally:
+        rclpy.try_shutdown()
         talker.destroy_node()
-        rclpy.shutdown()
 
 
 if __name__ == '__main__':
