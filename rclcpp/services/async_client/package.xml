@@ -4,8 +4,8 @@
   <name>examples_rclcpp_async_client</name>
   <version>0.13.0</version>
   <description>Example of an async service client</description>
-  <maintainer email="mabel@openrobotics.org">Mabel Zhang</maintainer>
   <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
+  <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
   <license>Apache License 2.0</license>
   <author email="ivanpauno@ekumenlabs.com">Ivan Paunovic</author>
   <author email="william@osrfoundation.org">William Woodall</author>
