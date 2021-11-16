@@ -8,7 +8,6 @@
   <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
   <license>Apache License 2.0</license>
   <author email="audrow@openrobotics.org">Audrow Nash</author>
-  <author email="mabel@openrobotics.org">Mabel Zhang</author>
 
   <exec_depend>rclpy</exec_depend>
 

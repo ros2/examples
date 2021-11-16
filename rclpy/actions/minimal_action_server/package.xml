@@ -9,7 +9,6 @@
   <license>Apache License 2.0</license>
 
   <author email="jacob@openrobotics.org">Jacob Perron</author>
-  <author email="mabel@openrobotics.org">Mabel Zhang</author>
 
   <exec_depend>example_interfaces</exec_depend>
   <exec_depend>rclpy</exec_depend>

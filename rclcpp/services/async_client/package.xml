@@ -9,7 +9,6 @@
   <license>Apache License 2.0</license>
   <author email="ivanpauno@ekumenlabs.com">Ivan Paunovic</author>
   <author email="william@osrfoundation.org">William Woodall</author>
-  <author email="mabel@openrobotics.org">Mabel Zhang</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

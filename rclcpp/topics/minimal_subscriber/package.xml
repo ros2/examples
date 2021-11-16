@@ -10,7 +10,6 @@
   <author>Mikael Arguedas</author>
   <author>Morgan Quigley</author>
   <author email="jacob@openrobotics.org">Jacob Perron</author>
-  <author email="mabel@openrobotics.org">Mabel Zhang</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
