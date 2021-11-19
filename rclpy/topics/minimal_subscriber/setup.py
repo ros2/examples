@@ -15,8 +15,8 @@ setup(
     zip_safe=True,
     author='Mikael Arguedas',
     author_email='mikael@osrfoundation.org',
-    maintainer='Mikael Arguedas',
-    maintainer_email='mikael@osrfoundation.org',
+    maintainer='Aditya Pande, Shane Loretz',
+    maintainer_email='aditya.pande@openrobotics.org, shane@openrobotics.org',
     keywords=['ROS'],
     classifiers=[
         'Intended Audience :: Developers',
