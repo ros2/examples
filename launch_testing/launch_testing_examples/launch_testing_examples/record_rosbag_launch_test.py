@@ -58,6 +58,7 @@ class DelayShutdown(unittest.TestCase):
 
 
 # TODO : Test fails on windows, to be fixed
+# https://github.com/ros2/rosbag2/issues/926
 if os.name != 'nt':
     @launch_testing.post_shutdown_test()
     class TestFixtureAfterShutdown(unittest.TestCase):
