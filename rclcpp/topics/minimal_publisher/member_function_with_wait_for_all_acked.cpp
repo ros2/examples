@@ -24,35 +24,11 @@ using namespace std::chrono_literals;
 
 /* This example shows how to use wait_for_all_acked for the publisher */
 
-class CustomContext : public rclcpp::Context
-{
-public:
-  RCLCPP_SMART_PTR_DEFINITIONS(CustomContext)
-
-  bool shutdown(const std::string & reason) override
-  {
-    // Before shutdown, confirm all subscribers acknowledge sent messages
-    if (custom_shutdown_func_) {
-      custom_shutdown_func_();
-    }
-
-    return rclcpp::Context::shutdown(reason);
-  }
-
-  void set_custom_shutdown_func(std::function<void()> custom_shutdown_func)
-  {
-    custom_shutdown_func_ = custom_shutdown_func;
-  }
-
-private:
-  std::function<void()> custom_shutdown_func_;
-};
-
 class MinimalPublisher : public rclcpp::Node
 {
 public:
-  explicit MinimalPublisher(const CustomContext::SharedPtr context)
-  : Node("minimal_publisher_with_wait_for_all_acked", rclcpp::NodeOptions().context(context)),
+  MinimalPublisher()
+  : Node("minimal_publisher_with_wait_for_all_acked"),
     count_(0),
     wait_timeout_(300)
   {
@@ -61,7 +37,9 @@ public:
       "topic",
       rclcpp::QoS(10).reliable());
 
-    context->set_custom_shutdown_func(
+    // call wait_for_all_acked before shutdown
+    using rclcpp::contexts::get_global_default_context;
+    get_global_default_context()->add_pre_shutdown_callback(
       [this]() {
         this->wait_for_all_acked();
       });
@@ -78,7 +56,7 @@ private:
     if (publisher_->wait_for_all_acked(wait_timeout_)) {
       RCLCPP_INFO(
         this->get_logger(),
-        "All Subscribers acknowledges messages");
+        "All subscribers acknowledge messages");
     } else {
       RCLCPP_INFO(
         this->get_logger(),
@@ -95,7 +73,7 @@ private:
     publisher_->publish(message);
 
     // After sending some messages, you can call wait_for_all_acked() to confirm all subscribers
-    // acknowledge message.
+    // acknowledge messages.
   }
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
@@ -107,10 +85,7 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  auto custom_context = std::make_shared<CustomContext>();
-  custom_context->init(argc, argv);
-
-  auto publisher = std::make_shared<MinimalPublisher>(custom_context);
+  auto publisher = std::make_shared<MinimalPublisher>();
   rclcpp::spin(publisher);
   rclcpp::shutdown();
 
