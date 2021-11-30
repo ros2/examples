@@ -57,6 +57,7 @@ class DelayShutdown(unittest.TestCase):
         time.sleep(3)
 
 
+# TODO : Test fails on windows, to be fixed
 if os.name != 'nt':
     @launch_testing.post_shutdown_test()
     class TestFixtureAfterShutdown(unittest.TestCase):
