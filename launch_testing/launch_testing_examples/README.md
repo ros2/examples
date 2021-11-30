@@ -17,6 +17,23 @@ There might be situations where nodes, once launched, take some time to actually
 We can simulate this using ``launch.actions.TimerAction``. This example shows one way to detect when a node has been launched.
 We delay the launch by 5 seconds, and wait for the node to start with a timeout of 8 seconds.
 
+### `check_multiple_nodes_launch_test.py`
+
+```sh
+launch_test test/examples/check_multiple_nodes_launch_test.py
+```
+
+This test launches multiple nodes, and checks if they were launched successfully using the `WaitForNodes` utility.
+
+### `record_rosbag_launch_test.py`
+
+```sh
+launch_test test/examples/record_rosbag_launch_test.py
+```
+
+This test launches a `talker` node, records the topics to a `rosbag` and makes sure that the messages were recorded successfully,
+then deletes the bag file.
+
 ### `check_msgs_launch_test.py`
 
 Usage:
