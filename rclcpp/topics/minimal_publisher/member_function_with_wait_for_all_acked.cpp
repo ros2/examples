@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+#include <inttypes.h>
 
 #include <chrono>
 #include <functional>
@@ -60,8 +61,8 @@ private:
     } else {
       RCLCPP_INFO(
         this->get_logger(),
-        "Not all subscribers acknowledge messages during %ld ms",
-        wait_timeout_.count());
+        "Not all subscribers acknowledge messages during %" PRId64 " ms",
+        static_cast<int64_t>(wait_timeout_.count()));
     }
   }
 
