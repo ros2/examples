@@ -42,10 +42,10 @@ PongNode::PongNode()
   declare_parameter<double>("low_busyloop", 0.01);
   low_pong_publisher_ = this->create_publisher<Int32>("low_pong", rclcpp::SensorDataQoS());
   rclcpp::SubscriptionOptionsWithAllocator<std::allocator<void>> options;
-  options.callback_group = low_prio_callback_group_;
   low_ping_subscription_ = this->create_subscription<Int32>(
     "low_ping", rclcpp::SensorDataQoS(),
-    std::bind(&PongNode::low_ping_received, this, _1), options);
+    std::bind(&PongNode::low_ping_received, this, _1), options,
+    low_prio_callback_group_);
 }
 
 rclcpp::CallbackGroup::SharedPtr PongNode::get_high_prio_callback_group()

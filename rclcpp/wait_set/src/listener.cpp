@@ -39,12 +39,12 @@ Listener::Listener(rclcpp::NodeOptions options)
   rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
     rclcpp::CallbackGroupType::MutuallyExclusive, false);
   auto subscription_options = rclcpp::SubscriptionOptions();
-  subscription_options.callback_group = cb_group_waitset;
   subscription2_ = this->create_subscription<std_msgs::msg::String>(
     "topic",
     10,
     wait_set_subscription_callback,
-    subscription_options);
+    subscription_options,
+    cb_group_waitset);
   wait_set_.add_subscription(subscription2_);
   thread_ = std::thread([this]() -> void {spin_wait_set();});
 }

@@ -84,9 +84,7 @@ public:
     // Each of these callback groups is basically a thread
     // Everything assigned to one of them gets bundled into the same thread
     auto sub1_opt = rclcpp::SubscriptionOptions();
-    sub1_opt.callback_group = callback_group_subscriber1_;
     auto sub2_opt = rclcpp::SubscriptionOptions();
-    sub2_opt.callback_group = callback_group_subscriber2_;
 
     subscription1_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
@@ -101,8 +99,9 @@ public:
                                             // So we just put a generic placeholder
                                             // into the binder
                                             // (since we know we need ONE parameter)
-      sub1_opt);                  // This is where we set the callback group.
-                                  // This subscription will run with callback group subscriber1
+      sub1_opt,
+      callback_group_subscriber1_);         // This is where we set the callback group.
+                                            // This subscription will run with callback group subscriber1
 
     subscription2_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
@@ -111,7 +110,8 @@ public:
         &DualThreadedNode::subscriber2_cb,
         this,
         std::placeholders::_1),
-      sub2_opt);
+      sub2_opt,
+      callback_group_subscriber2_);
   }
 
 private:

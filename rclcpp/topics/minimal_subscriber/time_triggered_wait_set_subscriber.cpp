@@ -33,7 +33,6 @@ public:
       rclcpp::CallbackGroupType::MutuallyExclusive, false);
 
     auto subscription_options = rclcpp::SubscriptionOptions();
-    subscription_options.callback_group = cb_group_waitset;
     auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       };
@@ -41,7 +40,8 @@ public:
       "topic",
       10,
       subscription_callback,
-      subscription_options);
+      subscription_options,
+      cb_group_waitset);
     auto timer_callback = [this]() -> void {
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;

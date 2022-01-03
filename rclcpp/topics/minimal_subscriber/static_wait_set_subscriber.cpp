@@ -35,7 +35,6 @@ public:
         rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
           rclcpp::CallbackGroupType::MutuallyExclusive, false);
         auto subscription_options = rclcpp::SubscriptionOptions();
-        subscription_options.callback_group = cb_group_waitset;
         auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
           RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
         };
@@ -43,7 +42,8 @@ public:
           "topic",
           10,
           subscription_callback,
-          subscription_options);
+          subscription_options,
+          cb_group_waitset);
       } ()
     ),
     wait_set_(std::array<MyStaticWaitSet::SubscriptionEntry, 1>{{{subscription_}}}),
