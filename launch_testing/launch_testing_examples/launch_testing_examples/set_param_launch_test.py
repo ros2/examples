@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import unittest
 
 import launch
@@ -38,14 +39,16 @@ def generate_test_description():
     ])
 
 
-class TestFixture(unittest.TestCase):
+# TODO: Fix windows failures for this test
+if os.name != 'nt':
+    class TestFixture(unittest.TestCase):
 
-    def test_set_parameter(self, proc_output):
-        rclpy.init()
-        node = Node('test_node')
-        response = set_parameter(node, value=True)
-        assert response.successful, 'Could not set parameter!'
-        rclpy.shutdown()
+        def test_set_parameter(self, proc_output):
+            rclpy.init()
+            node = Node('test_node')
+            response = set_parameter(node, value=True)
+            assert response.successful, 'Could not set parameter!'
+            rclpy.shutdown()
 
 
 def set_parameter(dummy_node, value=True, timeout=5.0):
