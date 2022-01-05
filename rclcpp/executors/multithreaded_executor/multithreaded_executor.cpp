@@ -100,8 +100,8 @@ public:
                                             // into the binder
                                             // (since we know we need ONE parameter)
       sub1_opt,
-      callback_group_subscriber1_);         // This is where we set the callback group.
-                                            // This subscription will run with callback group subscriber1
+      callback_group_subscriber1_);    // This is where we set the callback group.
+                                       // This subscription will run with callback group subscriber1
 
     subscription2_ = this->create_subscription<std_msgs::msg::String>(
       "topic",
