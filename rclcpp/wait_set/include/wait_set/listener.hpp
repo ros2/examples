@@ -28,6 +28,7 @@ public:
 private:
   void spin_wait_set();
 
+  rclcpp::CallbackGroup::SharedPtr cb_group_waitset_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription1_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription2_;
   rclcpp::WaitSet wait_set_;

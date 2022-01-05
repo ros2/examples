@@ -36,7 +36,7 @@ Listener::Listener(rclcpp::NodeOptions options)
   auto wait_set_subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
       RCLCPP_INFO(this->get_logger(), "I heard: '%s' (wait-set)", msg->data.c_str());
     };
-  rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
+  cb_group_waitset_ = this->create_callback_group(
     rclcpp::CallbackGroupType::MutuallyExclusive, false);
   auto subscription_options = rclcpp::SubscriptionOptions();
   subscription2_ = this->create_subscription<std_msgs::msg::String>(
@@ -44,7 +44,7 @@ Listener::Listener(rclcpp::NodeOptions options)
     10,
     wait_set_subscription_callback,
     subscription_options,
-    cb_group_waitset);
+    cb_group_waitset_);
   wait_set_.add_subscription(subscription2_);
   thread_ = std::thread([this]() -> void {spin_wait_set();});
 }

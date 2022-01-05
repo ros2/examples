@@ -27,7 +27,7 @@ public:
   explicit WaitSetSubscriber(rclcpp::NodeOptions options)
   : Node("wait_set_subscriber", options)
   {
-    rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
+    cb_group_waitset_ = this->create_callback_group(
       rclcpp::CallbackGroupType::MutuallyExclusive, false);
     auto subscription_options = rclcpp::SubscriptionOptions();
     auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
@@ -38,7 +38,7 @@ public:
       10,
       subscription_callback,
       subscription_options,
-      cb_group_waitset);
+      cb_group_waitset_);
     wait_set_.add_subscription(subscription_);
     thread_ = std::thread([this]() -> void {spin_wait_set();});
   }
@@ -78,6 +78,7 @@ public:
   }
 
 private:
+  rclcpp::CallbackGroup::SharedPtr cb_group_waitset_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
   rclcpp::WaitSet wait_set_;
   std::thread thread_;

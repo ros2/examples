@@ -29,7 +29,7 @@ public:
   explicit TimeTriggeredWaitSetSubscriber(rclcpp::NodeOptions options)
   : Node("time_triggered_wait_set_subscriber", options)
   {
-    rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
+    cb_group_waitset_ = this->create_callback_group(
       rclcpp::CallbackGroupType::MutuallyExclusive, false);
 
     auto subscription_options = rclcpp::SubscriptionOptions();
@@ -41,7 +41,7 @@ public:
       10,
       subscription_callback,
       subscription_options,
-      cb_group_waitset);
+      cb_group_waitset_);
     auto timer_callback = [this]() -> void {
         std_msgs::msg::String msg;
         rclcpp::MessageInfo msg_info;
@@ -52,7 +52,7 @@ public:
           RCLCPP_WARN(this->get_logger(), "No message available");
         }
       };
-    timer_ = create_wall_timer(500ms, timer_callback, cb_group_waitset);
+    timer_ = create_wall_timer(500ms, timer_callback, cb_group_waitset_);
     wait_set_.add_timer(timer_);
     thread_ = std::thread([this]() -> void {spin_wait_set();});
   }
@@ -87,6 +87,7 @@ public:
   }
 
 private:
+  rclcpp::CallbackGroup::SharedPtr cb_group_waitset_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::WaitSet wait_set_;
