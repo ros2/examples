@@ -11,10 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include <inttypes.h>
-
 #include <chrono>
 #include <functional>
+#include <cinttypes>
 #include <memory>
 #include <string>
 
@@ -42,6 +41,7 @@ public:
     using rclcpp::contexts::get_global_default_context;
     get_global_default_context()->add_pre_shutdown_callback(
       [this]() {
+        this->timer_->cancel();
         this->wait_for_all_acked();
       });
 
