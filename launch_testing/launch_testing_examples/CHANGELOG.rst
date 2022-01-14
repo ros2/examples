@@ -2,6 +2,14 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.14.0 (2022-01-14)
+-------------------
+* Readded WaitForTopics utility (`#333 <https://github.com/ros2/examples/issues/333>`_)
+* Final batch of examples (`#327 <https://github.com/ros2/examples/issues/327>`_)
+* Update maintainers to Aditya Pande and Shane Loretz (`#332 <https://github.com/ros2/examples/issues/332>`_)
+* Updated maintainers (`#329 <https://github.com/ros2/examples/issues/329>`_)
+* Contributors: Aditya Pande, Audrow Nash
+
 0.13.0 (2021-10-18)
 -------------------
 * Reverted WaitForTopics utility usage (`#326 <https://github.com/ros2/examples/issues/326>`_)

@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_pointcloud_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.14.0 (2022-01-14)
+-------------------
+* Update maintainers to Aditya Pande and Shane Loretz (`#332 <https://github.com/ros2/examples/issues/332>`_)
+* Contributors: Audrow Nash
+
 0.13.0 (2021-10-18)
 -------------------
 

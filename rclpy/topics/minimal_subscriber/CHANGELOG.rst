@@ -2,6 +2,12 @@
 Changelog for package examples_rclpy_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.14.0 (2022-01-14)
+-------------------
+* Update maintainers to Aditya Pande and Shane Loretz (`#332 <https://github.com/ros2/examples/issues/332>`_)
+* Updated maintainers (`#329 <https://github.com/ros2/examples/issues/329>`_)
+* Contributors: Aditya Pande, Audrow Nash
+
 0.13.0 (2021-10-18)
 -------------------
 
