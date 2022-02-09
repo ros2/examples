@@ -79,13 +79,13 @@ public:
   }
 
 private:
-  void topic_1_callback(const std_msgs::msg::String::ConstSharedPtr msg) const
+  void topic_1_callback(const std_msgs::msg::String & msg) const
   {
-    RCLCPP_INFO(this->get_logger(), "Topic 1 news: '%s'", msg->data.c_str());
+    RCLCPP_INFO(this->get_logger(), "Topic 1 news: '%s'", msg.data.c_str());
   }
-  void topic_2_callback(const std_msgs::msg::String::ConstSharedPtr msg) const
+  void topic_2_callback(const std_msgs::msg::String & msg) const
   {
-    RCLCPP_INFO(this->get_logger(), "Topic 2 news: '%s'", msg->data.c_str());
+    RCLCPP_INFO(this->get_logger(), "Topic 2 news: '%s'", msg.data.c_str());
   }
   /// Print network flow endpoints in JSON-like format
   void print_network_flow_endpoints(
