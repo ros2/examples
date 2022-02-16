@@ -22,9 +22,9 @@ rclcpp::Node::SharedPtr g_node = nullptr;
  * examples for the "new" recommended styles. This example is only included
  * for completeness because it is similar to "classic" standalone ROS nodes. */
 
-void topic_callback(const std_msgs::msg::String::ConstSharedPtr msg)
+void topic_callback(const std_msgs::msg::String & msg)
 {
-  RCLCPP_INFO(g_node->get_logger(), "I heard: '%s'", msg->data.c_str());
+  RCLCPP_INFO(g_node->get_logger(), "I heard: '%s'", msg.data.c_str());
 }
 
 int main(int argc, char * argv[])
