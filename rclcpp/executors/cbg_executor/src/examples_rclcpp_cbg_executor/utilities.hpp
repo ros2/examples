@@ -113,8 +113,12 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
   int policy;
   success &= (pthread_getschedparam(native_handle, &policy, &params) == 0);
   if (priority == ThreadPriority::HIGH) {
-    params.sched_priority = sched_get_priority_max(SCHED_FIFO);
+    // Choose a priority value slighly below the middle.
+    params.sched_priority =
+      (sched_get_priority_min(SCHED_FIFO) + sched_get_priority_max(SCHED_FIFO)) / 2 - 1;
   } else {
+    // Choose the lowest priority in SCHED_FIFO. This might still be higher than
+    // the priority of the DDS threads, which are not changed here.
     params.sched_priority = sched_get_priority_min(SCHED_FIFO);
   }
   success &= (pthread_setschedparam(native_handle, SCHED_FIFO, &params) == 0);
@@ -144,8 +148,21 @@ bool configure_native_thread(T native_handle, ThreadPriority priority, int cpu_i
   int policy;
   success &= (pthread_getschedparam(native_handle, &policy, &params) == 0);
   if (priority == ThreadPriority::HIGH) {
-    params.sched_priority = sched_get_priority_max(SCHED_FIFO);
+    // Should be a value of 49 on standard Linux platforms, which is just below
+    // the default priority of 50 for threaded interrupt handling.
+    params.sched_priority =
+      (sched_get_priority_min(SCHED_FIFO) + sched_get_priority_max(SCHED_FIFO)) / 2 - 1;
   } else {
+    // Choose the lowest priority under SCHED_FIFO. This will still be higher than
+    // the priority of the DDS threads, which are not changed here. Normally
+    // the DDS threads will be executed under SCHED_OTHER at nice value 0.
+    // Note that changing the priority below the default user-space priority requires
+    // increasing the nice level. This has not been implemented here for two reasons:
+    // First, the Linux API does not allow to get the Linux-specific thread ID (TID)
+    // for changing the nice value from an arbitrary pthread_t pointer, but only from the
+    // current thread by gettid(). Second, a low prio Executor thread under SCHED_OTHER
+    // would always get 50 ms per second due to RT throttling if not configured
+    // otherwise. This would be difficult to explain in a demo.
     params.sched_priority = sched_get_priority_min(SCHED_FIFO);
   }
   success &= (pthread_setschedparam(native_handle, SCHED_FIFO, &params) == 0);

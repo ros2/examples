@@ -29,14 +29,17 @@ ros2 run examples_rclcpp_cbg_executor ping_pong
 Example of a typical output - note the zero pongs received on the low prio path:
 
 ```
-[INFO] [..] [pong_node]: Running experiment from now on for 10s ...
-[INFO] [..] [ping_node]: Both paths: Sent out 982 of configured 1000 pings, i.e. 98%.
-[INFO] [..] [ping_node]: High prio path: Received 980 pongs, i.e. for 99% of the pings.
-[INFO] [..] [ping_node]: High prio path: Average RTT is 17.2ms.
+[INFO] [..] [pong_node]: Running experiment from now on for 10 seconds ...
+[INFO] [..] [ping_node]: Both paths: Sent out 953 of configured 1000 pings, i.e. 95%.
+[INFO] [..] [ping_node]: High prio path: Received 951 pongs, i.e. for 99% of the pings.
+[INFO] [..] [ping_node]: High prio path: Average RTT is 14.0ms.
+[INFO] [..] [ping_node]: High prio path: Jitter of RTT is 7.460ms.
 [INFO] [..] [ping_node]: Low prio path: Received 0 pongs, i.e. for 0% of the pings.
-[INFO] [..] [pong_node]: High priority executor thread ran for 9995ms.
+[INFO] [..] [pong_node]: High priority executor thread ran for 9542ms.
 [INFO] [..] [pong_node]: Low priority executor thread ran for 0ms.
 ```
+
+Note: On Linux, the two Executor threads, which are both scheduled under `SCHED_FIFO`, can consume only 95% of the CPU time due to [RT throttling](https://wiki.linuxfoundation.org/realtime/documentation/technical_basics/sched_rt_throttling).
 
 Running the two nodes in separate processes:
 
@@ -74,11 +77,13 @@ With these values, about (0.033s - 0.025s) / 0.010s = 80% of the ping messages o
 
 ```
 ...
-[INFO] [..] [ping_node]: Both paths: Sent out 303 of configured 303 pings, i.e. 100%.
-[INFO] [..] [ping_node]: High prio path: Received 302 pongs, i.e. for 99% of the pings.
-[INFO] [..] [ping_node]: High prio path: Average RTT is 25.2ms.
-[INFO] [..] [ping_node]: Low prio path: Received 231 pongs, i.e. for 76% of the pings.
-[INFO] [..] [ping_node]: Low prio path: Average RTT is 196.1ms.
+[INFO] [..] [ping_node]: Both paths: Sent out 294 of configured 303 pings, i.e. 97%.
+[INFO] [..] [ping_node]: High prio path: Received 293 pongs, i.e. for 99% of the pings.
+[INFO] [..] [ping_node]: High prio path: Average RTT is 26.2ms.
+[INFO] [..] [ping_node]: High prio path: Jitter of RTT is 7.654ms.
+[INFO] [..] [ping_node]: Low prio path: Received 216 pongs, i.e. for 73% of the pings.
+[INFO] [..] [ping_node]: Low prio path: Average RTT is 202.5ms.
+[INFO] [..] [ping_node]: Low prio path: Jitter of RTT is 36.301ms.
 ...
 ```
 
