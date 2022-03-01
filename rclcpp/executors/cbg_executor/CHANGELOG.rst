@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_cbg_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.15.0 (2022-03-01)
+-------------------
 * Improve scheduling configuration of examples_rclcpp_cbg_executor package (`#331 <https://github.com/ros2/examples/issues/331>`_)
 * Added jitter measurement to examples_rclcpp_cbg_executor. (`#328 <https://github.com/ros2/examples/issues/328>`_)
 * Contributors: Ralph Lange
