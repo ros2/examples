@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add an example about how to use wait_for_all_acked (`#316 <https://github.com/ros2/examples/issues/316>`_)
+* Contributors: Barry Xu
+
 0.14.0 (2022-01-14)
 -------------------
 * Updated maintainers (`#329 <https://github.com/ros2/examples/issues/329>`_)

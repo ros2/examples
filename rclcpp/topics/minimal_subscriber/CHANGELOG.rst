@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use `const&` signature for read-only sub callbacks (`#337 <https://github.com/ros2/examples/issues/337>`_)
+* Contributors: Abrar Rahman Protyasha
+
 0.14.0 (2022-01-14)
 -------------------
 * Updated maintainers (`#329 <https://github.com/ros2/examples/issues/329>`_)
