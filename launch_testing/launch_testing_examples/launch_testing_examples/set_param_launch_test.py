@@ -62,7 +62,7 @@ def set_parameter(dummy_node, value=True, timeout=5.0):
     request = SetParameters.Request()
     request.parameters = parameters
     future = client.call_async(request)
-    rclpy.spin_until_future_complete(dummy_node, future, timeout_sec=timeout)
+    rclpy.spin_until_complete(dummy_node, future, timeout_sec=timeout)
 
     response = future.result()
     return response.results[0]
