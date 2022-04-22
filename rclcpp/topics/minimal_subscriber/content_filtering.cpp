@@ -26,9 +26,9 @@ class MinimalContentFilteringSubscriber : public rclcpp::Node
 public:
   MinimalContentFilteringSubscriber()
   : Node("minimal_contentfiltering_subscriber"),
-  current_filtering_expression_("data = %0"),
-  current_expression_parameter_("'Hello, world! 1'"),
-  count_(10)
+    current_filtering_expression_("data = %0"),
+    current_expression_parameter_("'Hello, world! 1'"),
+    count_(10)
   {
     rclcpp::SubscriptionOptions sub_options;
     current_expression_parameter_ = "'Hello, world! " + std::to_string(count_) + "'";
@@ -63,7 +63,7 @@ private:
       try {
         subscription_->set_content_filter(
           current_filtering_expression_, {current_expression_parameter_}
-          );
+        );
       } catch (const std::exception & e) {
         RCLCPP_ERROR(this->get_logger(), "%s", e.what());
       }
@@ -83,7 +83,7 @@ private:
           "Content filtering expression and parameter are \"%s\" and \"%s\"",
           options.filter_expression.c_str(), options.expression_parameters[0].c_str());
       } catch (const std::exception & e) {
-          RCLCPP_ERROR(this->get_logger(), "%s", e.what());
+        RCLCPP_ERROR(this->get_logger(), "%s", e.what());
       }
     }
   }
