@@ -8,7 +8,7 @@ This package contains a few different strategies for creating nodes which receiv
  * `static_wait_set_subscriber.cpp` uses a `rclcpp::StaticWaitSet` to wait and poll for data
  * `time_triggered_wait_set_subscriber.cpp` uses a `rclcpp::Waitset` and a timer to poll for data
    periodically
- * `content_filtering.cpp` used the content filtering feature for Subscriptions
+ * `content_filtering.cpp` uses the content filtering feature for Subscriptions
 
 Note that `not_composable.cpp` instantiates a `rclcpp::Node` _without_ subclassing it.
 This was the typical usage model in ROS 1, but this style of coding is not compatible with composing multiple nodes into a single process.
