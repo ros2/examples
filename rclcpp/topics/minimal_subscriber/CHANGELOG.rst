@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.16.0 (2022-04-29)
+-------------------
+* add ContentFilteredTopic example. (`#341 <https://github.com/ros2/examples/issues/341>`_)
+* Contributors: Tomoya Fujita
+
 0.15.0 (2022-03-01)
 -------------------
 * Use `const&` signature for read-only sub callbacks (`#337 <https://github.com/ros2/examples/issues/337>`_)
