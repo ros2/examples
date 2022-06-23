@@ -21,6 +21,8 @@
   <!-- NVIDIA third-party libraries -->
   <depend>cuda</depend>
 
+  <exec_depend>image_tools</exec_depend>
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 

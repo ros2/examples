@@ -20,6 +20,9 @@ find_package(type_adapters REQUIRED)
 
 find_package(CUDA 10.2 REQUIRED)
 
+find_package(ament_cmake_auto REQUIRED)
+ament_auto_find_build_dependencies()
+
 set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS};--expt-relaxed-constexpr")
 include_directories(include)
 
@@ -83,7 +86,7 @@ rclcpp_components_register_node(colorize_node
   EXECUTABLE type_adapt_colorize_node)
 
 # MapNode
-add_library(map_node SHARED
+ament_auto_add_library(map_node SHARED
   src/map_node.cpp
 )
 
@@ -109,8 +112,6 @@ rclcpp_components_register_node(map_node
   PLUGIN "type_adapt_example::MapNode"
   EXECUTABLE type_adapt_map_node)
 
-set_target_properties(julia_set_node PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
-set_target_properties(julia_set_node PROPERTIES INSTALL_RPATH "$ORIGIN/../../type_adapters/lib")
 
 install(TARGETS
   julia_set_cuda
@@ -130,4 +131,4 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_package()
+ament_auto_package()

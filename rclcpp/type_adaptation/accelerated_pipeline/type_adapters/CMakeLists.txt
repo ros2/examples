@@ -19,10 +19,14 @@ find_package(std_msgs REQUIRED)
 
 find_package(CUDA 10.2 REQUIRED)
 
+find_package(ament_cmake_auto REQUIRED)
+ament_auto_find_build_dependencies()
+
 # Type Adapter
-add_library(type_adapters SHARED
+ament_auto_add_library(type_adapters SHARED
   src/image_container.cpp
 )
+
 target_include_directories(type_adapters PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include>"
@@ -55,4 +59,4 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_package()
+ament_auto_package()
