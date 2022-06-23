@@ -19,11 +19,11 @@
 #include "rclcpp_components/register_node_macro.hpp"
 #include "sensor_msgs/msg/image.hpp"
 
-#include "type_adapt_example/nvidia_cuda_sensor_msgs_image_type_adapter.hpp"
-#include "type_adapt_example/cuda_functions.hpp"
+#include "type_adapters/image_container.hpp"
+#include "simple_increment/cuda/cuda_functions.hpp"
 
 RCLCPP_USING_CUSTOM_TYPE_AS_ROS_MESSAGE_TYPE(
-  type_adapt_example::ROSNvidiaCudaContainer,
+  type_adapt_example::ImageContainer,
   sensor_msgs::msg::Image);
 
 namespace type_adapt_example
@@ -42,14 +42,14 @@ public:
       inplace_enabled_ ? "YES" : "NO",
       proc_count_);
     auto callback =
-      [this](std::unique_ptr<type_adapt_example::ROSNvidiaCudaContainer> image) {
+      [this](std::unique_ptr<type_adapt_example::ImageContainer> image) {
         for (int i = 0; i < proc_count_; i++) {
           if (inplace_enabled_) {
             cuda_compute_inc_inplace(
               image->size_in_bytes(), image->cuda_mem(),
               image->cuda_stream()->stream());
           } else {
-            auto copy = std::make_unique<type_adapt_example::ROSNvidiaCudaContainer>(
+            auto copy = std::make_unique<type_adapt_example::ImageContainer>(
               image->header(), image->height(), image->width(), image->encoding(),
               image->step(), image->cuda_stream());
             cuda_compute_inc(
@@ -64,15 +64,15 @@ public:
 
     // This is the input into the pipeline from an external source
     sub_ =
-      create_subscription<type_adapt_example::ROSNvidiaCudaContainer>("image_in", 1, callback);
+      create_subscription<type_adapt_example::ImageContainer>("image_in", 1, callback);
 
     // This is the publication to the rest of the GPU pipeline
-    pub_ = create_publisher<type_adapt_example::ROSNvidiaCudaContainer>("image_out", 1);
+    pub_ = create_publisher<type_adapt_example::ImageContainer>("image_out", 1);
   }
 
 private:
-  rclcpp::Subscription<type_adapt_example::ROSNvidiaCudaContainer>::SharedPtr sub_;
-  rclcpp::Publisher<type_adapt_example::ROSNvidiaCudaContainer>::SharedPtr pub_;
+  rclcpp::Subscription<type_adapt_example::ImageContainer>::SharedPtr sub_;
+  rclcpp::Publisher<type_adapt_example::ImageContainer>::SharedPtr pub_;
 
   const int proc_count_;
   const bool inplace_enabled_;

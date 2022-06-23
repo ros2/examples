@@ -17,11 +17,8 @@
 
 #include "cuda.h"  // NOLINT
 
-void cuda_compute_xor(int n, uint8_t * image, const cudaStream_t & stream);
-
 void cuda_compute_inc(
-  int size, const uint8_t * source, uint8_t * destination,
-  const cudaStream_t & stream);
+  int size, const uint8_t * source, uint8_t * destination, const cudaStream_t & stream);
 
 void cuda_compute_inc_inplace(int size, uint8_t * image, const cudaStream_t & stream);
 

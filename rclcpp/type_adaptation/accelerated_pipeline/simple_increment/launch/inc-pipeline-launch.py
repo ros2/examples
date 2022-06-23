@@ -87,7 +87,7 @@ def launch_setup(context):
                                                  'height': RESOLUTIONS[resolution][1]}])
     # composite
     composite_node = ComposableNode(
-        package='type_adapt_example',
+        package='simple_inc_example',
         plugin='type_adapt_example::IncNode',
         name='inc_node',
         parameters=[{'proc_count': IMAGE_PROC_COUNT},
@@ -111,7 +111,7 @@ def launch_setup(context):
     pipeline_nodes = [cam2image_node]
 
     pipeline_nodes.append(ComposableNode(
-        package='type_adapt_example',
+        package='simple_inc_example',
         plugin='type_adapt_example::IncNode',
         name='inc_node0',
         parameters=[{'inplace_enabled': INPLACE_ENABLED}],
@@ -119,7 +119,7 @@ def launch_setup(context):
 
     for i in range(1, IMAGE_PROC_COUNT - 1):
         pipeline_nodes.append(ComposableNode(
-            package='type_adapt_example',
+            package='simple_inc_example',
             plugin='type_adapt_example::IncNode',
             name='inc_node%d' % (i),
             parameters=[{'inplace_enabled': INPLACE_ENABLED}],
@@ -127,7 +127,7 @@ def launch_setup(context):
                         ('/image_out', '/image_out%d' % (i))]))
 
     pipeline_nodes.append(ComposableNode(
-        package='type_adapt_example',
+        package='simple_inc_example',
         plugin='type_adapt_example::IncNode',
         name='inc_node%d' % (IMAGE_PROC_COUNT - 1),
         parameters=[{'inplace_enabled': INPLACE_ENABLED}],
