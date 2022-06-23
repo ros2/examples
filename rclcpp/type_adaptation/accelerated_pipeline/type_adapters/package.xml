@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>type_adapters</name>
+  <version>0.1.0</version>
+  <description>
+    Type Adaptation implementation for image messages
+  </description>
+  <maintainer email="hemals@nvidia.com">Hemal Shah</maintainer>
+  <license>Apache License 2.0</license>
+  <author email="clalancette@openrobotics.org">Chris Lalancette</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+
+  <!-- NVIDIA third-party libraries -->
+  <depend>cuda</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
