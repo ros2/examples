@@ -20,6 +20,13 @@ find_package(type_adapters REQUIRED)
 
 find_package(CUDA 10.2 REQUIRED)
 
+option (USE_NVTX "Enable NVTX markers for improved profiling" OFF)
+if (USE_NVTX)
+  add_definitions(-DUSE_NVTX)
+  link_directories("${CUDA_TOOLKIT_ROOT_DIR}/lib64")
+  link_libraries("nvToolsExt")
+endif()
+
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
@@ -45,6 +52,7 @@ target_include_directories(julia_set_node PUBLIC
 target_link_libraries(julia_set_node
   julia_set_cuda
   ${CUDA_LIBRARIES}
+  ${CUDA_nvToolsExt_LIBRARY}
 )
 
 ament_target_dependencies(julia_set_node
@@ -55,7 +63,7 @@ ament_target_dependencies(julia_set_node
 )
 
 rclcpp_components_register_node(julia_set_node
-  PLUGIN "type_adapt_example::JuliasetNode"
+  PLUGIN "type_adapt_example::JuliaSetNode"
   EXECUTABLE type_adapt_julia_set_node)
 
 # ColorizeNode
@@ -72,6 +80,7 @@ target_include_directories(colorize_node PUBLIC
 target_link_libraries(colorize_node
   julia_set_cuda
   ${CUDA_LIBRARIES}
+  ${CUDA_nvToolsExt_LIBRARY}
 )
 
 ament_target_dependencies(colorize_node
@@ -99,6 +108,7 @@ target_include_directories(map_node PUBLIC
 target_link_libraries(map_node
   julia_set_cuda
   ${CUDA_LIBRARIES}
+  ${CUDA_nvToolsExt_LIBRARY}
 )
 
 ament_target_dependencies(map_node

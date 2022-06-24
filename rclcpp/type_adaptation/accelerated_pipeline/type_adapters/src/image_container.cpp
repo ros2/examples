@@ -23,6 +23,7 @@
 
 #include "cuda.h"  // NOLINT
 #include "cuda_runtime.h"  // NOLINT
+#include <nvToolsExt.h>  // NOLINT
 
 namespace type_adapt_example
 {
@@ -67,6 +68,7 @@ void CUDAMemoryWrapper::copy_to_device(
   uint8_t * host_mem, size_t bytes_to_copy,
   const cudaStream_t & stream)
 {
+  nvtxRangePushA("CopyToDevice");
   if (bytes_to_copy > bytes_allocated_) {
     throw std::invalid_argument("Tried to copy too many bytes to device");
   }
@@ -77,12 +79,14 @@ void CUDAMemoryWrapper::copy_to_device(
     throw std::runtime_error("Failed to copy memory to the GPU");
   }
   cudaStreamSynchronize(stream);
+  nvtxRangePop();
 }
 
 void CUDAMemoryWrapper::copy_from_device(
   uint8_t * host_mem, size_t bytes_to_copy,
   const cudaStream_t & stream)
 {
+  nvtxRangePushA("CopyFromDevice");
   if (bytes_to_copy > bytes_allocated_) {
     throw std::invalid_argument("Tried to copy too many bytes from device");
   }
@@ -93,6 +97,7 @@ void CUDAMemoryWrapper::copy_from_device(
     throw std::runtime_error("Failed to copy memory from the GPU");
   }
   cudaStreamSynchronize(stream);
+  nvtxRangePop();
 }
 
 uint8_t * CUDAMemoryWrapper::device_memory()
@@ -135,8 +140,10 @@ ImageContainer::ImageContainer(
   encoding_(encoding),
   step_(step)
 {
+  nvtxRangePushA("TypeAdapter:Create");
   cuda_mem_ = std::make_shared<CUDAMemoryWrapper>(size_in_bytes());
   cuda_event_ = std::make_shared<CUDAEventWrapper>();
+  nvtxRangePop();
 }
 
 ImageContainer::ImageContainer(
@@ -149,9 +156,11 @@ ImageContainer::ImageContainer(
     unique_sensor_msgs_image->encoding,
     unique_sensor_msgs_image->step)
 {
+  nvtxRangePushA("TypeAdapter:CreateFromMessage");
   cuda_mem_->copy_to_device(
     &unique_sensor_msgs_image->data[0],
     size_in_bytes(), cuda_stream_->stream());
+  nvtxRangePop();
 }
 
 ImageContainer::ImageContainer(
@@ -162,6 +171,7 @@ ImageContainer::ImageContainer(
 
 ImageContainer::ImageContainer(const ImageContainer & other)
 {
+  nvtxRangePushA("TypeAdapter:Copy");
   header_ = other.header_;
 
   height_ = other.height_;
@@ -186,6 +196,7 @@ ImageContainer::ImageContainer(const ImageContainer & other)
   {
     throw std::runtime_error("Failed to copy memory from the GPU");
   }
+  nvtxRangePop();
 }
 
 
@@ -240,6 +251,7 @@ ImageContainer::cuda_mem()
 void
 ImageContainer::get_sensor_msgs_image(sensor_msgs::msg::Image & destination) const
 {
+  nvtxRangePushA("TypeAdapter:GetMsg");
   destination.header = header_;
   destination.height = height_;
   destination.width = width_;
@@ -247,6 +259,7 @@ ImageContainer::get_sensor_msgs_image(sensor_msgs::msg::Image & destination) con
   destination.step = step_;
   destination.data.resize(size_in_bytes());
   cuda_mem_->copy_from_device(&destination.data[0], size_in_bytes(), cuda_stream_->stream());
+  nvtxRangePop();
 }
 
 size_t

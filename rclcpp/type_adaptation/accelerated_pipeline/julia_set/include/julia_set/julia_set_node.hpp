@@ -35,11 +35,11 @@ namespace type_adapt_example
  *
  */
 
-class JuliasetNode : public rclcpp::Node
+class JuliaSetNode : public rclcpp::Node
 {
 public:
-  explicit JuliasetNode(const rclcpp::NodeOptions options = rclcpp::NodeOptions());
-  ~JuliasetNode() {}
+  explicit JuliaSetNode(const rclcpp::NodeOptions options = rclcpp::NodeOptions());
+  ~JuliaSetNode() {}
 
 private:
 /**
@@ -47,14 +47,15 @@ private:
 *
 * @param img_msg Pointer to the image msg
 */
-  void JuliasetCallback(std::unique_ptr<type_adapt_example::ImageContainer> image);
+  void JuliasetCallbackCustomType(std::unique_ptr<type_adapt_example::ImageContainer> image);
+  void JuliasetCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg);
 
-  // Flag for pipeline mode or composite mode
-  const bool is_composite_;
+  // Flag for enabling or disabling type adaptation
+  const bool type_adaptation_enabled_;
+  // Current node number in the pipeline
+  const uint8_t proc_id_;
   // Flag for intialization.
   bool is_initialized;
-  // Current node number in case of pipeline mode
-  const uint8_t proc_id_;
   // Counter
   size_t counter_{0};
   // Juliaset start x
@@ -68,8 +69,13 @@ private:
   // Juliaset handle
   std::unique_ptr<Juliaset> juliaset_handle_;
 
-  rclcpp::Subscription<type_adapt_example::ImageContainer>::SharedPtr sub_;
-  rclcpp::Publisher<type_adapt_example::ImageContainer>::SharedPtr pub_;
+  // Publisher and subscriber when type_adaptation is enabled
+  rclcpp::Subscription<type_adapt_example::ImageContainer>::SharedPtr custom_type_sub_ {nullptr};
+  rclcpp::Publisher<type_adapt_example::ImageContainer>::SharedPtr custom_type_pub_{nullptr};
+
+  // Publisher and subscriber when type_adaptation is disabled
+  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_{nullptr};
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_{nullptr};
 };
 }  // namespace type_adapt_example
 #endif  // TYPE_ADAPT_EXAMPLE__JULIASET_NODE_HPP_

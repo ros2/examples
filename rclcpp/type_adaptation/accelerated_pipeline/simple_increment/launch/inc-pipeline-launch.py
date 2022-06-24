@@ -19,16 +19,16 @@ import platform
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.conditions import IfCondition, LaunchConfigurationEquals
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
-from launch.substitutions import LaunchConfiguration
 
-RESOLUTIONS = {"16K": (15360, 8640),
-               "8K": (7680, 4320),
-               "4K": (3840, 2160),
-               "1080p": (1920, 1080),
-               "720p": (1280, 720),
-               "480p": (852, 480)}
+RESOLUTIONS = {'16K': (15360, 8640),
+               '8K': (7680, 4320),
+               '4K': (3840, 2160),
+               '1080p': (1920, 1080),
+               '720p': (1280, 720),
+               '480p': (852, 480)}
 IMAGE_HZ = 100.0
 
 IMAGE_PROC_COUNT = 20
@@ -51,7 +51,6 @@ launch_args = [DeclareLaunchArgument('config', default_value='pipeline',
 
 def generate_launch_description():
     """Generate launch description with cam2image feeding N IncNode pipeline."""
-
     ld = LaunchDescription(launch_args)
     ld.add_action(OpaqueFunction(function=launch_setup))
     return ld
@@ -72,7 +71,7 @@ def launch_setup(context):
     container_prefix = ''
     if enable_nsys:
         nsys_profile_name = build_profile_name(nsys_profile_label, config, enable_mt, resolution)
-        container_prefix = f"nsys profile {nsys_profile_flags} -o {nsys_profile_name}"
+        container_prefix = f'nsys profile {nsys_profile_flags} -o {nsys_profile_name}'
 
     cam2image_node = ComposableNode(package='image_tools',
                                     name='cam2image',
@@ -101,8 +100,8 @@ def launch_setup(context):
         executable='component_container' + ('_mt' if enable_mt else ''),
         composable_node_descriptions=[cam2image_node, composite_node],
         prefix=container_prefix,
-        sigkill_timeout="500" if enable_nsys else "5",
-        sigterm_timeout="500" if enable_nsys else "5",
+        sigkill_timeout='500' if enable_nsys else '5',
+        sigterm_timeout='500' if enable_nsys else '5',
         output='both',
         condition=LaunchConfigurationEquals('config', 'composite')
     )
@@ -140,8 +139,8 @@ def launch_setup(context):
         package='rclcpp_components',
         executable='component_container' + ('_mt' if enable_mt else ''),
         prefix=container_prefix,
-        sigkill_timeout="500" if enable_nsys else "5",
-        sigterm_timeout="500" if enable_nsys else "5",
+        sigkill_timeout='500' if enable_nsys else '5',
+        sigterm_timeout='500' if enable_nsys else '5',
         composable_node_descriptions=pipeline_nodes,
         output='both',
         condition=LaunchConfigurationEquals('config', 'pipeline')
@@ -151,4 +150,5 @@ def launch_setup(context):
 
 
 def build_profile_name(label, config, enable_mt, resolution):
-    return f"ros-type_adapt-{platform.machine()}{'' if not enable_mt else '-mt'}-{config}-{resolution}-{int(IMAGE_HZ)}hz{'' if not label else '-' + label}"
+    return f"ros-type_adapt-{platform.machine()}{'' if not enable_mt else '-mt'}" +\
+        f"-{config}-{resolution}-{int(IMAGE_HZ)}hz{'' if not label else '-' + label}"

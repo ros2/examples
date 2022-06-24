@@ -18,11 +18,10 @@ import platform
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch.conditions import IfCondition, LaunchConfigurationEquals
+from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
-from numpy import float
 
 RESOLUTIONS = {'16K': (15360, 8640),
                '8K': (7680, 4320),
@@ -32,7 +31,6 @@ RESOLUTIONS = {'16K': (15360, 8640),
                '480p': (852, 480)}
 IMAGE_HZ = 100.0
 
-# IMAGE_PROC_COUNT = 3
 MAX_ITERATION = 50
 
 JULIASET_PARAMS = [{'min_x_range': -2.5},
@@ -41,11 +39,11 @@ JULIASET_PARAMS = [{'min_x_range': -2.5},
                    {'max_y_range': 1.5},
                    {'start_x': 0.7885},
                    {'start_y': 0.7885},
-                   {'boundary_radius': 25.0},
-                   {'max_iterations': float(MAX_ITERATION)}]
+                   {'boundary_radius': 16.0},
+                   {'max_iterations': MAX_ITERATION}]
 
-launch_args = [DeclareLaunchArgument('config', default_value='composite',
-                                     description='Graph configuration (pipeline|composite)'),
+launch_args = [DeclareLaunchArgument('enable_type_adapt', default_value='true',
+                                     description='Enable type adaptation mode'),
                DeclareLaunchArgument('resolution', default_value='1080p',
                                      description='Resolution key (16K|8K|4K|1080p|720p|480p)'),
                DeclareLaunchArgument('enable_mt', default_value='false',
@@ -60,29 +58,25 @@ launch_args = [DeclareLaunchArgument('config', default_value='composite',
 
 
 def generate_launch_description():
-    """Generate launch description with cam2image feeding N JuliasetNode pipeline."""
+    """Generate launch description with cam2image feeding N JuliaSetNode pipeline."""
     ld = LaunchDescription(launch_args)
     ld.add_action(OpaqueFunction(function=launch_setup))
     return ld
 
 
 def launch_setup(context):
-    config = LaunchConfiguration('config').perform(context)
+    enable_type_adapt = IfCondition(LaunchConfiguration('enable_type_adapt')).evaluate(context)
     resolution = LaunchConfiguration('resolution').perform(context)
-    enable_mt = IfCondition(LaunchConfiguration(
-        'enable_mt')).evaluate(context)
-    enable_nsys = IfCondition(LaunchConfiguration(
-        'enable_nsys')).evaluate(context)
-    nsys_profile_label = LaunchConfiguration(
-        'nsys_profile_label').perform(context)
-    nsys_profile_flags = LaunchConfiguration(
-        'nsys_profile_flags').perform(context)
+    enable_mt = IfCondition(LaunchConfiguration('enable_mt')).evaluate(context)
+    enable_nsys = IfCondition(LaunchConfiguration('enable_nsys')).evaluate(context)
+    nsys_profile_label = LaunchConfiguration('nsys_profile_label').perform(context)
+    nsys_profile_flags = LaunchConfiguration('nsys_profile_flags').perform(context)
 
     container_prefix = ''
-    # container_prefix = 'cuda-gdb -ex run --args'
 
     if enable_nsys:
-        nsys_profile_name = build_profile_name(nsys_profile_label, config, enable_mt, resolution)
+        nsys_profile_name = build_profile_name(
+            nsys_profile_label, enable_type_adapt, enable_mt, resolution)
         container_prefix = f'nsys profile {nsys_profile_flags} -o {nsys_profile_name}'
 
     cam2image_node = ComposableNode(package='image_tools',
@@ -96,43 +90,23 @@ def launch_setup(context):
                                                  'frequency': IMAGE_HZ,
                                                  'width': RESOLUTIONS[resolution][0],
                                                  'height': RESOLUTIONS[resolution][1]}])
-    # composite
-    composite_node = ComposableNode(
-        package='julia_set_example',
-        plugin='type_adapt_example::JuliasetNode',
-        name='juliaset_node',
-        parameters=[{'is_composite': True}] + JULIASET_PARAMS,
-        remappings=[('/image_out', '/composite/image_out')])
 
-    composite_container = ComposableNodeContainer(
-        name='container',
-        namespace='',
-        package='rclcpp_components',
-        executable='component_container' + ('_mt' if enable_mt else ''),
-        composable_node_descriptions=[cam2image_node, composite_node],
-        prefix=container_prefix,
-        sigkill_timeout='500' if enable_nsys else '5',
-        sigterm_timeout='500' if enable_nsys else '5',
-        output='both',
-        condition=LaunchConfigurationEquals('config', 'composite')
-    )
-
-    # pipeline
     pipeline_nodes = [cam2image_node]
 
     pipeline_nodes.append(ComposableNode(
         package='julia_set_example',
         plugin='type_adapt_example::MapNode',
         name='map_node',
-        parameters=JULIASET_PARAMS,
+        parameters=[{'type_adaptation_enabled': enable_type_adapt}] + JULIASET_PARAMS,
         remappings=[('/image_out', '/image_out0')]))
 
     for i in range(1, MAX_ITERATION):
         pipeline_nodes.append(ComposableNode(
             package='julia_set_example',
-            plugin='type_adapt_example::JuliasetNode',
+            plugin='type_adapt_example::JuliaSetNode',
             name='juliaset_node%d' % (i),
-            parameters=[{'is_composite': False}, {'proc_id': i}] + JULIASET_PARAMS,
+            parameters=[{'type_adaptation_enabled': enable_type_adapt},
+                        {'proc_id': i}] + JULIASET_PARAMS,
             remappings=[('/image_in', '/image_out%d' % (i - 1)),
                         ('/image_out', '/image_out%d' % (i))]))
 
@@ -140,7 +114,8 @@ def launch_setup(context):
         package='julia_set_example',
         plugin='type_adapt_example::ColorizeNode',
         name='colorize_node',
-        parameters=[{'max_iterations': float(MAX_ITERATION)}] + JULIASET_PARAMS,
+        parameters=[{'max_iterations': MAX_ITERATION},
+                    {'type_adaptation_enabled': enable_type_adapt}] + JULIASET_PARAMS,
         remappings=[('/image_in', '/image_out%d' % (MAX_ITERATION - 1)),
                     ('/image_out', '/pipeline/image_out')]))
 
@@ -150,15 +125,15 @@ def launch_setup(context):
         package='rclcpp_components',
         executable='component_container' + ('_mt' if enable_mt else ''),
         prefix=container_prefix,
-        sigkill_timeout='500' if enable_nsys else '5',
-        sigterm_timeout='500' if enable_nsys else '5',
+        sigkill_timeout='50' if enable_nsys else '5',
+        sigterm_timeout='50' if enable_nsys else '5',
         composable_node_descriptions=pipeline_nodes,
-        output='both',
-        condition=LaunchConfigurationEquals('config', 'pipeline')
+        output='both'
     )
 
-    return [pipeline_container, composite_container]
+    return [pipeline_container]
 
 
-def build_profile_name(label, config, enable_mt, resolution):
-    return f"ros-type_adapt-{platform.machine()}{'' if not enable_mt else '-mt'}-{config}-{resolution}-{int(IMAGE_HZ)}hz{'' if not label else '-' + label}"
+def build_profile_name(label, enable_type_adapt, enable_mt, resolution):
+    return f"ros-type_adapt-{platform.machine()}{'' if not enable_mt else '-mt'}" +\
+        f"-{enable_type_adapt}-{resolution}-{int(IMAGE_HZ)}hz{'' if not label else '-' + label}"

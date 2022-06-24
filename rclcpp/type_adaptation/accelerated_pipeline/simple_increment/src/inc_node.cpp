@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <nvToolsExt.h>  // NOLINT
+
 #include <memory>
 #include <utility>
 
@@ -35,47 +37,87 @@ public:
   explicit IncNode(rclcpp::NodeOptions options)
   : rclcpp::Node("inc_node", options.use_intra_process_comms(true)),
     proc_count_(declare_parameter<int>("proc_count", 1)),
-    inplace_enabled_(declare_parameter<bool>("inplace_enabled", false))
+    inplace_enabled_(declare_parameter<bool>("inplace_enabled", false)),
+    type_adaptation_enabled_(declare_parameter<bool>("type_adaptation_enabled", true))
   {
     RCLCPP_INFO(
-      get_logger(), "Setting up node to run with inplace_enabled %s with proc count %d",
-      inplace_enabled_ ? "YES" : "NO",
-      proc_count_);
-    auto callback =
-      [this](std::unique_ptr<type_adapt_example::ImageContainer> image) {
-        for (int i = 0; i < proc_count_; i++) {
-          if (inplace_enabled_) {
-            cuda_compute_inc_inplace(
-              image->size_in_bytes(), image->cuda_mem(),
-              image->cuda_stream()->stream());
-          } else {
-            auto copy = std::make_unique<type_adapt_example::ImageContainer>(
-              image->header(), image->height(), image->width(), image->encoding(),
-              image->step(), image->cuda_stream());
-            cuda_compute_inc(
-              image->size_in_bytes(), image->cuda_mem(),
-              copy->cuda_mem(), copy->cuda_stream()->stream());
-            image = std::move(copy);
-          }
-        }
+      get_logger(), "Setting up node to run with inplace_enabled %s with proc count %d and type \
+      adaptation enabled: %s", inplace_enabled_ ? "YES" : "NO", proc_count_,
+      type_adaptation_enabled_ ? "YES" : "NO");
 
-        pub_->publish(std::move(image));
-      };
+    if (type_adaptation_enabled_) {
+      custom_type_sub_ = create_subscription<type_adapt_example::ImageContainer>(
+        "image_in", 1, std::bind(&IncNode::custom_type_callback, this, std::placeholders::_1));
+      custom_type_pub_ = create_publisher<type_adapt_example::ImageContainer>("image_out", 1);
+    } else {
+      sub_ =
+        create_subscription<sensor_msgs::msg::Image>(
+        "image_in", 1, std::bind(&IncNode::callback, this, std::placeholders::_1));
+      pub_ = create_publisher<sensor_msgs::msg::Image>("image_out", 1);
+    }
+  }
 
-    // This is the input into the pipeline from an external source
-    sub_ =
-      create_subscription<type_adapt_example::ImageContainer>("image_in", 1, callback);
+  void custom_type_callback(std::unique_ptr<type_adapt_example::ImageContainer> image)
+  {
+    nvtxRangePushA("IncNode: Image custom_type_callback");
+    for (int i = 0; i < proc_count_; i++) {
+      if (inplace_enabled_) {
+        cuda_compute_inc_inplace(
+          image->size_in_bytes(), image->cuda_mem(),
+          image->cuda_stream()->stream());
+      } else {
+        auto copy = std::make_unique<type_adapt_example::ImageContainer>(
+          image->header(), image->height(), image->width(), image->encoding(),
+          image->step(), image->cuda_stream());
+        cuda_compute_inc(
+          image->size_in_bytes(), image->cuda_mem(),
+          copy->cuda_mem(), copy->cuda_stream()->stream());
+        image = std::move(copy);
+      }
+    }
+    custom_type_pub_->publish(std::move(image));
+    nvtxRangePop();
+  }
 
-    // This is the publication to the rest of the GPU pipeline
-    pub_ = create_publisher<type_adapt_example::ImageContainer>("image_out", 1);
+  void callback(std::unique_ptr<sensor_msgs::msg::Image> image_msg)
+  {
+    nvtxRangePushA("IncNode: Image callback");
+    std::unique_ptr<type_adapt_example::ImageContainer> image =
+      std::make_unique<type_adapt_example::ImageContainer>(std::move(image_msg));
+    for (int i = 0; i < proc_count_; i++) {
+      if (inplace_enabled_) {
+        cuda_compute_inc_inplace(
+          image->size_in_bytes(), image->cuda_mem(),
+          image->cuda_stream()->stream());
+      } else {
+        auto copy = std::make_unique<type_adapt_example::ImageContainer>(
+          image->header(), image->height(), image->width(), image->encoding(),
+          image->step(), image->cuda_stream());
+        cuda_compute_inc(
+          image->size_in_bytes(), image->cuda_mem(),
+          copy->cuda_mem(), copy->cuda_stream()->stream());
+        image = std::move(copy);
+      }
+    }
+    // Convert in-place before publishing to "disable" type adaptation
+    sensor_msgs::msg::Image image_msg_out;
+    image->get_sensor_msgs_image(image_msg_out);
+    pub_->publish(image_msg_out);
+    nvtxRangePop();
   }
 
 private:
-  rclcpp::Subscription<type_adapt_example::ImageContainer>::SharedPtr sub_;
-  rclcpp::Publisher<type_adapt_example::ImageContainer>::SharedPtr pub_;
+  // Publisher and subscriber when type_adaptation is enabled
+  rclcpp::Subscription<type_adapt_example::ImageContainer>::SharedPtr custom_type_sub_ {nullptr};
+  rclcpp::Publisher<type_adapt_example::ImageContainer>::SharedPtr custom_type_pub_{nullptr};
+
+  // Publisher and subscriber when type_adaptation is disabled
+  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_{nullptr};
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_{nullptr};
 
   const int proc_count_;
   const bool inplace_enabled_;
+  const bool type_adaptation_enabled_;
 };
 
 }  // namespace type_adapt_example

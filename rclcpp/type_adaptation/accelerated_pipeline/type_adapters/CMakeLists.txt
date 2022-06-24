@@ -19,6 +19,13 @@ find_package(std_msgs REQUIRED)
 
 find_package(CUDA 10.2 REQUIRED)
 
+option (USE_NVTX "Enable NVTX markers for improved profiling" OFF)
+if (USE_NVTX)
+  add_definitions(-DUSE_NVTX)
+  link_directories("${CUDA_TOOLKIT_ROOT_DIR}/lib64")
+  link_libraries("nvToolsExt")
+endif()
+
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
@@ -33,7 +40,8 @@ target_include_directories(type_adapters PUBLIC
   ${CUDA_INCLUDE_DIRS}
 )
 target_link_libraries(type_adapters
-${CUDA_LIBRARIES}
+  ${CUDA_nvToolsExt_LIBRARY}
+  ${CUDA_LIBRARIES}
 )
 ament_target_dependencies(type_adapters
   rclcpp

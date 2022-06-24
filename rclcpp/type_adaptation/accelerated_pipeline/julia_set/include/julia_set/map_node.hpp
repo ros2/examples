@@ -47,8 +47,11 @@ private:
 *
 * @param img_msg Pointer to the image msg
 */
-  void MapCallback(std::unique_ptr<type_adapt_example::ImageContainer> image);
+  void MapCallbackCustomType(std::unique_ptr<type_adapt_example::ImageContainer> image);
+  void MapCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg);
 
+  // Flag for enabling or disabling type adaptation
+  const bool type_adaptation_enabled_;
   // Flag for intialization.
   bool is_initialized;
   // Juliaset prams
@@ -58,8 +61,13 @@ private:
   // Juliaset handle
   std::unique_ptr<Juliaset> juliaset_handle_;
 
-  rclcpp::Subscription<type_adapt_example::ImageContainer>::SharedPtr sub_;
-  rclcpp::Publisher<type_adapt_example::ImageContainer>::SharedPtr pub_;
+  // Publisher and subscriber when type_adaptation is enabled
+  rclcpp::Subscription<type_adapt_example::ImageContainer>::SharedPtr custom_type_sub_ {nullptr};
+  rclcpp::Publisher<type_adapt_example::ImageContainer>::SharedPtr custom_type_pub_{nullptr};
+
+  // Publisher and subscriber when type_adaptation is disabled
+  rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_{nullptr};
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_{nullptr};
 };
 }  // namespace type_adapt_example
 #endif  // TYPE_ADAPT_EXAMPLE__MAP_NODE_HPP_
