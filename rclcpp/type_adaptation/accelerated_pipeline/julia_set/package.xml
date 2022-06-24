@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
-  <name>julia_set_example</name>
+  <name>julia_set</name>
   <version>0.1.0</version>
   <description>
     Type Adaptation example for Julia set
@@ -16,7 +16,7 @@
   <depend>rclcpp_components</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
-  <depend>type_adapters</depend>
+  <depend>example_type_adapters</depend>
 
   <!-- NVIDIA third-party libraries -->
   <depend>cuda</depend>

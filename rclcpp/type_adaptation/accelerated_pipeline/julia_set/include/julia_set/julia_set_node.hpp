@@ -24,10 +24,12 @@
 #include "type_adapters/image_container.hpp"
 
 RCLCPP_USING_CUSTOM_TYPE_AS_ROS_MESSAGE_TYPE(
-  type_adapt_example::ImageContainer,
+  type_adaptation::example_type_adapters::ImageContainer,
   sensor_msgs::msg::Image);
 
-namespace type_adapt_example
+namespace type_adaptation
+{
+namespace julia_set
 {
 
 /**
@@ -47,7 +49,8 @@ private:
 *
 * @param img_msg Pointer to the image msg
 */
-  void JuliasetCallbackCustomType(std::unique_ptr<type_adapt_example::ImageContainer> image);
+  void JuliasetCallbackCustomType(
+    std::unique_ptr<type_adaptation::example_type_adapters::ImageContainer> image);
   void JuliasetCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg);
 
   // Flag for enabling or disabling type adaptation
@@ -70,12 +73,16 @@ private:
   std::unique_ptr<Juliaset> juliaset_handle_;
 
   // Publisher and subscriber when type_adaptation is enabled
-  rclcpp::Subscription<type_adapt_example::ImageContainer>::SharedPtr custom_type_sub_ {nullptr};
-  rclcpp::Publisher<type_adapt_example::ImageContainer>::SharedPtr custom_type_pub_{nullptr};
+  rclcpp::Subscription<type_adaptation::example_type_adapters::ImageContainer>::SharedPtr
+    custom_type_sub_ {
+    nullptr};
+  rclcpp::Publisher<type_adaptation::example_type_adapters::ImageContainer>::SharedPtr
+    custom_type_pub_{nullptr};
 
   // Publisher and subscriber when type_adaptation is disabled
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_{nullptr};
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_{nullptr};
 };
-}  // namespace type_adapt_example
+}  // namespace julia_set
+}  // namespace type_adaptation
 #endif  // JULIA_SET__JULIA_SET_NODE_HPP_

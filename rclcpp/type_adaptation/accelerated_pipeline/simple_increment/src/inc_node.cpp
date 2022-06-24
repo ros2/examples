@@ -25,10 +25,12 @@
 #include "simple_increment/cuda/cuda_functions.hpp"
 
 RCLCPP_USING_CUSTOM_TYPE_AS_ROS_MESSAGE_TYPE(
-  type_adapt_example::ImageContainer,
+  type_adaptation::example_type_adapters::ImageContainer,
   sensor_msgs::msg::Image);
 
-namespace type_adapt_example
+namespace type_adaptation
+{
+namespace simple_increment
 {
 
 class IncNode : public rclcpp::Node
@@ -47,9 +49,11 @@ public:
       get_logger(), "Type adaptation enabled: %s", type_adaptation_enabled_ ? "YES" : "NO");
 
     if (type_adaptation_enabled_) {
-      custom_type_sub_ = create_subscription<type_adapt_example::ImageContainer>(
+      custom_type_sub_ =
+        create_subscription<type_adaptation::example_type_adapters::ImageContainer>(
         "image_in", 1, std::bind(&IncNode::custom_type_callback, this, std::placeholders::_1));
-      custom_type_pub_ = create_publisher<type_adapt_example::ImageContainer>("image_out", 1);
+      custom_type_pub_ = create_publisher<type_adaptation::example_type_adapters::ImageContainer>(
+        "image_out", 1);
     } else {
       sub_ =
         create_subscription<sensor_msgs::msg::Image>(
@@ -58,7 +62,8 @@ public:
     }
   }
 
-  void custom_type_callback(std::unique_ptr<type_adapt_example::ImageContainer> image)
+  void custom_type_callback(
+    std::unique_ptr<type_adaptation::example_type_adapters::ImageContainer> image)
   {
     nvtxRangePushA("IncNode: Image custom_type_callback");
     for (int i = 0; i < proc_count_; i++) {
@@ -67,9 +72,9 @@ public:
           image->size_in_bytes(), image->cuda_mem(),
           image->cuda_stream()->stream());
       } else {
-        auto copy = std::make_unique<type_adapt_example::ImageContainer>(
-          image->header(), image->height(), image->width(), image->encoding(),
-          image->step(), image->cuda_stream());
+        auto copy = std::make_unique<type_adaptation::example_type_adapters::ImageContainer>(
+          image->header(), image->height(),
+          image->width(), image->encoding(), image->step(), image->cuda_stream());
         cuda_compute_inc(
           image->size_in_bytes(), image->cuda_mem(),
           copy->cuda_mem(), copy->cuda_stream()->stream());
@@ -83,15 +88,15 @@ public:
   void callback(std::unique_ptr<sensor_msgs::msg::Image> image_msg)
   {
     nvtxRangePushA("IncNode: Image callback");
-    std::unique_ptr<type_adapt_example::ImageContainer> image =
-      std::make_unique<type_adapt_example::ImageContainer>(std::move(image_msg));
+    using ImageContainer = type_adaptation::example_type_adapters::ImageContainer;
+    std::unique_ptr<ImageContainer> image = std::make_unique<ImageContainer>(std::move(image_msg));
     for (int i = 0; i < proc_count_; i++) {
       if (inplace_enabled_) {
         cuda_compute_inc_inplace(
           image->size_in_bytes(), image->cuda_mem(),
           image->cuda_stream()->stream());
       } else {
-        auto copy = std::make_unique<type_adapt_example::ImageContainer>(
+        auto copy = std::make_unique<ImageContainer>(
           image->header(), image->height(), image->width(), image->encoding(),
           image->step(), image->cuda_stream());
         cuda_compute_inc(
@@ -109,8 +114,10 @@ public:
 
 private:
   // Publisher and subscriber when type_adaptation is enabled
-  rclcpp::Subscription<type_adapt_example::ImageContainer>::SharedPtr custom_type_sub_ {nullptr};
-  rclcpp::Publisher<type_adapt_example::ImageContainer>::SharedPtr custom_type_pub_{nullptr};
+  rclcpp::Subscription<type_adaptation::example_type_adapters::ImageContainer>::SharedPtr
+    custom_type_sub_ {nullptr};
+  rclcpp::Publisher<type_adaptation::example_type_adapters::ImageContainer>::SharedPtr
+    custom_type_pub_{nullptr};
 
   // Publisher and subscriber when type_adaptation is disabled
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_{nullptr};
@@ -121,6 +128,7 @@ private:
   const bool type_adaptation_enabled_;
 };
 
-}  // namespace type_adapt_example
+}  // namespace simple_increment
+}  // namespace type_adaptation
 
-RCLCPP_COMPONENTS_REGISTER_NODE(type_adapt_example::IncNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(type_adaptation::simple_increment::IncNode)

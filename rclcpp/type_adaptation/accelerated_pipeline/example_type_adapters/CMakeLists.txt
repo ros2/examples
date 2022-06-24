@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(type_adapters)
+project(example_type_adapters)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -19,31 +19,29 @@ find_package(std_msgs REQUIRED)
 
 find_package(CUDA 10.2 REQUIRED)
 
-option(USE_NVTX "Enable NVTX markers for improved profiling" OFF)
-if(USE_NVTX)
-  add_definitions(-DUSE_NVTX)
-  link_directories("${CUDA_TOOLKIT_ROOT_DIR}/lib64")
-  link_libraries("nvToolsExt")
-endif()
+# Enable NVTX markers for improved profiling
+add_definitions(-DUSE_NVTX)
+link_directories("${CUDA_TOOLKIT_ROOT_DIR}/lib64")
+link_libraries("nvToolsExt")
 
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
 # Type Adapter
-ament_auto_add_library(type_adapters SHARED
+ament_auto_add_library(example_type_adapters SHARED
   src/image_container.cpp
 )
 
-target_include_directories(type_adapters PUBLIC
+target_include_directories(example_type_adapters PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include>"
   ${CUDA_INCLUDE_DIRS}
 )
-target_link_libraries(type_adapters
+target_link_libraries(example_type_adapters
   ${CUDA_nvToolsExt_LIBRARY}
   ${CUDA_LIBRARIES}
 )
-ament_target_dependencies(type_adapters
+ament_target_dependencies(example_type_adapters
   rclcpp
   sensor_msgs
 )
@@ -57,7 +55,7 @@ install(
 ament_export_include_directories("include")
 
 install(TARGETS
-  type_adapters
+  example_type_adapters
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)

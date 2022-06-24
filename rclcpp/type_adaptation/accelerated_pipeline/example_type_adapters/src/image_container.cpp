@@ -25,9 +25,10 @@
 #include "cuda_runtime.h"  // NOLINT
 #include <nvToolsExt.h>  // NOLINT
 
-namespace type_adapt_example
+namespace type_adaptation
 {
-
+namespace example_type_adapters
+{
 namespace
 {
 template<typename T>
@@ -68,7 +69,7 @@ void CUDAMemoryWrapper::copy_to_device(
   uint8_t * host_mem, size_t bytes_to_copy,
   const cudaStream_t & stream)
 {
-  nvtxRangePushA("CopyToDevice");
+  nvtxRangePushA("ImageContainer:CopyToDevice");
   if (bytes_to_copy > bytes_allocated_) {
     throw std::invalid_argument("Tried to copy too many bytes to device");
   }
@@ -86,7 +87,7 @@ void CUDAMemoryWrapper::copy_from_device(
   uint8_t * host_mem, size_t bytes_to_copy,
   const cudaStream_t & stream)
 {
-  nvtxRangePushA("CopyFromDevice");
+  nvtxRangePushA("ImageContainer:CopyFromDevice");
   if (bytes_to_copy > bytes_allocated_) {
     throw std::invalid_argument("Tried to copy too many bytes from device");
   }
@@ -140,7 +141,7 @@ ImageContainer::ImageContainer(
   encoding_(encoding),
   step_(step)
 {
-  nvtxRangePushA("TypeAdapter:Create");
+  nvtxRangePushA("ImageContainer:Create");
   cuda_mem_ = std::make_shared<CUDAMemoryWrapper>(size_in_bytes());
   cuda_event_ = std::make_shared<CUDAEventWrapper>();
   nvtxRangePop();
@@ -156,7 +157,7 @@ ImageContainer::ImageContainer(
     unique_sensor_msgs_image->encoding,
     unique_sensor_msgs_image->step)
 {
-  nvtxRangePushA("TypeAdapter:CreateFromMessage");
+  nvtxRangePushA("ImageContainer:CreateFromMessage");
   cuda_mem_->copy_to_device(
     &unique_sensor_msgs_image->data[0],
     size_in_bytes(), cuda_stream_->stream());
@@ -171,7 +172,7 @@ ImageContainer::ImageContainer(
 
 ImageContainer::ImageContainer(const ImageContainer & other)
 {
-  nvtxRangePushA("TypeAdapter:Copy");
+  nvtxRangePushA("ImageContainer:Copy");
   header_ = other.header_;
 
   height_ = other.height_;
@@ -251,7 +252,7 @@ ImageContainer::cuda_mem()
 void
 ImageContainer::get_sensor_msgs_image(sensor_msgs::msg::Image & destination) const
 {
-  nvtxRangePushA("TypeAdapter:GetMsg");
+  nvtxRangePushA("ImageContainer:GetMsg");
   destination.header = header_;
   destination.height = height_;
   destination.width = width_;
@@ -268,4 +269,5 @@ ImageContainer::size_in_bytes() const
   return height_ * step_;
 }
 
-}  // namespace type_adapt_example
+}  //  namespace example_type_adapters
+}  //  namespace type_adaptation

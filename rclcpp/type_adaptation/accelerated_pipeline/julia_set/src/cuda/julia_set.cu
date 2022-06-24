@@ -61,7 +61,7 @@ __device__ float3 hsv_to_rgb(float H, float S, float V) {
 }
 
 __global__ void juliaset_kernel_composite(
-    uint8_t * output, const uint8_t * input, const type_adapt_example::ImageMsgProperties img_properties, const type_adapt_example::JuliasetParams params)
+    uint8_t * output, const uint8_t * input, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliasetParams params)
 {
     size_t x_idx = (blockDim.x * blockIdx.x) + threadIdx.x;
     size_t x_stride = gridDim.x * blockDim.x;
@@ -111,7 +111,7 @@ __global__ void juliaset_kernel_composite(
 }
 
 __global__ void map_kernel(
-    float * output, const type_adapt_example::ImageMsgProperties img_properties, const type_adapt_example::JuliasetParams params)
+    float * output, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliasetParams params)
 {
     size_t x_idx = (blockDim.x * blockIdx.x) + threadIdx.x;
     size_t x_stride = gridDim.x * blockDim.x;
@@ -135,7 +135,7 @@ __global__ void map_kernel(
 }
 
 __global__ void juliaset_kernel(size_t curr_iteration,
-    float * output, const float * input, const type_adapt_example::ImageMsgProperties img_properties, const type_adapt_example::JuliasetParams params)
+    float * output, const float * input, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliasetParams params)
 {
     size_t x_idx = (blockDim.x * blockIdx.x) + threadIdx.x;
     size_t x_stride = gridDim.x * blockDim.x;
@@ -176,7 +176,7 @@ __global__ void juliaset_kernel(size_t curr_iteration,
 }
 
 __global__ void colorize_kernel(
-    uint8_t * output, const float * input, const type_adapt_example::ImageMsgProperties img_properties, const type_adapt_example::JuliasetParams params)
+    uint8_t * output, const float * input, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliasetParams params)
 {
     size_t x_idx = (blockDim.x * blockIdx.x) + threadIdx.x;
     size_t x_stride = gridDim.x * blockDim.x;
@@ -215,7 +215,9 @@ __global__ void colorize_kernel(
 
 }  // namespace
 
-namespace type_adapt_example
+namespace type_adaptation
+{
+namespace julia_set
 {
 Juliaset::Juliaset(ImageMsgProperties img_properties, JuliasetParams parameters): 
  image_msg_property_{img_properties},
@@ -273,4 +275,5 @@ void Juliaset::colorize(
                                                                     parameters_);
 }
 
-}  // type_adapt_example
+}  // namespace julia_set
+}  // namespace type_adaptation

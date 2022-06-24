@@ -22,7 +22,9 @@
 #include "cuda.h"  // NOLINT - include .h without directory
 #include "cuda_runtime.h"  // NOLINT - include .h without directory
 
-namespace type_adapt_example
+namespace type_adaptation
+{
+namespace julia_set
 {
 
 /**
@@ -90,5 +92,6 @@ private:
   dim3 threads_per_block_;
 };
 
-}  // namespace type_adapt_example
+}  // namespace julia_set
+}  // namespace type_adaptation
 #endif  // JULIA_SET__CUDA__JULIA_SET_HPP_

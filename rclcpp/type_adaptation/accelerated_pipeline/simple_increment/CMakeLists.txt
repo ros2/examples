@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(simple_inc_example)
+project(simple_increment)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -16,16 +16,14 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(type_adapters REQUIRED)
+find_package(example_type_adapters REQUIRED)
 
 find_package(CUDA 10.2 REQUIRED)
 
-option(USE_NVTX "Enable NVTX markers for improved profiling" OFF)
-if(USE_NVTX)
-  add_definitions(-DUSE_NVTX)
-  link_directories("${CUDA_TOOLKIT_ROOT_DIR}/lib64")
-  link_libraries("nvToolsExt")
-endif()
+# Enable NVTX markers for improved profiling
+add_definitions(-DUSE_NVTX)
+link_directories("${CUDA_TOOLKIT_ROOT_DIR}/lib64")
+link_libraries("nvToolsExt")
 
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
@@ -57,11 +55,11 @@ ament_target_dependencies(inc_node
   rclcpp
   rclcpp_components
   sensor_msgs
-  type_adapters
+  example_type_adapters
 )
 
 rclcpp_components_register_node(inc_node
-  PLUGIN "type_adapt_example::IncNode"
+  PLUGIN "type_adaptation::simple_increment::IncNode"
   EXECUTABLE type_adapt_inc_node)
 
 

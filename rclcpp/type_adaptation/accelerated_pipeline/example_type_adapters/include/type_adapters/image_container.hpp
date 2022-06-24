@@ -25,7 +25,9 @@
 #include "cuda.h"  // NOLINT
 #include "cuda_runtime.h"  // NOLINT
 
-namespace type_adapt_example
+namespace type_adaptation
+{
+namespace example_type_adapters
 {
 class CUDAStreamWrapper final
 {
@@ -164,13 +166,15 @@ private:
   uint32_t step_{0};
 };
 
-}  // namespace type_adapt_example
+}  // namespace example_type_adapters
+}  // namespace type_adaptation
 
 template<>
-struct rclcpp::TypeAdapter<type_adapt_example::ImageContainer, sensor_msgs::msg::Image>
+struct rclcpp::TypeAdapter<type_adaptation::example_type_adapters::ImageContainer,
+  sensor_msgs::msg::Image>
 {
   using is_specialized = std::true_type;
-  using custom_type = type_adapt_example::ImageContainer;
+  using custom_type = type_adaptation::example_type_adapters::ImageContainer;
   using ros_message_type = sensor_msgs::msg::Image;
 
   static
@@ -188,7 +192,7 @@ struct rclcpp::TypeAdapter<type_adapt_example::ImageContainer, sensor_msgs::msg:
     const ros_message_type & source,
     custom_type & destination)
   {
-    destination = type_adapt_example::ImageContainer(source);
+    destination = type_adaptation::example_type_adapters::ImageContainer(source);
   }
 };
 

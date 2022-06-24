@@ -24,7 +24,9 @@
 #include "sensor_msgs/image_encodings.hpp"
 #include "type_adapters/image_container.hpp"
 
-namespace type_adapt_example
+namespace type_adaptation
+{
+namespace julia_set
 {
 
 JuliaSetNode::JuliaSetNode(rclcpp::NodeOptions options)
@@ -47,10 +49,11 @@ JuliaSetNode::JuliaSetNode(rclcpp::NodeOptions options)
   juliaset_params_.kMaxIterations = declare_parameter<int>("max_iterations", 50);
 
   if (type_adaptation_enabled_) {
-    custom_type_sub_ = create_subscription<type_adapt_example::ImageContainer>(
+    custom_type_sub_ = create_subscription<type_adaptation::example_type_adapters::ImageContainer>(
       "image_in", 1,
       std::bind(&JuliaSetNode::JuliasetCallbackCustomType, this, std::placeholders::_1));
-    custom_type_pub_ = create_publisher<type_adapt_example::ImageContainer>("image_out", 1);
+    custom_type_pub_ = create_publisher<type_adaptation::example_type_adapters::ImageContainer>(
+      "image_out", 1);
   } else {
     sub_ =
       create_subscription<sensor_msgs::msg::Image>(
@@ -60,7 +63,7 @@ JuliaSetNode::JuliaSetNode(rclcpp::NodeOptions options)
 }
 
 void JuliaSetNode::JuliasetCallbackCustomType(
-  std::unique_ptr<type_adapt_example::ImageContainer> image)
+  std::unique_ptr<type_adaptation::example_type_adapters::ImageContainer> image)
 {
   nvtxRangePushA("JuliaSetNode: JuliasetCallbackCustomType");
   if (!is_initialized) {
@@ -107,8 +110,8 @@ void JuliaSetNode::JuliasetCallbackCustomType(
 void JuliaSetNode::JuliasetCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg)
 {
   nvtxRangePushA("JuliaSetNode: JuliasetCallback");
-  std::unique_ptr<type_adapt_example::ImageContainer> image =
-    std::make_unique<type_adapt_example::ImageContainer>(std::move(image_msg));
+  std::unique_ptr<type_adaptation::example_type_adapters::ImageContainer> image =
+    std::make_unique<type_adaptation::example_type_adapters::ImageContainer>(std::move(image_msg));
   if (!is_initialized) {
     img_property_.row_step = image->step();
     img_property_.height = image->height();
@@ -153,6 +156,7 @@ void JuliaSetNode::JuliasetCallback(std::unique_ptr<sensor_msgs::msg::Image> ima
   nvtxRangePop();
 }
 
-}  // namespace type_adapt_example
+}  // namespace julia_set
+}  // namespace type_adaptation
 
-RCLCPP_COMPONENTS_REGISTER_NODE(type_adapt_example::JuliaSetNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(type_adaptation::julia_set::JuliaSetNode)

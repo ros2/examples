@@ -1,13 +1,13 @@
 # Copyright 2021 Open Source Robotics Foundation, Inc.
 #
-# Licensed under the Apache License, Version 2.0 (the 'License');
+# Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an 'AS IS' BASIS,
+# distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -94,16 +94,16 @@ def launch_setup(context):
     pipeline_nodes = [cam2image_node]
 
     pipeline_nodes.append(ComposableNode(
-        package='julia_set_example',
-        plugin='type_adapt_example::MapNode',
+        package='julia_set',
+        plugin='type_adaptation::julia_set::MapNode',
         name='map_node',
         parameters=[{'type_adaptation_enabled': enable_type_adapt}] + JULIASET_PARAMS,
         remappings=[('/image_out', '/image_out0')]))
 
     for i in range(1, MAX_ITERATION):
         pipeline_nodes.append(ComposableNode(
-            package='julia_set_example',
-            plugin='type_adapt_example::JuliaSetNode',
+            package='julia_set',
+            plugin='type_adaptation::julia_set::JuliaSetNode',
             name='juliaset_node%d' % (i),
             parameters=[{'type_adaptation_enabled': enable_type_adapt},
                         {'proc_id': i}] + JULIASET_PARAMS,
@@ -111,8 +111,8 @@ def launch_setup(context):
                         ('/image_out', '/image_out%d' % (i))]))
 
     pipeline_nodes.append(ComposableNode(
-        package='julia_set_example',
-        plugin='type_adapt_example::ColorizeNode',
+        package='julia_set',
+        plugin='type_adaptation::julia_set::ColorizeNode',
         name='colorize_node',
         parameters=[{'max_iterations': MAX_ITERATION},
                     {'type_adaptation_enabled': enable_type_adapt}] + JULIASET_PARAMS,
@@ -125,8 +125,8 @@ def launch_setup(context):
         package='rclcpp_components',
         executable='component_container' + ('_mt' if enable_mt else ''),
         prefix=container_prefix,
-        sigkill_timeout='50' if enable_nsys else '5',
-        sigterm_timeout='50' if enable_nsys else '5',
+        sigkill_timeout='500' if enable_nsys else '5',
+        sigterm_timeout='500' if enable_nsys else '5',
         composable_node_descriptions=pipeline_nodes,
         output='both'
     )
@@ -135,5 +135,5 @@ def launch_setup(context):
 
 
 def build_profile_name(label, enable_type_adapt, enable_mt, resolution):
-    return f"ros-type_adapt-{platform.machine()}{'' if not enable_mt else '-mt'}" +\
+    return f"julia-set-{platform.machine()}{'' if not enable_mt else '-mt'}" +\
         f"-{enable_type_adapt}-{resolution}-{int(IMAGE_HZ)}hz{'' if not label else '-' + label}"

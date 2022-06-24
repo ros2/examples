@@ -23,7 +23,9 @@
 #include "sensor_msgs/image_encodings.hpp"
 #include "type_adapters/image_container.hpp"
 
-namespace type_adapt_example
+namespace type_adaptation
+{
+namespace julia_set
 {
 
 ColorizeNode::ColorizeNode(rclcpp::NodeOptions options)
@@ -38,10 +40,11 @@ ColorizeNode::ColorizeNode(rclcpp::NodeOptions options)
   juliaset_params_.kMaxIterations = declare_parameter<int>("max_iterations", 50);
 
   if (type_adaptation_enabled_) {
-    custom_type_sub_ = create_subscription<type_adapt_example::ImageContainer>(
+    custom_type_sub_ = create_subscription<type_adaptation::example_type_adapters::ImageContainer>(
       "image_in", 1,
       std::bind(&ColorizeNode::ColorizeCallbackCustomType, this, std::placeholders::_1));
-    custom_type_pub_ = create_publisher<type_adapt_example::ImageContainer>("image_out", 1);
+    custom_type_pub_ = create_publisher<type_adaptation::example_type_adapters::ImageContainer>(
+      "image_out", 1);
   } else {
     sub_ =
       create_subscription<sensor_msgs::msg::Image>(
@@ -51,7 +54,7 @@ ColorizeNode::ColorizeNode(rclcpp::NodeOptions options)
 }
 
 void ColorizeNode::ColorizeCallbackCustomType(
-  std::unique_ptr<type_adapt_example::ImageContainer> image)
+  std::unique_ptr<type_adaptation::example_type_adapters::ImageContainer> image)
 {
   nvtxRangePushA("ColorizeNode: ColorizeCallbackCustomType");
   if (!is_initialized) {
@@ -81,7 +84,7 @@ void ColorizeNode::ColorizeCallbackCustomType(
     is_initialized = true;
   }
 
-  auto out = std::make_unique<type_adapt_example::ImageContainer>(
+  auto out = std::make_unique<type_adaptation::example_type_adapters::ImageContainer>(
     image->header(), image->height(), image->width(), image->encoding(),
     image->step() / sizeof(float), image->cuda_stream());
 
@@ -95,8 +98,8 @@ void ColorizeNode::ColorizeCallbackCustomType(
 void ColorizeNode::ColorizeCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg)
 {
   nvtxRangePushA("ColorizeNode: ColorizeCallback");
-  std::unique_ptr<type_adapt_example::ImageContainer> image =
-    std::make_unique<type_adapt_example::ImageContainer>(std::move(image_msg));
+  std::unique_ptr<type_adaptation::example_type_adapters::ImageContainer> image =
+    std::make_unique<type_adaptation::example_type_adapters::ImageContainer>(std::move(image_msg));
   if (!is_initialized) {
     img_property_.row_step = image->step();
     img_property_.height = image->height();
@@ -124,7 +127,7 @@ void ColorizeNode::ColorizeCallback(std::unique_ptr<sensor_msgs::msg::Image> ima
     is_initialized = true;
   }
 
-  auto out = std::make_unique<type_adapt_example::ImageContainer>(
+  auto out = std::make_unique<type_adaptation::example_type_adapters::ImageContainer>(
     image->header(), image->height(), image->width(), image->encoding(),
     image->step() / sizeof(float), image->cuda_stream());
 
@@ -139,6 +142,7 @@ void ColorizeNode::ColorizeCallback(std::unique_ptr<sensor_msgs::msg::Image> ima
   nvtxRangePop();
 }
 
-}  // namespace type_adapt_example
+}  // namespace julia_set
+}  // namespace type_adaptation
 
-RCLCPP_COMPONENTS_REGISTER_NODE(type_adapt_example::ColorizeNode)
+RCLCPP_COMPONENTS_REGISTER_NODE(type_adaptation::julia_set::ColorizeNode)
