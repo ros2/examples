@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Launch the GPU pipeline."""
+"""Launch the GPU pipeline for Simple Increment Example."""
 
 import platform
 

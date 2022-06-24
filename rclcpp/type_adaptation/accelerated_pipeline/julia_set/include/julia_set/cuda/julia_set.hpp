@@ -1,22 +1,26 @@
-/*
- * Copyright (c) 2021, NVIDIA CORPORATION.  All rights reserved.
- *
- * NVIDIA CORPORATION and its licensors retain all intellectual property
- * and proprietary rights in and to this software, related documentation
- * and any modifications thereto.  Any use, reproduction, disclosure or
- * distribution of this software and related documentation without an express
- * license agreement from NVIDIA CORPORATION is strictly prohibited.
- */
+// Copyright 2021 Open Source Robotics Foundation, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-#ifndef TYPE_ADAPT_EXAMPLE__JULIA_SET_HPP_
-#define TYPE_ADAPT_EXAMPLE__JULIA_SET_HPP_
+
+#ifndef JULIA_SET__CUDA__JULIA_SET_HPP_
+#define JULIA_SET__CUDA__JULIA_SET_HPP_
 
 #include <cstdint>
+#include <string>
 
 #include "cuda.h"  // NOLINT - include .h without directory
 #include "cuda_runtime.h"  // NOLINT - include .h without directory
-
-#include <string>
 
 namespace type_adapt_example
 {
@@ -86,5 +90,5 @@ private:
   dim3 threads_per_block_;
 };
 
-}
-#endif  // TYPE_ADAPT_EXAMPLE__JULIA_SET_HPP_
+}  // namespace type_adapt_example
+#endif  // JULIA_SET__CUDA__JULIA_SET_HPP_

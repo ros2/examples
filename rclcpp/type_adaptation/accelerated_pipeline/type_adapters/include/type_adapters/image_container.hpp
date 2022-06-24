@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef TYPE_ADAPT_EXAMPLE__IMAGE_CONTAINER_HPP_
-#define TYPE_ADAPT_EXAMPLE__IMAGE_CONTAINER_HPP_
+#ifndef TYPE_ADAPTERS__IMAGE_CONTAINER_HPP_
+#define TYPE_ADAPTERS__IMAGE_CONTAINER_HPP_
 
 #include <memory>
 #include <string>
@@ -192,4 +192,4 @@ struct rclcpp::TypeAdapter<type_adapt_example::ImageContainer, sensor_msgs::msg:
   }
 };
 
-#endif  // TYPE_ADAPT_EXAMPLE__IMAGE_CONTAINER_HPP_
+#endif  // TYPE_ADAPTERS__IMAGE_CONTAINER_HPP_

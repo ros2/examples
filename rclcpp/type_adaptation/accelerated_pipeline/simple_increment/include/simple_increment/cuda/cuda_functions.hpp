@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef TYPE_ADAPT_EXAMPLE__CUDA_FUNCTIONS_HPP_
-#define TYPE_ADAPT_EXAMPLE__CUDA_FUNCTIONS_HPP_
+#ifndef SIMPLE_INCREMENT__CUDA__CUDA_FUNCTIONS_HPP_
+#define SIMPLE_INCREMENT__CUDA__CUDA_FUNCTIONS_HPP_
 
 #include "cuda.h"  // NOLINT
 
@@ -22,4 +22,4 @@ void cuda_compute_inc(
 
 void cuda_compute_inc_inplace(int size, uint8_t * image, const cudaStream_t & stream);
 
-#endif  // TYPE_ADAPT_EXAMPLE__CUDA_FUNCTIONS_HPP_
+#endif  // SIMPLE_INCREMENT__CUDA__CUDA_FUNCTIONS_HPP_

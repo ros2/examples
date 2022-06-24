@@ -41,9 +41,10 @@ public:
     type_adaptation_enabled_(declare_parameter<bool>("type_adaptation_enabled", true))
   {
     RCLCPP_INFO(
-      get_logger(), "Setting up node to run with inplace_enabled %s with proc count %d and type \
-      adaptation enabled: %s", inplace_enabled_ ? "YES" : "NO", proc_count_,
-      type_adaptation_enabled_ ? "YES" : "NO");
+      get_logger(), "Setting up node to run with inplace_enabled %s with proc count %d",
+      inplace_enabled_ ? "YES" : "NO", proc_count_);
+    RCLCPP_INFO(
+      get_logger(), "Type adaptation enabled: %s", type_adaptation_enabled_ ? "YES" : "NO");
 
     if (type_adaptation_enabled_) {
       custom_type_sub_ = create_subscription<type_adapt_example::ImageContainer>(

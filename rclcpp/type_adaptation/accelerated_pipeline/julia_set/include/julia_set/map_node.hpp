@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef TYPE_ADAPT_EXAMPLE__MAP_NODE_HPP_
-#define TYPE_ADAPT_EXAMPLE__MAP_NODE_HPP_
-
-#include "cuda/julia_set.hpp"
+#ifndef JULIA_SET__MAP_NODE_HPP_
+#define JULIA_SET__MAP_NODE_HPP_
 
 #include <memory>
+#include "cuda/julia_set.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
@@ -70,4 +69,4 @@ private:
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_{nullptr};
 };
 }  // namespace type_adapt_example
-#endif  // TYPE_ADAPT_EXAMPLE__MAP_NODE_HPP_
+#endif  // JULIA_SET__MAP_NODE_HPP_

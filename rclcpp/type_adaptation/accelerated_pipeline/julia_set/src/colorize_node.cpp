@@ -60,7 +60,6 @@ void ColorizeNode::ColorizeCallbackCustomType(
     img_property_.width = image->width();
     img_property_.encoding = image->encoding();
 
-    // Only support 8 bit encodings (since point cloud can only support each color point with 8 bits)
     if (image->encoding() == sensor_msgs::image_encodings::RGB8) {
       img_property_.red_offset = 0;
       img_property_.green_offset = 1;
@@ -104,7 +103,6 @@ void ColorizeNode::ColorizeCallback(std::unique_ptr<sensor_msgs::msg::Image> ima
     img_property_.width = image->width();
     img_property_.encoding = image->encoding();
 
-    // Only support 8 bit encodings (since point cloud can only support each color point with 8 bits)
     if (image->encoding() == sensor_msgs::image_encodings::RGB8) {
       img_property_.red_offset = 0;
       img_property_.green_offset = 1;
