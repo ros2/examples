@@ -58,7 +58,7 @@ launch_args = [DeclareLaunchArgument('enable_type_adapt', default_value='true',
 
 
 def generate_launch_description():
-    """Generate launch description with cam2image feeding N JuliaSetNode pipeline."""
+    """Generate launch description with cam2image feeding Julia Set Pipeline."""
     ld = LaunchDescription(launch_args)
     ld.add_action(OpaqueFunction(function=launch_setup))
     return ld
@@ -90,6 +90,17 @@ def launch_setup(context):
                                                  'frequency': IMAGE_HZ,
                                                  'width': RESOLUTIONS[resolution][0],
                                                  'height': RESOLUTIONS[resolution][1]}])
+
+    # Pipeline constists of the following nodes
+    # cam2image -> Map Node -> MAX_ITERATION Julia Set Nodes -> Colorize Node
+    #
+    # Map Node - Transforms input image width and height to X and Y coordinate axis.
+    #            Parameters that governs the range of the axes are following:
+    #            min_x_range, max_x_range, min_y_range and max_y_range
+    #
+    # Julia Set Node - Generates the Julia Set for the start location given by start_x and start_y.
+    #
+    # Colorize Node - Colorizes the output to be consumed as an image.
 
     pipeline_nodes = [cam2image_node]
 
@@ -135,5 +146,5 @@ def launch_setup(context):
 
 
 def build_profile_name(label, enable_type_adapt, enable_mt, resolution):
-    return f"julia-set-{platform.machine()}{'' if not enable_mt else '-mt'}" +\
+    return f"julia-set-{platform.machine()}{'' if not enable_mt else '-mt'}" + \
         f"-{enable_type_adapt}-{resolution}-{int(IMAGE_HZ)}hz{'' if not label else '-' + label}"
