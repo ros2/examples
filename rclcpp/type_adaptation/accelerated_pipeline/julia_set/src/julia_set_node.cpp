@@ -30,7 +30,7 @@ namespace julia_set
 {
 
 JuliaSetNode::JuliaSetNode(rclcpp::NodeOptions options)
-: rclcpp::Node("juliaset_node", options.use_intra_process_comms(true)),
+: rclcpp::Node("julia_set_node", options.use_intra_process_comms(true)),
   type_adaptation_enabled_(declare_parameter<bool>("type_adaptation_enabled", true)),
   proc_id_(declare_parameter<uint8_t>("proc_id", 1)),
   is_initialized{false}
@@ -39,33 +39,33 @@ JuliaSetNode::JuliaSetNode(rclcpp::NodeOptions options)
     get_logger(), "Setting up Julia Set node with adaptation enabled: %s",
     type_adaptation_enabled_ ? "YES" : "NO");
 
-  juliaset_params_.kMinXRange = declare_parameter<float>("min_x_range", -2.5);
-  juliaset_params_.kMaxXRange = declare_parameter<float>("max_x_range", 2.5);
-  juliaset_params_.kMinYRange = declare_parameter<float>("min_y_range", -1.5);
-  juliaset_params_.kMaxYRange = declare_parameter<float>("max_y_range", 1.5);
-  juliaset_params_.kStartX = declare_parameter<float>("start_x", 0.7885);
-  juliaset_params_.kStartY = declare_parameter<float>("start_y", 0.7885);
-  juliaset_params_.kBoundaryRadius = declare_parameter<float>("boundary_radius", 16.0);
-  juliaset_params_.kMaxIterations = declare_parameter<int>("max_iterations", 50);
+  julia_set_params_.kMinXRange = declare_parameter<float>("min_x_range", -2.5);
+  julia_set_params_.kMaxXRange = declare_parameter<float>("max_x_range", 2.5);
+  julia_set_params_.kMinYRange = declare_parameter<float>("min_y_range", -1.5);
+  julia_set_params_.kMaxYRange = declare_parameter<float>("max_y_range", 1.5);
+  julia_set_params_.kStartX = declare_parameter<float>("start_x", 0.7885);
+  julia_set_params_.kStartY = declare_parameter<float>("start_y", 0.7885);
+  julia_set_params_.kBoundaryRadius = declare_parameter<float>("boundary_radius", 16.0);
+  julia_set_params_.kMaxIterations = declare_parameter<int>("max_iterations", 50);
 
   if (type_adaptation_enabled_) {
     custom_type_sub_ = create_subscription<type_adaptation::example_type_adapters::ImageContainer>(
       "image_in", 1,
-      std::bind(&JuliaSetNode::JuliasetCallbackCustomType, this, std::placeholders::_1));
+      std::bind(&JuliaSetNode::JuliaSetCallbackCustomType, this, std::placeholders::_1));
     custom_type_pub_ = create_publisher<type_adaptation::example_type_adapters::ImageContainer>(
       "image_out", 1);
   } else {
     sub_ =
       create_subscription<sensor_msgs::msg::Image>(
-      "image_in", 1, std::bind(&JuliaSetNode::JuliasetCallback, this, std::placeholders::_1));
+      "image_in", 1, std::bind(&JuliaSetNode::JuliaSetCallback, this, std::placeholders::_1));
     pub_ = create_publisher<sensor_msgs::msg::Image>("image_out", 1);
   }
 }
 
-void JuliaSetNode::JuliasetCallbackCustomType(
+void JuliaSetNode::JuliaSetCallbackCustomType(
   std::unique_ptr<type_adaptation::example_type_adapters::ImageContainer> image)
 {
-  nvtxRangePushA("JuliaSetNode: JuliasetCallbackCustomType");
+  nvtxRangePushA("JuliaSetNode: JuliaSetCallbackCustomType");
   if (!is_initialized) {
     img_property_.row_step = image->step();
     img_property_.height = image->height();
@@ -89,9 +89,9 @@ void JuliaSetNode::JuliasetCallbackCustomType(
       img_property_.color_step = 1;
     }
 
-    juliaset_params_.kMaxColRange = image->width();
-    juliaset_params_.kMaxRowRange = image->height();
-    juliaset_handle_ = std::make_unique<Juliaset>(img_property_, juliaset_params_);
+    julia_set_params_.kMaxColRange = image->width();
+    julia_set_params_.kMaxRowRange = image->height();
+    julia_set_handle_ = std::make_unique<JuliaSet>(img_property_, julia_set_params_);
 
     is_initialized = true;
   }
@@ -100,16 +100,16 @@ void JuliaSetNode::JuliasetCallbackCustomType(
   float angle = (counter_ % 360) * M_PI / 180.0;
   counter_ = counter_ + 1;
 
-  juliaset_handle_->compute_juliaset_pipeline(
+  julia_set_handle_->compute_julia_set_pipeline(
     proc_id_, angle, reinterpret_cast<float *>(image->cuda_mem()), image->cuda_stream()->stream());
 
   custom_type_pub_->publish(std::move(image));
   nvtxRangePop();
 }
 
-void JuliaSetNode::JuliasetCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg)
+void JuliaSetNode::JuliaSetCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg)
 {
-  nvtxRangePushA("JuliaSetNode: JuliasetCallback");
+  nvtxRangePushA("JuliaSetNode: JuliaSetCallback");
   std::unique_ptr<type_adaptation::example_type_adapters::ImageContainer> image =
     std::make_unique<type_adaptation::example_type_adapters::ImageContainer>(std::move(image_msg));
   if (!is_initialized) {
@@ -135,9 +135,9 @@ void JuliaSetNode::JuliasetCallback(std::unique_ptr<sensor_msgs::msg::Image> ima
       img_property_.color_step = 1;
     }
 
-    juliaset_params_.kMaxColRange = image->width();
-    juliaset_params_.kMaxRowRange = image->height();
-    juliaset_handle_ = std::make_unique<Juliaset>(img_property_, juliaset_params_);
+    julia_set_params_.kMaxColRange = image->width();
+    julia_set_params_.kMaxRowRange = image->height();
+    julia_set_handle_ = std::make_unique<JuliaSet>(img_property_, julia_set_params_);
 
     is_initialized = true;
   }
@@ -146,7 +146,7 @@ void JuliaSetNode::JuliasetCallback(std::unique_ptr<sensor_msgs::msg::Image> ima
   float angle = (counter_ % 360) * M_PI / 180.0;
   counter_ = counter_ + 1;
 
-  juliaset_handle_->compute_juliaset_pipeline(
+  julia_set_handle_->compute_julia_set_pipeline(
     proc_id_, angle, reinterpret_cast<float *>(image->cuda_mem()), image->cuda_stream()->stream());
 
   // Convert in-place before publishing to "disable" type adaptation

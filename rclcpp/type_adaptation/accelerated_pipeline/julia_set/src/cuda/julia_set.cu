@@ -64,8 +64,8 @@ __device__ float3 hsv_to_rgb(float H, float S, float V) {
 	return (float3) {R, G, B};
 }
 
-__global__ void juliaset_kernel_composite(
-    uint8_t * output, const uint8_t * input, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliasetParams params)
+__global__ void julia_set_kernel_composite(
+    uint8_t * output, const uint8_t * input, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliaSetParams params)
 {
     size_t x_idx = (blockDim.x * blockIdx.x) + threadIdx.x;
     size_t x_stride = gridDim.x * blockDim.x;
@@ -115,7 +115,7 @@ __global__ void juliaset_kernel_composite(
 }
 
 __global__ void map_kernel(
-    float * output, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliasetParams params)
+    float * output, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliaSetParams params)
 {
     size_t x_idx = (blockDim.x * blockIdx.x) + threadIdx.x;
     size_t x_stride = gridDim.x * blockDim.x;
@@ -138,8 +138,8 @@ __global__ void map_kernel(
     }
 }
 
-__global__ void juliaset_kernel(size_t curr_iteration,
-    float * output, const float * input, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliasetParams params)
+__global__ void julia_set_kernel(size_t curr_iteration,
+    float * output, const float * input, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliaSetParams params)
 {
     size_t x_idx = (blockDim.x * blockIdx.x) + threadIdx.x;
     size_t x_stride = gridDim.x * blockDim.x;
@@ -180,7 +180,7 @@ __global__ void juliaset_kernel(size_t curr_iteration,
 }
 
 __global__ void colorize_kernel(
-    uint8_t * output, const float * input, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliasetParams params)
+    uint8_t * output, const float * input, const type_adaptation::julia_set::ImageMsgProperties img_properties, const type_adaptation::julia_set::JuliaSetParams params)
 {
     size_t x_idx = (blockDim.x * blockIdx.x) + threadIdx.x;
     size_t x_stride = gridDim.x * blockDim.x;
@@ -223,11 +223,11 @@ namespace type_adaptation
 {
 namespace julia_set
 {
-Juliaset::Juliaset(ImageMsgProperties img_properties, JuliasetParams parameters): 
+JuliaSet::JuliaSet(ImageMsgProperties img_properties, JuliaSetParams parameters): 
  image_msg_property_{img_properties},
  parameters_{parameters} {configure_kernel_execution();}
 
-void Juliaset::configure_kernel_execution() {
+void JuliaSet::configure_kernel_execution() {
     // Get the number of CUDA blocks & threads
     size_t num_blocks_x = (image_msg_property_.width + num_threads_per_block_x_ - 1) / 
                         num_threads_per_block_x_;
@@ -238,17 +238,17 @@ void Juliaset::configure_kernel_execution() {
     threads_per_block_ = dim3(num_threads_per_block_x_, num_threads_per_block_y_, 1);
 }
 
-void Juliaset::compute_juliaset_composite(float & current_angle, u_int8_t * image, const cudaStream_t & stream)
+void JuliaSet::compute_julia_set_composite(float & current_angle, u_int8_t * image, const cudaStream_t & stream)
 {
     parameters_.kCurrentAngle = current_angle;
     // Invoke CUDA kernel
-    juliaset_kernel_composite<<<num_of_blocks_, threads_per_block_, 0, stream>>>(image,
+    julia_set_kernel_composite<<<num_of_blocks_, threads_per_block_, 0, stream>>>(image,
                                                                             image,
                                                                             image_msg_property_,
                                                                             parameters_); 
 }
 
-void Juliaset::map(float * out_mat, const cudaStream_t & stream)
+void JuliaSet::map(float * out_mat, const cudaStream_t & stream)
 {
     // Invoke CUDA kernel
     map_kernel<<<num_of_blocks_, threads_per_block_, 0, stream>>>(out_mat,
@@ -256,12 +256,12 @@ void Juliaset::map(float * out_mat, const cudaStream_t & stream)
                                                                 parameters_);
 }
 
-void Juliaset::compute_juliaset_pipeline(
+void JuliaSet::compute_julia_set_pipeline(
     size_t curr_iteration, float & current_angle, float * image, const cudaStream_t & stream)
 {
     parameters_.kCurrentAngle = current_angle;
     // Invoke CUDA kernel
-    juliaset_kernel<<<num_of_blocks_, threads_per_block_, 0, stream>>>(curr_iteration,
+    julia_set_kernel<<<num_of_blocks_, threads_per_block_, 0, stream>>>(curr_iteration,
                                                                     image,
                                                                     image,
                                                                     image_msg_property_,
@@ -269,7 +269,7 @@ void Juliaset::compute_juliaset_pipeline(
   
 }
 
-void Juliaset::colorize(
+void JuliaSet::colorize(
     uint8_t * output, const float * input, const cudaStream_t & stream)
 {
     // Invoke CUDA kernel

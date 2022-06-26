@@ -42,7 +42,7 @@ struct ImageMsgProperties
   unsigned int color_step{0};  // Number of points per pixel
 };
 
-struct JuliasetParams
+struct JuliaSetParams
 {
   float kCurrentAngle{0.0};
   float kMinXRange{-2.5};
@@ -59,18 +59,18 @@ struct JuliasetParams
   uint32_t kMaxRowRange{0};
 };
 
-class Juliaset
+class JuliaSet
 {
 public:
-  explicit Juliaset(ImageMsgProperties img_properties, JuliasetParams parameters);
-  ~Juliaset() = default;
+  explicit JuliaSet(ImageMsgProperties img_properties, JuliaSetParams parameters);
+  ~JuliaSet() = default;
 
-  void compute_juliaset_composite(
+  void compute_julia_set_composite(
     float & current_angle, u_int8_t * image, const cudaStream_t & stream);
 
   void map(float * out_mat, const cudaStream_t & stream);
 
-  void compute_juliaset_pipeline(
+  void compute_julia_set_pipeline(
     size_t curr_iteration, float & current_angle, float * image, const cudaStream_t & stream);
 
   void colorize(
@@ -80,8 +80,8 @@ private:
   void configure_kernel_execution();
   // Properties of image msg from ROS
   ImageMsgProperties image_msg_property_{};
-  // Params for Juliaset calculations
-  JuliasetParams parameters_{};
+  // Params for JuliaSet calculations
+  JuliaSetParams parameters_{};
   // The number of CUDA threads per block in the x direction
   const int num_threads_per_block_x_{32};
   // The number of CUDA threads per block in the y direction

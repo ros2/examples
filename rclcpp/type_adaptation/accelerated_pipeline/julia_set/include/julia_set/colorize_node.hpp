@@ -56,12 +56,12 @@ private:
   const bool type_adaptation_enabled_;
   // Flag for intialization.
   bool is_initialized;
-  // Juliaset prams
-  JuliasetParams juliaset_params_{}; \
+  // JuliaSet prams
+  JuliaSetParams julia_set_params_{}; \
   // Image properties to be sent to CUDA kernel
   ImageMsgProperties img_property_{};
-  // Juliaset handle
-  std::unique_ptr<Juliaset> juliaset_handle_;
+  // JuliaSet handle
+  std::unique_ptr<JuliaSet> julia_set_handle_;
 
   // Publisher and subscriber when type_adaptation is enabled
   rclcpp::Subscription<type_adaptation::example_type_adapters::ImageContainer>::SharedPtr

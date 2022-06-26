@@ -175,13 +175,9 @@ ImageContainer::ImageContainer(const ImageContainer & other)
 {
   nvtxRangePushA("ImageContainer:Copy");
   header_ = other.header_;
-
   height_ = other.height_;
-
   width_ = other.width_;
-
   encoding_ = other.encoding_;
-
   step_ = other.step_;
 
   // Make a new stream and have it wait on the previous one.
@@ -210,19 +206,12 @@ ImageContainer & ImageContainer::operator=(const ImageContainer & other)
   }
 
   header_ = other.header_;
-
   height_ = other.height_;
-
   width_ = other.width_;
-
   encoding_ = other.encoding_;
-
   step_ = other.step_;
-
   cuda_stream_ = other.cuda_stream_;
-
   cuda_event_ = other.cuda_event_;
-
   cuda_mem_ = other.cuda_mem_;
 
   return *this;

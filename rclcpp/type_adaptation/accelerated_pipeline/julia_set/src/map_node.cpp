@@ -37,10 +37,10 @@ MapNode::MapNode(rclcpp::NodeOptions options)
     get_logger(), "Setting up Map node with adaptation enabled: %s",
     type_adaptation_enabled_ ? "YES" : "NO");
 
-  juliaset_params_.kMinXRange = declare_parameter<double>("min_x_range", -2.5);
-  juliaset_params_.kMaxXRange = declare_parameter<double>("max_x_range", 2.5);
-  juliaset_params_.kMinYRange = declare_parameter<double>("min_y_range", -1.5);
-  juliaset_params_.kMaxYRange = declare_parameter<double>("max_y_range", 1.5);
+  julia_set_params_.kMinXRange = declare_parameter<double>("min_x_range", -2.5);
+  julia_set_params_.kMaxXRange = declare_parameter<double>("max_x_range", 2.5);
+  julia_set_params_.kMinYRange = declare_parameter<double>("min_y_range", -1.5);
+  julia_set_params_.kMaxYRange = declare_parameter<double>("max_y_range", 1.5);
 
   if (type_adaptation_enabled_) {
     custom_type_sub_ = create_subscription<type_adaptation::example_type_adapters::ImageContainer>(
@@ -63,17 +63,17 @@ void MapNode::MapCallbackCustomType(
     img_property_.height = image->height();
     img_property_.width = image->width();
 
-    juliaset_params_.kMaxColRange = image->width();
-    juliaset_params_.kMaxRowRange = image->height();
+    julia_set_params_.kMaxColRange = image->width();
+    julia_set_params_.kMaxRowRange = image->height();
 
-    juliaset_handle_ = std::make_unique<Juliaset>(img_property_, juliaset_params_);
+    julia_set_handle_ = std::make_unique<JuliaSet>(img_property_, julia_set_params_);
     is_initialized = true;
   }
 
   auto out = std::make_unique<type_adaptation::example_type_adapters::ImageContainer>(
     image->header(), image->height(), image->width(), image->encoding(),
     image->step() * sizeof(float), image->cuda_stream());
-  juliaset_handle_->map(reinterpret_cast<float *>(out->cuda_mem()), out->cuda_stream()->stream());
+  julia_set_handle_->map(reinterpret_cast<float *>(out->cuda_mem()), out->cuda_stream()->stream());
 
   custom_type_pub_->publish(std::move(out));
   nvtxRangePop();
@@ -88,17 +88,17 @@ void MapNode::MapCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg)
     img_property_.height = image->height();
     img_property_.width = image->width();
 
-    juliaset_params_.kMaxColRange = image->width();
-    juliaset_params_.kMaxRowRange = image->height();
+    julia_set_params_.kMaxColRange = image->width();
+    julia_set_params_.kMaxRowRange = image->height();
 
-    juliaset_handle_ = std::make_unique<Juliaset>(img_property_, juliaset_params_);
+    julia_set_handle_ = std::make_unique<JuliaSet>(img_property_, julia_set_params_);
     is_initialized = true;
   }
 
   auto out = std::make_unique<type_adaptation::example_type_adapters::ImageContainer>(
     image->header(), image->height(), image->width(), image->encoding(),
     image->step() * sizeof(float), image->cuda_stream());
-  juliaset_handle_->map(reinterpret_cast<float *>(out->cuda_mem()), out->cuda_stream()->stream());
+  julia_set_handle_->map(reinterpret_cast<float *>(out->cuda_mem()), out->cuda_stream()->stream());
 
   // Convert in-place before publishing to "disable" type adaptation
   sensor_msgs::msg::Image image_msg_out;

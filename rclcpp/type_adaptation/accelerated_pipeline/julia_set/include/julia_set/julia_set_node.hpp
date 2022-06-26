@@ -33,7 +33,7 @@ namespace julia_set
 {
 
 /**
- * @brief
+ * @brief Class for computing Julia Set
  *
  */
 
@@ -49,9 +49,9 @@ private:
 *
 * @param img_msg Pointer to the image msg
 */
-  void JuliasetCallbackCustomType(
+  void JuliaSetCallbackCustomType(
     std::unique_ptr<type_adaptation::example_type_adapters::ImageContainer> image);
-  void JuliasetCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg);
+  void JuliaSetCallback(std::unique_ptr<sensor_msgs::msg::Image> image_msg);
 
   // Flag for enabling or disabling type adaptation
   const bool type_adaptation_enabled_;
@@ -61,16 +61,16 @@ private:
   bool is_initialized;
   // Counter
   size_t counter_{0};
-  // Juliaset start x
+  // Julia Set start x
   float start_x_{0.0};
-  // Juliaset start y
+  // Julia Set start y
   float start_y_{0.0};
-  // Juliaset prams
-  JuliasetParams juliaset_params_{}; \
+  // Julia Set prams
+  JuliaSetParams julia_set_params_{}; \
   // Image properties to be sent to CUDA kernel
   ImageMsgProperties img_property_{};
-  // Juliaset handle
-  std::unique_ptr<Juliaset> juliaset_handle_;
+  // Julia Set handle
+  std::unique_ptr<JuliaSet> julia_set_handle_;
 
   // Publisher and subscriber when type_adaptation is enabled
   rclcpp::Subscription<type_adaptation::example_type_adapters::ImageContainer>::SharedPtr

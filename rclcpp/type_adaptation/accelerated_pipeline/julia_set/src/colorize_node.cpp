@@ -37,7 +37,7 @@ ColorizeNode::ColorizeNode(rclcpp::NodeOptions options)
     get_logger(), "Setting up Colorize node with adaptation enabled: %s",
     type_adaptation_enabled_ ? "YES" : "NO");
 
-  juliaset_params_.kMaxIterations = declare_parameter<int>("max_iterations", 50);
+  julia_set_params_.kMaxIterations = declare_parameter<int>("max_iterations", 50);
 
   if (type_adaptation_enabled_) {
     custom_type_sub_ = create_subscription<type_adaptation::example_type_adapters::ImageContainer>(
@@ -80,7 +80,7 @@ void ColorizeNode::ColorizeCallbackCustomType(
       img_property_.color_step = 1;
     }
 
-    juliaset_handle_ = std::make_unique<Juliaset>(img_property_, juliaset_params_);
+    julia_set_handle_ = std::make_unique<JuliaSet>(img_property_, julia_set_params_);
     is_initialized = true;
   }
 
@@ -88,7 +88,7 @@ void ColorizeNode::ColorizeCallbackCustomType(
     image->header(), image->height(), image->width(), image->encoding(),
     image->step() / sizeof(float), image->cuda_stream());
 
-  juliaset_handle_->colorize(
+  julia_set_handle_->colorize(
     out->cuda_mem(), reinterpret_cast<float *>(image->cuda_mem()), out->cuda_stream()->stream());
 
   custom_type_pub_->publish(std::move(out));
@@ -123,7 +123,7 @@ void ColorizeNode::ColorizeCallback(std::unique_ptr<sensor_msgs::msg::Image> ima
       img_property_.color_step = 1;
     }
 
-    juliaset_handle_ = std::make_unique<Juliaset>(img_property_, juliaset_params_);
+    julia_set_handle_ = std::make_unique<JuliaSet>(img_property_, julia_set_params_);
     is_initialized = true;
   }
 
@@ -131,7 +131,7 @@ void ColorizeNode::ColorizeCallback(std::unique_ptr<sensor_msgs::msg::Image> ima
     image->header(), image->height(), image->width(), image->encoding(),
     image->step() / sizeof(float), image->cuda_stream());
 
-  juliaset_handle_->colorize(
+  julia_set_handle_->colorize(
     out->cuda_mem(), reinterpret_cast<float *>(image->cuda_mem()), out->cuda_stream()->stream());
 
   // Convert in-place before publishing to "disable" type adaptation
