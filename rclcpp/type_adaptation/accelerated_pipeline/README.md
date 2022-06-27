@@ -3,15 +3,15 @@
 This directory contains packages that demonstrate use of the Type Adaptation Feature as listed in [REP 2007](https://ros.org/reps/rep-2007.html). 
 
 There are three packages as follows:
-  * `example_type_adapters` : This package implements the custom user defined ROS type for an image(`type_adaptation::example_type_adapters::ImageContainer`).
+  * `example_type_adapters` : This package implements a custom user defined ROS type for an image (`type_adaptation::example_type_adapters::ImageContainer`).
   * `julia_set`: An example that computes [Julia Set](https://en.wikipedia.org/wiki/Julia_set) on an incoming image. 
   * `simple_increment`: A trivial example that increases each pixel value by 1 on an incoming image. 
 
-Examples show a GPU(HW accelerator) pipeline that is performing CUDA operations in a chain of intra-process nodes optimized to reduce unnecessary memory copy during message transport and eliminate unnecessary GPU to CPU synchronization..
+Examples show a GPU (HW accelerator) pipeline that is performing CUDA operations in a chain of intra-process nodes optimized to reduce unnecessary memory copy during message transport and eliminate unnecessary GPU to CPU synchronization.
 
 ## Julia Set Pipeline
 <div align="center"><img src="resources/type_adaptation_example_juliaset.gif" width="400px"/></div>
-In this example, Julia Set is computed on an incoming image to generate fractals. This is a compute intensive task which can be offloaded to a hardware accelerator such as a GPU. Additionally, type adaptation is leveraged to reduce transport overhead. This example showcases performance improvements of a pipeline and can be adopted to other compute intensive workloads.
+In this example, the Julia Set is computed on an incoming image to generate fractals. This is a compute intensive task which can be offloaded to a hardware accelerator such as a GPU. Additionally, type adaptation is leveraged to reduce transport overhead. This example showcases performance improvements of a pipeline and can be adopted to other compute intensive workloads.
 
 * `map_node` - Transforms input image width and height to X and Y coordinate axes, then republishes the normalized image.
 
@@ -27,7 +27,7 @@ Construction of the pipeline:
 
 
 Variations in pipelines: 
-1. Type adaptation **enabled**: In this mode, user defined type(`type_adaptation::example_type_adapters::ImageContainer`) is used though out the pipeline.
+1. Type adaptation **enabled**: In this mode, user defined type (`type_adaptation::example_type_adapters::ImageContainer`) is used through out the pipeline.
 2. Type adaptation **disabled**: In this mode, `sensor_msgs::msg::Image` is used through out the pipeline.
 
 
@@ -40,7 +40,7 @@ Variations in pipelines:
 1. A single `inc_node` that performs *N* steps inline and outputting on `/composite/image_out`.
 2. A chain of *N* `inc_node` instances chained together, outputting on `/pipeline/image_out` 
 
-The goal is to have the throughput of `/pipeline/image_out` match that of `/composite/image_out`. The bigger the image size used, the more unnecessary memory copying in the inter-node transport slows the pipeline relative to the composite node. 
+The goal is to have the throughput of `/pipeline/image_out` match that of `/composite/image_out`. This can be achieved by enabling type adaptaion. When type adpataion is disabled, the bigger the image size used, the more unnecessary memory copying during message transport. This slows the pipeline down relative to the composite node with *N* steps inline. 
 
 There are following parameters for this pipeline:
 * `type_adaptation_enabled` - When true, `inc_node` subscribes and publishes `type_adaptation::example_type_adapters::ImageContainer` type messages. And when false, `sensor_msgs::msg::Image` type is used for subscription and publisher.
@@ -105,7 +105,7 @@ ros2 launch julia_set julia_set-pipeline-launch.py -- enable_type_adapt:=true en
 
 Case2: type adaptation disabled
 ```
-ros2 launch julia_set julia_set-pipeline-launch.py -- enable_type_adapt:=true enable_nsys:=false
+ros2 launch julia_set julia_set-pipeline-launch.py -- enable_type_adapt:=false enable_nsys:=true
 ```
-The screenshot below shows comparision between the two cases. The top profile is with type adaptation enabled and the bottom one is with type adaptation disabled. Notice the time shown by the tool-tip in yellow(*23.778ms* and *793.086ms*), it corresponds to the average fps reported by the `ros2 topic hz /pipeline/image_out` command.
+The screenshot below shows comparision between the two cases. The top profile is with type adaptation enabled and the bottom one is with type adaptation disabled. Notice the time shown by the tool-tip in yellow (*23.778ms* and *793.086ms*), it corresponds to the average fps reported by the `ros2 topic hz /pipeline/image_out` command.
 <div align="center"><img src="resources/julia_set_nsys_profile.png" width="1080px"/></div>
