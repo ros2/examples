@@ -81,7 +81,6 @@ Display the final image from the "composite" branch:
 ros2 run image_tools showimage --ros-args -r image:=composite/image_out
 ```
 
-
 ### Measure performance
 
 Pipeline (N nodes in sequence)
@@ -93,3 +92,20 @@ Composite (one node with N operations)
 ```
 ros2 topic hz /composite/image_out | sed -n 's/.*average rate: \([0-9]*\.[0-9]*\)/Composite fps: \1 hz/p'
 ```
+
+### Profiling 
+To verify the performance improvement of the pipeline, we can compare the profiles of two different runs. One with type adaptation enabled and the other one with type adaptation disabled.
+
+Collecting profiles:
+
+Case1: type adaptation enabled
+```
+ros2 launch julia_set julia_set-pipeline-launch.py -- enable_type_adapt:=true enable_nsys:=true
+```
+
+Case2: type adaptation disabled
+```
+ros2 launch julia_set julia_set-pipeline-launch.py -- enable_type_adapt:=true enable_nsys:=false
+```
+The screenshot below shows comparision between the two cases. The top profile is with type adaptation enabled and the bottom one is with type adaptation disabled. Notice the time shown by the tool-tip in yellow(*23.778ms* and *793.086ms*), it corresponds to the average fps reported by the `ros2 topic hz /pipeline/image_out` command.
+<div align="center"><img src="resources/julia_set_nsys_profile.png" width="1080px"/></div>
