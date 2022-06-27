@@ -7,9 +7,10 @@ There are three packages as follows:
   * `julia_set`: An example that computes [Julia Set](https://en.wikipedia.org/wiki/Julia_set) on an incoming image. 
   * `simple_increment`: A trivial example that increases each pixel value by 1 on an incoming image. 
 
-Examples show a GPU(HW accelerator) pipeline that is performing CUDA operations in a chain of intra-process nodes optimized to reduce unnecessary memory copy during message transport.
+Examples show a GPU(HW accelerator) pipeline that is performing CUDA operations in a chain of intra-process nodes optimized to reduce unnecessary memory copy during message transport and eliminate unnecessary GPU to CPU synchronization..
 
 ## Julia Set Pipeline
+<div align="center"><img src="resources/type_adaptation_example_juliaset.gif" width="400px"/></div>
 In this example, Julia Set is computed on an incoming image to generate fractals. This is a compute intensive task which can be offloaded to a hardware accelerator such as a GPU. Additionally, type adaptation is leveraged to reduce transport overhead. This example showcases performance improvements of a pipeline and can be adopted to other compute intensive workloads.
 
 * `map_node` - Transforms input image width and height to X and Y coordinate axes, then republishes the normalized image.
