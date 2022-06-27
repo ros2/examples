@@ -91,7 +91,7 @@ def launch_setup(context):
                                                  'width': RESOLUTIONS[resolution][0],
                                                  'height': RESOLUTIONS[resolution][1]}])
 
-    # Pipeline constists of the following nodes
+    # Pipeline consists of the following nodes
     # cam2image -> Map Node -> MAX_ITERATION Julia Set Nodes -> Colorize Node
     #
     # Map Node - Transforms input image width and height to X and Y coordinate axis.
