@@ -94,6 +94,8 @@ ros2 topic hz /composite/image_out | sed -n 's/.*average rate: \([0-9]*\.[0-9]*\
 ```
 
 ### Profiling 
+For analysing the profiles of the pipelines, we are using [Nvidia Nsight Systems](https://developer.nvidia.com/nsight-systems)
+
 Julia Set Pipeline:
 
 To verify the performance improvement of the pipeline, we can compare the profiles of two different runs. One with type adaptation enabled and the other one with type adaptation disabled.
@@ -121,4 +123,5 @@ Collecting profiles:
 ros2 launch simple_increment inc-pipeline-launch.py -- enable_nsys:=true
 ```
 In the screenshot below top profile is with ROS2 Foxy and the bottom one is with ROS2 Humble. Notice the time shown by the tool-tip in yellow (*89.813ms* and *32.513ms*), it corresponds to the average fps reported by the `ros2 topic hz /pipeline/image_out` command.
-<div align="center"><img src="resources/<div align="center"><img src="resources/julia_set_nsys_profile.png" width="1080px"/></div>.png" width="1080px"/></div>
+
+<div align="center"><img src="resources/simpe_increment_nsys_profile.png" width="1080px"/></div>
