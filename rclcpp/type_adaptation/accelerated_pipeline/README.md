@@ -53,7 +53,7 @@ Variations in pipelines:
 
 The goal is to have the throughput of `/pipeline/image_out` match that of `/composite/image_out`. This can be achieved by enabling type adaptation. When type adaptation is disabled, the bigger the image size used, the more unnecessary memory copying during message transport. This slows the pipeline down relative to the composite node with *N* steps inline. 
 
-There are following parameters for the `inc_node`:
+There are the following parameters for `inc_node`:
 * `type_adaptation_enabled` - When true, `inc_node` subscribes and publishes `type_adaptation::example_type_adapters::ImageContainer` type messages. And when false, `sensor_msgs::msg::Image` type is used for subscription and publisher.
 * `inplace_enabled` - When true, configures inc_node to directly modify the received CUDA buffer rather than always copy it first.
 * `proc_count` - The number of increment operations to perform on an image.
