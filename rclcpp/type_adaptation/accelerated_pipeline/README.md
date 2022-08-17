@@ -152,6 +152,7 @@ ros2 launch julia_set julia_set-pipeline-launch.py -- enable_type_adapt:=false e
 The screenshot below shows comparision between the two cases. The top profile is with type adaptation enabled and the bottom one is with type adaptation disabled. Notice the time shown by the tool-tip in yellow (*23.778ms* and *793.086ms*), it corresponds to the average fps reported by the `ros2 topic hz /pipeline/image_out` command.
 <div align="center"><img src="resources/julia_set_nsys_profile.png" width="1080px"/></div>
 </br>
+
 Simple Increment Pipeline:
 
 To verify the performance improvement of the pipeline across different ROS2 versions, we can compare the profiles of two different runs. One with ROS2 Foxy and the other one with ROS2 Humble.
