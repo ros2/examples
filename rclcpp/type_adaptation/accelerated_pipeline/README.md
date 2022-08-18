@@ -35,7 +35,7 @@ Variations in pipelines:
 | Parameter            | Type     | Default                  | Description                                                |
 | -------------------- | -------- | ------------------------ | ---------------------------------------------------------- |
 | `enable_type_adapt`  | `bool`   | `true`                   | Enable type adaptation mode                                |
-| `resolution`         | `string` | `1080p`                  | Resolution key for images (16K, 8K, 4K, 1080p, 720p, 480p) |
+| `resolution`         | `string` | `1080p`                  | Resolution key for images (16K \| 8K \| 4K \| 1080p \| 720p \| 480p) |
 | `enable_mt`          | `bool`   | `false`                  | Enable multithreaded composable containers                 |
 | `enable_nsys`        | `bool`   | `false`                  | Enable nsys profiling                                      |
 | `nsys_profile_label` | `string` | `''`                     | Label to append for nsys profile output                    |
