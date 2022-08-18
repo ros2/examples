@@ -37,6 +37,8 @@ INPLACE_ENABLED = True
 
 launch_args = [DeclareLaunchArgument('config', default_value='pipeline',
                                      description='Graph configuration (pipeline|composite)'),
+               DeclareLaunchArgument('enable_type_adapt', default_value='true',
+                                     description='Enable type adaptation mode'),
                DeclareLaunchArgument('resolution', default_value='1080p',
                                      description='Resolution key (16K|8K|4K|1080p|720p|480p)'),
                DeclareLaunchArgument('enable_mt', default_value='false',
@@ -59,6 +61,7 @@ def generate_launch_description():
 
 def launch_setup(context):
     config = LaunchConfiguration('config').perform(context)
+    enable_type_adapt = IfCondition(LaunchConfiguration('enable_type_adapt')).evaluate(context)
     resolution = LaunchConfiguration('resolution').perform(context)
     enable_mt = IfCondition(LaunchConfiguration(
         'enable_mt')).evaluate(context)
@@ -71,7 +74,8 @@ def launch_setup(context):
 
     container_prefix = ''
     if enable_nsys:
-        nsys_profile_name = build_profile_name(nsys_profile_label, config, enable_mt, resolution)
+        nsys_profile_name = build_profile_name(
+            nsys_profile_label, config, enable_type_adapt, enable_mt, resolution)
         container_prefix = f'nsys profile {nsys_profile_flags} -o {nsys_profile_name}'
 
     cam2image_node = ComposableNode(package='image_tools',
@@ -91,7 +95,8 @@ def launch_setup(context):
         plugin='type_adaptation::simple_increment::IncNode',
         name='inc_node',
         parameters=[{'proc_count': IMAGE_PROC_COUNT},
-                    {'inplace_enabled': INPLACE_ENABLED}],
+                    {'inplace_enabled': INPLACE_ENABLED},
+                    {'type_adaptation_enabled': enable_type_adapt}],
         remappings=[('/image_out', '/composite/image_out')])
 
     composite_container = ComposableNodeContainer(
@@ -114,7 +119,8 @@ def launch_setup(context):
         package='simple_increment',
         plugin='type_adaptation::simple_increment::IncNode',
         name='inc_node0',
-        parameters=[{'inplace_enabled': INPLACE_ENABLED}],
+        parameters=[{'inplace_enabled': INPLACE_ENABLED},
+                    {'type_adaptation_enabled': enable_type_adapt}],
         remappings=[('/image_out', '/image_out0')]))
 
     for i in range(1, IMAGE_PROC_COUNT - 1):
@@ -122,7 +128,8 @@ def launch_setup(context):
             package='simple_increment',
             plugin='type_adaptation::simple_increment::IncNode',
             name='inc_node%d' % (i),
-            parameters=[{'inplace_enabled': INPLACE_ENABLED}],
+            parameters=[{'inplace_enabled': INPLACE_ENABLED},
+                        {'type_adaptation_enabled': enable_type_adapt}],
             remappings=[('/image_in', '/image_out%d' % (i - 1)),
                         ('/image_out', '/image_out%d' % (i))]))
 
@@ -130,7 +137,8 @@ def launch_setup(context):
         package='simple_increment',
         plugin='type_adaptation::simple_increment::IncNode',
         name='inc_node%d' % (IMAGE_PROC_COUNT - 1),
-        parameters=[{'inplace_enabled': INPLACE_ENABLED}],
+        parameters=[{'inplace_enabled': INPLACE_ENABLED},
+                    {'type_adaptation_enabled': enable_type_adapt}],
         remappings=[('/image_in', '/image_out%d' % (IMAGE_PROC_COUNT - 1 - 1)),
                     ('/image_out', '/pipeline/image_out')]))
 
@@ -150,6 +158,7 @@ def launch_setup(context):
     return [pipeline_container, composite_container]
 
 
-def build_profile_name(label, config, enable_mt, resolution):
-    return f"ros-type_adapt-{platform.machine()}{'' if not enable_mt else '-mt'}" +\
-        f"-{config}-{resolution}-{int(IMAGE_HZ)}hz{'' if not label else '-' + label}"
+def build_profile_name(label, config, enable_type_adapt, enable_mt, resolution):
+    return f"ros-type_adapt-{platform.machine()}{'' if not enable_mt else '-mt'}" + \
+        f"-{config}-{enable_type_adapt}-{resolution}-{int(IMAGE_HZ)}hz + \
+            {'' if not label else '-' + label}"

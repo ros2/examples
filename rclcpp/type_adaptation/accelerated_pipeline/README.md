@@ -30,6 +30,17 @@ Variations in pipelines:
 1. Type adaptation **enabled**: In this mode, user defined type (`type_adaptation::example_type_adapters::ImageContainer`) is used through out the pipeline.
 2. Type adaptation **disabled**: In this mode, `sensor_msgs::msg::Image` is used through out the pipeline.
 
+### Launch file parameters
+
+| Parameter            | Type     | Default                  | Description                                                |
+| -------------------- | -------- | ------------------------ | ---------------------------------------------------------- |
+| `enable_type_adapt`  | `bool`   | `true`                   | Enable type adaptation mode                                |
+| `resolution`         | `string` | `1080p`                  | Resolution key for images (16K \| 8K \| 4K \| 1080p \| 720p \| 480p) |
+| `enable_mt`          | `bool`   | `false`                  | Enable multithreaded composable containers                 |
+| `enable_nsys`        | `bool`   | `false`                  | Enable nsys profiling                                      |
+| `nsys_profile_label` | `string` | `''`                     | Label to append for nsys profile output                    |
+| `nsys_profile_flags` | `string` | `--trace=osrt,nvtx,cuda` | Flags for nsys profile output                              |
+
 
 ## Simple Increment Pipeline
 A simple pipeline in which interconnected nodes increases each pixel value by 1 of an incoming image message.
@@ -40,16 +51,43 @@ Variations in pipelines:
 1. A single `inc_node` that performs *N* steps inline and outputting on `/composite/image_out`.
 2. A chain of *N* `inc_node` instances chained together, outputting on `/pipeline/image_out` 
 
-The goal is to have the throughput of `/pipeline/image_out` match that of `/composite/image_out`. This can be achieved by enabling type adaptaion. When type adpataion is disabled, the bigger the image size used, the more unnecessary memory copying during message transport. This slows the pipeline down relative to the composite node with *N* steps inline. 
+The goal is to have the throughput of `/pipeline/image_out` match that of `/composite/image_out`. This can be achieved by enabling type adaptation. When type adaptation is disabled, the bigger the image size used, the more unnecessary memory copying during message transport. This slows the pipeline down relative to the composite node with *N* steps inline. 
 
-There are following parameters for this pipeline:
+There are the following parameters for `inc_node`:
 * `type_adaptation_enabled` - When true, `inc_node` subscribes and publishes `type_adaptation::example_type_adapters::ImageContainer` type messages. And when false, `sensor_msgs::msg::Image` type is used for subscription and publisher.
 * `inplace_enabled` - When true, configures inc_node to directly modify the received CUDA buffer rather than always copy it first.
 * `proc_count` - The number of increment operations to perform on an image.
 
+### Launch file parameters
+
+| Parameter            | Type     | Default                  | Description                                                          |
+| -------------------- | -------- | ------------------------ | -------------------------------------------------------------------- |
+| `config`             | `string` | `pipeline`               | Graph configuration (pipeline \| composite)                          |
+| `enable_type_adapt`  | `bool`   | `true`                   | Enable type adaptation mode                                          |
+| `resolution`         | `string` | `1080p`                  | Resolution key for images (16K \| 8K \| 4K \| 1080p \| 720p \| 480p) |
+| `enable_mt`          | `bool`   | `false`                  | Enable multithreaded composable containers                           |
+| `enable_nsys`        | `bool`   | `false`                  | Enable nsys profiling                                                |
+| `nsys_profile_label` | `string` | `''`                     | Label to append for nsys profile output                              |
+| `nsys_profile_flags` | `string` | `--trace=osrt,nvtx,cuda` | Flags for nsys profile                                               |
+
 
 ## Running the pipelines
-### Building the packages
+### Bringing in the dependencies
+To generate input and show output images, we will use the [image_tools](https://github.com/ros2/demos/tree/humble/image_tools) package.
+
+First, clone the repository in your ROS workspace
+
+```
+git clone -b humble https://github.com/ros2/demos.git
+```
+
+Once done, build the `image_tools` package
+
+```
+colcon build --packages-up-to image_tools
+```
+
+### Building the pipeline packages
 
 ```
 colcon build --packages-up-to julia_set simple_increment --event-handlers console_direct+
