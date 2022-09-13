@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_wait_set
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add test linting to wait_set and fix issues. (`#346 <https://github.com/ros2/examples/issues/346>`_) (`#347 <https://github.com/ros2/examples/issues/347>`_)
+* Contributors: mergify[bot]
+
 0.16.0 (2022-04-29)
 -------------------
 

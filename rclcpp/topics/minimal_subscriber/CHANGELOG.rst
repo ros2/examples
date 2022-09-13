@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.16.0 (2022-04-29)
 -------------------
 * add ContentFilteredTopic example. (`#341 <https://github.com/ros2/examples/issues/341>`_)
