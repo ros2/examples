@@ -68,14 +68,14 @@ class CheckMultipleNodesLaunched(unittest.TestCase):
         invalid_node_list = node_list + ['invalid_node']
 
         # Method 1
-        wait_for_nodes_1 = WaitForNodes(invalid_node_list, timeout=1.0)
+        wait_for_nodes_1 = WaitForNodes(invalid_node_list, timeout=5.0)
         assert not wait_for_nodes_1.wait()
         assert wait_for_nodes_1.get_nodes_not_found() == {'invalid_node'}
         wait_for_nodes_1.shutdown()
 
         # Method 2
         with pytest.raises(RuntimeError):
-            with WaitForNodes(invalid_node_list, timeout=1.0):
+            with WaitForNodes(invalid_node_list, timeout=5.0):
                 pass
 
 
