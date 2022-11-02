@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_wait_set
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.16.1 (2022-09-13)
 -------------------
 * Add test linting to wait_set and fix issues. (`#346 <https://github.com/ros2/examples/issues/346>`_) (`#347 <https://github.com/ros2/examples/issues/347>`_)
