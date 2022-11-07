@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_cbg_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.15.1 (2022-11-07)
+-------------------
+
 0.15.0 (2022-03-01)
 -------------------
 * Improve scheduling configuration of examples_rclcpp_cbg_executor package (`#331 <https://github.com/ros2/examples/issues/331>`_)
