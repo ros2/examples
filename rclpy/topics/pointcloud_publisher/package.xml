@@ -4,8 +4,13 @@
   <name>examples_rclpy_pointcloud_publisher</name>
   <version>0.16.2</version>
   <description>Example on how to publish a Pointcloud2 message</description>
-  <maintainer email="evanflynn.msu@gmail.com">Evan Flynn</maintainer>
+
+  <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
+
   <license>Apache 2.0</license>
+
+  <author email="evanflynn.msu@gmail.com">Evan Flynn</author>
 
   <exec_depend>rclpy</exec_depend>
   <exec_depend>sensor_msgs_py</exec_depend>

@@ -4,10 +4,14 @@
   <name>examples_rclpy_minimal_client</name>
   <version>0.16.2</version>
   <description>Examples of minimal service clients using rclpy.</description>
-  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
+
   <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
+
   <license>Apache License 2.0</license>
-  
+
+  <author email="aditya.pande@openrobotics.org">Aditya Pande</author>
+  <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
   <exec_depend>example_interfaces</exec_depend>
   <exec_depend>rclpy</exec_depend>
