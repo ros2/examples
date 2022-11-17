@@ -4,12 +4,16 @@
   <name>examples_rclcpp_minimal_timer</name>
   <version>0.16.2</version>
   <description>Examples of minimal nodes which have timers</description>
-  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
+
   <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
+
   <license>Apache License 2.0</license>
+
+  <author email="jacob@openrobotics.org">Jacob Perron</author>
   <author>Mikael Arguedas</author>
   <author>Morgan Quigley</author>
-  <author email="jacob@openrobotics.org">Jacob Perron</author>
+  <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

@@ -12,8 +12,8 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='Aditya Pande, Shane Loretz',
-    maintainer_email='aditya.pande@openrobotics.org, shane@openrobotics.org',
+    maintainer='Aditya Pande, Alejandro Hernandez Cordero',
+    maintainer_email='aditya.pande@openrobotics.org, alejandro@openrobotics.org',
     keywords=['ROS'],
     classifiers=[
         'Intended Audience :: Developers',

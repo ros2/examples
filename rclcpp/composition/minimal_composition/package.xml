@@ -5,12 +5,16 @@
   <version>0.16.2</version>
   <description>Minimalist examples of composing nodes in the same
   process</description>
-  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
+
   <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
+
   <license>Apache License 2.0</license>
+
+  <author email="jacob@openrobotics.org">Jacob Perron</author>
   <author>Mikael Arguedas</author>
   <author>Morgan Quigley</author>
-  <author email="jacob@openrobotics.org">Jacob Perron</author>
+  <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
