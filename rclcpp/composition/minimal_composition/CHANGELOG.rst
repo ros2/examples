@@ -2,6 +2,12 @@
 Changelog for package examples_rclcpp_minimal_composition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update the examples to C++17. (`#353 <https://github.com/ros2/examples/issues/353>`_)
+* [rolling] Update maintainers - 2022-11-07 (`#352 <https://github.com/ros2/examples/issues/352>`_)
+* Contributors: Audrow Nash, Chris Lalancette
+
 0.16.2 (2022-11-02)
 -------------------
 

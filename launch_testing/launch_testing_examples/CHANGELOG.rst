@@ -2,6 +2,11 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [rolling] Update maintainers - 2022-11-07 (`#352 <https://github.com/ros2/examples/issues/352>`_)
+* Contributors: Audrow Nash
+
 0.16.2 (2022-11-02)
 -------------------
 * Increase the WaitForNode timeout. (`#350 <https://github.com/ros2/examples/issues/350>`_)

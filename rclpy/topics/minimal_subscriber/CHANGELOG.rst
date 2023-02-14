@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [rolling] Update maintainers - 2022-11-07 (`#352 <https://github.com/ros2/examples/issues/352>`_)
+* Contributors: Audrow Nash
+
 0.16.2 (2022-11-02)
 -------------------
 
