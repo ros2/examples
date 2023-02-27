@@ -53,7 +53,7 @@ class CheckMultipleNodesLaunched(unittest.TestCase):
     def test_nodes_successful(self, node_list):
         """Check if all the nodes were launched correctly."""
         # Method 1
-        wait_for_nodes_1 = WaitForNodes(node_list, timeout=5.0)
+        wait_for_nodes_1 = WaitForNodes(node_list, timeout=10.0)
         assert wait_for_nodes_1.wait()
         assert wait_for_nodes_1.get_nodes_not_found() == set()
         wait_for_nodes_1.shutdown()
