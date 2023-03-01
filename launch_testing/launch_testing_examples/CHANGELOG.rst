@@ -2,6 +2,11 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* increase the timeout for window platform to avoid flaky test (`#355 <https://github.com/ros2/examples/issues/355>`_)
+* Contributors: Chen Lihui
+
 0.17.0 (2023-02-14)
 -------------------
 * [rolling] Update maintainers - 2022-11-07 (`#352 <https://github.com/ros2/examples/issues/352>`_)
