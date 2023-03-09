@@ -13,6 +13,7 @@
   <author email="jacob@openrobotics.org">Jacob Perron</author>
   <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
+  <exec_depend>action_msgs</exec_depend>
   <exec_depend>example_interfaces</exec_depend>
   <exec_depend>rclpy</exec_depend>
 
