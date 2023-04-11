@@ -2,8 +2,8 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.18.0 (2023-04-11)
+-------------------
 * Enable document generation using rosdoc2 for ament_python pkgs (`#357 <https://github.com/ros2/examples/issues/357>`_)
 * Contributors: Yadu
 
