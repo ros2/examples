@@ -2,6 +2,13 @@
 Changelog for package examples_rclpy_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Enable document generation using rosdoc2 for ament_python pkgs (`#357 <https://github.com/ros2/examples/issues/357>`_)
+  * Add missing action_msgs dep
+  * Add exec_deps for launch_testing_examples
+* Contributors: Yadu
+
 0.17.1 (2023-03-01)
 -------------------
 

@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.17.1 (2023-03-01)
 -------------------
 

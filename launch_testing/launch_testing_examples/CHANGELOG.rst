@@ -2,6 +2,11 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Enable document generation using rosdoc2 for ament_python pkgs (`#357 <https://github.com/ros2/examples/issues/357>`_)
+* Contributors: Yadu
+
 0.17.1 (2023-03-01)
 -------------------
 * increase the timeout for window platform to avoid flaky test (`#355 <https://github.com/ros2/examples/issues/355>`_)
