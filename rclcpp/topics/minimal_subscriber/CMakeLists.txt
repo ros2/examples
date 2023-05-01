@@ -36,7 +36,12 @@ ament_target_dependencies(subscriber_not_composable rclcpp std_msgs)
 add_executable(subscriber_content_filtering content_filtering.cpp)
 ament_target_dependencies(subscriber_content_filtering rclcpp std_msgs)
 
-add_library(wait_set_subscriber_library SHARED
+if(WIN32)
+    set(LIB_TYPE STATIC)
+else()
+    set(LIB_TYPE SHARED)
+endif()
+add_library(wait_set_subscriber_library ${LIB_TYPE}
     wait_set_subscriber.cpp
     static_wait_set_subscriber.cpp
     time_triggered_wait_set_subscriber.cpp)
