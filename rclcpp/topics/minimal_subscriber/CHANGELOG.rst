@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.19.1 (2023-07-11)
+-------------------
 * Split lambda and subscriber def in minimal example (`#363 <https://github.com/ros2/examples/issues/363>`_)
 * Contributors: Felipe Gomes de Melo
 
