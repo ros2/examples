@@ -40,7 +40,7 @@ int main(int argc, char ** argv)
   RCLCPP_INFO(node->get_logger(), "Sending goal");
   // Send goal and wait for result (registering feedback callback is optional)
   auto goal_handle_future = action_client->async_send_goal(goal_msg);
-  if (rclcpp::spin_until_future_complete(node, goal_handle_future) !=
+  if (rclcpp::spin_until_complete(node, goal_handle_future) !=
     rclcpp::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(node->get_logger(), "send goal call failed :(");
@@ -56,7 +56,7 @@ int main(int argc, char ** argv)
   // Wait for the server to be done with the goal
   auto result_future = action_client->async_get_result(goal_handle);
 
-  auto wait_result = rclcpp::spin_until_future_complete(
+  auto wait_result = rclcpp::spin_until_complete(
     node,
     result_future,
     std::chrono::seconds(3));
@@ -65,7 +65,7 @@ int main(int argc, char ** argv)
     RCLCPP_INFO(node->get_logger(), "canceling goal");
     // Cancel the goal since it is taking too long
     auto cancel_result_future = action_client->async_cancel_goal(goal_handle);
-    if (rclcpp::spin_until_future_complete(node, cancel_result_future) !=
+    if (rclcpp::spin_until_complete(node, cancel_result_future) !=
       rclcpp::FutureReturnCode::SUCCESS)
     {
       RCLCPP_ERROR(node->get_logger(), "failed to cancel goal");
@@ -80,7 +80,7 @@ int main(int argc, char ** argv)
   }
 
   RCLCPP_INFO(node->get_logger(), "Waiting for result");
-  if (rclcpp::spin_until_future_complete(node, result_future) !=
+  if (rclcpp::spin_until_complete(node, result_future) !=
     rclcpp::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(node->get_logger(), "get result call failed :(");

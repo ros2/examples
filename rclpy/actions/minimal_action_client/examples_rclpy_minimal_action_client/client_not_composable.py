@@ -43,7 +43,7 @@ def main(args=None):
     send_goal_future = action_client.send_goal_async(
         goal_msg, feedback_callback=lambda feedback: feedback_cb(node.get_logger(), feedback))
 
-    rclpy.spin_until_future_complete(node, send_goal_future)
+    rclpy.spin_until_complete(node, send_goal_future)
 
     goal_handle = send_goal_future.result()
 
@@ -58,7 +58,7 @@ def main(args=None):
 
     get_result_future = goal_handle.get_result_async()
 
-    rclpy.spin_until_future_complete(node, get_result_future)
+    rclpy.spin_until_complete(node, get_result_future)
 
     result = get_result_future.result().result
     status = get_result_future.result().status
