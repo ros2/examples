@@ -48,6 +48,7 @@ if os.name != 'nt':
             self.node = Node('test_node')
 
         def tearDown(self):
+            self.node.destroy_node()
             rclpy.shutdown()
 
         def test_set_parameter(self, proc_output):
