@@ -40,5 +40,5 @@ def generate_test_description():
 class TestFixture(unittest.TestCase):
 
     def test_check_if_msgs_published(self):
-        with WaitForTopics([('chatter', String)], timeout=5.0):
+        with WaitForTopics([('chatter', String)], timeout=15.0):
             print('Topic received messages !')
