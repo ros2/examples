@@ -9,20 +9,22 @@
   <license>Apache License 2.0</license>
 
   <author email="aditya.pande@openrobotics.org">Aditya Pande</author>
+  <author email="sloretz@openrobotics.org">Shane Loretz</author>
+
+  <exec_depend>demo_nodes_cpp</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>launch_testing</exec_depend>
+  <exec_depend>launch_testing_ros</exec_depend>
+  <exec_depend>python3-pytest</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>rcl_interfaces</exec_depend>
+  <exec_depend>ros2bag</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
-  <test_depend>python3-pytest</test_depend>
-  <test_depend>launch</test_depend>
-  <test_depend>launch_ros</test_depend>
-  <test_depend>launch_testing</test_depend>
-  <test_depend>launch_testing_ros</test_depend>
-  <test_depend>rclpy</test_depend>
-  <test_depend>ros2bag</test_depend>
-  <test_depend>rosbag2_transport</test_depend>
-  <test_depend>std_msgs</test_depend>
-  <test_depend>demo_nodes_cpp</test_depend>
 
   <export>
     <build_type>ament_python</build_type>
