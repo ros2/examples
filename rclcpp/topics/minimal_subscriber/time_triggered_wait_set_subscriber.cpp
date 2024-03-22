@@ -71,7 +71,9 @@ public:
         case rclcpp::WaitResultKind::Ready:
           {
             if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
-              timer_->execute_callback();
+              if (auto data = timer_->call()) {
+                timer_->execute_callback(data);
+              }
             }
             break;
           }
