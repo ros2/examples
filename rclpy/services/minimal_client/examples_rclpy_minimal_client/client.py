@@ -29,7 +29,7 @@ def main(args=None):
         node.get_logger().info('service not available, waiting again...')
 
     future = cli.call_async(req)
-    rclpy.spin_until_future_complete(node, future)
+    rclpy.spin_until_complete(node, future)
 
     result = future.result()
     node.get_logger().info(

@@ -168,7 +168,7 @@ int main(int argc, char * argv[])
     [stop_token = stop_async_spinner.get_future(), node]() {
       rclcpp::executors::SingleThreadedExecutor executor;
       executor.add_node(node);
-      executor.spin_until_future_complete(stop_token);
+      executor.spin_until_complete(stop_token);
     });
   while (1) {
     std::string buffer;

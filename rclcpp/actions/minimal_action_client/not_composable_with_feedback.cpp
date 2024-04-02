@@ -56,7 +56,7 @@ int main(int argc, char ** argv)
   send_goal_options.feedback_callback = feedback_callback;
   auto goal_handle_future = action_client->async_send_goal(goal_msg, send_goal_options);
 
-  if (rclcpp::spin_until_future_complete(g_node, goal_handle_future) !=
+  if (rclcpp::spin_until_complete(g_node, goal_handle_future) !=
     rclcpp::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(g_node->get_logger(), "send goal call failed :(");
@@ -73,7 +73,7 @@ int main(int argc, char ** argv)
   auto result_future = action_client->async_get_result(goal_handle);
 
   RCLCPP_INFO(g_node->get_logger(), "Waiting for result");
-  if (rclcpp::spin_until_future_complete(g_node, result_future) !=
+  if (rclcpp::spin_until_complete(g_node, result_future) !=
     rclcpp::FutureReturnCode::SUCCESS)
   {
     RCLCPP_ERROR(g_node->get_logger(), "get result call failed :(");

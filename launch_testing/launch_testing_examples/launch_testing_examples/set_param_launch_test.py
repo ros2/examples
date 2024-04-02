@@ -62,7 +62,7 @@ if os.name != 'nt':
             request = SetParameters.Request()
             request.parameters = parameters
             future = client.call_async(request)
-            rclpy.spin_until_future_complete(self.node, future, timeout_sec=15.0)
+            rclpy.spin_until_complete(self.node, future, timeout_sec=15.0)
 
             response = future.result()
             assert response.results[0].successful, 'Could not set parameter!'
