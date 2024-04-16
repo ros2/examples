@@ -2,6 +2,9 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.19.3 (2024-04-16)
+-------------------
+
 0.19.2 (2024-03-28)
 -------------------
 * Cleanup the launch_testing_examples. (`#374 <https://github.com/ros2/examples/issues/374>`_)

@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_pointcloud_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.19.2 (2024-03-28)
 -------------------
 

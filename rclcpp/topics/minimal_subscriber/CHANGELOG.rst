@@ -2,6 +2,12 @@
 Changelog for package examples_rclcpp_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.19.3 (2024-04-16)
+-------------------
+* fix: Fixed compilation after API change of TimerBase::execute (`#375 <https://github.com/ros2/examples/issues/375>`_)
+  Co-authored-by: Janosch Machowinski <J.Machowinski@cellumation.com>
+* Contributors: jmachowinski
+
 0.19.2 (2024-03-28)
 -------------------
 
