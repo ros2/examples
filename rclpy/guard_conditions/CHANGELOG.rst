@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_guard_conditions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.19.3 (2024-04-16)
 -------------------
 

@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.19.3 (2024-04-16)
 -------------------
 

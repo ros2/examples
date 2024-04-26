@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.19.3 (2024-04-16)
 -------------------
 
