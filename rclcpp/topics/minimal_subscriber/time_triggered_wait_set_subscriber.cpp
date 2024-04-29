@@ -16,7 +16,7 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
@@ -34,19 +34,19 @@ public:
 
     auto subscription_options = rclcpp::SubscriptionOptions();
     subscription_options.callback_group = cb_group_waitset;
-    auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
+    auto subscription_callback = [this](example_interfaces::msg::String::UniquePtr msg) {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       };
-    subscription_ = this->create_subscription<std_msgs::msg::String>(
+    subscription_ = this->create_subscription<example_interfaces::msg::String>(
       "topic",
       10,
       subscription_callback,
       subscription_options);
     auto timer_callback = [this]() -> void {
-        std_msgs::msg::String msg;
+        example_interfaces::msg::String msg;
         rclcpp::MessageInfo msg_info;
         if (subscription_->take(msg, msg_info)) {
-          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
+          std::shared_ptr<void> type_erased_msg = std::make_shared<example_interfaces::msg::String>(msg);
           subscription_->handle_message(type_erased_msg, msg_info);
         } else {
           RCLCPP_WARN(this->get_logger(), "No message available");
@@ -89,7 +89,7 @@ public:
   }
 
 private:
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription_;
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::WaitSet wait_set_;
   std::thread thread_;

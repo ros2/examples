@@ -21,7 +21,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/publisher_options.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
@@ -36,13 +36,13 @@ public:
     auto options_1 = rclcpp::PublisherOptions();
     options_1.require_unique_network_flow_endpoints =
       RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_OPTIONALLY_REQUIRED;
-    publisher_1_ = this->create_publisher<std_msgs::msg::String>("topic_1", 10, options_1);
+    publisher_1_ = this->create_publisher<example_interfaces::msg::String>("topic_1", 10, options_1);
     timer_1_ = this->create_wall_timer(
       500ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_1_callback, this));
 
     // Create publisher without unique network flow endpoints
     // Unique network flow endpoints are disabled in default options
-    publisher_2_ = this->create_publisher<std_msgs::msg::String>("topic_2", 10);
+    publisher_2_ = this->create_publisher<example_interfaces::msg::String>("topic_2", 10);
     timer_2_ = this->create_wall_timer(
       1000ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_2_callback, this));
 
@@ -64,7 +64,7 @@ public:
 private:
   void timer_1_callback()
   {
-    auto message = std_msgs::msg::String();
+    auto message = example_interfaces::msg::String();
     message.data = "Hello, world! " + std::to_string(count_1_++);
 
     RCLCPP_INFO(
@@ -73,7 +73,7 @@ private:
   }
   void timer_2_callback()
   {
-    auto message = std_msgs::msg::String();
+    auto message = example_interfaces::msg::String();
     message.data = "Hej, världen! " + std::to_string(count_2_++);
 
     RCLCPP_INFO(
@@ -102,8 +102,8 @@ private:
   }
   rclcpp::TimerBase::SharedPtr timer_1_;
   rclcpp::TimerBase::SharedPtr timer_2_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_1_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_2_;
+  rclcpp::Publisher<example_interfaces::msg::String>::SharedPtr publisher_1_;
+  rclcpp::Publisher<example_interfaces::msg::String>::SharedPtr publisher_2_;
   size_t count_1_;
   size_t count_2_;
 };

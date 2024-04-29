@@ -16,7 +16,7 @@
 #define WAIT_SET__LISTENER_HPP_
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 #include "wait_set/visibility.h"
 
 class Listener : public rclcpp::Node
@@ -28,8 +28,8 @@ public:
 private:
   void spin_wait_set();
 
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription1_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription2_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription1_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription2_;
   rclcpp::WaitSet wait_set_;
   std::thread thread_;
 };

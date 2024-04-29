@@ -16,17 +16,17 @@
 
 #include "wait_set/talker.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
 Talker::Talker(rclcpp::NodeOptions options)
 : Node("talker", options), count_(0)
 {
-  publisher_ = create_publisher<std_msgs::msg::String>("topic", 10);
+  publisher_ = create_publisher<example_interfaces::msg::String>("topic", 10);
   auto timer_callback =
     [this]() -> void {
-      auto message = std_msgs::msg::String();
+      auto message = example_interfaces::msg::String();
       message.data = "Hello, world! " + std::to_string(count_++);
       RCLCPP_INFO(this->get_logger(), "Publisher: '%s'", message.data.c_str());
       publisher_->publish(message);

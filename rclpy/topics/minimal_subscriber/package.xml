@@ -14,7 +14,7 @@
   <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
   <exec_depend>rclpy</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>example_interfaces</exec_depend>
 
   <!-- These test dependencies are optional
   Their purpose is to make sure that the code passes the linters -->

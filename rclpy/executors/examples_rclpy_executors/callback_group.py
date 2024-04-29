@@ -17,7 +17,7 @@ import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
-from std_msgs.msg import String
+from example_interfaces.msg import String
 
 
 class DoubleTalker(Node):

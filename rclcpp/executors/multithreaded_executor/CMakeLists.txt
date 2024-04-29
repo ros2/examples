@@ -13,10 +13,10 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
 
 add_executable(multithreaded_executor multithreaded_executor.cpp)
-ament_target_dependencies(multithreaded_executor rclcpp std_msgs)
+ament_target_dependencies(multithreaded_executor rclcpp example_interfaces)
 
 install(TARGETS
   multithreaded_executor

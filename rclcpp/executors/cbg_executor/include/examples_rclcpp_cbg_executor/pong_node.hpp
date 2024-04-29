@@ -20,7 +20,7 @@
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/int32.hpp"
+#include "example_interfaces/msg/int32.hpp"
 
 namespace examples_rclcpp_cbg_executor
 {
@@ -39,13 +39,13 @@ public:
 private:
   rclcpp::CallbackGroup::SharedPtr low_prio_callback_group_;
 
-  rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr high_ping_subscription_;
-  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr high_pong_publisher_;
-  void high_ping_received(const std_msgs::msg::Int32::ConstSharedPtr msg);
+  rclcpp::Subscription<example_interfaces::msg::Int32>::SharedPtr high_ping_subscription_;
+  rclcpp::Publisher<example_interfaces::msg::Int32>::SharedPtr high_pong_publisher_;
+  void high_ping_received(const example_interfaces::msg::Int32::ConstSharedPtr msg);
 
-  rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr low_ping_subscription_;
-  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr low_pong_publisher_;
-  void low_ping_received(const std_msgs::msg::Int32::ConstSharedPtr msg);
+  rclcpp::Subscription<example_interfaces::msg::Int32>::SharedPtr low_ping_subscription_;
+  rclcpp::Publisher<example_interfaces::msg::Int32>::SharedPtr low_pong_publisher_;
+  void low_ping_received(const example_interfaces::msg::Int32::ConstSharedPtr msg);
 
   static void burn_cpu_cycles(std::chrono::nanoseconds duration);
 };

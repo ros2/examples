@@ -22,7 +22,7 @@
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/int32.hpp"
+#include "example_interfaces/msg/int32.hpp"
 
 namespace examples_rclcpp_cbg_executor
 {
@@ -47,15 +47,15 @@ public:
 
 private:
   rclcpp::TimerBase::SharedPtr ping_timer_;
-  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr high_ping_publisher_;
-  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr low_ping_publisher_;
+  rclcpp::Publisher<example_interfaces::msg::Int32>::SharedPtr high_ping_publisher_;
+  rclcpp::Publisher<example_interfaces::msg::Int32>::SharedPtr low_ping_publisher_;
   void send_ping();
 
-  rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr high_pong_subscription_;
-  void high_pong_received(const std_msgs::msg::Int32::ConstSharedPtr msg);
+  rclcpp::Subscription<example_interfaces::msg::Int32>::SharedPtr high_pong_subscription_;
+  void high_pong_received(const example_interfaces::msg::Int32::ConstSharedPtr msg);
 
-  rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr low_pong_subscription_;
-  void low_pong_received(const std_msgs::msg::Int32::ConstSharedPtr msg);
+  rclcpp::Subscription<example_interfaces::msg::Int32>::SharedPtr low_pong_subscription_;
+  void low_pong_received(const example_interfaces::msg::Int32::ConstSharedPtr msg);
 
   std::vector<RTTData> rtt_data_;
 };

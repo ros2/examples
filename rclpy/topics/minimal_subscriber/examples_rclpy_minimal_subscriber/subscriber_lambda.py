@@ -14,7 +14,7 @@
 
 import rclpy
 
-from std_msgs.msg import String
+from example_interfaces.msg import String
 
 
 def main(args=None):

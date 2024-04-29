@@ -15,7 +15,7 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 #include "wait_set/random_listener.hpp"
 #include "wait_set/random_talker.hpp"

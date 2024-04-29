@@ -16,7 +16,7 @@ from time import sleep
 
 import rclpy
 
-from std_msgs.msg import String
+from example_interfaces.msg import String
 
 # We do not recommend this style as ROS 2 provides timers for this purpose,
 # and it is recommended that all nodes call a variation of spin.

@@ -14,7 +14,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
 
 include_directories(include)
 
@@ -23,7 +23,7 @@ add_library(composition_nodes SHARED
             src/subscriber_node.cpp)
 target_compile_definitions(composition_nodes
   PRIVATE "MINIMAL_COMPOSITION_DLL")
-ament_target_dependencies(composition_nodes rclcpp rclcpp_components std_msgs)
+ament_target_dependencies(composition_nodes rclcpp rclcpp_components example_interfaces)
 
 # This package installs libraries without exporting them.
 # Export the library path to ensure that the installed libraries are available.

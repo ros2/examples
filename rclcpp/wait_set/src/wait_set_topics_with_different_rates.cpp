@@ -16,7 +16,7 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
@@ -35,10 +35,10 @@ public:
     std::chrono::nanoseconds period)
   : Node(node_name)
   {
-    publisher_ = this->create_publisher<std_msgs::msg::String>(topic_name, 10);
+    publisher_ = this->create_publisher<example_interfaces::msg::String>(topic_name, 10);
     auto timer_callback =
       [this, message_data]() -> void {
-        std_msgs::msg::String message;
+        example_interfaces::msg::String message;
         message.data = message_data;
         RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
         this->publisher_->publish(message);
@@ -48,7 +48,7 @@ public:
 
 private:
   rclcpp::TimerBase::SharedPtr timer_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+  rclcpp::Publisher<example_interfaces::msg::String>::SharedPtr publisher_;
 };
 
 int32_t main(const int32_t argc, char ** const argv)
@@ -56,11 +56,11 @@ int32_t main(const int32_t argc, char ** const argv)
   rclcpp::init(argc, argv);
 
   auto node = std::make_shared<rclcpp::Node>("wait_set_listener");
-  auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
+  auto do_nothing = [](example_interfaces::msg::String::UniquePtr) {assert(false);};
 
-  auto sub1 = node->create_subscription<std_msgs::msg::String>("topicA", 10, do_nothing);
-  auto sub2 = node->create_subscription<std_msgs::msg::String>("topicB", 10, do_nothing);
-  auto sub3 = node->create_subscription<std_msgs::msg::String>("topicC", 10, do_nothing);
+  auto sub1 = node->create_subscription<example_interfaces::msg::String>("topicA", 10, do_nothing);
+  auto sub2 = node->create_subscription<example_interfaces::msg::String>("topicB", 10, do_nothing);
+  auto sub3 = node->create_subscription<example_interfaces::msg::String>("topicC", 10, do_nothing);
 
   rclcpp::WaitSet wait_set({{sub1}, {sub2}, {sub3}});
 
@@ -85,8 +85,8 @@ int32_t main(const int32_t argc, char ** const argv)
       // topic A and B handling
       // Note only topic B is used as a trigger condition
       if (sub2_has_data) {
-        std_msgs::msg::String msg1;
-        std_msgs::msg::String msg2;
+        example_interfaces::msg::String msg1;
+        example_interfaces::msg::String msg2;
         rclcpp::MessageInfo msg_info;
         std::string handled_data;
 
@@ -104,7 +104,7 @@ int32_t main(const int32_t argc, char ** const argv)
 
       // topic C handling
       if (sub3_has_data) {
-        std_msgs::msg::String msg;
+        example_interfaces::msg::String msg;
         rclcpp::MessageInfo msg_info;
         if (sub3->take(msg, msg_info)) {
           RCLCPP_INFO(node->get_logger(), "I heard: '%s'", msg.data.c_str());

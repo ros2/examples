@@ -18,7 +18,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/subscription_options.hpp"
 
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 class MinimalSubscriberWithTopicStatistics : public rclcpp::Node
 {
@@ -36,20 +36,20 @@ public:
     // configure the topic name (default '/statistics')
     // options.topic_stats_options.publish_topic = "/topic_statistics"
 
-    auto callback = [this](const std_msgs::msg::String & msg) {
+    auto callback = [this](const example_interfaces::msg::String & msg) {
         this->topic_callback(msg);
       };
 
-    subscription_ = this->create_subscription<std_msgs::msg::String>(
+    subscription_ = this->create_subscription<example_interfaces::msg::String>(
       "topic", 10, callback, options);
   }
 
 private:
-  void topic_callback(const std_msgs::msg::String & msg) const
+  void topic_callback(const example_interfaces::msg::String & msg) const
   {
     RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg.data.c_str());
   }
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription_;
 };
 
 int main(int argc, char * argv[])

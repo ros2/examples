@@ -15,7 +15,7 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 class MinimalSubscriber : public rclcpp::Node
 {
@@ -24,15 +24,15 @@ public:
   : Node("minimal_subscriber")
   {
     auto topic_callback =
-      [this](std_msgs::msg::String::UniquePtr msg) -> void {
+      [this](example_interfaces::msg::String::UniquePtr msg) -> void {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       };
     subscription_ =
-      this->create_subscription<std_msgs::msg::String>("topic", 10, topic_callback);
+      this->create_subscription<example_interfaces::msg::String>("topic", 10, topic_callback);
   }
 
 private:
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription_;
 };
 
 int main(int argc, char * argv[])

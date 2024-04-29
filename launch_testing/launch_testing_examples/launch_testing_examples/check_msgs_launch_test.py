@@ -21,7 +21,7 @@ import launch_testing.actions
 import launch_testing.markers
 from launch_testing_ros import WaitForTopics
 import pytest
-from std_msgs.msg import String
+from example_interfaces.msg import String
 
 
 @pytest.mark.launch_test
