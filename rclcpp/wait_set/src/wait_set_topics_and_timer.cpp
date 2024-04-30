@@ -15,7 +15,7 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
@@ -28,23 +28,23 @@ int32_t main(const int32_t argc, char ** const argv)
   rclcpp::init(argc, argv);
 
   auto node = std::make_shared<rclcpp::Node>("wait_set_listener");
-  auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
+  auto do_nothing = [](example_interfaces::msg::String::UniquePtr) {assert(false);};
 
-  auto sub1 = node->create_subscription<std_msgs::msg::String>("topicA", 1, do_nothing);
-  auto sub2 = node->create_subscription<std_msgs::msg::String>("topicB", 1, do_nothing);
-  auto sub3 = node->create_subscription<std_msgs::msg::String>("topicC", 1, do_nothing);
+  auto sub1 = node->create_subscription<example_interfaces::msg::String>("topicA", 1, do_nothing);
+  auto sub2 = node->create_subscription<example_interfaces::msg::String>("topicB", 1, do_nothing);
+  auto sub3 = node->create_subscription<example_interfaces::msg::String>("topicC", 1, do_nothing);
 
-  std_msgs::msg::String msg1, msg2, msg3;
+  example_interfaces::msg::String msg1, msg2, msg3;
   msg1.data = "Hello, world!";
   msg2.data = "Hello, world!";
   msg3.data = "Hello, world!";
 
   const auto pub1 =
-    node->create_publisher<std_msgs::msg::String>("topicA", 1);
+    node->create_publisher<example_interfaces::msg::String>("topicA", 1);
   const auto pub2 =
-    node->create_publisher<std_msgs::msg::String>("topicB", 1);
+    node->create_publisher<example_interfaces::msg::String>("topicB", 1);
   const auto pub3 =
-    node->create_publisher<std_msgs::msg::String>("topicC", 1);
+    node->create_publisher<example_interfaces::msg::String>("topicC", 1);
 
   // Use a timer to schedule one-off message publishing.
   // Note in this case the callback won't be triggered automatically. It is up to the user to
@@ -76,7 +76,7 @@ int32_t main(const int32_t argc, char ** const argv)
           one_off_timer->execute_callback(data);
         }
       } else {
-        std_msgs::msg::String msg;
+        example_interfaces::msg::String msg;
         rclcpp::MessageInfo msg_info;
         if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
           if (sub1->take(msg, msg_info)) {

@@ -28,7 +28,7 @@ PongNode::PongNode()
 : rclcpp::Node("pong_node")
 {
   using std::placeholders::_1;
-  using std_msgs::msg::Int32;
+  using example_interfaces::msg::Int32;
 
   declare_parameter<double>("high_busyloop", 0.01);
   high_pong_publisher_ = this->create_publisher<Int32>("high_pong", rclcpp::SensorDataQoS());
@@ -58,14 +58,14 @@ rclcpp::CallbackGroup::SharedPtr PongNode::get_low_prio_callback_group()
   return low_prio_callback_group_;  // the second callback group created in the ctor.
 }
 
-void PongNode::high_ping_received(const std_msgs::msg::Int32::ConstSharedPtr msg)
+void PongNode::high_ping_received(const example_interfaces::msg::Int32::ConstSharedPtr msg)
 {
   std::chrono::nanoseconds busyloop = get_nanos_from_secs_parameter(this, "high_busyloop");
   burn_cpu_cycles(busyloop);
   high_pong_publisher_->publish(*msg);
 }
 
-void PongNode::low_ping_received(const std_msgs::msg::Int32::ConstSharedPtr msg)
+void PongNode::low_ping_received(const example_interfaces::msg::Int32::ConstSharedPtr msg)
 {
   std::chrono::nanoseconds busyloop = get_nanos_from_secs_parameter(this, "low_busyloop");
   burn_cpu_cycles(busyloop);

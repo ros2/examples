@@ -16,7 +16,7 @@
 #define WAIT_SET__TALKER_HPP_
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 #include "wait_set/visibility.h"
 
 class Talker : public rclcpp::Node
@@ -26,7 +26,7 @@ public:
 
 private:
   size_t count_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+  rclcpp::Publisher<example_interfaces::msg::String>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 };
 

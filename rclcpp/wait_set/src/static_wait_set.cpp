@@ -16,7 +16,7 @@
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -24,9 +24,11 @@ int main(int argc, char * argv[])
 
   auto node = std::make_shared<rclcpp::Node>("static_wait_set_example_node");
 
-  auto do_nothing = [](std_msgs::msg::String::UniquePtr) {assert(false);};
-  auto sub1 = node->create_subscription<std_msgs::msg::String>("~/chatter", 10, do_nothing);
-  auto sub2 = node->create_subscription<std_msgs::msg::String>("~/chatter", 10, do_nothing);
+  auto do_nothing = [](example_interfaces::msg::String::UniquePtr) {assert(false);};
+  auto sub1 =
+    node->create_subscription<example_interfaces::msg::String>("~/chatter", 10, do_nothing);
+  auto sub2 =
+    node->create_subscription<example_interfaces::msg::String>("~/chatter", 10, do_nothing);
   std::vector<decltype(sub1)> sub_vector = {sub1, sub2};
   auto guard_condition1 = std::make_shared<rclcpp::GuardCondition>();
   auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
@@ -54,7 +56,7 @@ int main(int argc, char * argv[])
         for (size_t i = 0; i < subscriptions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[i]) {
             RCLCPP_INFO(node->get_logger(), "subscription %zu triggered", i + 1);
-            std_msgs::msg::String msg;
+            example_interfaces::msg::String msg;
             rclcpp::MessageInfo msg_info;
             if (sub_vector.at(i)->take(msg, msg_info)) {
               RCLCPP_INFO(
@@ -84,8 +86,8 @@ int main(int argc, char * argv[])
   wait_and_print_results();
 
   RCLCPP_INFO(node->get_logger(), "Action: Message published");
-  auto pub = node->create_publisher<std_msgs::msg::String>("~/chatter", 1);
-  pub->publish(std_msgs::msg::String().set__data("test"));
+  auto pub = node->create_publisher<example_interfaces::msg::String>("~/chatter", 1);
+  pub->publish(example_interfaces::msg::String().set__data("test"));
   wait_and_print_results();
 
   // Note the static wait-set does not allow adding or removing entities dynamically.

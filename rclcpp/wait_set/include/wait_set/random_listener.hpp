@@ -19,22 +19,23 @@
 #include <random>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 class RandomListener : public rclcpp::Node
 {
-  using subscription_list = std::vector<rclcpp::Subscription<std_msgs::msg::String>::SharedPtr>;
+  using subscription_list =
+    std::vector<rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr>;
 
 public:
   RandomListener()
   : Node("random_listener")
   {
-    auto print_msg = [this](std_msgs::msg::String::UniquePtr msg) {
+    auto print_msg = [this](example_interfaces::msg::String::UniquePtr msg) {
         RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
       };
-    sub1_ = this->create_subscription<std_msgs::msg::String>("topicA", 10, print_msg);
-    sub2_ = this->create_subscription<std_msgs::msg::String>("topicB", 10, print_msg);
-    sub3_ = this->create_subscription<std_msgs::msg::String>("topicC", 10, print_msg);
+    sub1_ = this->create_subscription<example_interfaces::msg::String>("topicA", 10, print_msg);
+    sub2_ = this->create_subscription<example_interfaces::msg::String>("topicB", 10, print_msg);
+    sub3_ = this->create_subscription<example_interfaces::msg::String>("topicC", 10, print_msg);
   }
 
   subscription_list get_subscriptions() const
@@ -43,8 +44,8 @@ public:
   }
 
 private:
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub1_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub2_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr sub3_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr sub1_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr sub2_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr sub3_;
 };
 #endif  // WAIT_SET__RANDOM_LISTENER_HPP_

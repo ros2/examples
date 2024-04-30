@@ -28,7 +28,7 @@ PingNode::PingNode()
 : rclcpp::Node("ping_node")
 {
   using std::placeholders::_1;
-  using std_msgs::msg::Int32;
+  using example_interfaces::msg::Int32;
 
   this->declare_parameter<double>("ping_period", 0.01);
   std::chrono::nanoseconds ping_period = get_nanos_from_secs_parameter(this, "ping_period");
@@ -45,19 +45,19 @@ PingNode::PingNode()
 
 void PingNode::send_ping()
 {
-  std_msgs::msg::Int32 msg;
+  example_interfaces::msg::Int32 msg;
   msg.data = static_cast<int32_t>(rtt_data_.size());
   rtt_data_.push_back(RTTData(now()));
   high_ping_publisher_->publish(msg);
   low_ping_publisher_->publish(msg);
 }
 
-void PingNode::high_pong_received(const std_msgs::msg::Int32::ConstSharedPtr msg)
+void PingNode::high_pong_received(const example_interfaces::msg::Int32::ConstSharedPtr msg)
 {
   rtt_data_[msg->data].high_received_ = now();
 }
 
-void PingNode::low_pong_received(const std_msgs::msg::Int32::ConstSharedPtr msg)
+void PingNode::low_pong_received(const example_interfaces::msg::Int32::ConstSharedPtr msg)
 {
   rtt_data_[msg->data].low_received_ = now();
 }

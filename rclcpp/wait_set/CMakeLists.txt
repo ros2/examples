@@ -15,13 +15,13 @@ find_package(ament_cmake REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
 
 include_directories(include)
 
 add_library(talker SHARED src/talker.cpp)
 target_compile_definitions(talker PRIVATE WAIT_SET_DLL)
-ament_target_dependencies(talker rclcpp rclcpp_components std_msgs)
+ament_target_dependencies(talker rclcpp rclcpp_components example_interfaces)
 rclcpp_components_register_node(
     talker
     PLUGIN "Talker"
@@ -29,32 +29,32 @@ rclcpp_components_register_node(
 
 add_library(listener SHARED src/listener.cpp)
 target_compile_definitions(listener PRIVATE WAIT_SET_DLL)
-ament_target_dependencies(listener rclcpp rclcpp_components std_msgs)
+ament_target_dependencies(listener rclcpp rclcpp_components example_interfaces)
 rclcpp_components_register_node(
     listener
     PLUGIN "Listener"
     EXECUTABLE wait_set_listener)
 
 add_executable(wait_set src/wait_set.cpp)
-ament_target_dependencies(wait_set example_interfaces rclcpp std_msgs)
+ament_target_dependencies(wait_set example_interfaces rclcpp example_interfaces)
 
 add_executable(static_wait_set src/static_wait_set.cpp)
-ament_target_dependencies(static_wait_set rclcpp std_msgs)
+ament_target_dependencies(static_wait_set rclcpp example_interfaces)
 
 add_executable(thread_safe_wait_set src/thread_safe_wait_set.cpp)
-ament_target_dependencies(thread_safe_wait_set example_interfaces rclcpp std_msgs)
+ament_target_dependencies(thread_safe_wait_set example_interfaces rclcpp example_interfaces)
 
 add_executable(wait_set_topics_and_timer src/wait_set_topics_and_timer.cpp)
-ament_target_dependencies(wait_set_topics_and_timer rclcpp std_msgs)
+ament_target_dependencies(wait_set_topics_and_timer rclcpp example_interfaces)
 
 add_executable(wait_set_random_order src/wait_set_random_order.cpp)
-ament_target_dependencies(wait_set_random_order rclcpp std_msgs)
+ament_target_dependencies(wait_set_random_order rclcpp example_interfaces)
 
 add_executable(executor_random_order src/executor_random_order.cpp)
-ament_target_dependencies(executor_random_order rclcpp std_msgs)
+ament_target_dependencies(executor_random_order rclcpp example_interfaces)
 
 add_executable(wait_set_topics_with_different_rates src/wait_set_topics_with_different_rates.cpp)
-ament_target_dependencies(wait_set_topics_with_different_rates rclcpp std_msgs)
+ament_target_dependencies(wait_set_topics_with_different_rates rclcpp example_interfaces)
 
 add_executable(wait_set_composed src/wait_set_composed.cpp)
 target_link_libraries(wait_set_composed talker listener)

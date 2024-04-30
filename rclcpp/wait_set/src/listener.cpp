@@ -17,30 +17,30 @@
 
 #include "wait_set/listener.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
 Listener::Listener(rclcpp::NodeOptions options)
 : Node("listener", options)
 {
-  auto subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
+  auto subscription_callback = [this](example_interfaces::msg::String::UniquePtr msg) {
       RCLCPP_INFO(this->get_logger(), "I heard: '%s' (executor)", msg->data.c_str());
     };
-  subscription1_ = this->create_subscription<std_msgs::msg::String>(
+  subscription1_ = this->create_subscription<example_interfaces::msg::String>(
     "topic",
     10,
     subscription_callback
   );
 
-  auto wait_set_subscription_callback = [this](std_msgs::msg::String::UniquePtr msg) {
+  auto wait_set_subscription_callback = [this](example_interfaces::msg::String::UniquePtr msg) {
       RCLCPP_INFO(this->get_logger(), "I heard: '%s' (wait-set)", msg->data.c_str());
     };
   rclcpp::CallbackGroup::SharedPtr cb_group_waitset = this->create_callback_group(
     rclcpp::CallbackGroupType::MutuallyExclusive, false);
   auto subscription_options = rclcpp::SubscriptionOptions();
   subscription_options.callback_group = cb_group_waitset;
-  subscription2_ = this->create_subscription<std_msgs::msg::String>(
+  subscription2_ = this->create_subscription<example_interfaces::msg::String>(
     "topic",
     10,
     wait_set_subscription_callback,
@@ -63,10 +63,11 @@ void Listener::spin_wait_set()
     const auto wait_result = wait_set_.wait(std::chrono::seconds(1));
     if (wait_result.kind() == rclcpp::WaitResultKind::Ready) {
       if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[0U]) {
-        std_msgs::msg::String msg;
+        example_interfaces::msg::String msg;
         rclcpp::MessageInfo msg_info;
         if (subscription2_->take(msg, msg_info)) {
-          std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
+          std::shared_ptr<void> type_erased_msg =
+            std::make_shared<example_interfaces::msg::String>(msg);
           subscription2_->handle_message(type_erased_msg, msg_info);
         }
       }

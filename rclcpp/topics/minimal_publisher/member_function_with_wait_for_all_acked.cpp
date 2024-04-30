@@ -18,7 +18,7 @@
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
@@ -33,7 +33,7 @@ public:
     wait_timeout_(300)
   {
     // publisher must set reliable mode
-    publisher_ = this->create_publisher<std_msgs::msg::String>(
+    publisher_ = this->create_publisher<example_interfaces::msg::String>(
       "topic",
       rclcpp::QoS(10).reliable());
 
@@ -68,7 +68,7 @@ private:
 
   void timer_callback()
   {
-    auto message = std_msgs::msg::String();
+    auto message = example_interfaces::msg::String();
     message.data = "Hello, world! " + std::to_string(count_++);
     RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
     publisher_->publish(message);
@@ -77,7 +77,7 @@ private:
     // acknowledge messages.
   }
   rclcpp::TimerBase::SharedPtr timer_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+  rclcpp::Publisher<example_interfaces::msg::String>::SharedPtr publisher_;
   size_t count_;
   std::chrono::milliseconds wait_timeout_;
 };

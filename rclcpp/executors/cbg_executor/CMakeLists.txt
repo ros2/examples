@@ -13,7 +13,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(example_interfaces REQUIRED)
 
 add_executable(
   ping
@@ -21,7 +21,7 @@ add_executable(
   src/examples_rclcpp_cbg_executor/ping_node.cpp
 )
 target_include_directories(ping PUBLIC include)
-ament_target_dependencies(ping rclcpp std_msgs)
+ament_target_dependencies(ping rclcpp example_interfaces)
 
 add_executable(
   pong
@@ -29,7 +29,7 @@ add_executable(
   src/examples_rclcpp_cbg_executor/pong_node.cpp
 )
 target_include_directories(pong PUBLIC include)
-ament_target_dependencies(pong rclcpp std_msgs)
+ament_target_dependencies(pong rclcpp example_interfaces)
 
 add_executable(
   ping_pong
@@ -38,7 +38,7 @@ add_executable(
   src/examples_rclcpp_cbg_executor/pong_node.cpp
 )
 target_include_directories(ping_pong PUBLIC include)
-ament_target_dependencies(ping_pong rclcpp std_msgs)
+ament_target_dependencies(ping_pong rclcpp example_interfaces)
 
 install(TARGETS ping pong ping_pong
   DESTINATION lib/${PROJECT_NAME}
@@ -52,5 +52,5 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_export_dependencies(rclcpp std_msgs)
+ament_export_dependencies(rclcpp example_interfaces)
 ament_package()

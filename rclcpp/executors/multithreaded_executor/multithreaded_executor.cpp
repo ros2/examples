@@ -18,7 +18,7 @@
 #include <thread>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
@@ -42,10 +42,10 @@ public:
   PublisherNode()
   : Node("PublisherNode"), count_(0)
   {
-    publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
+    publisher_ = this->create_publisher<example_interfaces::msg::String>("topic", 10);
     auto timer_callback =
       [this]() -> void {
-        auto message = std_msgs::msg::String();
+        auto message = example_interfaces::msg::String();
         message.data = "Hello World! " + std::to_string(this->count_++);
 
         // Extract current thread
@@ -62,7 +62,7 @@ public:
 
 private:
   rclcpp::TimerBase::SharedPtr timer_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+  rclcpp::Publisher<example_interfaces::msg::String>::SharedPtr publisher_;
   size_t count_;
 };
 
@@ -88,7 +88,7 @@ public:
     auto sub2_opt = rclcpp::SubscriptionOptions();
     sub2_opt.callback_group = callback_group_subscriber2_;
 
-    subscription1_ = this->create_subscription<std_msgs::msg::String>(
+    subscription1_ = this->create_subscription<example_interfaces::msg::String>(
       "topic",
       rclcpp::QoS(10),
       // std::bind is sort of C++'s way of passing a function
@@ -104,7 +104,7 @@ public:
       sub1_opt);                  // This is where we set the callback group.
                                   // This subscription will run with callback group subscriber1
 
-    subscription2_ = this->create_subscription<std_msgs::msg::String>(
+    subscription2_ = this->create_subscription<example_interfaces::msg::String>(
       "topic",
       rclcpp::QoS(10),
       std::bind(
@@ -129,7 +129,7 @@ private:
    * Every time the Publisher publishes something, all subscribers to the topic get poked
    * This function gets called when Subscriber1 is poked (due to the std::bind we used when defining it)
    */
-  void subscriber1_cb(const std_msgs::msg::String::ConstSharedPtr msg)
+  void subscriber1_cb(const example_interfaces::msg::String::ConstSharedPtr msg)
   {
     auto message_received_at = timing_string();
 
@@ -143,7 +143,7 @@ private:
    * This function gets called when Subscriber2 is poked
    * Since it's running on a separate thread than Subscriber 1, it will run at (more-or-less) the same time!
    */
-  void subscriber2_cb(const std_msgs::msg::String::ConstSharedPtr msg)
+  void subscriber2_cb(const example_interfaces::msg::String::ConstSharedPtr msg)
   {
     auto message_received_at = timing_string();
 
@@ -155,8 +155,8 @@ private:
 
   rclcpp::CallbackGroup::SharedPtr callback_group_subscriber1_;
   rclcpp::CallbackGroup::SharedPtr callback_group_subscriber2_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription1_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription2_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription1_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription2_;
 };
 
 int main(int argc, char * argv[])

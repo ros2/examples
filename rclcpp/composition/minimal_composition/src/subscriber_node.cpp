@@ -14,15 +14,15 @@
 
 #include "minimal_composition/subscriber_node.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 SubscriberNode::SubscriberNode(rclcpp::NodeOptions options)
 : Node("subscriber_node", options)
 {
-  subscription_ = create_subscription<std_msgs::msg::String>(
+  subscription_ = create_subscription<example_interfaces::msg::String>(
     "topic",
     10,
-    [this](std_msgs::msg::String::UniquePtr msg) {
+    [this](example_interfaces::msg::String::UniquePtr msg) {
       RCLCPP_INFO(this->get_logger(), "Subscriber: '%s'", msg->data.c_str());
     });
 }

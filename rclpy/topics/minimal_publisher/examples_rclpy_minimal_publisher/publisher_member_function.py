@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from example_interfaces.msg import String
+
 import rclpy
 from rclpy.node import Node
-
-from std_msgs.msg import String
 
 
 class MinimalPublisher(Node):

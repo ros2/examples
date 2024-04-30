@@ -20,7 +20,7 @@
 #include "rclcpp/type_adapter.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using namespace std::chrono_literals;
 
@@ -30,11 +30,11 @@ using namespace std::chrono_literals;
  * more "self-contained". */
 
 template<>
-struct rclcpp::TypeAdapter<std::string, std_msgs::msg::String>
+struct rclcpp::TypeAdapter<std::string, example_interfaces::msg::String>
 {
   using is_specialized = std::true_type;
   using custom_type = std::string;
-  using ros_message_type = std_msgs::msg::String;
+  using ros_message_type = example_interfaces::msg::String;
 
   static
   void
@@ -56,13 +56,13 @@ struct rclcpp::TypeAdapter<std::string, std_msgs::msg::String>
 };
 
 /* In this example, a publisher uses a type adapter to use a `std::string`
- * in place of a `std_msgs::msg::String` in the argument expected by
+ * in place of a `example_interfaces::msg::String` in the argument expected by
  * the publish method. Note that publish will also work with a
- * `std_msgs::msg::String` argument. */
+ * `example_interfaces::msg::String` argument. */
 
 class MinimalPublisher : public rclcpp::Node
 {
-  using MyAdaptedType = rclcpp::TypeAdapter<std::string, std_msgs::msg::String>;
+  using MyAdaptedType = rclcpp::TypeAdapter<std::string, example_interfaces::msg::String>;
 
 public:
   MinimalPublisher()

@@ -22,7 +22,7 @@
   <exec_depend>rclpy</exec_depend>
   <exec_depend>rcl_interfaces</exec_depend>
   <exec_depend>ros2bag</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>example_interfaces</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

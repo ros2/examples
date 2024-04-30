@@ -16,7 +16,7 @@
 #define MINIMAL_COMPOSITION__PUBLISHER_NODE_HPP_
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 #include "minimal_composition/visibility.h"
 
 class PublisherNode : public rclcpp::Node
@@ -27,7 +27,7 @@ public:
 private:
   void on_timer();
   size_t count_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+  rclcpp::Publisher<example_interfaces::msg::String>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 };
 

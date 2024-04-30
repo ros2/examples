@@ -21,7 +21,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/subscription_options.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using std::placeholders::_1;
 
@@ -39,7 +39,7 @@ public:
       options_1.require_unique_network_flow_endpoints =
         RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_STRICTLY_REQUIRED;
 
-      subscription_1_ = this->create_subscription<std_msgs::msg::String>(
+      subscription_1_ = this->create_subscription<example_interfaces::msg::String>(
         "topic_1", 10, std::bind(
           &MinimalSubscriberWithUniqueNetworkFlowEndpoints::topic_1_callback, this,
           _1), options_1);
@@ -47,7 +47,7 @@ public:
       // Create subscription without unique network flow endpoints
       // Unique network flow endpoints are disabled by default
       auto options_2 = rclcpp::SubscriptionOptions();
-      subscription_2_ = this->create_subscription<std_msgs::msg::String>(
+      subscription_2_ = this->create_subscription<example_interfaces::msg::String>(
         "topic_2", 10, std::bind(
           &MinimalSubscriberWithUniqueNetworkFlowEndpoints::topic_2_callback, this,
           _1), options_2);
@@ -79,11 +79,11 @@ public:
   }
 
 private:
-  void topic_1_callback(const std_msgs::msg::String & msg) const
+  void topic_1_callback(const example_interfaces::msg::String & msg) const
   {
     RCLCPP_INFO(this->get_logger(), "Topic 1 news: '%s'", msg.data.c_str());
   }
-  void topic_2_callback(const std_msgs::msg::String & msg) const
+  void topic_2_callback(const example_interfaces::msg::String & msg) const
   {
     RCLCPP_INFO(this->get_logger(), "Topic 2 news: '%s'", msg.data.c_str());
   }
@@ -107,8 +107,8 @@ private:
       this->get_logger(), "%s",
       stream.str().c_str());
   }
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_1_;
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_2_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription_1_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription_2_;
 };
 
 int main(int argc, char * argv[])

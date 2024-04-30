@@ -17,7 +17,7 @@
 #include <string>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 using std::placeholders::_1;
 
@@ -37,7 +37,7 @@ public:
       current_expression_parameter_
     };
 
-    subscription_ = this->create_subscription<std_msgs::msg::String>(
+    subscription_ = this->create_subscription<example_interfaces::msg::String>(
       "topic", 10, std::bind(&MinimalContentFilteringSubscriber::topic_callback, this, _1),
       sub_options);
 
@@ -53,7 +53,7 @@ public:
   }
 
 private:
-  void topic_callback(const std_msgs::msg::String & msg)
+  void topic_callback(const example_interfaces::msg::String & msg)
   {
     RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg.data.c_str());
     // update filtering expression parameter
@@ -88,7 +88,7 @@ private:
     }
   }
 
-  rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+  rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subscription_;
   std::string current_filtering_expression_;
   std::string current_expression_parameter_;
   size_t count_;

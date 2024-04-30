@@ -15,12 +15,12 @@
 from concurrent.futures import ThreadPoolExecutor
 import os
 
+from example_interfaces.msg import String
 from examples_rclpy_executors.listener import Listener
 from examples_rclpy_executors.talker import Talker
 import rclpy
 from rclpy.executors import Executor
 from rclpy.node import Node
-from std_msgs.msg import String
 
 
 class Estopper(Node):

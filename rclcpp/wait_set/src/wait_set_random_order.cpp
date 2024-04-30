@@ -15,7 +15,7 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "std_msgs/msg/string.hpp"
+#include "example_interfaces/msg/string.hpp"
 
 #include "wait_set/random_listener.hpp"
 #include "wait_set/random_talker.hpp"
@@ -53,13 +53,14 @@ int32_t main(const int32_t argc, char ** const argv)
 
       // Handle all the messages when all subscriptions have data
       if (sub1_has_data && sub2_has_data && sub3_has_data) {
-        std_msgs::msg::String msg;
+        example_interfaces::msg::String msg;
         rclcpp::MessageInfo msg_info;
         const size_t subscriptions_num = wait_set.get_rcl_wait_set().size_of_subscriptions;
         for (size_t i = 0; i < subscriptions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[i]) {
             if (subscriptions.at(i)->take(msg, msg_info)) {
-              std::shared_ptr<void> type_erased_msg = std::make_shared<std_msgs::msg::String>(msg);
+              std::shared_ptr<void> type_erased_msg =
+                std::make_shared<example_interfaces::msg::String>(msg);
               subscriptions.at(i)->handle_message(type_erased_msg, msg_info);
             }
           }
