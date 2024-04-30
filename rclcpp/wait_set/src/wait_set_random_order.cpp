@@ -59,7 +59,8 @@ int32_t main(const int32_t argc, char ** const argv)
         for (size_t i = 0; i < subscriptions_num; i++) {
           if (wait_result.get_wait_set().get_rcl_wait_set().subscriptions[i]) {
             if (subscriptions.at(i)->take(msg, msg_info)) {
-              std::shared_ptr<void> type_erased_msg = std::make_shared<example_interfaces::msg::String>(msg);
+              std::shared_ptr<void> type_erased_msg =
+                std::make_shared<example_interfaces::msg::String>(msg);
               subscriptions.at(i)->handle_message(type_erased_msg, msg_info);
             }
           }

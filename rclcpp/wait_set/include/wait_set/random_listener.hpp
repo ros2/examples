@@ -23,7 +23,8 @@
 
 class RandomListener : public rclcpp::Node
 {
-  using subscription_list = std::vector<rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr>;
+  using subscription_list =
+    std::vector<rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr>;
 
 public:
   RandomListener()
