@@ -14,6 +14,7 @@
 
 import unittest
 
+from example_interfaces.msg import String
 import launch
 import launch.actions
 import launch_ros.actions
@@ -21,7 +22,6 @@ import launch_testing.actions
 import launch_testing.markers
 from launch_testing_ros import WaitForTopics
 import pytest
-from example_interfaces.msg import String
 
 
 @pytest.mark.launch_test

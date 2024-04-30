@@ -13,11 +13,11 @@
 # limitations under the License.
 
 from examples_rclpy_executors.listener import Listener
+from example_interfaces.msg import String
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
-from example_interfaces.msg import String
 
 
 class DoubleTalker(Node):

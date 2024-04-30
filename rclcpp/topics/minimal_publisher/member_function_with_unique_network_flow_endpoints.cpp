@@ -36,7 +36,8 @@ public:
     auto options_1 = rclcpp::PublisherOptions();
     options_1.require_unique_network_flow_endpoints =
       RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_OPTIONALLY_REQUIRED;
-    publisher_1_ = this->create_publisher<example_interfaces::msg::String>("topic_1", 10, options_1);
+    publisher_1_ =
+      this->create_publisher<example_interfaces::msg::String>("topic_1", 10, options_1);
     timer_1_ = this->create_wall_timer(
       500ms, std::bind(&MinimalPublisherWithUniqueNetworkFlowEndpoints::timer_1_callback, this));
 

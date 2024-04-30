@@ -66,7 +66,8 @@ void Listener::spin_wait_set()
         example_interfaces::msg::String msg;
         rclcpp::MessageInfo msg_info;
         if (subscription2_->take(msg, msg_info)) {
-          std::shared_ptr<void> type_erased_msg = std::make_shared<example_interfaces::msg::String>(msg);
+          std::shared_ptr<void> type_erased_msg =
+            std::make_shared<example_interfaces::msg::String>(msg);
           subscription2_->handle_message(type_erased_msg, msg_info);
         }
       }

@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import rclpy
-
 from example_interfaces.msg import String
+
+import rclpy
 
 
 def main(args=None):

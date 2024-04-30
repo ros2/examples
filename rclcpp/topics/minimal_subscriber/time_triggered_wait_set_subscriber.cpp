@@ -46,7 +46,8 @@ public:
         example_interfaces::msg::String msg;
         rclcpp::MessageInfo msg_info;
         if (subscription_->take(msg, msg_info)) {
-          std::shared_ptr<void> type_erased_msg = std::make_shared<example_interfaces::msg::String>(msg);
+          std::shared_ptr<void> type_erased_msg =
+            std::make_shared<example_interfaces::msg::String>(msg);
           subscription_->handle_message(type_erased_msg, msg_info);
         } else {
           RCLCPP_WARN(this->get_logger(), "No message available");

@@ -14,10 +14,10 @@
 
 import sys
 
+from example_interfaces.msg import String
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
-from example_interfaces.msg import String
 
 
 class Talker(Node):

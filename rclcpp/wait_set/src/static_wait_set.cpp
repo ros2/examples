@@ -25,8 +25,10 @@ int main(int argc, char * argv[])
   auto node = std::make_shared<rclcpp::Node>("static_wait_set_example_node");
 
   auto do_nothing = [](example_interfaces::msg::String::UniquePtr) {assert(false);};
-  auto sub1 = node->create_subscription<example_interfaces::msg::String>("~/chatter", 10, do_nothing);
-  auto sub2 = node->create_subscription<example_interfaces::msg::String>("~/chatter", 10, do_nothing);
+  auto sub1 =
+    node->create_subscription<example_interfaces::msg::String>("~/chatter", 10, do_nothing);
+  auto sub2 =
+    node->create_subscription<example_interfaces::msg::String>("~/chatter", 10, do_nothing);
   std::vector<decltype(sub1)> sub_vector = {sub1, sub2};
   auto guard_condition1 = std::make_shared<rclcpp::GuardCondition>();
   auto guard_condition2 = std::make_shared<rclcpp::GuardCondition>();
