@@ -14,8 +14,8 @@
 
 import sys
 import threading
-from example_interfaces.msg import String
 
+from example_interfaces.msg import String
 import rclpy
 from rclpy.callback_groups import CallbackGroup
 from rclpy.executors import ExternalShutdownException
