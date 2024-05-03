@@ -33,13 +33,8 @@ def main(args=None):
         executor.add_node(talker)
         executor.add_node(listener)
 
-        try:
-            # Execute callbacks for both nodes as they become ready
-            executor.spin()
-        finally:
-            executor.shutdown()
-            listener.destroy_node()
-            talker.destroy_node()
+        # Execute callbacks for both nodes as they become ready
+        executor.spin()
     except KeyboardInterrupt:
         pass
     except ExternalShutdownException:

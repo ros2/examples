@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import collections
+import sys
 import threading
 import time
 
@@ -21,6 +22,7 @@ from example_interfaces.action import Fibonacci
 import rclpy
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
 from rclpy.callback_groups import ReentrantCallbackGroup
+from rclpy.executors import ExternalShutdownException
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 
@@ -123,14 +125,18 @@ class MinimalActionServer(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_action_server = MinimalActionServer()
+    try:
+        minimal_action_server = MinimalActionServer()
 
-    executor = MultiThreadedExecutor()
+        executor = MultiThreadedExecutor()
 
-    rclpy.spin(minimal_action_server, executor=executor)
-
-    minimal_action_server.destroy()
-    rclpy.shutdown()
+        rclpy.spin(minimal_action_server, executor=executor)
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
+    finally:
+        rclpy.try_shutdown()
 
 
 if __name__ == '__main__':

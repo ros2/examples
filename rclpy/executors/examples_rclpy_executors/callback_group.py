@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 from examples_rclpy_executors.listener import Listener
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
+from rclpy.executors import ExternalShutdownException
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from std_msgs.msg import String
@@ -58,14 +61,13 @@ def main(args=None):
         executor.add_node(talker)
         executor.add_node(listener)
 
-        try:
-            executor.spin()
-        finally:
-            executor.shutdown()
-            listener.destroy_node()
-            talker.destroy_node()
+        executor.spin()
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
     finally:
-        rclpy.shutdown()
+        rclpy.try_shutdown()
 
 
 if __name__ == '__main__':
