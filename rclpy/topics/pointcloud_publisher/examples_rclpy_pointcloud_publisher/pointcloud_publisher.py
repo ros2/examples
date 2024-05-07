@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 import numpy as np
 
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from sensor_msgs.msg import PointCloud2
 from sensor_msgs.msg import PointField
@@ -60,10 +63,13 @@ class PointCloudPublisher(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    pc_publisher = PointCloudPublisher()
-    rclpy.spin(pc_publisher)
-    pc_publisher.destroy_node()
-    rclpy.shutdown()
+    try:
+        pc_publisher = PointCloudPublisher()
+        rclpy.spin(pc_publisher)
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
 
 
 if __name__ == '__main__':
