@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 from example_interfaces.action import Fibonacci
 
 import rclpy
 from rclpy.action import ActionClient
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 
 
@@ -78,11 +81,16 @@ class MinimalActionClient(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    action_client = MinimalActionClient()
+    try:
+        action_client = MinimalActionClient()
 
-    action_client.send_goal()
+        action_client.send_goal()
 
-    rclpy.spin(action_client)
+        rclpy.spin(action_client)
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
 
 
 if __name__ == '__main__':

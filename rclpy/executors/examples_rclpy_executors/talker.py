@@ -66,9 +66,6 @@ def main(args=None):
         pass
     except ExternalShutdownException:
         sys.exit(1)
-    finally:
-        rclpy.try_shutdown()
-        talker.destroy_node()
 
 
 if __name__ == '__main__':

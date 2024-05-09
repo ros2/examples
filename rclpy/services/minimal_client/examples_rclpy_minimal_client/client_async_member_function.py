@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 from example_interfaces.srv import AddTwoInts
 
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 
 
@@ -36,20 +39,22 @@ class MinimalClientAsync(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_client = MinimalClientAsync()
-    minimal_client.send_request()
+    try:
+        minimal_client = MinimalClientAsync()
+        minimal_client.send_request()
 
-    while rclpy.ok():
-        rclpy.spin_once(minimal_client)
-        if minimal_client.future.done():
-            response = minimal_client.future.result()
-            minimal_client.get_logger().info(
-                'Result of add_two_ints: for %d + %d = %d' %
-                (minimal_client.req.a, minimal_client.req.b, response.sum))
-            break
-
-    minimal_client.destroy_node()
-    rclpy.shutdown()
+        while rclpy.ok():
+            rclpy.spin_once(minimal_client)
+            if minimal_client.future.done():
+                response = minimal_client.future.result()
+                minimal_client.get_logger().info(
+                    'Result of add_two_ints: for %d + %d = %d' %
+                    (minimal_client.req.a, minimal_client.req.b, response.sum))
+                break
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
 
 
 if __name__ == '__main__':
