@@ -107,13 +107,13 @@ class MinimalActionServer(Node):
 
             goal_handle.succeed()
 
-            # Populate result message
-            result = Fibonacci.Result()
-            result.sequence = feedback_msg.sequence
+        # Populate result message
+        result = Fibonacci.Result()
+        result.sequence = feedback_msg.sequence
 
-            self.get_logger().info('Returning result: {0}'.format(result.sequence))
+        self.get_logger().info('Returning result: {0}'.format(result.sequence))
 
-            return result
+        return result
 
 
 def main(args=None):
