@@ -98,7 +98,12 @@ class MinimalActionServer(Node):
             # Sleep for demonstration purposes
             time.sleep(1)
 
-        goal_handle.succeed()
+        with self._goal_lock:
+            if not goal_handle.is_active:
+                self.get_logger().info('Goal aborted')
+                return Fibonacci.Result()
+
+            goal_handle.succeed()
 
         # Populate result message
         result = Fibonacci.Result()
