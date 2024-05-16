@@ -26,9 +26,13 @@ def main(args=None):
 
     try:
         node = rclpy.create_node('minimal_client')
+
+        executor = rclpy.executors.SingleThreadedExecutor()
+        executor.add_node(node)
+
         # Node's default callback group is mutually exclusive. This would prevent the client
         # response from being processed until the timer callback finished, but the timer callback
-        # int this example is waiting for the client response
+        # in this example is waiting for the client response
         cb_group = ReentrantCallbackGroup()
         cli = node.create_client(AddTwoInts, 'add_two_ints', callback_group=cb_group)
         did_run = False
@@ -55,14 +59,14 @@ def main(args=None):
         timer = node.create_timer(0.5, call_service, callback_group=cb_group)
 
         while rclpy.ok() and not did_run:
-            rclpy.spin_once(node)
+            executor.spin_once()
 
         if did_run:
             # call timer callback only once
             timer.cancel()
 
         while rclpy.ok() and not did_get_result:
-            rclpy.spin_once(node)
+            executor.spin_once()
     except KeyboardInterrupt:
         pass
     except ExternalShutdownException:
