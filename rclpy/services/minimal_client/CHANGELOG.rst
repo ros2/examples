@@ -2,6 +2,12 @@
 Changelog for package examples_rclpy_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use a single executor instance for spinning in client_async_callback. (`#382 <https://github.com/ros2/examples/issues/382>`_)
+* Update the shutdown handling in all of the Python examples. (`#379 <https://github.com/ros2/examples/issues/379>`_)
+* Contributors: Chris Lalancette
+
 0.20.0 (2024-04-26)
 -------------------
 

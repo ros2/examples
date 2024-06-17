@@ -2,6 +2,12 @@
 Changelog for package examples_rclpy_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add guard on Python single goal action server example (`#380 <https://github.com/ros2/examples/issues/380>`_)
+* Update the shutdown handling in all of the Python examples. (`#379 <https://github.com/ros2/examples/issues/379>`_)
+* Contributors: Chris Lalancette, Ruddick Lawrence
+
 0.20.0 (2024-04-26)
 -------------------
 

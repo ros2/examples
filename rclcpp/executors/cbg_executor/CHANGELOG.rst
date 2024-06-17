@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_cbg_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.20.0 (2024-04-26)
 -------------------
 
