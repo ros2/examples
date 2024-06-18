@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 from rclpy.executors import ExternalShutdownException
 
@@ -30,20 +28,18 @@ def chatter_callback(msg):
 
 def main(args=None):
     global g_node
-    rclpy.init(args=args)
 
     try:
-        g_node = rclpy.create_node('minimal_subscriber')
+        with rclpy.init(args=args):
+            g_node = rclpy.create_node('minimal_subscriber')
 
-        subscription = g_node.create_subscription(String, 'topic', chatter_callback, 10)
-        subscription  # prevent unused variable warning
+            subscription = g_node.create_subscription(String, 'topic', chatter_callback, 10)
+            subscription  # prevent unused variable warning
 
-        while rclpy.ok():
-            rclpy.spin_once(g_node)
-    except KeyboardInterrupt:
+            while rclpy.ok():
+                rclpy.spin_once(g_node)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

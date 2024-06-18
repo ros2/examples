@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
@@ -39,16 +37,13 @@ class MinimalPublisher(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
-
     try:
-        minimal_publisher = MinimalPublisher()
+        with rclpy.init(args=args):
+            minimal_publisher = MinimalPublisher()
 
-        rclpy.spin(minimal_publisher)
-    except KeyboardInterrupt:
+            rclpy.spin(minimal_publisher)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

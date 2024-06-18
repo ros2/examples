@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 from examples_rclpy_executors.listener import Listener
 import rclpy
 from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
@@ -47,25 +45,23 @@ class DoubleTalker(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
     try:
-        talker = DoubleTalker()
-        listener = Listener()
-        # MultiThreadedExecutor executes callbacks with a thread pool. If num_threads is not
-        # specified then num_threads will be multiprocessing.cpu_count() if it is implemented.
-        # Otherwise it will use a single thread. This executor will allow callbacks to happen in
-        # parallel, however the MutuallyExclusiveCallbackGroup in DoubleTalker will only allow its
-        # callbacks to be executed one at a time. The callbacks in Listener are free to execute in
-        # parallel to the ones in DoubleTalker however.
-        executor = MultiThreadedExecutor(num_threads=4)
-        executor.add_node(talker)
-        executor.add_node(listener)
+        with rclpy.init(args=args):
+            talker = DoubleTalker()
+            listener = Listener()
+            # MultiThreadedExecutor executes callbacks with a thread pool. If num_threads is not
+            # specified then num_threads will be multiprocessing.cpu_count() if it is implemented.
+            # Otherwise it will use a single thread. This executor will allow callbacks to happen
+            # in parallel, however the MutuallyExclusiveCallbackGroup in DoubleTalker will only
+            # allow its callbacks to be executed one at a time. The callbacks in Listener are free
+            # to execute in parallel to the ones in DoubleTalker however.
+            executor = MultiThreadedExecutor(num_threads=4)
+            executor.add_node(talker)
+            executor.add_node(listener)
 
-        executor.spin()
-    except KeyboardInterrupt:
+            executor.spin()
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

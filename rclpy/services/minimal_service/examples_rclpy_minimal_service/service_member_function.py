@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 from example_interfaces.srv import AddTwoInts
 
 import rclpy
@@ -35,16 +33,13 @@ class MinimalService(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
-
     try:
-        minimal_service = MinimalService()
+        with rclpy.init(args=args):
+            minimal_service = MinimalService()
 
-        rclpy.spin(minimal_service)
-    except KeyboardInterrupt:
+            rclpy.spin(minimal_service)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

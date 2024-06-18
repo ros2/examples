@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
 import threading
 
 import rclpy
@@ -99,14 +98,12 @@ class ThrottledTalker(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
     try:
-        talker = ThrottledTalker()
-        rclpy.spin(talker)
-    except KeyboardInterrupt:
+        with rclpy.init(args=args):
+            talker = ThrottledTalker()
+            rclpy.spin(talker)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

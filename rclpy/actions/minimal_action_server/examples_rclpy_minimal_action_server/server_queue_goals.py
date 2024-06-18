@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import collections
-import sys
 import threading
 import time
 
@@ -123,18 +122,15 @@ class MinimalActionServer(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
-
     try:
-        minimal_action_server = MinimalActionServer()
+        with rclpy.init(args=args):
+            minimal_action_server = MinimalActionServer()
 
-        executor = MultiThreadedExecutor()
+            executor = MultiThreadedExecutor()
 
-        rclpy.spin(minimal_action_server, executor=executor)
-    except KeyboardInterrupt:
+            rclpy.spin(minimal_action_server, executor=executor)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

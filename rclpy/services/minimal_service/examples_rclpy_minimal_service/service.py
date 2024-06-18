@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 from example_interfaces.srv import AddTwoInts
 
 import rclpy
@@ -33,20 +31,17 @@ def add_two_ints_callback(request, response):
 
 def main(args=None):
     global g_node
-    rclpy.init(args=args)
 
     try:
-        g_node = rclpy.create_node('minimal_service')
+        with rclpy.init(args=args):
+            g_node = rclpy.create_node('minimal_service')
 
-        srv = g_node.create_service(AddTwoInts, 'add_two_ints', add_two_ints_callback)
-        srv  # Quiet flake8 warnings about unused variable
-        while rclpy.ok():
-            rclpy.spin_once(g_node)
-
-    except KeyboardInterrupt:
+            srv = g_node.create_service(AddTwoInts, 'add_two_ints', add_two_ints_callback)
+            srv  # Quiet flake8 warnings about unused variable
+            while rclpy.ok():
+                rclpy.spin_once(g_node)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

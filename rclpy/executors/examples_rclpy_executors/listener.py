@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
@@ -48,14 +46,12 @@ def main(args=None):
 
     :param args: Arguments passed in from the command line.
     """
-    rclpy.init(args=args)
     try:
-        listener = Listener()
-        rclpy.spin(listener)
-    except KeyboardInterrupt:
+        with rclpy.init(args=args):
+            listener = Listener()
+            rclpy.spin(listener)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

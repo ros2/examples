@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import numpy as np
 
 import rclpy
@@ -62,14 +60,12 @@ class PointCloudPublisher(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
     try:
-        pc_publisher = PointCloudPublisher()
-        rclpy.spin(pc_publisher)
-    except KeyboardInterrupt:
+        with rclpy.init(args=args):
+            pc_publisher = PointCloudPublisher()
+            rclpy.spin(pc_publisher)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':
