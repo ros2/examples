@@ -29,6 +29,7 @@ def main(args=None):
     did_run = False
     did_get_result = False
 
+<<<<<<< HEAD
     async def call_service():
         nonlocal cli, node, did_run, did_get_result
         did_run = True
@@ -43,6 +44,21 @@ def main(args=None):
                 (req.a, req.b, result.sum))
         finally:
             did_get_result = True
+=======
+    try:
+        node = rclpy.create_node('minimal_client')
+
+        executor = rclpy.executors.SingleThreadedExecutor()
+        executor.add_node(node)
+
+        # Node's default callback group is mutually exclusive. This would prevent the client
+        # response from being processed until the timer callback finished, but the timer callback
+        # in this example is waiting for the client response
+        cb_group = ReentrantCallbackGroup()
+        cli = node.create_client(AddTwoInts, 'add_two_ints', callback_group=cb_group)
+        did_run = False
+        did_get_result = False
+>>>>>>> 7e47aee (Use a single executor instance for spinning in client_async_callback. (#382))
 
     while not cli.wait_for_service(timeout_sec=1.0):
         node.get_logger().info('service not available, waiting again...')
@@ -52,15 +68,29 @@ def main(args=None):
     while rclpy.ok() and not did_run:
         rclpy.spin_once(node)
 
+<<<<<<< HEAD
     if did_run:
         # call timer callback only once
         timer.cancel()
+=======
+        while rclpy.ok() and not did_run:
+            executor.spin_once()
+>>>>>>> 7e47aee (Use a single executor instance for spinning in client_async_callback. (#382))
 
     while rclpy.ok() and not did_get_result:
         rclpy.spin_once(node)
 
+<<<<<<< HEAD
     node.destroy_node()
     rclpy.shutdown()
+=======
+        while rclpy.ok() and not did_get_result:
+            executor.spin_once()
+    except KeyboardInterrupt:
+        pass
+    except ExternalShutdownException:
+        sys.exit(1)
+>>>>>>> 7e47aee (Use a single executor instance for spinning in client_async_callback. (#382))
 
 
 if __name__ == '__main__':
