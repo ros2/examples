@@ -70,7 +70,7 @@ async def spinning(node):
 
 async def run(args, loop):
 
-    # init ros2
+    # init ROS 2
     with rclpy.init(args=args):
         logger = rclpy.logging.get_logger('minimal_action_client')
 
