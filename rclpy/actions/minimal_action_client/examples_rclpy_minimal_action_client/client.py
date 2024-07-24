@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 from action_msgs.msg import GoalStatus
 from example_interfaces.action import Fibonacci
 
@@ -71,18 +69,15 @@ class MinimalActionClient(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
-
     try:
-        action_client = MinimalActionClient()
+        with rclpy.init(args=args):
+            action_client = MinimalActionClient()
 
-        action_client.send_goal()
+            action_client.send_goal()
 
-        rclpy.spin(action_client)
-    except KeyboardInterrupt:
+            rclpy.spin(action_client)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

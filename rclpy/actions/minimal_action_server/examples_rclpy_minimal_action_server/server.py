@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
 import time
 
 from example_interfaces.action import Fibonacci
@@ -92,19 +91,16 @@ class MinimalActionServer(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
-
     try:
-        minimal_action_server = MinimalActionServer()
+        with rclpy.init(args=args):
+            minimal_action_server = MinimalActionServer()
 
-        # Use a MultiThreadedExecutor to enable processing goals concurrently
-        executor = MultiThreadedExecutor()
+            # Use a MultiThreadedExecutor to enable processing goals concurrently
+            executor = MultiThreadedExecutor()
 
-        rclpy.spin(minimal_action_server, executor=executor)
-    except KeyboardInterrupt:
+            rclpy.spin(minimal_action_server, executor=executor)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

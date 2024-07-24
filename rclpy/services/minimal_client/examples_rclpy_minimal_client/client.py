@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 from example_interfaces.srv import AddTwoInts
 
 import rclpy
@@ -21,29 +19,26 @@ from rclpy.executors import ExternalShutdownException
 
 
 def main(args=None):
-    rclpy.init(args=args)
-
     try:
-        node = rclpy.create_node('minimal_client')
-        cli = node.create_client(AddTwoInts, 'add_two_ints')
+        with rclpy.init(args=args):
+            node = rclpy.create_node('minimal_client')
+            cli = node.create_client(AddTwoInts, 'add_two_ints')
 
-        req = AddTwoInts.Request()
-        req.a = 41
-        req.b = 1
-        while not cli.wait_for_service(timeout_sec=1.0):
-            node.get_logger().info('service not available, waiting again...')
+            req = AddTwoInts.Request()
+            req.a = 41
+            req.b = 1
+            while not cli.wait_for_service(timeout_sec=1.0):
+                node.get_logger().info('service not available, waiting again...')
 
-        future = cli.call_async(req)
-        rclpy.spin_until_future_complete(node, future)
+            future = cli.call_async(req)
+            rclpy.spin_until_future_complete(node, future)
 
-        result = future.result()
-        node.get_logger().info(
-            'Result of add_two_ints: for %d + %d = %d' %
-            (req.a, req.b, result.sum))
-    except KeyboardInterrupt:
+            result = future.result()
+            node.get_logger().info(
+                'Result of add_two_ints: for %d + %d = %d' %
+                (req.a, req.b, result.sum))
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

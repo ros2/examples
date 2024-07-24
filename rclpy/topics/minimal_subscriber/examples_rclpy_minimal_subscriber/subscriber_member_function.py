@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
@@ -37,16 +35,13 @@ class MinimalSubscriber(Node):
 
 
 def main(args=None):
-    rclpy.init(args=args)
-
     try:
-        minimal_subscriber = MinimalSubscriber()
+        with rclpy.init(args=args):
+            minimal_subscriber = MinimalSubscriber()
 
-        rclpy.spin(minimal_subscriber)
-    except KeyboardInterrupt:
+            rclpy.spin(minimal_subscriber)
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

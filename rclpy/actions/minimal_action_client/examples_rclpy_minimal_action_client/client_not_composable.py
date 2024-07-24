@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 from action_msgs.msg import GoalStatus
 
 from example_interfaces.action import Fibonacci
@@ -28,53 +26,48 @@ def feedback_cb(logger, feedback):
 
 
 def main(args=None):
-    rclpy.init(args=args)
-
     try:
-        node = rclpy.create_node('minimal_action_client')
+        with rclpy.init(args=args):
+            node = rclpy.create_node('minimal_action_client')
 
-        action_client = ActionClient(node, Fibonacci, 'fibonacci')
+            action_client = ActionClient(node, Fibonacci, 'fibonacci')
 
-        node.get_logger().info('Waiting for action server...')
+            node.get_logger().info('Waiting for action server...')
 
-        action_client.wait_for_server()
+            action_client.wait_for_server()
 
-        goal_msg = Fibonacci.Goal()
-        goal_msg.order = 10
+            goal_msg = Fibonacci.Goal()
+            goal_msg.order = 10
 
-        node.get_logger().info('Sending goal request...')
+            node.get_logger().info('Sending goal request...')
 
-        send_goal_future = action_client.send_goal_async(
-            goal_msg, feedback_callback=lambda feedback: feedback_cb(node.get_logger(), feedback))
+            send_goal_future = action_client.send_goal_async(
+                goal_msg,
+                feedback_callback=lambda feedback: feedback_cb(node.get_logger(), feedback))
 
-        rclpy.spin_until_future_complete(node, send_goal_future)
+            rclpy.spin_until_future_complete(node, send_goal_future)
 
-        goal_handle = send_goal_future.result()
+            goal_handle = send_goal_future.result()
 
-        if not goal_handle.accepted:
-            node.get_logger().info('Goal rejected :(')
-            action_client.destroy()
-            node.destroy_node()
-            rclpy.shutdown()
-            return
+            if not goal_handle.accepted:
+                node.get_logger().info('Goal rejected :(')
+                return
 
-        node.get_logger().info('Goal accepted :)')
+            node.get_logger().info('Goal accepted :)')
 
-        get_result_future = goal_handle.get_result_async()
+            get_result_future = goal_handle.get_result_async()
 
-        rclpy.spin_until_future_complete(node, get_result_future)
+            rclpy.spin_until_future_complete(node, get_result_future)
 
-        result = get_result_future.result().result
-        status = get_result_future.result().status
-        if status == GoalStatus.STATUS_SUCCEEDED:
-            node.get_logger().info(
-               'Goal succeeded! Result: {0}'.format(result.sequence))
-        else:
-            node.get_logger().info('Goal failed with status code: {0}'.format(status))
-    except KeyboardInterrupt:
+            result = get_result_future.result().result
+            status = get_result_future.result().status
+            if status == GoalStatus.STATUS_SUCCEEDED:
+                node.get_logger().info(
+                   'Goal succeeded! Result: {0}'.format(result.sequence))
+            else:
+                node.get_logger().info('Goal failed with status code: {0}'.format(status))
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
-    except ExternalShutdownException:
-        sys.exit(1)
 
 
 if __name__ == '__main__':

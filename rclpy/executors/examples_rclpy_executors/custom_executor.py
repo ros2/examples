@@ -80,17 +80,17 @@ class PriorityExecutor(Executor):
 
 
 def main(args=None):
-    rclpy.init(args=args)
     try:
-        listener = Listener()
-        talker = Talker()
-        estopper = Estopper()
+        with rclpy.init(args=args):
+            listener = Listener()
+            talker = Talker()
+            estopper = Estopper()
 
-        executor = PriorityExecutor()
-        executor.add_high_priority_node(estopper)
-        executor.add_node(listener)
-        executor.add_node(talker)
-        executor.spin()
+            executor = PriorityExecutor()
+            executor.add_high_priority_node(estopper)
+            executor.add_node(listener)
+            executor.add_node(talker)
+            executor.spin()
     except KeyboardInterrupt:
         pass
     except ExternalShutdownException:
