@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Switch to using the rclpy context manager everywhere. (`#389 <https://github.com/ros2/examples/issues/389>`_)
+* Contributors: Chris Lalancette
+
 0.20.1 (2024-06-17)
 -------------------
 * Update the shutdown handling in all of the Python examples. (`#379 <https://github.com/ros2/examples/issues/379>`_)

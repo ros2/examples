@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_wait_set
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.20.1 (2024-06-17)
 -------------------
 

@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Switch to using the rclpy context manager everywhere. (`#389 <https://github.com/ros2/examples/issues/389>`_)
+* Contributors: Chris Lalancette
+
 0.20.1 (2024-06-17)
 -------------------
 * Add guard on Python single goal action server example (`#380 <https://github.com/ros2/examples/issues/380>`_)

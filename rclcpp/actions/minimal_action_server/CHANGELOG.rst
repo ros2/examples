@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Removed outdated comment (`#388 <https://github.com/ros2/examples/issues/388>`_)
+* Contributors: Alejandro Hernández Cordero
+
 0.20.1 (2024-06-17)
 -------------------
 
