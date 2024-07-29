@@ -2,8 +2,8 @@
 Changelog for package examples_rclpy_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.20.2 (2024-07-29)
+-------------------
 * Switch to using the rclpy context manager everywhere. (`#389 <https://github.com/ros2/examples/issues/389>`_)
 * Contributors: Chris Lalancette
 

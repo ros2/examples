@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
   <name>examples_rclcpp_cbg_executor</name>
-  <version>0.20.1</version>
+  <version>0.20.2</version>
   <description>Example for multiple Executor instances in one process, using the callback-group-level interface of the Executor class.</description>
 
   <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
