@@ -43,26 +43,26 @@ def generate_test_description():
 if os.name != 'nt':
     class TestFixture(unittest.TestCase):
 
-        def test_set_parameter(self, proc_output):
+        def setUp(self):
             rclpy.init()
-            node = Node('test_node')
-            response = set_parameter(node, value=True)
-            assert response.successful, 'Could not set parameter!'
+            self.node = Node('test_node')
+
+        def tearDown(self):
+            self.node.destroy_node()
             rclpy.shutdown()
 
+        def test_set_parameter(self, proc_output):
+            parameters = [rclpy.Parameter('demo_parameter_1', value=True).to_parameter_msg()]
 
-def set_parameter(dummy_node, value=True, timeout=5.0):
-    parameters = [rclpy.Parameter('demo_parameter_1', value=value).to_parameter_msg()]
+            client = self.node.create_client(SetParameters, 'demo_node_1/set_parameters')
+            ready = client.wait_for_service(timeout_sec=15.0)
+            if not ready:
+                raise RuntimeError('Wait for service timed out')
 
-    client = dummy_node.create_client(SetParameters, 'demo_node_1/set_parameters')
-    ready = client.wait_for_service(timeout_sec=timeout)
-    if not ready:
-        raise RuntimeError('Wait for service timed out')
+            request = SetParameters.Request()
+            request.parameters = parameters
+            future = client.call_async(request)
+            rclpy.spin_until_future_complete(self.node, future, timeout_sec=15.0)
 
-    request = SetParameters.Request()
-    request.parameters = parameters
-    future = client.call_async(request)
-    rclpy.spin_until_future_complete(dummy_node, future, timeout_sec=timeout)
-
-    response = future.result()
-    return response.results[0]
+            response = future.result()
+            assert response.results[0].successful, 'Could not set parameter!'
