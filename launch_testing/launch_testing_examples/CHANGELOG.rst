@@ -2,6 +2,11 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Cleanup the launch_testing_examples. (`#394 <https://github.com/ros2/examples/issues/394>`_)
+* Contributors: Chris Lalancette, Tomoya Fujita
+
 0.18.1 (2024-07-10)
 -------------------
 
