@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add in ament_xmllint for the ament_python packages. (`#397 <https://github.com/ros2/examples/issues/397>`_)
+* Contributors: Chris Lalancette
+
 0.20.2 (2024-07-29)
 -------------------
 * Switch to using the rclpy context manager everywhere. (`#389 <https://github.com/ros2/examples/issues/389>`_)
