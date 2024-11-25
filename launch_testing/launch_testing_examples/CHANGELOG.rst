@@ -2,6 +2,11 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.15.3 (2024-11-25)
+-------------------
+* Cleanup the launch_testing_examples. (`#374 <https://github.com/ros2/examples/issues/374>`_) (`#393 <https://github.com/ros2/examples/issues/393>`_)
+* Contributors: mergify[bot]
+
 0.15.2 (2024-07-26)
 -------------------
 

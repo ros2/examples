@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
   <name>examples_rclcpp_minimal_composition</name>
-  <version>0.15.2</version>
+  <version>0.15.3</version>
   <description>Minimalist examples of composing nodes in the same
   process</description>
   <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>

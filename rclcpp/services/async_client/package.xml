@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
   <name>examples_rclcpp_async_client</name>
-  <version>0.15.2</version>
+  <version>0.15.3</version>
   <description>Example of an async service client</description>
   <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
   <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>

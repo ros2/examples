@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
   <name>examples_rclpy_executors</name>
-  <version>0.15.2</version>
+  <version>0.15.3</version>
   <description>Examples of creating and using exectors to run multiple nodes in the same process</description>
   <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
   <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>

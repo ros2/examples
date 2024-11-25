@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>examples_rclpy_pointcloud_publisher</name>
-  <version>0.15.2</version>
+  <version>0.15.3</version>
   <description>Example on how to publish a Pointcloud2 message</description>
   <maintainer email="evanflynn.msu@gmail.com">Evan Flynn</maintainer>
   <license>Apache 2.0</license>
