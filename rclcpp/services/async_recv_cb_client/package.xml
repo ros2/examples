@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>examples_rclcpp_async_recv_cb_client</name>
+  <version>0.20.2</version>
+  <description>Example of an async service client that uses 
+  a callback to receive the response from the server.</description>
+
+  <maintainer email="santiago.tapia@upm.es">Santiago Tapia-Fernández</maintainer>
+
+  <license>Apache License 2.0</license>
+
+  <author email="santiago.tapia@upm.es">Santiago Tapia-Fernández</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>rclcpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>example_interfaces</build_depend>
+
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>example_interfaces</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
