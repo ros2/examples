@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
   <name>examples_rclpy_minimal_subscriber</name>
-  <version>0.20.3</version>
+  <version>0.20.4</version>
   <description>Examples of minimal subscribers using rclpy.</description>
 
   <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
