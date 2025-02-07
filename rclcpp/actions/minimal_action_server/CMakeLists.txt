@@ -17,16 +17,16 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 
 add_executable(action_server_member_functions member_functions.cpp)
-ament_target_dependencies(action_server_member_functions
-  "rclcpp"
-  "rclcpp_action"
-  "example_interfaces")
+target_link_libraries(action_server_member_functions PRIVATE
+  ${example_interfaces_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action)
 
 add_executable(action_server_not_composable not_composable.cpp)
-ament_target_dependencies(action_server_not_composable
-  "rclcpp"
-  "rclcpp_action"
-  "example_interfaces")
+target_link_libraries(action_server_not_composable PRIVATE
+  ${example_interfaces_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
