@@ -19,7 +19,7 @@ find_package(rclcpp_action REQUIRED)
 add_executable(action_client_member_functions member_functions.cpp)
 target_link_libraries(action_client_member_functions PRIVATE
   ${example_interfaces_TARGETS}
-  rclcpp::rclcpp 
+  rclcpp::rclcpp
   rclcpp_action::rclcpp_action)
 
 add_executable(action_client_not_composable not_composable.cpp)
