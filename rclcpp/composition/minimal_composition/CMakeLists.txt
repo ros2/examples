@@ -23,7 +23,7 @@ add_library(composition_nodes SHARED
             src/subscriber_node.cpp)
 target_compile_definitions(composition_nodes
   PRIVATE "MINIMAL_COMPOSITION_DLL")
-ament_target_dependencies(composition_nodes rclcpp rclcpp_components std_msgs)
+target_link_libraries(composition_nodes PUBLIC rclcpp::rclcpp rclcpp_components::component ${std_msgs_TARGETS})
 
 # This package installs libraries without exporting them.
 # Export the library path to ensure that the installed libraries are available.
@@ -33,18 +33,13 @@ if(NOT WIN32)
 endif()
 
 add_executable(composition_publisher src/standalone_publisher.cpp)
-target_link_libraries(composition_publisher composition_nodes)
-ament_target_dependencies(composition_publisher
-  rclcpp)
+target_link_libraries(composition_publisher PRIVATE composition_nodes rclcpp::rclcpp)
 
 add_executable(composition_subscriber src/standalone_subscriber.cpp)
-target_link_libraries(composition_subscriber composition_nodes)
-ament_target_dependencies(composition_subscriber
-  rclcpp)
+target_link_libraries(composition_subscriber PRIVATE composition_nodes rclcpp::rclcpp)
 
 add_executable(composition_composed src/composed.cpp)
-target_link_libraries(composition_composed composition_nodes)
-ament_target_dependencies(composition_composed rclcpp class_loader)
+target_link_libraries(composition_composed PRIVATE composition_nodes rclcpp::rclcpp class_loader::class_loader)
 
 install(TARGETS
   composition_nodes

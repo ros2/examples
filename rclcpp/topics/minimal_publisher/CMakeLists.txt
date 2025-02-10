@@ -16,22 +16,22 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 add_executable(publisher_lambda lambda.cpp)
-ament_target_dependencies(publisher_lambda rclcpp std_msgs)
+target_link_libraries(publisher_lambda PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
 
 add_executable(publisher_member_function member_function.cpp)
-ament_target_dependencies(publisher_member_function rclcpp std_msgs)
+target_link_libraries(publisher_member_function PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
 
 add_executable(publisher_member_function_with_type_adapter member_function_with_type_adapter.cpp)
-ament_target_dependencies(publisher_member_function_with_type_adapter rclcpp std_msgs)
+target_link_libraries(publisher_member_function_with_type_adapter PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
 
 add_executable(publisher_member_function_with_unique_network_flow_endpoints member_function_with_unique_network_flow_endpoints.cpp)
-ament_target_dependencies(publisher_member_function_with_unique_network_flow_endpoints rclcpp std_msgs)
+target_link_libraries(publisher_member_function_with_unique_network_flow_endpoints PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
 
 add_executable(publisher_wait_for_all_acked member_function_with_wait_for_all_acked.cpp)
-ament_target_dependencies(publisher_wait_for_all_acked rclcpp std_msgs)
+target_link_libraries(publisher_wait_for_all_acked PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
 
 add_executable(publisher_not_composable not_composable.cpp)
-ament_target_dependencies(publisher_not_composable rclcpp std_msgs)
+target_link_libraries(publisher_not_composable PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
 
 install(TARGETS
   publisher_lambda

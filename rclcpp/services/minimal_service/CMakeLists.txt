@@ -16,7 +16,7 @@ find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 
 add_executable(service_main main.cpp)
-ament_target_dependencies(service_main rclcpp example_interfaces)
+target_link_libraries(service_main PRIVATE rclcpp::rclcpp ${example_interfaces_TARGETS})
 
 install(TARGETS service_main
   DESTINATION lib/${PROJECT_NAME})

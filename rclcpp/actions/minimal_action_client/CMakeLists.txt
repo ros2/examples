@@ -17,28 +17,28 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 
 add_executable(action_client_member_functions member_functions.cpp)
-ament_target_dependencies(action_client_member_functions
-  "rclcpp"
-  "rclcpp_action"
-  "example_interfaces")
+target_link_libraries(action_client_member_functions PRIVATE
+  ${example_interfaces_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action)
 
 add_executable(action_client_not_composable not_composable.cpp)
-ament_target_dependencies(action_client_not_composable
-  "rclcpp"
-  "rclcpp_action"
-  "example_interfaces")
+target_link_libraries(action_client_not_composable PRIVATE
+  ${example_interfaces_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action)
 
 add_executable(action_client_not_composable_with_cancel not_composable_with_cancel.cpp)
-ament_target_dependencies(action_client_not_composable_with_cancel
-  "rclcpp"
-  "rclcpp_action"
-  "example_interfaces")
+target_link_libraries(action_client_not_composable_with_cancel PRIVATE
+  ${example_interfaces_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action)
 
 add_executable(action_client_not_composable_with_feedback not_composable_with_feedback.cpp)
-ament_target_dependencies(action_client_not_composable_with_feedback
-  "rclcpp"
-  "rclcpp_action"
-  "example_interfaces")
+target_link_libraries(action_client_not_composable_with_feedback PRIVATE
+  ${example_interfaces_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

@@ -15,10 +15,10 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
 add_executable(timer_lambda lambda.cpp)
-ament_target_dependencies(timer_lambda rclcpp)
+target_link_libraries(timer_lambda PRIVATE rclcpp::rclcpp)
 
 add_executable(timer_member_function member_function.cpp)
-ament_target_dependencies(timer_member_function rclcpp)
+target_link_libraries(timer_member_function PRIVATE rclcpp::rclcpp)
 
 install(TARGETS
   timer_lambda
