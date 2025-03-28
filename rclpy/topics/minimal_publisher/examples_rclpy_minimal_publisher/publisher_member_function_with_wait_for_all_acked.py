@@ -55,6 +55,7 @@ class MinimalPublisher(Node):
             self.i = 0
             self.timer.reset()
 
+
 def main(args=None):
     rclpy.init(args=args)
     minimal_publisher = MinimalPublisher()
@@ -64,6 +65,7 @@ def main(args=None):
         pass
     finally:
         rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
