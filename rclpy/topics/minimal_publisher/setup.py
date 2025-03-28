@@ -35,7 +35,8 @@ setup(
             'publisher_member_function ='
             ' examples_rclpy_minimal_publisher.publisher_member_function:main',
             'publisher_member_function_with_wait_for_all_acked ='
-            ' examples_rclpy_minimal_publisher.publisher_member_function_with_wait_for_all_acked:main',
+            ' examples_rclpy_minimal_publisher.'
+            'publisher_member_function_with_wait_for_all_acked:main',
         ],
     },
 )
