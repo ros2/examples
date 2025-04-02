@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.19.4 (2024-06-27)
 -------------------
 

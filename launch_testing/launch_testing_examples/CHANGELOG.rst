@@ -2,6 +2,9 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.19.4 (2024-06-27)
 -------------------
 
