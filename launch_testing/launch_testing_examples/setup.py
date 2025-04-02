@@ -4,7 +4,7 @@ package_name = 'launch_testing_examples'
 
 setup(
     name=package_name,
-    version='0.19.4',
+    version='0.19.5',
     packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
