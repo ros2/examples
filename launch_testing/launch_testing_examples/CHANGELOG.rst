@@ -2,6 +2,9 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.20.5 (2025-04-28)
+-------------------
+
 0.20.4 (2024-12-20)
 -------------------
 * Add test_xmllint.py. (`#401 <https://github.com/ros2/examples/issues/401>`_)

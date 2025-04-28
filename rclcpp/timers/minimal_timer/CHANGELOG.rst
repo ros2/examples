@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_timer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.20.5 (2025-04-28)
+-------------------
+* Use target_link_libraries instead of ament_target_dependencies (`#404 <https://github.com/ros2/examples/issues/404>`_)
+* Contributors: Shane Loretz
+
 0.20.4 (2024-12-20)
 -------------------
 

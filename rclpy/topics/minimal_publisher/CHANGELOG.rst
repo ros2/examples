@@ -2,6 +2,12 @@
 Changelog for package examples_rclpy_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.20.5 (2025-04-28)
+-------------------
+* Address flake8 errors for examples_rclpy_minimal_publisher (`#410 <https://github.com/ros2/examples/issues/410>`_)
+* Add publisher_member_function_with_wait_for_all_acked.py (`#407 <https://github.com/ros2/examples/issues/407>`_)
+* Contributors: Tomoya Fujita
+
 0.20.4 (2024-12-20)
 -------------------
 
