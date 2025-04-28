@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_multithreaded_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.0 (2025-04-28)
+-------------------
+
 0.20.5 (2025-04-28)
 -------------------
 * Use target_link_libraries instead of ament_target_dependencies (`#404 <https://github.com/ros2/examples/issues/404>`_)
