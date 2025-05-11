@@ -11,12 +11,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <algorithm>
 #include <chrono>
 #include <functional>
 #include <memory>
 #include <string>
 #include <thread>
-#include <algorithm>
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
