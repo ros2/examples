@@ -11,11 +11,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <algorithm>
 #include <chrono>
 #include <functional>
 #include <memory>
 #include <string>
 #include <thread>
+#include <vector>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -27,8 +29,14 @@ using namespace std::chrono_literals;
  **/
 std::string string_thread_id()
 {
-  auto hashed = std::hash<std::thread::id>()(std::this_thread::get_id());
-  return std::to_string(hashed);
+  static std::vector<std::thread::id> known_thread_ids {};
+  const auto thread_it = std::find(known_thread_ids.cbegin(), known_thread_ids.cend(),
+    std::this_thread::get_id());
+  if (thread_it != known_thread_ids.cend()) {
+    return std::to_string(std::distance(known_thread_ids.cbegin(), thread_it));
+  }
+  known_thread_ids.push_back(std::this_thread::get_id());
+  return std::to_string(known_thread_ids.size() - 1);
 }
 
 /* For this example, we will be creating a publishing node like the one in minimal_publisher.
