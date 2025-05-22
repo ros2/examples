@@ -30,7 +30,7 @@ public:
   MinimalPublisher()
   : Node("minimal_publisher_with_wait_for_all_acked"),
     count_(0),
-    wait_timeout_(300)
+    wait_timeout_(5000)
   {
     // publisher must set reliable mode
     publisher_ = this->create_publisher<std_msgs::msg::String>(
