@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_multithreaded_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Improve readibility of reported thread ids in the multithreaded executor example (`#415 <https://github.com/ros2/examples/issues/415>`_)
+* Contributors: José Faria
+
 0.21.0 (2025-04-28)
 -------------------
 
