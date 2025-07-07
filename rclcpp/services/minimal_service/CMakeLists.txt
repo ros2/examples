@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 project(examples_rclcpp_minimal_service)
 
 # Default to C++17
