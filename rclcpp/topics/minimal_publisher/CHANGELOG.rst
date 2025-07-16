@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* wait 5 secs until all subscriptions acknowledge the messages. (`#414 <https://github.com/ros2/examples/issues/414>`_) (`#418 <https://github.com/ros2/examples/issues/418>`_)
+* Contributors: mergify[bot]
+
 0.15.3 (2024-11-25)
 -------------------
 

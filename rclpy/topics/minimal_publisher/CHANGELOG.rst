@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add publisher_member_function_with_wait_for_all_acked.py. (backport `#407 <https://github.com/ros2/examples/issues/407>`_) (`#408 <https://github.com/ros2/examples/issues/408>`_)
+* Contributors: mergify[bot]
+
 0.15.3 (2024-11-25)
 -------------------
 
