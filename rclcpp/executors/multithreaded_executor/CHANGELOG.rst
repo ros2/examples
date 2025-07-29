@@ -2,8 +2,8 @@
 Changelog for package examples_rclcpp_multithreaded_executor
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.21.2 (2025-07-29)
+-------------------
 * Fix CMAKE deprecation (`#419 <https://github.com/ros2/examples/issues/419>`_)
 * Contributors: mosfet80
 

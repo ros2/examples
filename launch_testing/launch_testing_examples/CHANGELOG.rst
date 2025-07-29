@@ -2,8 +2,8 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.21.2 (2025-07-29)
+-------------------
 * Fix setuptools deprecations (`#421 <https://github.com/ros2/examples/issues/421>`_)
 * Contributors: mosfet80
 
