@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_timer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix CMAKE deprecation (`#419 <https://github.com/ros2/examples/issues/419>`_)
+* Contributors: mosfet80
+
 0.21.1 (2025-07-01)
 -------------------
 
