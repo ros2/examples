@@ -2,6 +2,13 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* wait 5 secs until all subscriptions acknowledge the messages. (`#414 <https://github.com/ros2/examples/issues/414>`_) (`#417 <https://github.com/ros2/examples/issues/417>`_)
+  (cherry picked from commit 2c917593d911c0035c354abcff6b1bb9b1aa7ffe)
+  Co-authored-by: Tomoya Fujita <Tomoya.Fujita@sony.com>
+* Contributors: mergify[bot]
+
 0.19.5 (2025-04-02)
 -------------------
 
