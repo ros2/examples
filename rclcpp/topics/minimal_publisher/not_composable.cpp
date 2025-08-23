@@ -29,6 +29,8 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("minimal_publisher");
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node);
   auto publisher = node->create_publisher<std_msgs::msg::String>("topic", 10);
   std_msgs::msg::String message;
   auto publish_count = 0;
@@ -39,7 +41,7 @@ int main(int argc, char * argv[])
     RCLCPP_INFO(node->get_logger(), "Publishing: '%s'", message.data.c_str());
     try {
       publisher->publish(message);
-      rclcpp::spin_some(node);
+      executor.spin_some();
     } catch (const rclcpp::exceptions::RCLError & e) {
       RCLCPP_ERROR(
         node->get_logger(),
