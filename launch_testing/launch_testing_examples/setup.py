@@ -17,15 +17,13 @@ setup(
     maintainer_email='aditya.pande@openrobotics.org, alejandro@openrobotics.org',
     description='Examples of simple launch tests',
     license='Apache License 2.0',
-<<<<<<< HEAD
-    tests_require=['pytest'],
-    entry_points={
-        'console_scripts': [
-=======
     extras_require={
         'test': [
             'pytest',
->>>>>>> b3cb019 (Fix setuptools deprecations (#421))
+        ],
+    },
+    entry_points={
+        'console_scripts': [
         ],
     },
 )
