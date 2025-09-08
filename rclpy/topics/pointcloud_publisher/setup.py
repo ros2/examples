@@ -17,7 +17,11 @@ setup(
     maintainer_email='aditya.pande@openrobotics.org, alejandro@openrobotics.org',
     description='Example on how to publish a Pointcloud2 message',
     license='Apache 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
     entry_points={
         'console_scripts': [
             'pointcloud_publisher = examples_rclpy_pointcloud_publisher.pointcloud_publisher:main'
