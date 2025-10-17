@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.3 (2025-10-17)
+-------------------
+
 0.21.2 (2025-07-29)
 -------------------
 * Fix CMAKE deprecation (`#419 <https://github.com/ros2/examples/issues/419>`_)

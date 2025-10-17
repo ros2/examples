@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.3 (2025-10-17)
+-------------------
+* get rid of deprecated rclcpp::spin_some(). (`#422 <https://github.com/ros2/examples//issues/422>`_)
+* Contributors: Tomoya Fujita
+
 0.21.2 (2025-07-29)
 -------------------
 * Fix CMAKE deprecation (`#419 <https://github.com/ros2/examples/issues/419>`_)
