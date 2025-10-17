@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.19.7 (2025-10-17)
+-------------------
+* Fix setuptools deprecations (backport `#421 <https://github.com/ros2/examples//issues/421>`_) (`#425 <https://github.com/ros2/examples//issues/425>`_)
+* Contributors: mergify[bot]
+
 0.19.6 (2025-08-06)
 -------------------
 

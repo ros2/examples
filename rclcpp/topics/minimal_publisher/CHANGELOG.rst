@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.19.7 (2025-10-17)
+-------------------
+
 0.19.6 (2025-08-06)
 -------------------
 * wait 5 secs until all subscriptions acknowledge the messages. (`#414 <https://github.com/ros2/examples/issues/414>`_) (`#417 <https://github.com/ros2/examples/issues/417>`_)
