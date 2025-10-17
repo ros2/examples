@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.20.6 (2025-10-17)
+-------------------
+* Fix setuptools deprecations (`#421 <https://github.com/ros2/examples//issues/421>`_) (`#424 <https://github.com/ros2/examples//issues/424>`_)
+* Contributors: mergify[bot]
+
 0.20.5 (2025-04-28)
 -------------------
 * Address flake8 errors for examples_rclpy_minimal_publisher (`#410 <https://github.com/ros2/examples/issues/410>`_)

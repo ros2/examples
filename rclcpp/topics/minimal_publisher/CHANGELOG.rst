@@ -2,6 +2,14 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.20.6 (2025-10-17)
+-------------------
+* Fix CMAKE deprecation (`#419 <https://github.com/ros2/examples//issues/419>`_) (`#420 <https://github.com/ros2/examples//issues/420>`_)
+* wait 5 secs until all subscriptions acknowledge the messages. (`#414 <https://github.com/ros2/examples//issues/414>`_) (`#416 <https://github.com/ros2/examples//issues/416>`_)
+  (cherry picked from commit 2c917593d911c0035c354abcff6b1bb9b1aa7ffe)
+  Co-authored-by: Tomoya Fujita <Tomoya.Fujita@sony.com>
+* Contributors: mergify[bot]
+
 0.20.5 (2025-04-28)
 -------------------
 * Use target_link_libraries instead of ament_target_dependencies (`#404 <https://github.com/ros2/examples/issues/404>`_)
