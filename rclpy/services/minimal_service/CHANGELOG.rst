@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.15.5 (2025-10-17)
+-------------------
+* Fix setuptools deprecations (backport `#421 <https://github.com/ros2/examples//issues/421>`_) (`#426 <https://github.com/ros2/examples//issues/426>`_)
+* Contributors: mergify[bot]
+
 0.15.4 (2025-07-16)
 -------------------
 
