@@ -28,6 +28,12 @@ target_link_libraries(action_server_not_composable PRIVATE
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action)
 
+add_executable(action_server_single_goal single_goal.cpp)
+target_link_libraries(action_server_single_goal PRIVATE
+  ${example_interfaces_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
@@ -36,6 +42,7 @@ endif()
 install(TARGETS
   action_server_not_composable
   action_server_member_functions
+  action_server_single_goal
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
