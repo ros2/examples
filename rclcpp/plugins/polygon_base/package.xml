@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>polygon_base</name>
+  <version>0.21.3</version>
+  <description>Examples of polygon base</description>
+  
+  <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
+
+  <license>Apache License 2.0</license>
+
+  <author email="jacob@openrobotics.org">Jacob Perron</author>
+  <author>Mikael Arguedas</author>
+  <author>Morgan Quigley</author>
+  <author email="sloretz@openrobotics.org">Shane Loretz</author>
+
+  <buildtool_depend>ament_cmake_ros</buildtool_depend>
+
+  <depend>pluginlib</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
