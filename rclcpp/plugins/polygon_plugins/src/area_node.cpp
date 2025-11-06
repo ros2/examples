@@ -33,10 +33,10 @@ int main(int argc, char ** argv)
       poly_loader.createSharedInstance("polygon_plugins::Square");
     square->initialize(10.0);
 
-    printf("Triangle area: %.2f\n", triangle->area());
-    printf("Square area: %.2f\n", square->area());
+    std::cout << "Triangle area: " << triangle->area() << std::endl;
+    std::cout << "Square area: " << square->area() << std::endl
   } catch(pluginlib::PluginlibException & ex) {
-    printf("The plugin failed to load for some reason. Error: %s\n", ex.what());
+    std::cout << "The plugin failed to load for some reason. Error: " << ex.what() << std::endl;
   }
 
   return 0;

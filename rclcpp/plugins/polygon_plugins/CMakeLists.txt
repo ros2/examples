@@ -16,7 +16,8 @@ add_library(polygon_plugins SHARED
 target_compile_features(polygon_plugins PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 target_include_directories(polygon_plugins PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
+  $<INSTALL_INTERFACE:include>
+)
 target_link_libraries(polygon_plugins PUBLIC
   ${polygon_base_TARGETS}
   ${pluginlib_TARGETS}
@@ -25,7 +26,8 @@ target_link_libraries(polygon_plugins PUBLIC
 add_executable(area_node src/area_node.cpp)
 target_include_directories(area_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+)
 target_compile_features(area_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 target_link_libraries(
   area_node
@@ -44,13 +46,6 @@ install(TARGETS area_node
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
 

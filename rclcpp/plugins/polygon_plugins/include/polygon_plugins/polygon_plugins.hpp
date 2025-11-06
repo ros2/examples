@@ -25,7 +25,6 @@ public:
 
   virtual ~PolygonPlugins();
 };
-
 }  // namespace polygon_plugins
 
 #endif  // POLYGON_PLUGINS__POLYGON_PLUGINS_HPP_

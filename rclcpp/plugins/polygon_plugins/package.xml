@@ -5,15 +5,11 @@
   <version>0.21.3</version>
   <description>Example of polygon plugins</description>
 
-  <maintainer email="aditya.pande@openrobotics.org">Aditya Pande</maintainer>
   <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
 
   <license>Apache License 2.0</license>
 
   <author email="jacob@openrobotics.org">Jacob Perron</author>
-  <author>Mikael Arguedas</author>
-  <author>Morgan Quigley</author>
-  <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
 

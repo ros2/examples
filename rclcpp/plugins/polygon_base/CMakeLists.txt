@@ -15,7 +15,8 @@ add_library(polygon_base::polygon_base ALIAS polygon_base)
 target_compile_features(polygon_base INTERFACE c_std_99 cxx_std_17)  # Require C99 and C++17
 target_include_directories(polygon_base INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+)
 target_link_libraries(
   polygon_base INTERFACE
   ${pluginlib_TARGETS}
