@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <iostream>
+#include <memory>
 #include <pluginlib/class_loader.hpp>
 #include <polygon_base/regular_polygon.hpp>
 
@@ -34,7 +36,7 @@ int main(int argc, char ** argv)
     square->initialize(10.0);
 
     std::cout << "Triangle area: " << triangle->area() << std::endl;
-    std::cout << "Square area: " << square->area() << std::endl
+    std::cout << "Square area: " << square->area() << std::endl;
   } catch(pluginlib::PluginlibException & ex) {
     std::cout << "The plugin failed to load for some reason. Error: " << ex.what() << std::endl;
   }

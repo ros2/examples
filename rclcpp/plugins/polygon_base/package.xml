@@ -3,13 +3,14 @@
 <package format="2">
   <name>polygon_base</name>
   <version>0.21.3</version>
-  <description>Examples of polygon base</description>
+  <description>Package containing examples of how to define a plugin base class interface</description>
   
   <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
 
   <license>Apache License 2.0</license>
 
   <author email="jacob@openrobotics.org">Jacob Perron</author>
+  <author email="mauricepurnawan@gmail.com">Maurice Alexander Purnawan</author>
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
 
