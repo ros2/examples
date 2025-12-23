@@ -74,7 +74,7 @@ public:
               // NOTE: In ROS2 Humble, TimerBase::execute_callback() no longer takes arguments.
               // This replaces the old execute_callback(data) call from Foxy and earlier.
               if (auto data = timer_->call()) {
-              #if RCLCPP_VERSION_MAJOR >= 16
+              #if RCLCPP_VERSION_MAJOR <= 16
                 timer_->execute_callback();
                 #else
                 timer_->execute_callback(data);
