@@ -71,8 +71,10 @@ public:
         case rclcpp::WaitResultKind::Ready:
           {
             if (wait_result.get_wait_set().get_rcl_wait_set().timers[0U]) {
-              if (auto data = timer_->call()) {
-                timer_->execute_callback(data);
+              // NOTE: In ROS2 Humble, TimerBase::execute_callback() no longer takes arguments.
+              // This replaces the old execute_callback(data) call from Foxy and earlier.
+              if (timer_->call()) {
+                timer_->execute_callback();
               }
             }
             break;
