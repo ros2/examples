@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_action_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.4 (2026-01-13)
+-------------------
+
 0.21.3 (2025-10-17)
 -------------------
 * get rid of deprecated rclcpp::spin_some(). (`#422 <https://github.com/ros2/examples//issues/422>`_)

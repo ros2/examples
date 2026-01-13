@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.4 (2026-01-13)
+-------------------
+* Add rclcpp single goal action server example (`#429 <https://github.com/ros2/examples/issues/429>`_)
+* Contributors: Taiga Arai
+
 0.21.3 (2025-10-17)
 -------------------
 
