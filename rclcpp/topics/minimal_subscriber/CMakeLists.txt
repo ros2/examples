@@ -17,31 +17,31 @@ find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 
 add_executable(subscriber_lambda lambda.cpp)
-target_link_libraries(subscriber_lambda PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(subscriber_lambda PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 add_executable(subscriber_member_function member_function.cpp)
-target_link_libraries(subscriber_member_function PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(subscriber_member_function PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 add_executable(subscriber_member_function_with_topic_statistics member_function_with_topic_statistics.cpp)
-target_link_libraries(subscriber_member_function_with_topic_statistics PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(subscriber_member_function_with_topic_statistics PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 add_executable(subscriber_member_function_with_type_adapter member_function_with_type_adapter.cpp)
-target_link_libraries(subscriber_member_function_with_type_adapter PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(subscriber_member_function_with_type_adapter PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 add_executable(subscriber_member_function_with_unique_network_flow_endpoints member_function_with_unique_network_flow_endpoints.cpp)
-target_link_libraries(subscriber_member_function_with_unique_network_flow_endpoints PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(subscriber_member_function_with_unique_network_flow_endpoints PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 add_executable(subscriber_not_composable not_composable.cpp)
-target_link_libraries(subscriber_not_composable PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(subscriber_not_composable PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 add_executable(subscriber_content_filtering content_filtering.cpp)
-target_link_libraries(subscriber_content_filtering PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(subscriber_content_filtering PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 add_library(wait_set_subscriber_library SHARED
     wait_set_subscriber.cpp
     static_wait_set_subscriber.cpp
     time_triggered_wait_set_subscriber.cpp)
-target_link_libraries(wait_set_subscriber_library PRIVATE rclcpp::rclcpp rclcpp_components::component ${std_msgs_TARGETS})
+target_link_libraries(wait_set_subscriber_library PRIVATE rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs)
 
 rclcpp_components_register_node(wait_set_subscriber_library
     PLUGIN "WaitSetSubscriber"
