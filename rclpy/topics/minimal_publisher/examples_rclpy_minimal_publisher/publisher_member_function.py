@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List, Optional
+
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
@@ -36,7 +38,7 @@ class MinimalPublisher(Node):
         self.i += 1
 
 
-def main(args=None) -> None:
+def main(args: Optional[List[str]] = None) -> None:
     try:
         with rclpy.init(args=args):
             minimal_publisher = MinimalPublisher()
