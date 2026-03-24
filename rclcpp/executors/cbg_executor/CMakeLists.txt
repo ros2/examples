@@ -21,7 +21,7 @@ add_executable(
   src/examples_rclcpp_cbg_executor/ping_node.cpp
 )
 target_include_directories(ping PUBLIC include)
-target_link_libraries(ping PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(ping PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 add_executable(
   pong
@@ -29,7 +29,7 @@ add_executable(
   src/examples_rclcpp_cbg_executor/pong_node.cpp
 )
 target_include_directories(pong PUBLIC include)
-target_link_libraries(pong PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(pong PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 add_executable(
   ping_pong
@@ -38,7 +38,7 @@ add_executable(
   src/examples_rclcpp_cbg_executor/pong_node.cpp
 )
 target_include_directories(ping_pong PUBLIC include)
-target_link_libraries(ping_pong PRIVATE rclcpp::rclcpp ${std_msgs_TARGETS})
+target_link_libraries(ping_pong PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
 
 install(TARGETS ping pong ping_pong
   DESTINATION lib/${PROJECT_NAME}

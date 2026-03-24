@@ -18,25 +18,25 @@ find_package(rclcpp_action REQUIRED)
 
 add_executable(action_client_member_functions member_functions.cpp)
 target_link_libraries(action_client_member_functions PRIVATE
-  ${example_interfaces_TARGETS}
+  example_interfaces::example_interfaces
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action)
 
 add_executable(action_client_not_composable not_composable.cpp)
 target_link_libraries(action_client_not_composable PRIVATE
-  ${example_interfaces_TARGETS}
+  example_interfaces::example_interfaces
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action)
 
 add_executable(action_client_not_composable_with_cancel not_composable_with_cancel.cpp)
 target_link_libraries(action_client_not_composable_with_cancel PRIVATE
-  ${example_interfaces_TARGETS}
+  example_interfaces::example_interfaces
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action)
 
 add_executable(action_client_not_composable_with_feedback not_composable_with_feedback.cpp)
 target_link_libraries(action_client_not_composable_with_feedback PRIVATE
-  ${example_interfaces_TARGETS}
+  example_interfaces::example_interfaces
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action)
 

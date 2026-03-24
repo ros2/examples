@@ -23,7 +23,7 @@ add_library(composition_nodes SHARED
             src/subscriber_node.cpp)
 target_compile_definitions(composition_nodes
   PRIVATE "MINIMAL_COMPOSITION_DLL")
-target_link_libraries(composition_nodes PUBLIC rclcpp::rclcpp rclcpp_components::component ${std_msgs_TARGETS})
+target_link_libraries(composition_nodes PUBLIC rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs)
 
 # This package installs libraries without exporting them.
 # Export the library path to ensure that the installed libraries are available.

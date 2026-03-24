@@ -18,19 +18,19 @@ find_package(rclcpp_action REQUIRED)
 
 add_executable(action_server_member_functions member_functions.cpp)
 target_link_libraries(action_server_member_functions PRIVATE
-  ${example_interfaces_TARGETS}
+  example_interfaces::example_interfaces
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action)
 
 add_executable(action_server_not_composable not_composable.cpp)
 target_link_libraries(action_server_not_composable PRIVATE
-  ${example_interfaces_TARGETS}
+  example_interfaces::example_interfaces
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action)
 
 add_executable(action_server_single_goal single_goal.cpp)
 target_link_libraries(action_server_single_goal PRIVATE
-  ${example_interfaces_TARGETS}
+  example_interfaces::example_interfaces
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action)
 
