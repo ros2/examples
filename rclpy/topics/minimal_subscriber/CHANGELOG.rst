@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_minimal_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.5 (2026-03-24)
+-------------------
+* flake8 fixes (`#445 <https://github.com/ros2/examples/issues/445>`_)
+* Contributors: Michael Carlstrom
+
 0.21.4 (2026-01-13)
 -------------------
 

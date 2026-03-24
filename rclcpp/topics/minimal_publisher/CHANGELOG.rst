@@ -2,6 +2,12 @@
 Changelog for package examples_rclcpp_minimal_publisher
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.5 (2026-03-24)
+-------------------
+* Use new ROSIDL aggregate CMake target (`#444 <https://github.com/ros2/examples/issues/444>`_)
+* Improve minimal_publisher README with clearer structure and usage guidance (`#434 <https://github.com/ros2/examples/issues/434>`_)
+* Contributors: Emerson Knapp, Yadnyeshwar Amol Sakhare
+
 0.21.4 (2026-01-13)
 -------------------
 

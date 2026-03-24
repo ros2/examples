@@ -2,6 +2,11 @@
 Changelog for package examples_rclcpp_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.5 (2026-03-24)
+-------------------
+* Use new ROSIDL aggregate CMake target (`#444 <https://github.com/ros2/examples/issues/444>`_)
+* Contributors: Emerson Knapp
+
 0.21.4 (2026-01-13)
 -------------------
 * Add rclcpp single goal action server example (`#429 <https://github.com/ros2/examples/issues/429>`_)
