@@ -21,7 +21,6 @@ g_node = None
 
 
 def add_two_ints_callback(request, response):
-    global g_node
     response.sum = request.a + request.b
     g_node.get_logger().info(
         'Incoming request\na: %d b: %d' % (request.a, request.b))
