@@ -36,7 +36,7 @@ def main(args=None):
             did_get_result = False
 
             async def call_service():
-                nonlocal cli, node, did_run, did_get_result
+                nonlocal did_run, did_get_result
                 did_run = True
                 try:
                     req = AddTwoInts.Request()
