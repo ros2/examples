@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>examples_rclpy_minimal_timer</name>
+  <version>0.0.0</version>
+  <description>Minimal rclpy timer example demonstrating create_timer usage.</description>
+
+  <maintainer email="yadnyeshwarasa@gmail.com">Yadnyeshwar Sakhare</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <exec_depend>rclpy</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+</package>
