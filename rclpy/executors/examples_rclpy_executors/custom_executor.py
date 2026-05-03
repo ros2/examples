@@ -56,7 +56,7 @@ class PriorityExecutor(Executor):
         # add_node inherited
         self.add_node(node)
 
-    def spin_once(self, timeout_sec=None):
+    def _spin_once_impl(self, timeout_sec=None):
         """
         Execute a single callback, then return.
 
