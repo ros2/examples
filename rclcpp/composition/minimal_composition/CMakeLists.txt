@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 project(examples_rclcpp_minimal_composition)
 
-# Default to C++17
+# Default to C++20
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD 20)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
 
