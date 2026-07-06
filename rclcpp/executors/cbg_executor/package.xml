@@ -13,6 +13,7 @@
   <author email="ralph.lange@de.bosch.com">Ralph Lange</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_ros_core</buildtool_depend>
 
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>

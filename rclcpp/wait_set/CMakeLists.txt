@@ -1,17 +1,12 @@
 cmake_minimum_required(VERSION 3.20)
 project(examples_rclcpp_wait_set)
 
-# Default to C++20
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 20)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
-endif()
-
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_ros_core REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
@@ -21,7 +16,7 @@ include_directories(include)
 
 add_library(talker SHARED src/talker.cpp)
 target_compile_definitions(talker PRIVATE WAIT_SET_DLL)
-target_link_libraries(talker PUBLIC rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs)
+target_link_libraries(talker PUBLIC rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 rclcpp_components_register_node(
     talker
     PLUGIN "Talker"
@@ -29,35 +24,35 @@ rclcpp_components_register_node(
 
 add_library(listener SHARED src/listener.cpp)
 target_compile_definitions(listener PRIVATE WAIT_SET_DLL)
-target_link_libraries(listener PUBLIC rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs)
+target_link_libraries(listener PUBLIC rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 rclcpp_components_register_node(
     listener
     PLUGIN "Listener"
     EXECUTABLE wait_set_listener)
 
 add_executable(wait_set src/wait_set.cpp)
-target_link_libraries(wait_set PRIVATE example_interfaces::example_interfaces rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(wait_set PRIVATE example_interfaces::example_interfaces rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(static_wait_set src/static_wait_set.cpp)
-target_link_libraries(static_wait_set PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(static_wait_set PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(thread_safe_wait_set src/thread_safe_wait_set.cpp)
-target_link_libraries(thread_safe_wait_set PRIVATE example_interfaces::example_interfaces rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(thread_safe_wait_set PRIVATE example_interfaces::example_interfaces rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(wait_set_topics_and_timer src/wait_set_topics_and_timer.cpp)
-target_link_libraries(wait_set_topics_and_timer PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(wait_set_topics_and_timer PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(wait_set_random_order src/wait_set_random_order.cpp)
-target_link_libraries(wait_set_random_order PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(wait_set_random_order PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(executor_random_order src/executor_random_order.cpp)
-target_link_libraries(executor_random_order PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(executor_random_order PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(wait_set_topics_with_different_rates src/wait_set_topics_with_different_rates.cpp)
-target_link_libraries(wait_set_topics_with_different_rates PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(wait_set_topics_with_different_rates PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(wait_set_composed src/wait_set_composed.cpp)
-target_link_libraries(wait_set_composed PRIVATE talker listener rclcpp::rclcpp)
+target_link_libraries(wait_set_composed PRIVATE talker listener rclcpp::rclcpp ament_cmake_ros_core::ament_ros_defaults)
 
 install(TARGETS
     talker

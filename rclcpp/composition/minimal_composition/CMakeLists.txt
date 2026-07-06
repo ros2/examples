@@ -1,17 +1,12 @@
 cmake_minimum_required(VERSION 3.20)
 project(examples_rclcpp_minimal_composition)
 
-# Default to C++20
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 20)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
-endif()
-
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_ros_core REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
@@ -23,7 +18,7 @@ add_library(composition_nodes SHARED
             src/subscriber_node.cpp)
 target_compile_definitions(composition_nodes
   PRIVATE "MINIMAL_COMPOSITION_DLL")
-target_link_libraries(composition_nodes PUBLIC rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs)
+target_link_libraries(composition_nodes PUBLIC rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 # This package installs libraries without exporting them.
 # Export the library path to ensure that the installed libraries are available.
@@ -33,13 +28,13 @@ if(NOT WIN32)
 endif()
 
 add_executable(composition_publisher src/standalone_publisher.cpp)
-target_link_libraries(composition_publisher PRIVATE composition_nodes rclcpp::rclcpp)
+target_link_libraries(composition_publisher PRIVATE composition_nodes rclcpp::rclcpp ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(composition_subscriber src/standalone_subscriber.cpp)
-target_link_libraries(composition_subscriber PRIVATE composition_nodes rclcpp::rclcpp)
+target_link_libraries(composition_subscriber PRIVATE composition_nodes rclcpp::rclcpp ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(composition_composed src/composed.cpp)
-target_link_libraries(composition_composed PRIVATE composition_nodes rclcpp::rclcpp class_loader::class_loader)
+target_link_libraries(composition_composed PRIVATE composition_nodes rclcpp::rclcpp class_loader::class_loader ament_cmake_ros_core::ament_ros_defaults)
 
 install(TARGETS
   composition_nodes
