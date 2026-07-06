@@ -24,20 +24,23 @@ rclcpp_components_register_node(
 
 add_library(listener SHARED src/listener.cpp)
 target_compile_definitions(listener PRIVATE WAIT_SET_DLL)
-target_link_libraries(listener PUBLIC rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
+target_link_libraries(listener PUBLIC
+  rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 rclcpp_components_register_node(
     listener
     PLUGIN "Listener"
     EXECUTABLE wait_set_listener)
 
 add_executable(wait_set src/wait_set.cpp)
-target_link_libraries(wait_set PRIVATE example_interfaces::example_interfaces rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
+target_link_libraries(wait_set PRIVATE
+  example_interfaces::example_interfaces rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(static_wait_set src/static_wait_set.cpp)
 target_link_libraries(static_wait_set PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(thread_safe_wait_set src/thread_safe_wait_set.cpp)
-target_link_libraries(thread_safe_wait_set PRIVATE example_interfaces::example_interfaces rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
+target_link_libraries(thread_safe_wait_set PRIVATE
+  example_interfaces::example_interfaces rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(wait_set_topics_and_timer src/wait_set_topics_and_timer.cpp)
 target_link_libraries(wait_set_topics_and_timer PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
@@ -49,7 +52,8 @@ add_executable(executor_random_order src/executor_random_order.cpp)
 target_link_libraries(executor_random_order PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(wait_set_topics_with_different_rates src/wait_set_topics_with_different_rates.cpp)
-target_link_libraries(wait_set_topics_with_different_rates PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
+target_link_libraries(wait_set_topics_with_different_rates PRIVATE
+  rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(wait_set_composed src/wait_set_composed.cpp)
 target_link_libraries(wait_set_composed PRIVATE talker listener rclcpp::rclcpp ament_cmake_ros_core::ament_ros_defaults)
