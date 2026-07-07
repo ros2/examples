@@ -1,47 +1,46 @@
 cmake_minimum_required(VERSION 3.20)
 project(examples_rclcpp_minimal_subscriber)
 
-# Default to C++17
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 17)
-  set(CMAKE_CXX_STANDARD_REQUIRED ON)
-endif()
-
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_ros_core REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 
 add_executable(subscriber_lambda lambda.cpp)
-target_link_libraries(subscriber_lambda PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(subscriber_lambda PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(subscriber_member_function member_function.cpp)
-target_link_libraries(subscriber_member_function PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(subscriber_member_function PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(subscriber_member_function_with_topic_statistics member_function_with_topic_statistics.cpp)
-target_link_libraries(subscriber_member_function_with_topic_statistics PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(subscriber_member_function_with_topic_statistics PRIVATE
+  rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(subscriber_member_function_with_type_adapter member_function_with_type_adapter.cpp)
-target_link_libraries(subscriber_member_function_with_type_adapter PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(subscriber_member_function_with_type_adapter PRIVATE
+  rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(subscriber_member_function_with_unique_network_flow_endpoints member_function_with_unique_network_flow_endpoints.cpp)
-target_link_libraries(subscriber_member_function_with_unique_network_flow_endpoints PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(subscriber_member_function_with_unique_network_flow_endpoints PRIVATE
+  rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(subscriber_not_composable not_composable.cpp)
-target_link_libraries(subscriber_not_composable PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(subscriber_not_composable PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(subscriber_content_filtering content_filtering.cpp)
-target_link_libraries(subscriber_content_filtering PRIVATE rclcpp::rclcpp std_msgs::std_msgs)
+target_link_libraries(subscriber_content_filtering PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 add_library(wait_set_subscriber_library SHARED
     wait_set_subscriber.cpp
     static_wait_set_subscriber.cpp
     time_triggered_wait_set_subscriber.cpp)
-target_link_libraries(wait_set_subscriber_library PRIVATE rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs)
+target_link_libraries(wait_set_subscriber_library PRIVATE
+  rclcpp::rclcpp rclcpp_components::component std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
 rclcpp_components_register_node(wait_set_subscriber_library
     PLUGIN "WaitSetSubscriber"

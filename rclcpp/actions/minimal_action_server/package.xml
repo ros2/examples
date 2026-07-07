@@ -14,6 +14,7 @@
   <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_ros_core</buildtool_depend>
 
   <depend>example_interfaces</depend>
   <depend>rclcpp</depend>
