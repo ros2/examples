@@ -23,6 +23,7 @@ import launch.actions
 import launch_ros.actions
 import launch_testing.actions
 import launch_testing.markers
+from launch_testing_ros.actions import EnableRmwIsolation
 import pytest
 import rclpy
 from rclpy.node import Node
@@ -100,7 +101,7 @@ class WaitForNodes:
 @pytest.mark.launch_test
 @launch_testing.markers.keep_alive
 def generate_test_description():
-    launch_actions = []
+    launch_actions = [EnableRmwIsolation()]
     node_names = []
 
     for i in range(3):
