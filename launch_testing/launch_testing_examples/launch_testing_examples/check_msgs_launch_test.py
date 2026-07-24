@@ -21,6 +21,7 @@ import launch_ros.actions
 import launch_testing.actions
 import launch_testing.markers
 from launch_testing_ros import WaitForTopics
+from launch_testing_ros.actions import EnableRmwIsolation
 import pytest
 
 
@@ -28,6 +29,7 @@ import pytest
 @launch_testing.markers.keep_alive
 def generate_test_description():
     return launch.LaunchDescription([
+        EnableRmwIsolation(),
         launch_ros.actions.Node(
             executable='talker',
             package='demo_nodes_cpp',

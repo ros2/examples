@@ -20,6 +20,7 @@ import launch.actions
 import launch_ros.actions
 import launch_testing.actions
 import launch_testing.markers
+from launch_testing_ros.actions import EnableRmwIsolation
 import pytest
 import rclpy
 from rclpy.node import Node
@@ -29,6 +30,7 @@ from rclpy.node import Node
 @launch_testing.markers.keep_alive
 def generate_test_description():
     return launch.LaunchDescription([
+        EnableRmwIsolation(),
         launch.actions.TimerAction(
             period=5.0,
             actions=[
