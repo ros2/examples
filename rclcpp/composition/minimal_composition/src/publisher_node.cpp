@@ -13,9 +13,12 @@
 // limitations under the License.
 
 #include <chrono>
+#include <functional>
+#include <string>
 
 #include "minimal_composition/publisher_node.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node_options.hpp"
 #include "std_msgs/msg/string.hpp"
 
 using namespace std::chrono_literals;

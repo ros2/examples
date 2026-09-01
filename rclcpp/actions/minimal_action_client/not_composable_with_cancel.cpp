@@ -15,8 +15,13 @@
 #include <chrono>
 
 #include "example_interfaces/action/fibonacci.hpp"
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_action/rclcpp_action.hpp"
+#include "rclcpp/executors.hpp"
+#include "rclcpp/future_return_code.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/utilities.hpp"
+#include "rclcpp_action/client_goal_handle.hpp"
+#include "rclcpp_action/create_client.hpp"
 
 using Fibonacci = example_interfaces::action::Fibonacci;
 

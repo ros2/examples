@@ -19,8 +19,14 @@
 #include <string>
 #include <vector>
 
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/exceptions.hpp"
+#include "rclcpp/executors.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/network_flow_endpoint.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/subscription.hpp"
 #include "rclcpp/subscription_options.hpp"
+#include "rclcpp/utilities.hpp"
 #include "std_msgs/msg/string.hpp"
 
 using std::placeholders::_1;

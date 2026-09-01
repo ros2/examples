@@ -12,7 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "rclcpp/rclcpp.hpp"
+#include <memory>
+
+#include "rclcpp/executors.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/subscription.hpp"
+#include "rclcpp/utilities.hpp"
 #include "std_msgs/msg/string.hpp"
 
 rclcpp::Node::SharedPtr g_node = nullptr;

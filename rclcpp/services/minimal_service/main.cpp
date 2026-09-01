@@ -16,7 +16,11 @@
 #include <memory>
 
 #include "example_interfaces/srv/add_two_ints.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/executors.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/service.hpp"
+#include "rclcpp/utilities.hpp"
 
 using AddTwoInts = example_interfaces::srv::AddTwoInts;
 rclcpp::Node::SharedPtr g_node = nullptr;

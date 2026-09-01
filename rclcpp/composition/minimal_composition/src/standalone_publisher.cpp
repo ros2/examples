@@ -14,7 +14,9 @@
 
 #include <memory>
 #include "minimal_composition/publisher_node.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/executors.hpp"
+#include "rclcpp/node_options.hpp"
+#include "rclcpp/utilities.hpp"
 
 int main(int argc, char * argv[])
 {
