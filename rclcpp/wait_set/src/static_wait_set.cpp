@@ -12,10 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <cstddef>
 #include <memory>
 #include <vector>
 
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/client.hpp"
+#include "rclcpp/guard_condition.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/message_info.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/publisher.hpp"
+#include "rclcpp/service.hpp"
+#include "rclcpp/subscription.hpp"
+#include "rclcpp/timer.hpp"
+#include "rclcpp/utilities.hpp"
+#include "rclcpp/wait_result_kind.hpp"
+#include "rclcpp/wait_set.hpp"
 #include "std_msgs/msg/string.hpp"
 
 int main(int argc, char * argv[])

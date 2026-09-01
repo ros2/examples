@@ -14,10 +14,14 @@
 
 #include "examples_rclcpp_cbg_executor/pong_node.hpp"
 
-#include <cassert>
-
 #include <chrono>
+#include <cstdlib>
+#include <functional>
 #include <memory>
+
+#include "rclcpp/callback_group.hpp"
+#include "rclcpp/qos.hpp"
+#include "rclcpp/subscription_options.hpp"
 
 #include "./utilities.hpp"
 

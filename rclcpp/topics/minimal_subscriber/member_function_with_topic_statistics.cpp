@@ -15,8 +15,13 @@
 #include <chrono>
 #include <memory>
 
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/executors.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/subscription.hpp"
 #include "rclcpp/subscription_options.hpp"
+#include "rclcpp/topic_statistics_state.hpp"
+#include "rclcpp/utilities.hpp"
 
 #include "std_msgs/msg/string.hpp"
 
