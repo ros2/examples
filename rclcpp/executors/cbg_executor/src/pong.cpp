@@ -13,21 +13,15 @@
 // limitations under the License.
 
 #include <cinttypes>
-#include <cstdlib>
-#include <ctime>
 
 #include <chrono>
-#include <condition_variable>
-#include <functional>
-#include <iostream>
 #include <memory>
-#include <mutex>
-#include <string>
 #include <thread>
-#include <vector>
 
-#include "rclcpp/executor.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/executors/single_threaded_executor.hpp"
+#include "rclcpp/logger.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/utilities.hpp"
 
 #include "examples_rclcpp_cbg_executor/pong_node.hpp"
 #include "examples_rclcpp_cbg_executor/utilities.hpp"

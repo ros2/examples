@@ -16,9 +16,10 @@
 #define WAIT_SET__RANDOM_LISTENER_HPP_
 
 #include <vector>
-#include <random>
 
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/subscription.hpp"
 #include "std_msgs/msg/string.hpp"
 
 class RandomListener : public rclcpp::Node

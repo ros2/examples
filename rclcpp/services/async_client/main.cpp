@@ -14,14 +14,27 @@
 
 #include <chrono>
 #include <cinttypes>
+#include <cstddef>
+#include <cstdio>
+#include <future>
+#include <iostream>
 #include <limits>
 #include <memory>
+#include <optional>
 #include <string>
+#include <thread>
 #include <utility>
 #include <vector>
 
 #include "example_interfaces/srv/add_two_ints.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/client.hpp"
+#include "rclcpp/executors/single_threaded_executor.hpp"
+#include "rclcpp/logger.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/node_options.hpp"
+#include "rclcpp/timer.hpp"
+#include "rclcpp/utilities.hpp"
 
 using AddTwoInts = example_interfaces::srv::AddTwoInts;
 using namespace std::chrono_literals;
