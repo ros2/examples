@@ -21,7 +21,7 @@ setup(
         'Topic :: Software Development',
     ],
     description='Examples of using guard conditions.',
-    license='Apache License, Version 2.0',
+    license='Apache-2.0',
     extras_require={
         'test': [
             'pytest',
