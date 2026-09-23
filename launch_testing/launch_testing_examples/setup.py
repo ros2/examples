@@ -16,7 +16,7 @@ setup(
     maintainer='Aditya Pande, Alejandro Hernandez Cordero',
     maintainer_email='aditya.pande@openrobotics.org, alejandro@openrobotics.org',
     description='Examples of simple launch tests',
-    license='Apache License 2.0',
+    license='Apache-2.0',
     extras_require={
         'test': [
             'pytest',
