@@ -32,8 +32,6 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'subscriber_old_school ='
-            ' examples_rclpy_minimal_subscriber.subscriber_old_school:main',
             'subscriber_lambda = examples_rclpy_minimal_subscriber.subscriber_lambda:main',
             'subscriber_member_function ='
             ' examples_rclpy_minimal_subscriber.subscriber_member_function:main',
