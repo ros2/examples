@@ -32,7 +32,6 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'publisher_old_school = examples_rclpy_minimal_publisher.publisher_old_school:main',
             'publisher_local_function ='
             ' examples_rclpy_minimal_publisher.publisher_local_function:main',
             'publisher_member_function ='
