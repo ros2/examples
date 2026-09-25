@@ -27,16 +27,12 @@ target_link_libraries(publisher_member_function_with_unique_network_flow_endpoin
 add_executable(publisher_wait_for_all_acked member_function_with_wait_for_all_acked.cpp)
 target_link_libraries(publisher_wait_for_all_acked PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
-add_executable(publisher_not_composable not_composable.cpp)
-target_link_libraries(publisher_not_composable PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
-
 install(TARGETS
   publisher_lambda
   publisher_member_function
   publisher_member_function_with_type_adapter
   publisher_member_function_with_unique_network_flow_endpoints
   publisher_wait_for_all_acked
-  publisher_not_composable
   DESTINATION lib/${PROJECT_NAME}
 )
 

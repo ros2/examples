@@ -16,13 +16,7 @@ Uses a C++ lambda function as the timer callback.
 
 This approach is concise and suitable for simple publisher implementations.
 
-Both the lambda and member function patterns follow common ROS 2 best practices.  
-The only discouraged approach shown here is the `not_composable.cpp` example.
-
-### not_composable.cpp
-Creates a publisher without subclassing `rclcpp::Node`.
-
-While this pattern works, it does not support node composition and is generally discouraged in modern ROS 2 applications.
+Both the lambda and member function patterns follow common ROS 2 best practices.
 
 ### member_function_with_wait_for_all_acked.cpp
 Demonstrates how to wait until published messages are acknowledged before proceeding.
