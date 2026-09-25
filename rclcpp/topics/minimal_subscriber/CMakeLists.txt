@@ -29,9 +29,6 @@ add_executable(subscriber_member_function_with_unique_network_flow_endpoints mem
 target_link_libraries(subscriber_member_function_with_unique_network_flow_endpoints PRIVATE
   rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
-add_executable(subscriber_not_composable not_composable.cpp)
-target_link_libraries(subscriber_not_composable PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
-
 add_executable(subscriber_content_filtering content_filtering.cpp)
 target_link_libraries(subscriber_content_filtering PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
@@ -66,7 +63,6 @@ install(TARGETS
   subscriber_member_function_with_topic_statistics
   subscriber_member_function_with_type_adapter
   subscriber_member_function_with_unique_network_flow_endpoints
-  subscriber_not_composable
   subscriber_content_filtering
   DESTINATION lib/${PROJECT_NAME})
 
