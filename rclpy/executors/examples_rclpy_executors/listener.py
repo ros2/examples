@@ -36,7 +36,7 @@ class Listener(Node):
         self.get_logger().info('I heard: "%s"' % msg.data)
 
 
-def main(args=None):
+def main():
     """
     Run a Listener node standalone.
 
@@ -47,7 +47,7 @@ def main(args=None):
     :param args: Arguments passed in from the command line.
     """
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             listener = Listener()
             rclpy.spin(listener)
     except (KeyboardInterrupt, ExternalShutdownException):

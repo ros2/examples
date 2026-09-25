@@ -121,9 +121,9 @@ class MinimalActionServer(Node):
                     self._current_goal = None
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             minimal_action_server = MinimalActionServer()
 
             executor = MultiThreadedExecutor()

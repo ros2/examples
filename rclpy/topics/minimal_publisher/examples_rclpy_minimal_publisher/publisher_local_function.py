@@ -18,9 +18,9 @@ from rclpy.executors import ExternalShutdownException
 from std_msgs.msg import String
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             node = rclpy.create_node('minimal_publisher')
             publisher = node.create_publisher(String, 'topic', 10)
 

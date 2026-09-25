@@ -68,11 +68,11 @@ async def execute_callback(goal_handle):
     return result
 
 
-def main(args=None):
+def main():
     global logger
 
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             node = rclpy.create_node('minimal_action_server')
             logger = node.get_logger()
 

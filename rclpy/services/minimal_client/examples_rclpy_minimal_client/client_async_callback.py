@@ -19,9 +19,9 @@ from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import ExternalShutdownException
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             node = rclpy.create_node('minimal_client')
 
             executor = rclpy.executors.SingleThreadedExecutor()

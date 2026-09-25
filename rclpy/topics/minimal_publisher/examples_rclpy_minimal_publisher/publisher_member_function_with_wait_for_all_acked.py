@@ -56,8 +56,8 @@ class MinimalPublisher(Node):
             self.timer.reset()
 
 
-def main(args=None):
-    rclpy.init(args=args)
+def main():
+    rclpy.init()
     minimal_publisher = MinimalPublisher()
     try:
         rclpy.spin(minimal_publisher)

@@ -71,7 +71,7 @@ async def spinning(node):
 async def run(args, loop):
 
     # init ROS 2
-    with rclpy.init(args=args):
+    with rclpy.init():
         logger = rclpy.logging.get_logger('minimal_action_client')
 
         # create node
@@ -107,10 +107,10 @@ async def run(args, loop):
             pass
 
 
-def main(args=None):
+def main():
     try:
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(run(args, loop=loop))
+        loop.run_until_complete(run(loop=loop))
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
 

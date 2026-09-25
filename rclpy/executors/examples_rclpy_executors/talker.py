@@ -45,7 +45,7 @@ class Talker(Node):
         self.pub.publish(msg)
 
 
-def main(args=None):
+def main():
     """
     Run a Talker node standalone.
 
@@ -57,7 +57,7 @@ def main(args=None):
     """
     # Run standalone
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             talker = Talker()
             rclpy.spin(talker)
     except (KeyboardInterrupt, ExternalShutdownException):

@@ -79,9 +79,9 @@ class PriorityExecutor(Executor):
                 self.lp_executor.submit(handler)
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             listener = Listener()
             talker = Talker()
             estopper = Estopper()
