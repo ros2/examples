@@ -25,11 +25,11 @@ def chatter_callback(msg):
         'I heard: "%s"' % msg.data)
 
 
-def main(args=None):
+def main():
     global g_node
 
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             g_node = rclpy.create_node('minimal_subscriber')
 
             subscription = g_node.create_subscription(String, 'topic', chatter_callback, 10)

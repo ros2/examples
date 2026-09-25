@@ -68,9 +68,9 @@ class MinimalActionClient(Node):
         self._send_goal_future.add_done_callback(self.goal_response_callback)
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             action_client = MinimalActionClient()
 
             action_client.send_goal()

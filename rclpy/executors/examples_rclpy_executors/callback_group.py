@@ -44,9 +44,9 @@ class DoubleTalker(Node):
         self.pub.publish(msg)
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             talker = DoubleTalker()
             listener = Listener()
             # MultiThreadedExecutor executes callbacks with a thread pool. If num_threads is not

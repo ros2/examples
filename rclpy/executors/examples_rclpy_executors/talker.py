@@ -45,7 +45,7 @@ class Talker(Node):
         self.pub.publish(msg)
 
 
-def main(args=None):
+def main():
     """
     Run a Talker node standalone.
 
@@ -53,11 +53,10 @@ def main(args=None):
     setup.py. This along with the script installation in setup.cfg allows a talker node to be run
     with the command `ros2 run examples_rclpy_executors talker`.
 
-    :param args: Arguments passed in from the command line.
     """
     # Run standalone
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             talker = Talker()
             rclpy.spin(talker)
     except (KeyboardInterrupt, ExternalShutdownException):

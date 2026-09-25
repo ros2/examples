@@ -115,9 +115,9 @@ class MinimalActionServer(Node):
         return result
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             action_server = MinimalActionServer()
 
             # We use a MultiThreadedExecutor to handle incoming goal requests concurrently

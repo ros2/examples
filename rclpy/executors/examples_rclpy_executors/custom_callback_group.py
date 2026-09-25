@@ -97,9 +97,9 @@ class ThrottledTalker(Node):
         self.pub.publish(msg)
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             talker = ThrottledTalker()
             rclpy.spin(talker)
     except (KeyboardInterrupt, ExternalShutdownException):

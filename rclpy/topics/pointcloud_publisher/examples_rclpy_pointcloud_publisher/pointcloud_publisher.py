@@ -59,9 +59,9 @@ class PointCloudPublisher(Node):
             self.counter += 1
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             pc_publisher = PointCloudPublisher()
             rclpy.spin(pc_publisher)
     except (KeyboardInterrupt, ExternalShutdownException):

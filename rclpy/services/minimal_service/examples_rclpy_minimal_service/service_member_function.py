@@ -32,9 +32,9 @@ class MinimalService(Node):
         return response
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             minimal_service = MinimalService()
 
             rclpy.spin(minimal_service)

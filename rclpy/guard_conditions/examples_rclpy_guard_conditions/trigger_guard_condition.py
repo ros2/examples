@@ -16,9 +16,9 @@ import rclpy
 from rclpy.executors import ExternalShutdownException
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             node = rclpy.create_node('demo_guard_condition')
             executor = rclpy.executors.SingleThreadedExecutor()
             executor.add_node(node)

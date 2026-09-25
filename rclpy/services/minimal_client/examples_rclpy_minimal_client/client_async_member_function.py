@@ -34,9 +34,9 @@ class MinimalClientAsync(Node):
         return self.cli.call_async(self.req)
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             minimal_client = MinimalClientAsync()
             future = minimal_client.send_request()
             rclpy.spin_until_future_complete(minimal_client, future)

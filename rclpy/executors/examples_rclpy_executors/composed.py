@@ -19,9 +19,9 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.executors import SingleThreadedExecutor
 
 
-def main(args=None):
+def main():
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             talker = Talker()
             listener = Listener()
 

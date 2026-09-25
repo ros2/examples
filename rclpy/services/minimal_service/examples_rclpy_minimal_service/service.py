@@ -28,11 +28,11 @@ def add_two_ints_callback(request, response):
     return response
 
 
-def main(args=None):
+def main():
     global g_node
 
     try:
-        with rclpy.init(args=args):
+        with rclpy.init():
             g_node = rclpy.create_node('minimal_service')
 
             srv = g_node.create_service(AddTwoInts, 'add_two_ints', add_two_ints_callback)
