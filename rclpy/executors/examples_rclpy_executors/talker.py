@@ -53,7 +53,6 @@ def main():
     setup.py. This along with the script installation in setup.cfg allows a talker node to be run
     with the command `ros2 run examples_rclpy_executors talker`.
 
-    :param args: Arguments passed in from the command line.
     """
     # Run standalone
     try:

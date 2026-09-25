@@ -44,7 +44,6 @@ def main():
     setup.py. This along with the script installation in setup.cfg allows a listener node to be run
     with the command `ros2 run examples_rclpy_executors listener`.
 
-    :param args: Arguments passed in from the command line.
     """
     try:
         with rclpy.init():

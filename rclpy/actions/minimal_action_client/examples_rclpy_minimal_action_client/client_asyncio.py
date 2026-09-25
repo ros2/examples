@@ -68,7 +68,7 @@ async def spinning(node):
         await asyncio.sleep(0.001)
 
 
-async def run(args, loop):
+async def run(loop):
 
     # init ROS 2
     with rclpy.init():
