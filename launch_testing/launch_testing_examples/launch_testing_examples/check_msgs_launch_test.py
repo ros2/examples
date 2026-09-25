@@ -14,7 +14,6 @@
 
 import unittest
 
-from example_interfaces.msg import String
 import launch
 import launch.actions
 import launch_ros.actions
@@ -23,6 +22,7 @@ import launch_testing.markers
 from launch_testing_ros import WaitForTopics
 from launch_testing_ros.actions import EnableRmwIsolation
 import pytest
+from std_msgs.msg import String
 
 
 @pytest.mark.launch_test
