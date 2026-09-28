@@ -23,7 +23,7 @@ setup(
         'Topic :: Software Development',
     ],
     description='Examples of creating and using exectors to run multiple nodes in rclpy.',
-    license='Apache License, Version 2.0',
+    license='Apache-2.0',
     extras_require={
         'test': [
             'pytest',

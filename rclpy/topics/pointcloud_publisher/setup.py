@@ -16,7 +16,7 @@ setup(
     maintainer='Aditya Pande, Alejandro Hernandez Cordero',
     maintainer_email='aditya.pande@openrobotics.org, alejandro@openrobotics.org',
     description='Example on how to publish a Pointcloud2 message',
-    license='Apache 2.0',
+    license='Apache-2.0',
     extras_require={
         'test': [
             'pytest',
