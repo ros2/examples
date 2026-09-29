@@ -18,12 +18,6 @@ target_link_libraries(action_server_member_functions PRIVATE
   rclcpp_action::rclcpp_action
   ament_cmake_ros_core::ament_ros_defaults)
 
-add_executable(action_server_not_composable not_composable.cpp)
-target_link_libraries(action_server_not_composable PRIVATE
-  example_interfaces::example_interfaces
-  rclcpp::rclcpp
-  rclcpp_action::rclcpp_action
-  ament_cmake_ros_core::ament_ros_defaults)
 
 add_executable(action_server_single_goal single_goal.cpp)
 target_link_libraries(action_server_single_goal PRIVATE
@@ -38,7 +32,6 @@ if(BUILD_TESTING)
 endif()
 
 install(TARGETS
-  action_server_not_composable
   action_server_member_functions
   action_server_single_goal
   DESTINATION lib/${PROJECT_NAME})
