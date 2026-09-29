@@ -18,27 +18,6 @@ target_link_libraries(action_client_member_functions PRIVATE
   rclcpp_action::rclcpp_action
   ament_cmake_ros_core::ament_ros_defaults)
 
-add_executable(action_client_not_composable not_composable.cpp)
-target_link_libraries(action_client_not_composable PRIVATE
-  example_interfaces::example_interfaces
-  rclcpp::rclcpp
-  rclcpp_action::rclcpp_action
-  ament_cmake_ros_core::ament_ros_defaults)
-
-add_executable(action_client_not_composable_with_cancel not_composable_with_cancel.cpp)
-target_link_libraries(action_client_not_composable_with_cancel PRIVATE
-  example_interfaces::example_interfaces
-  rclcpp::rclcpp
-  rclcpp_action::rclcpp_action
-  ament_cmake_ros_core::ament_ros_defaults)
-
-add_executable(action_client_not_composable_with_feedback not_composable_with_feedback.cpp)
-target_link_libraries(action_client_not_composable_with_feedback PRIVATE
-  example_interfaces::example_interfaces
-  rclcpp::rclcpp
-  rclcpp_action::rclcpp_action
-  ament_cmake_ros_core::ament_ros_defaults)
-
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
@@ -46,9 +25,6 @@ endif()
 
 install(TARGETS
   action_client_member_functions
-  action_client_not_composable
-  action_client_not_composable_with_cancel
-  action_client_not_composable_with_feedback
   DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
