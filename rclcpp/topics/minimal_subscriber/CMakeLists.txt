@@ -17,10 +17,6 @@ target_link_libraries(subscriber_lambda PRIVATE rclcpp::rclcpp std_msgs::std_msg
 add_executable(subscriber_member_function member_function.cpp)
 target_link_libraries(subscriber_member_function PRIVATE rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
 
-add_executable(subscriber_member_function_with_topic_statistics member_function_with_topic_statistics.cpp)
-target_link_libraries(subscriber_member_function_with_topic_statistics PRIVATE
-  rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
-
 add_executable(subscriber_member_function_with_type_adapter member_function_with_type_adapter.cpp)
 target_link_libraries(subscriber_member_function_with_type_adapter PRIVATE
   rclcpp::rclcpp std_msgs::std_msgs ament_cmake_ros_core::ament_ros_defaults)
@@ -60,7 +56,6 @@ install(TARGETS
 install(TARGETS
   subscriber_lambda
   subscriber_member_function
-  subscriber_member_function_with_topic_statistics
   subscriber_member_function_with_type_adapter
   subscriber_member_function_with_unique_network_flow_endpoints
   subscriber_content_filtering
