@@ -16,6 +16,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <stdexcept>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
@@ -31,9 +32,17 @@ public:
   MinimalPublisher()
   : Node("minimal_publisher"), count_(0)
   {
+    int period = this->declare_parameter<int>("period", 500);
+    if (period <= 0)
+    {
+      throw std::runtime_error("period must be greater than 0");
+    }
     publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
     timer_ = this->create_wall_timer(
-      500ms, std::bind(&MinimalPublisher::timer_callback, this));
+      std::chrono::milliseconds(period),
+      std::bind(&MinimalPublisher::timer_callback, this));
+
+      RCLCPP_INFO(this->get_logger(), "Publishing at period %d ms", period);
   }
 
 private:
