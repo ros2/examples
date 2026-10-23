@@ -2,6 +2,11 @@
 Changelog for package examples_rclpy_executors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.22.1 (2026-10-23)
+-------------------
+* Use the SPDX identifier Apache-2.0 in license declarations (`#456 <https://github.com/ros2/examples/issues/456>`_)
+* Contributors: Michael Carroll
+
 0.22.0 (2026-05-07)
 -------------------
 * Rename spin_once to _spin_once_impl in custom executor (`#447 <https://github.com/ros2/examples/issues/447>`_)

@@ -2,6 +2,14 @@
 Changelog for package examples_rclcpp_minimal_action_server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.22.1 (2026-10-23)
+-------------------
+* Deleted not_composable example from examples_rclcpp_minimal_action_server (`#474 <https://github.com/ros2/examples/issues/474>`_)
+* Use the SPDX identifier Apache-2.0 in license declarations (`#456 <https://github.com/ros2/examples/issues/456>`_)
+* granular rclcpp/rclcpp.hpp and include what you use (`#454 <https://github.com/ros2/examples/issues/454>`_)
+* use C++ 20 in default. (`#450 <https://github.com/ros2/examples/issues/450>`_)
+* Contributors: Alejandro Hernández Cordero, Michael Carroll, Rajat Arora, Tomoya Fujita
+
 0.22.0 (2026-05-07)
 -------------------
 
