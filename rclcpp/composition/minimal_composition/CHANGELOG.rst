@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_composition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.6 (2026-10-23)
+-------------------
+
 0.21.5 (2026-03-24)
 -------------------
 * Use new ROSIDL aggregate CMake target (`#444 <https://github.com/ros2/examples/issues/444>`_)

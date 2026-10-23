@@ -2,6 +2,11 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.21.6 (2026-10-23)
+-------------------
+* Run tests with RMW isolation (`#451 <https://github.com/ros2/examples/issues/451>`_) (`#452 <https://github.com/ros2/examples/issues/452>`_)
+* Contributors: mergify[bot]
+
 0.21.5 (2026-03-24)
 -------------------
 * improve test integrity with rmw_cyclonedds_cpp. (`#440 <https://github.com/ros2/examples/issues/440>`_)
