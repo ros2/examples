@@ -2,6 +2,13 @@
 Changelog for package launch_testing_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.20.7 (2026-10-23)
+-------------------
+* Use std_msgs String in check_msgs_launch_test on Kilted (`#475 <https://github.com/ros2/examples/issues/475>`_)
+* Run tests with RMW isolation (`#451 <https://github.com/ros2/examples/issues/451>`_) (`#453 <https://github.com/ros2/examples/issues/453>`_)
+* improve test integrity with rmw_cyclonedds_cpp. (`#440 <https://github.com/ros2/examples/issues/440>`_) (`#443 <https://github.com/ros2/examples/issues/443>`_)
+* Contributors: mergify[bot], yadunund
+
 0.20.6 (2025-10-17)
 -------------------
 * Fix setuptools deprecations (`#421 <https://github.com/ros2/examples//issues/421>`_) (`#424 <https://github.com/ros2/examples//issues/424>`_)

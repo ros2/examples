@@ -2,6 +2,9 @@
 Changelog for package examples_rclpy_executors
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.20.7 (2026-10-23)
+-------------------
+
 0.20.6 (2025-10-17)
 -------------------
 * Fix setuptools deprecations (`#421 <https://github.com/ros2/examples//issues/421>`_) (`#424 <https://github.com/ros2/examples//issues/424>`_)

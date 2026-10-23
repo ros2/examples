@@ -2,6 +2,9 @@
 Changelog for package examples_rclcpp_minimal_service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.20.7 (2026-10-23)
+-------------------
+
 0.20.6 (2025-10-17)
 -------------------
 * Fix CMAKE deprecation (`#419 <https://github.com/ros2/examples//issues/419>`_) (`#420 <https://github.com/ros2/examples//issues/420>`_)
