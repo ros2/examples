@@ -16,7 +16,7 @@ import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 
-from std_msgs.msg import String
+from example_interfaces.msg import String
 
 
 class MinimalPublisher(Node):

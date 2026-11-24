@@ -15,7 +15,7 @@
 import rclpy
 from rclpy.executors import ExternalShutdownException
 
-from std_msgs.msg import String
+from example_interfaces.msg import String
 
 
 def main(args=None):
