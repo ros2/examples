@@ -36,6 +36,7 @@ setup(
             'server_defer = ' + package_name + '.server_defer:main',
             'server_queue_goals = ' + package_name + '.server_queue_goals:main',
             'server_single_goal = ' + package_name + '.server_single_goal:main',
+            'server_asyncio = ' + package_name + '.server_asyncio:main',
         ],
     },
 )
