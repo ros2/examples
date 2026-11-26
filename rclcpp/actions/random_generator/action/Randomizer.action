@@ -1,0 +1,8 @@
+uint16 number_of_values
+float64 min_val
+float64 max_val
+---
+float64[] random_values
+---
+uint16 number_of_random_values_calculated
+float64 new_random_value
